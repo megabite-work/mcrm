@@ -49,7 +49,7 @@ services:
       TZ: Asia/Tashkent
       PGTZ: Asia/Tashkent
     volumes:
-      - "./docker/db:/var/lib/postgresql/data"
+      - db_data:/var/lib/postgresql/data
       - ./db/postgresql.conf:/etc/postgresql.conf:ro
     ports:
       - "127.0.0.1:${DB_PORT:-5432}:5432"
