@@ -16,6 +16,7 @@
         "nelmio/cors-bundle": "^2.5",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpstan/phpdoc-parser": "^1.29",
+        "stof/doctrine-extensions-bundle": "^1.12",
         "symfony/asset": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
@@ -83,8 +84,14 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "friendsofphp/php-cs-fixer": "^3.59",
         "phpstan/phpstan": "^1.11",
-        "symfony/maker-bundle": "^1.60"
+        "symfony/debug-bundle": "7.1.*",
+        "symfony/maker-bundle": "^1.60",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/stopwatch": "7.1.*",
+        "symfony/web-profiler-bundle": "7.1.*",
+        "zenstruck/foundry": "^2.0"
     }
 }

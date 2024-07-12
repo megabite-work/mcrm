@@ -3,11 +3,11 @@ include docker/.env
 DC = docker compose -f ./docker/docker-compose.yml
 PHP = $(DC) exec -u www-data php
 NGINX = $(DC) exec -it nginx
-DB = $(DC) exec -u postgres -it db
+DB = $(DC) exec -it db
 CI = composer install --prefer-dist --no-progress --no-scripts --no-interaction
 DDC = bin/console d:d:c --if-not-exists
 DMM = bin/console d:m:m -n
-DIF = bin/console d:
+DIF = bin/console d:m:diff
 BIN = bin/console
 
 ##################
