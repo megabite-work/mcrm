@@ -2,19 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\UserStore;
+use App\Entity\Phone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class UserStoreRepository extends ServiceEntityRepository
+/**
+ * @extends ServiceEntityRepository<UserPhone>
+ */
+class PhoneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserStore::class);
+        parent::__construct($registry, Phone::class);
     }
 
 //    /**
-//     * @return UserStore[] Returns an array of UserStore objects
+//     * @return UserPhone[] Returns an array of UserPhone objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -28,7 +31,7 @@ class UserStoreRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?UserStore
+//    public function findOneBySomeField($value): ?UserPhone
 //    {
 //        return $this->createQueryBuilder('u')
 //            ->andWhere('u.exampleField = :val')

@@ -4,34 +4,34 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\UserStoreRepository;
+use App\Repository\UserMultiStoreRepository;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
-#[ORM\Entity(repositoryClass: UserStoreRepository::class)]
-#[ORM\Table(name: 'user_store')]
+#[ORM\Entity(repositoryClass: UserMultiStoreRepository::class)]
+#[ORM\Table(name: 'user_multi_store')]
 #[ApiResource(
-    normalizationContext: ['groups' => ['user_store:read']],
-    denormalizationContext: ['groups' => ['user_store:write', 'user_store:update']]
+    normalizationContext: ['groups' => ['user_multi_store:read']],
+    denormalizationContext: ['groups' => ['user_multi_store:write', 'user_multi_store:update']]
 )]
-final class UserStore
+final class UserMultiStore
 {
     use TimestampableEntity, SoftDeleteableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user_store:read'])]
+    #[Groups(['user_multi_store:read'])]
     private ?int $id = null;
 
     #[ORM\Column(name: 'user_id')]
-    #[Groups(['user_store:read', 'user_store:write'])]
+    #[Groups(['user_multi_store:read', 'user_multi_store:write'])]
     private ?int $userId = null;
 
-    #[ORM\Column(name: 'store_id')]
-    #[Groups(['user_store:read', 'user_store:write'])]
-    private ?int $storeId = null;
+    #[ORM\Column(name: 'multi_store_id')]
+    #[Groups(['user_multi_store:read', 'user_multi_store:write'])]
+    private ?int $multiStoreId = null;
 
     public function getId(): ?int
     {
@@ -50,14 +50,14 @@ final class UserStore
         return $this;
     }
 
-    public function getStoreId(): ?int
+    public function getMultiStoreId(): ?int
     {
-        return $this->storeId;
+        return $this->multiStoreId;
     }
 
-    public function setStoreId(int $storeId): static
+    public function setMultiStoreId(int $multiStoreId): static
     {
-        $this->storeId = $storeId;
+        $this->multiStoreId = $multiStoreId;
 
         return $this;
     }

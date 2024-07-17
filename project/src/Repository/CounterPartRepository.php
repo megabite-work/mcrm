@@ -2,15 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\UserStore;
+use App\Entity\CounterPart;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class UserStoreRepository extends ServiceEntityRepository
+class CounterPartRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserStore::class);
+        parent::__construct($registry, CounterPart::class);
     }
 
 //    /**

@@ -25,9 +25,9 @@ final class UserSecurity
     #[Groups(['security:read'])]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'user_id')]
     #[Groups(['security:read', 'security:write'])]
-    private ?int $user_id = null;
+    private ?int $userId = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['security:read', 'security:write'])]
@@ -44,12 +44,12 @@ final class UserSecurity
 
     public function getUserId(): ?int
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUserId(int $userId): static
     {
-        $this->user_id = $user_id;
+        $this->userId = $userId;
 
         return $this;
     }

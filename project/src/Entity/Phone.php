@@ -4,20 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\UserPhoneRepository;
+use App\Repository\PhoneRepository;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: UserPhoneRepository::class)]
+#[ORM\Entity(repositoryClass: PhoneRepository::class)]
 #[ORM\Table(name: 'user_phone')]
 #[ApiResource(
     normalizationContext: ['groups' => ['phone:read']],
     denormalizationContext: ['groups' => ['phone:write', 'phone:update']]
 )]
-final class UserPhone
+final class Phone
 {
     use TimestampableEntity, SoftDeleteableEntity;
+    
+    public const PHONE_COUNTER_PART = 'counter_part';
+    public const PHONE_MULTI_STORE = 'multi_store';
+    public const PHONE_STORE = 'store';
+    public const PHONE_USER = 'user';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,31 +30,31 @@ final class UserPhone
     #[Groups(['phone:read'])]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'phoneble_id')]
     #[Groups(['phone:read', 'phone:write'])]
-    private ?int $user_id = null;
+    private ?int $phonebleId = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['phone:read', 'phone:write'])]
     private ?string $phone = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: 'phoneble_type', length: 255)]
     #[Groups(['phone:read', 'phone:write'])]
-    private ?string $type = null;
+    private ?string $phonebleType = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getPhonebleId(): ?int
     {
-        return $this->user_id;
+        return $this->phonebleId;
     }
 
-    public function setUserId(int $user_id): static
+    public function setPhonebleId(int $phonebleId): static
     {
-        $this->user_id = $user_id;
+        $this->phonebleId = $phonebleId;
 
         return $this;
     }
@@ -66,14 +71,14 @@ final class UserPhone
         return $this;
     }
 
-    public function getType(): ?string
+    public function getPhonebleType(): ?string
     {
-        return $this->type;
+        return $this->phonebleType;
     }
 
-    public function setType(string $type): static
+    public function setPhonebleType(string $phonebleType): static
     {
-        $this->type = $type;
+        $this->phonebleType = $phonebleType;
 
         return $this;
     }
