@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Dto\TokensDto;
+use App\Dto\RefreshTokenDto;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
@@ -12,6 +14,7 @@ use App\State\UserPasswordHasher;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\OpenApi\Model\Operation;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -23,12 +26,20 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['username'])]
 #[ApiResource(
     operations: [
         new GetCollection(),
         new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
-        new Post(uriTemplate: '/auth/login', validationContext: ['groups' => ['user:login']]),
+        new Post(uriTemplate: '/auth/login'),
+        new Post(
+            uriTemplate: '/auth/refresh-token',
+            openapi: new Operation(
+                summary: 'Authorization by refreshToken'
+            ),
+            input: RefreshTokenDto::class,
+            output: TokensDto::class,
+        ),
         new Get(),
         new Put(processor: UserPasswordHasher::class),
         new Patch(processor: UserPasswordHasher::class),
@@ -55,7 +66,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(unique: true)]
     #[Groups(['user:read', 'user:write', 'user:login'])]
-    private ?string $name = null;
+    private ?string $username = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['user:read', 'user:write'])]
@@ -101,7 +112,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->name;
+        return (string) $this->username;
     }
 
     public function getRoles(): array
@@ -148,14 +159,14 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getName(): string
+    public function getUsername(): string
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName($name): static
+    public function setUsername($username): static
     {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }

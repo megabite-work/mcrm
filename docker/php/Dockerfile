@@ -6,14 +6,6 @@ RUN docker-php-ext-install opcache mysqli pdo_mysql pdo_pgsql mbstring
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-ARG XDEBUG_MODE=off
-
-RUN if [ ${XDEBUG_MODE} = debug ]; \
-    then \
-        pecl install xdebug && docker-php-ext-enable xdebug; \
-    fi
 
 ARG PUID=1000
 ARG PGID=1000
