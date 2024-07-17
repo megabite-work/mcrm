@@ -8,26 +8,34 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserCredentialRepository;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserCredentialRepository::class)]
 #[ORM\Table(name: 'user_credential')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['credential:read']],
+    denormalizationContext: ['groups' => ['credential:write', 'credential:update']]
+)]
 final class UserCredential
 {
     use TimestampableEntity, SoftDeleteableEntity;
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['credential:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['credential:read', 'credential:write'])]
     private ?int $user_id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['credential:read', 'credential:write'])]
     private ?string $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['credential:read', 'credential:write'])]
     private ?string $value = null;
 
     public function getId(): ?int

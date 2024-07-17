@@ -5,12 +5,16 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserStoreRepository;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 #[ORM\Entity(repositoryClass: UserStoreRepository::class)]
 #[ORM\Table(name: 'user_store')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['store:read']],
+    denormalizationContext: ['groups' => ['store:write', 'store:update']]
+)]
 final class UserStore
 {
     use TimestampableEntity, SoftDeleteableEntity;
@@ -18,12 +22,15 @@ final class UserStore
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['security:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['security:read', 'security:write'])]
     private ?int $user_id = null;
 
     #[ORM\Column]
+    #[Groups(['security:read', 'security:write'])]
     private ?int $store_id = null;
 
     public function getId(): ?int

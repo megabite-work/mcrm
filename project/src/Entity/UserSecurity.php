@@ -7,10 +7,14 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserSecurityRepository;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserSecurityRepository::class)]
 #[ORM\Table(name: 'user_security')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['security:read']],
+    denormalizationContext: ['groups' => ['security:write', 'security:update']]
+)]
 final class UserSecurity
 {
     use TimestampableEntity, SoftDeleteableEntity;
@@ -18,15 +22,19 @@ final class UserSecurity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['security:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['security:read', 'security:write'])]
     private ?int $user_id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['security:read', 'security:write'])]
     private ?string $ip = null;
 
     #[ORM\Column]
+    #[Groups(['security:read', 'security:write'])]
     private ?int $security = null;
 
     public function getId(): ?int
