@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ForgiveTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ForgiveTypeRepository::class)]
 #[ORM\Table(name: 'forgive_type')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['forgive_type:read']],
-    denormalizationContext: ['groups' => ['forgive_type:write', 'forgive_type:update']]
-)]
 final class ForgiveType
 {
     use TimestampableEntity;

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\WebCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: WebCategoryRepository::class)]
 #[ORM\Table(name: 'web_category')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['web_category:read']],
-    denormalizationContext: ['groups' => ['web_category:write', 'web_category:update']]
-)]
 final class WebCategory
 {
     use TimestampableEntity;

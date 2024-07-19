@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserMultiStoreRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserMultiStoreRepository::class)]
 #[ORM\Table(name: 'user_multi_store')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['user_multi_store:read']],
-    denormalizationContext: ['groups' => ['user_multi_store:write', 'user_multi_store:update']]
-)]
 final class UserMultiStore
 {
     use TimestampableEntity;

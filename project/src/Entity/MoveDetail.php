@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MoveDetailRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MoveDetailRepository::class)]
 #[ORM\Table(name: 'move_detail')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['move_detail:read']],
-    denormalizationContext: ['groups' => ['move_detail:write', 'move_detail:update']]
-)]
 final class MoveDetail
 {
     use TimestampableEntity;

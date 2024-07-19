@@ -2,22 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use ApiPlatform\OpenApi\Model\Operation;
-use App\Controller\User\CreateAction;
-use App\Controller\User\DeleteAction;
-use App\Dto\Auth\RefreshTokenDto;
-use App\Dto\Auth\TokensDto;
-use App\Dto\User\CreateRequestDto;
-use App\Dto\User\CreateResponseDto;
 use App\Repository\UserRepository;
-use App\State\UserPasswordHasher;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -30,31 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['username'])]
-#[ApiResource(
-    operations: [
-        new GetCollection(),
-        new Post(
-            controller: CreateAction::class,
-            input: CreateRequestDto::class,
-            output: CreateResponseDto::class
-        ),
-        new Post(uriTemplate: '/auth/login'),
-        new Post(
-            uriTemplate: '/auth/refresh-token',
-            openapi: new Operation(
-                summary: 'Authorization by refreshToken'
-            ),
-            input: RefreshTokenDto::class,
-            output: TokensDto::class,
-        ),
-        new Get(),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
-        new Delete(controller: DeleteAction::class,),
-    ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write', 'user:update']]
-)]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;

@@ -1,12 +1,12 @@
-@baseUrl = http://localhost:999/api
+@baseUrl = http://localhost:777/api
 
 # @name create_user
 POST {{baseUrl}}/users HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "user",
-    "email": "user@gmail.com",
+    "username": "user2",
+    "email": "user2@gmail.com",
     "password": "secret",
     "phone": "901234567"
 }
@@ -36,18 +36,21 @@ Content-Type: application/json
 
 ###
 
+# @name get_all_users
 GET {{baseUrl}}/users HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
 
+# @name get_user_by_id
 GET {{baseUrl}}/users/1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
 
+# @name update_user_by_id
 PUT {{baseUrl}}/users/1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -58,6 +61,7 @@ Authorization: Bearer {{token}}
 
 ###
 
+# @name update_user_by_id
 PATCH {{baseUrl}}/users/1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -69,6 +73,7 @@ Authorization: Bearer {{token}}
 
 ###
 
+# @name delete_user_by_id
 DELETE  {{baseUrl}}/users/1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}

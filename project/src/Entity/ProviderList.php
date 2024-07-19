@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProviderListRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProviderListRepository::class)]
 #[ORM\Table(name: 'provider_list')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['provider_list:read']],
-    denormalizationContext: ['groups' => ['provider_list:write', 'provider_list:update']]
-)]
 final class ProviderList
 {
     use TimestampableEntity;

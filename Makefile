@@ -15,7 +15,7 @@ BIN = bin/console
 ##################
 
 dc_build:
-	@$(DC) build
+	@$(DC) build --no-cache
 
 dc_start:
 	@$(DC) start

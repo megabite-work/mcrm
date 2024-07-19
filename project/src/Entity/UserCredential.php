@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserCredentialRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserCredentialRepository::class)]
 #[ORM\Table(name: 'user_credential')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['credential:read']],
-    denormalizationContext: ['groups' => ['credential:write', 'credential:update']]
-)]
 final class UserCredential
 {
     use TimestampableEntity;

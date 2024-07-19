@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CounterPartRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CounterPartRepository::class)]
 #[ORM\Table(name: 'counter_part')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['counter_part:read']],
-    denormalizationContext: ['groups' => ['counter_part:write', 'counter_part:update']]
-)]
 final class CounterPart
 {
     use TimestampableEntity;

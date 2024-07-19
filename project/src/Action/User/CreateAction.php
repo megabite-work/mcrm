@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Controller\User;
+namespace App\Action\User;
 
 use App\Dto\User\CreateRequestDto;
 use App\Dto\User\CreateResponseDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class CreateAction extends AbstractController
+class CreateAction
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
@@ -20,7 +18,7 @@ class CreateAction extends AbstractController
     ) {
     }
 
-    public function __invoke(#[MapRequestPayload] CreateRequestDto $dto): CreateResponseDto
+    public function __invoke(CreateRequestDto $dto): CreateResponseDto
     {
         $user = (new User())
             ->setEmail($dto->getEmail())

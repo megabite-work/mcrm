@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StoreNomenclatureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: StoreNomenclatureRepository::class)]
 #[ORM\Table(name: 'store_nomenclature')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['store_nomenclature:read']],
-    denormalizationContext: ['groups' => ['store_nomenclature:write', 'store_nomenclature:update']]
-)]
 final class StoreNomenclature
 {
     use TimestampableEntity;

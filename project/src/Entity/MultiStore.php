@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MultiStoreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MultiStoreRepository::class)]
 #[ORM\Table(name: 'multi_store')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['multi_store:read']],
-    denormalizationContext: ['groups' => ['multi_store:write', 'multi_store:update']]
-)]
 final class MultiStore
 {
     use TimestampableEntity;

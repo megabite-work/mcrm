@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\WebNomenclatureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: WebNomenclatureRepository::class)]
 #[ORM\Table(name: 'web_nomenclature')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['web_nomenclature:read']],
-    denormalizationContext: ['groups' => ['web_nomenclature:write', 'web_nomenclature:update']]
-)]
 final class WebNomenclature
 {
     use TimestampableEntity;

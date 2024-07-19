@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CourseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 #[ORM\Table(name: 'course')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['course:read']],
-    denormalizationContext: ['groups' => ['course:write', 'course:update']]
-)]
 final class Course
 {
     use TimestampableEntity;

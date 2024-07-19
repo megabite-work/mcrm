@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MoveGlobalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MoveGlobalRepository::class)]
 #[ORM\Table(name: 'move_global')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['move_global:read']],
-    denormalizationContext: ['groups' => ['move_global:write', 'move_global:update']]
-)]
 final class MoveGlobal
 {
     use TimestampableEntity;

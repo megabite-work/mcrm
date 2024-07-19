@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\NomenclatureHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: NomenclatureHistoryRepository::class)]
 #[ORM\Table(name: 'nomenclature_history')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['nomenclature_history:read']],
-    denormalizationContext: ['groups' => ['nomenclature_history:write', 'nomenclature_history:update']]
-)]
 final class NomenclatureHistory
 {
     use TimestampableEntity;

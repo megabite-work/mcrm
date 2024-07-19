@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CurrencyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CurrencyRepository::class)]
 #[ORM\Table(name: 'currency')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['currency:read']],
-    denormalizationContext: ['groups' => ['currency:write', 'currency:update']]
-)]
 final class Currency
 {
     use TimestampableEntity;

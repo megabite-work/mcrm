@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserSecurityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -11,10 +10,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserSecurityRepository::class)]
 #[ORM\Table(name: 'user_security')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['security:read']],
-    denormalizationContext: ['groups' => ['security:write', 'security:update']]
-)]
 final class UserSecurity
 {
     use TimestampableEntity;

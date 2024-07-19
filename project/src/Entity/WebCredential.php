@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\WebCredentialRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +11,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: WebCredentialRepository::class)]
 #[ORM\Table(name: 'web_credential')]
-#[ApiResource(
-    normalizationContext: ['groups' => ['web_credential:read']],
-    denormalizationContext: ['groups' => ['web_credential:write', 'web_credential:update']]
-)]
 final class WebCredential
 {
     use TimestampableEntity;
