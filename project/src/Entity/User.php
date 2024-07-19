@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\OpenApi\Model\Operation;
 use App\Controller\User\CreateAction;
+use App\Controller\User\DeleteAction;
 use App\Dto\Auth\RefreshTokenDto;
 use App\Dto\Auth\TokensDto;
 use App\Dto\User\CreateRequestDto;
@@ -33,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(),
         new Post(
-            // processor: UserPasswordHasher::class,
             controller: CreateAction::class,
             input: CreateRequestDto::class,
             output: CreateResponseDto::class
@@ -50,7 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(),
         new Put(processor: UserPasswordHasher::class),
         new Patch(processor: UserPasswordHasher::class),
-        new Delete(),
+        new Delete(controller: DeleteAction::class,),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write', 'user:update']]
