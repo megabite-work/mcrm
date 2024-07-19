@@ -50,6 +50,14 @@ Authorization: Bearer {{token}}
 
 ###
 
+
+# @name get_user_by_token
+GET {{baseUrl}}/users/me HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
 # @name update_user_by_id
 PUT {{baseUrl}}/users/1 HTTP/1.1
 Content-Type: application/json

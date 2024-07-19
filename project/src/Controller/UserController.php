@@ -24,10 +24,16 @@ class UserController extends AbstractController
         return $this->json($action(), context: ['groups' => ['user:read']]);
     }
 
-    #[Route(path: '/{id}', methods: ['GET'])]
+    #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['user:read']]);
+        return $this->json($action($id));
+    }
+
+    #[Route(path: '/me', methods: ['GET'])]
+    public function me(CurrentUser $user): JsonResponse
+    {
+        return $this->json($user->getUser(), context: ['groups' => ['user:read']]);
     }
 
     #[Route(path: '', methods: ['POST'])]
@@ -36,13 +42,13 @@ class UserController extends AbstractController
         return $this->json($action($dto), context: ['groups' => ['user:read']]);
     }
 
-    #[Route('/{id}', methods: ['PUT', 'PATCH'])]
-    public function update(#[MapRequestPayload] UpdateRequestDto $dto, int $id, UpdateAction $action): JsonResponse
+    #[Route('/{id<\d+>}', methods: ['PUT', 'PATCH'])]
+    public function update(int $id, #[MapRequestPayload] UpdateRequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['user:read']]);
+        return $this->json($action($id, $dto));
     }
 
-    #[Route('/{id}', methods: ['DELETE'])]
+    #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
         return $this->json($action($id));
