@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PhoneRepository;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PhoneRepository::class)]
@@ -17,8 +17,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 final class Phone
 {
-    use TimestampableEntity, SoftDeleteableEntity;
-    
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
+
     public const PHONE_COUNTER_PART = 'counter_part';
     public const PHONE_MULTI_STORE = 'multi_store';
     public const PHONE_STORE = 'store';

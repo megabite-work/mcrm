@@ -1,5 +1,7 @@
 FROM php:8.2-fpm-alpine3.20
 
+ENV TZ=Asia/Tashkent
+
 RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash libpq-dev --update linux-headers
 
 RUN docker-php-ext-install opcache mysqli pdo_mysql pdo_pgsql mbstring

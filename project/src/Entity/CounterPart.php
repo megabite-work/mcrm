@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CounterPartRepository;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CounterPartRepository::class)]
 #[ORM\Table(name: 'counter_part')]
@@ -18,7 +18,8 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 )]
 final class CounterPart
 {
-    use TimestampableEntity, SoftDeleteableEntity;
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,7 +43,7 @@ final class CounterPart
     #[Groups(['counter_part:read', 'counter_part:write'])]
     private ?string $address = null;
 
-    #[ORM\Column(type: Types::DECIMAL)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups(['counter_part:read', 'counter_part:write'])]
     private ?string $discount = null;
 
@@ -92,7 +93,7 @@ final class CounterPart
         return $this->address;
     }
 
-    public function setAddress(int $address): static
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 

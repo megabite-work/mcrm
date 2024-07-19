@@ -2,26 +2,28 @@
 
 namespace App\Entity;
 
-use App\Dto\TokensDto;
-use App\Dto\RefreshTokenDto;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Delete;
-use Doctrine\ORM\Mapping as ORM;
-use App\State\UserPasswordHasher;
-use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\OpenApi\Model\Operation;
-use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Controller\User\CreateAction;
+use App\Dto\Auth\RefreshTokenDto;
+use App\Dto\Auth\TokensDto;
+use App\Dto\User\CreateRequestDto;
+use App\Dto\User\CreateResponseDto;
+use App\Repository\UserRepository;
+use App\State\UserPasswordHasher;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Attribute\SerializedName;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -30,7 +32,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ApiResource(
     operations: [
         new GetCollection(),
-        new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
+        new Post(
+            // processor: UserPasswordHasher::class,
+            controller: CreateAction::class,
+            input: CreateRequestDto::class,
+            output: CreateResponseDto::class
+        ),
         new Post(uriTemplate: '/auth/login'),
         new Post(
             uriTemplate: '/auth/refresh-token',
@@ -50,9 +57,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 )]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use TimestampableEntity, SoftDeleteableEntity;
-    
-    
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -60,34 +67,30 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
     #[Groups(['user:read', 'user:write', 'user:login'])]
+    #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:read', 'user:write'])]
+    // #[Groups(['user:read', 'user:write'])]
     private ?string $phone = null;
 
     #[ORM\Column(name: 'qr_code', nullable: true)]
     #[Groups(['user:read'])]
     private ?string $qrCode = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column]
     #[Groups(['user:read'])]
     private array $roles = [];
 
     #[ORM\Column]
     private ?string $password = null;
-
-    #[Assert\NotBlank(groups: ['user:create'])]
-    #[SerializedName('password')]
-    #[Groups(['user:create', 'user:update', 'user:login'])]
-    private ?string $plainPassword = null;
 
     public function __construct()
     {
@@ -143,21 +146,8 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $plainPassword): static
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
     public function eraseCredentials(): void
     {
-        $this->plainPassword = null;
     }
 
     public function getUsername(): string
@@ -165,7 +155,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername($username): static
+    public function setUsername(string $username): static
     {
         $this->username = $username;
 
@@ -177,7 +167,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phone;
     }
 
-    public function setPhone($phone): static
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
 
@@ -189,7 +179,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->qrCode;
     }
 
-    public function setQrCode($qrCode): static
+    public function setQrCode(string $qrCode): static
     {
         $this->qrCode = $qrCode;
 

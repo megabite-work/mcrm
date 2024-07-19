@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CourseRepository;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 #[ORM\Table(name: 'course')]
@@ -18,7 +18,8 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 )]
 final class Course
 {
-    use TimestampableEntity, SoftDeleteableEntity;
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,7 +35,7 @@ final class Course
     #[Groups(['course:read', 'course:write'])]
     private ?int $currencyId = null;
 
-    #[ORM\Column(name: 'cape_amount', type: Types::DECIMAL)]
+    #[ORM\Column(name: 'cape_amount', type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups(['course:read', 'course:write'])]
     private ?string $capeAmount = null;
 
@@ -46,7 +47,7 @@ final class Course
     #[Groups(['course:read', 'course:write'])]
     private ?int $convert = null;
 
-    #[ORM\Column(name: 'currency_value', type: Types::DECIMAL)]
+    #[ORM\Column(name: 'currency_value', type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups(['course:read', 'course:write'])]
     private ?string $currencyValue = null;
 
@@ -78,6 +79,7 @@ final class Course
 
         return $this;
     }
+
     public function getCapeAmount(): ?string
     {
         return $this->capeAmount;

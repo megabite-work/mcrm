@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StoreRepository;
-use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: StoreRepository::class)]
 #[ORM\Table(name: 'store')]
@@ -18,7 +17,8 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 )]
 final class Store
 {
-    use TimestampableEntity, SoftDeleteableEntity;
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

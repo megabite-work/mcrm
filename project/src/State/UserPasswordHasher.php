@@ -4,9 +4,7 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
 
 class UserPasswordHasher implements ProcessorInterface
 {
@@ -16,7 +14,7 @@ class UserPasswordHasher implements ProcessorInterface
     ) {
     }
 
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): User
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
         if (!$data->getPlainPassword()) {
             return $this->processor->process($data, $operation, $uriVariables, $context);
@@ -34,7 +32,7 @@ class UserPasswordHasher implements ProcessorInterface
         return $this->processor->process($data, $operation, $uriVariables, $context);
     }
 
-    private function setUserQrCode(mixed $data)
+    private function setUserQrCode(mixed $data): void
     {
         $qrCode = base64_encode($data->getEmail());
         $data->setQrCode($qrCode);

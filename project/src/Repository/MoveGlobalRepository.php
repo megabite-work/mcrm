@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\Store;
+use App\Entity\MoveGlobal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Store>
+ * @extends ServiceEntityRepository<MoveGlobal>
  */
-class StoreRepository extends ServiceEntityRepository
+class MoveGlobalRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Store::class);
+        parent::__construct($registry, MoveGlobal::class);
     }
 }

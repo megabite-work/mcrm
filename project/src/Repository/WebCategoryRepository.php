@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\Store;
+use App\Entity\WebCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Store>
+ * @extends ServiceEntityRepository<WebCategory>
  */
-class StoreRepository extends ServiceEntityRepository
+class WebCategoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Store::class);
+        parent::__construct($registry, WebCategory::class);
     }
 }

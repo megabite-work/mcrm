@@ -3,19 +3,19 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\CurrencyRepository;
+use App\Repository\ForgiveTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: CurrencyRepository::class)]
-#[ORM\Table(name: 'currency')]
+#[ORM\Entity(repositoryClass: ForgiveTypeRepository::class)]
+#[ORM\Table(name: 'forgive_type')]
 #[ApiResource(
-    normalizationContext: ['groups' => ['currency:read']],
-    denormalizationContext: ['groups' => ['currency:write', 'currency:update']]
+    normalizationContext: ['groups' => ['forgive_type:read']],
+    denormalizationContext: ['groups' => ['forgive_type:write', 'forgive_type:update']]
 )]
-final class Currency
+final class ForgiveType
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;
@@ -23,11 +23,11 @@ final class Currency
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['currency:read'])]
+    #[Groups(['forgive_type:read'])]
     private ?int $id = null;
 
-    #[ORM\Column()]
-    #[Groups(['currency:read', 'currency:write'])]
+    #[ORM\Column(type: 'json')]
+    #[Groups(['forgive_type:read', 'forgive_type:write'])]
     private ?string $name = null;
 
     public function getId(): ?int

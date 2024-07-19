@@ -15,7 +15,7 @@ BIN = bin/console
 ##################
 
 dc_build:
-	@$(DC) build
+	@$(DC) build --no-cache
 
 dc_start:
 	@$(DC) start
@@ -56,6 +56,7 @@ php_ddc:
 	@$(PHP) $(DDC) 
 
 php_dmm:
+	@sleep 5
 	@$(PHP) $(DMM)
 
 php_dif:
