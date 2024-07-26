@@ -8,9 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: UserCredentialRepository::class)]
 #[ORM\Table(name: 'user_credential')]
+#[Gedmo\SoftDeleteable]
 final class UserCredential
 {
     use TimestampableEntity;

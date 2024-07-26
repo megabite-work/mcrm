@@ -8,9 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: WebNomenclatureRepository::class)]
 #[ORM\Table(name: 'web_nomenclature')]
+#[Gedmo\SoftDeleteable]
 final class WebNomenclature
 {
     use TimestampableEntity;

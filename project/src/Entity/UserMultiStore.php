@@ -7,9 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: UserMultiStoreRepository::class)]
 #[ORM\Table(name: 'user_multi_store')]
+#[Gedmo\SoftDeleteable]
 final class UserMultiStore
 {
     use TimestampableEntity;

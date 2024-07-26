@@ -7,9 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: WebCategoryRepository::class)]
 #[ORM\Table(name: 'web_category')]
+#[Gedmo\SoftDeleteable]
 final class WebCategory
 {
     use TimestampableEntity;

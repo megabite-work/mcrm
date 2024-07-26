@@ -8,9 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: CounterPartRepository::class)]
 #[ORM\Table(name: 'counter_part')]
+#[Gedmo\SoftDeleteable]
 final class CounterPart
 {
     use TimestampableEntity;

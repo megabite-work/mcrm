@@ -7,9 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ProviderListRepository::class)]
 #[ORM\Table(name: 'provider_list')]
+#[Gedmo\SoftDeleteable]
 final class ProviderList
 {
     use TimestampableEntity;
