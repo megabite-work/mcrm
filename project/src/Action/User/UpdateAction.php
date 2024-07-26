@@ -7,12 +7,10 @@ use App\Dto\User\UpdateRequestDto;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private UserPasswordHasherInterface $passwordHasher,
         private EntityManagerInterface $em,
         private UserRepository $userRepo
     ) {
@@ -29,10 +27,7 @@ class UpdateAction
         if ($dto->getEmail()) {
             $user->setEmail($dto->getemail());
         } else if ($dto->getphone()) {
-            $user->setUsername($dto->getPhone());
-        } else if ($dto->getPassword()) {
-            $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->getPassword());
-            $user->setPassword($hashedPassword);
+            $user->setPhone($dto->getPhone());
         }
 
         $this->em->flush();

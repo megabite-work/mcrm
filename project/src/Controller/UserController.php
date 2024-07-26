@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
-use App\Action\User\IndexAction;
-use App\Action\User\ShowAction;
-use App\Action\User\CreateAction;
-use App\Action\User\UpdateAction;
-use App\Action\User\DeleteAction;
+use App\Action\User\ChangePasswordAction;
 use App\Component\CurrentUser;
+use App\Action\User\ShowAction;
+use App\Action\User\IndexAction;
+use App\Action\User\CreateAction;
+use App\Action\User\DeleteAction;
+use App\Action\User\UpdateAction;
 use App\Dto\User\CreateRequestDto;
 use App\Dto\User\UpdateRequestDto;
+use App\Action\User\IsUniqueEmailAction;
+use App\Action\User\IsUniqueUsernameAction;
+use App\Dto\User\ChangePasswordRequestDto;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -52,5 +57,25 @@ class UserController extends AbstractController
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
         return $this->json($action($id));
+    }
+
+    #[Route(path: '/is-unique-email', methods: ['POST'])]
+    public function isUniqueEmail(Request $request, IsUniqueEmailAction $action): JsonResponse
+    {
+        $email = $request->getPayload()->get('email');
+        return $this->json(['isUnique' => $action($email)]);
+    }
+
+    #[Route(path: '/is-unique-username', methods: ['POST'])]
+    public function IsUniqueUsername(Request $request, IsUniqueUsernameAction $action): JsonResponse
+    {
+        $username = $request->getPayload()->get('username');
+        return $this->json(['isUnique' => $action($username)]);
+    }
+
+    #[Route('/change-password', methods: ['PUT', 'PATCH'])]
+    public function changePassword(#[MapRequestPayload] ChangePasswordRequestDto $dto, CurrentUser $user, ChangePasswordAction $action): JsonResponse
+    {
+        return $this->json($action($user->getUser(), $dto));
     }
 }

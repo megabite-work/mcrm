@@ -37,6 +37,7 @@ security:
 
   access_control:
     - { path: ^/api/auth/(login|refresh-token), roles: PUBLIC_ACCESS }
+    - { path: ^/api/users/(is-unique-email|is-unique-username), roles: PUBLIC_ACCESS }
     - { path: ^/api/.+, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api, roles: PUBLIC_ACCESS }
 

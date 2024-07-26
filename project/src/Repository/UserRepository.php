@@ -37,6 +37,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
+    public function isUniqueEmail(string $email): bool
+    {
+        return $this->findOneBy(['email' => $email]) === null;
+    }
+
+    public function isUniqueUsername(string $username): bool
+    {
+        return $this->findOneBy(['username' => $username]) === null;
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
