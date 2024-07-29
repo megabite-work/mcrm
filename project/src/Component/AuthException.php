@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthException extends UnauthorizedHttpException
 {
-    public function __construct($message = '', $code = 0, ?\Throwable $previous = null)
+    public function __construct($message = '')
     {
         parent::__construct($message, $message);
     }

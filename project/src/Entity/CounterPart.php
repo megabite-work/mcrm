@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: CounterPartRepository::class)]
 #[ORM\Table(name: 'counter_part')]
 #[Gedmo\SoftDeleteable]
-final class CounterPart
+class CounterPart
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

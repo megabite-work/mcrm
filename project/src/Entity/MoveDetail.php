@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: MoveDetailRepository::class)]
 #[ORM\Table(name: 'move_detail')]
 #[Gedmo\SoftDeleteable]
-final class MoveDetail
+class MoveDetail
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

@@ -56,7 +56,7 @@ class UserController extends AbstractController
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json($action($id));
+        return $this->json(['success' => $action($id)]);
     }
 
     #[Route(path: '/is-unique-email', methods: ['POST'])]

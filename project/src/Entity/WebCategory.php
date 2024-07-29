@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: WebCategoryRepository::class)]
 #[ORM\Table(name: 'web_category')]
 #[Gedmo\SoftDeleteable]
-final class WebCategory
+class WebCategory
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

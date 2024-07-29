@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: WebCredentialRepository::class)]
 #[ORM\Table(name: 'web_credential')]
 #[Gedmo\SoftDeleteable]
-final class WebCredential
+class WebCredential
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

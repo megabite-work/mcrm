@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: MoveGlobalRepository::class)]
 #[ORM\Table(name: 'move_global')]
 #[Gedmo\SoftDeleteable]
-final class MoveGlobal
+class MoveGlobal
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

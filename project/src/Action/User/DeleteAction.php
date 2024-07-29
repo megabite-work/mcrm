@@ -14,7 +14,7 @@ class DeleteAction
     ) {
     }
 
-    public function __invoke(int $id): void
+    public function __invoke(int $id): bool
     {
         $user = $this->userRepo->find($id);
 
@@ -24,5 +24,7 @@ class DeleteAction
 
         $this->em->remove($user);
         $this->em->flush();
+
+        return true;
     }
 }

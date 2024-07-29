@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: ForgiveTypeRepository::class)]
 #[ORM\Table(name: 'forgive_type')]
 #[Gedmo\SoftDeleteable]
-final class ForgiveType
+class ForgiveType
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

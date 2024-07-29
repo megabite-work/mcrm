@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: CurrencyRepository::class)]
 #[ORM\Table(name: 'currency')]
 #[Gedmo\SoftDeleteable]
-final class Currency
+class Currency
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: WebNomenclatureRepository::class)]
 #[ORM\Table(name: 'web_nomenclature')]
 #[Gedmo\SoftDeleteable]
-final class WebNomenclature
+class WebNomenclature
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

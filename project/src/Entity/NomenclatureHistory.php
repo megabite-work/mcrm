@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: NomenclatureHistoryRepository::class)]
 #[ORM\Table(name: 'nomenclature_history')]
 #[Gedmo\SoftDeleteable]
-final class NomenclatureHistory
+class NomenclatureHistory
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;

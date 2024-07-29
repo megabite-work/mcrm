@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: PhoneRepository::class)]
 #[ORM\Table(name: 'user_phone')]
 #[Gedmo\SoftDeleteable]
-final class Phone
+class Phone
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;
