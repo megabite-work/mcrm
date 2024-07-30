@@ -7,13 +7,13 @@ use App\Repository\UserRepository;
 
 class ShowAction
 {
-    public function __construct(private UserRepository $userRepo)
+    public function __construct(private UserRepository $repo)
     {
     }
 
     public function __invoke(int $id): ShowResponseDto
     {
-        $user = $this->userRepo->find($id);
+        $user = $this->repo->find($id);
         return new ShowResponseDto($user);
     }
 }

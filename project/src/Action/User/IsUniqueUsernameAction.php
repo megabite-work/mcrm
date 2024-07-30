@@ -7,12 +7,12 @@ use App\Repository\UserRepository;
 class IsUniqueUsernameAction
 {
     public function __construct(
-        private UserRepository $userRepo
+        private UserRepository $repo
     ) {
     }
 
     public function __invoke(string $username): bool
     {
-        return $this->userRepo->isUniqueUsername($username);
+        return $this->repo->isUniqueUsername($username);
     }
 }

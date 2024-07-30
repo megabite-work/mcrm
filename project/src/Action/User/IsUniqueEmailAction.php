@@ -7,12 +7,12 @@ use App\Repository\UserRepository;
 class IsUniqueEmailAction
 {
     public function __construct(
-        private UserRepository $userRepo
+        private UserRepository $repo
     ) {
     }
 
     public function __invoke(string $email): bool
     {
-        return $this->userRepo->isUniqueEmail($email);
+        return $this->repo->isUniqueEmail($email);
     }
 }

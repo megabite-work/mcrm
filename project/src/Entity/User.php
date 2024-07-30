@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -26,38 +28,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'multi_store:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
     #[Assert\NotBlank]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['user:read', 'user:write', 'multi_store:read'])]
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['user:read', 'user:write', 'user:login'])]
+    #[Groups(['user:read', 'user:write', 'user:login', 'multi_store:read'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'multi_store:read'])]
     private ?string $phone = null;
 
     #[ORM\Column(name: 'qr_code', nullable: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'multi_store:read'])]
     private ?string $qrCode = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'multi_store:read'])]
     private array $roles = [];
 
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(targetEntity: MultiStore::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $multiStores;
+
     public function __construct()
     {
-        $this->qrCode = base64_encode($this->getEmail());
+        $this->multiStores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +151,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setQrCode(string $qrCode): static
     {
         $this->qrCode = $qrCode;
+
+        return $this;
+    }
+
+    public function getMultiStores(): Collection
+    {
+        return $this->multiStores;
+    }
+
+    public function addMultiStore(MultiStore $multiStore): static
+    {
+        if (!$this->multiStores->contains($multiStore)) {
+            $this->multiStores->add($multiStore);
+            $multiStore->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultiStore(MultiStore $multiStore): static
+    {
+        if ($this->multiStores->removeElement($multiStore)) {
+            if ($multiStore->getOwner() === $this) {
+                $multiStore->setOwner(null);
+            }
+        }
 
         return $this;
     }

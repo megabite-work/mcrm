@@ -12,13 +12,13 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private UserRepository $userRepo
+        private UserRepository $repo
     ) {
     }
 
     public function __invoke(int $id, UpdateRequestDto $dto): ShowResponseDto
     {
-        $user = $this->userRepo->find($id);
+        $user = $this->repo->find($id);
 
         if (null === $user) {
             throw new UserNotFoundException();

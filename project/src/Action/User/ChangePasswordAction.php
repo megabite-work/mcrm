@@ -13,7 +13,7 @@ class ChangePasswordAction
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private UserRepository $userRepo
+        private UserRepository $repo
     ) {
     }
 
@@ -24,7 +24,7 @@ class ChangePasswordAction
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->getPassword());
-        $this->userRepo->upgradePassword($user, $hashedPassword);
+        $this->repo->upgradePassword($user, $hashedPassword);
 
         return new ShowResponseDto($user);
     }

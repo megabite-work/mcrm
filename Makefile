@@ -7,6 +7,7 @@ DB = $(DC) exec -it db
 CI = composer install --prefer-dist --no-progress --no-scripts --no-interaction
 DDC = bin/console d:d:c --if-not-exists
 DMM = bin/console d:m:m -n
+DFL = bin/console d:f:load -n
 DIF = bin/console d:m:diff
 BIN = bin/console
 
@@ -59,6 +60,9 @@ php_dmm:
 	@sleep 5
 	@$(PHP) $(DMM)
 
+php_dfl:
+	@$(PHP) $(DFL)
+
 php_dif:
 	@$(PHP) $(DIF)
 
@@ -72,3 +76,12 @@ bc: ## Run bin/console, pass the parameter "c=" to run a given command, example:
 
 db_sql:
 	@$(DB) psql -U ${DB_USER}
+
+start:
+	@$(DC) build
+	@$(DC) up  -d --remove-orphans
+	@sleep 5
+	@$(PHP) $(DIF)
+	@$(PHP) $(DMM)
+	@$(PHP) $(DFL)
+	@$(PHP) bash

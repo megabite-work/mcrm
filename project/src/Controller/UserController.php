@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Action\User\ChangePasswordAction;
-use App\Component\CurrentUser;
+use App\Entity\User;
 use App\Action\User\ShowAction;
 use App\Action\User\IndexAction;
 use App\Action\User\CreateAction;
@@ -12,13 +11,15 @@ use App\Action\User\UpdateAction;
 use App\Dto\User\CreateRequestDto;
 use App\Dto\User\UpdateRequestDto;
 use App\Action\User\IsUniqueEmailAction;
-use App\Action\User\IsUniqueUsernameAction;
+use App\Action\User\ChangePasswordAction;
 use App\Dto\User\ChangePasswordRequestDto;
+use App\Action\User\IsUniqueUsernameAction;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route(path: '/api/users', format: 'json')]
 class UserController extends AbstractController
@@ -36,9 +37,9 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/me', methods: ['GET'])]
-    public function me(CurrentUser $user): JsonResponse
+    public function me(#[CurrentUser] User $user): JsonResponse
     {
-        return $this->json($user->getUser(), context: ['groups' => ['user:read']]);
+        return $this->json($user, context: ['groups' => ['user:read']]);
     }
 
     #[Route(path: '', methods: ['POST'])]
@@ -74,8 +75,8 @@ class UserController extends AbstractController
     }
 
     #[Route('/change-password', methods: ['PUT', 'PATCH'])]
-    public function changePassword(#[MapRequestPayload] ChangePasswordRequestDto $dto, CurrentUser $user, ChangePasswordAction $action): JsonResponse
+    public function changePassword(#[MapRequestPayload] ChangePasswordRequestDto $dto, #[CurrentUser] User $user, ChangePasswordAction $action): JsonResponse
     {
-        return $this->json($action($user->getUser(), $dto));
+        return $this->json($action($user, $dto));
     }
 }

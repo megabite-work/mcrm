@@ -24,7 +24,7 @@ class ForgiveType
     private ?int $id = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['forgive_type:read', 'forgive_type:write'])]
+    #[Groups(['forgive_type:read'])]
     private ?string $name = null;
 
     public function getId(): ?int

@@ -24,60 +24,60 @@ class Nomenclature
     private ?int $id = null;
 
     #[ORM\Column(name: 'category_id')]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?int $categoryId = null;
 
     #[ORM\Column(name: 'unit_id')]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?int $unitId = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?string $mxik = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?string $barcode = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?string $brand = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'oldprice', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?string $oldPrice = null;
+    #[ORM\Column(name: 'oldprice', type: 'decimal', precision: 15, scale: 3)]
+    #[Groups(['nomenclature:read'])]
+    private ?float $oldPrice = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?string $price = null;
+    #[ORM\Column(type: 'decimal', precision: 15, scale: 3)]
+    #[Groups(['nomenclature:read'])]
+    private ?float $price = null;
 
-    #[ORM\Column(name: 'oldprice_course', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?string $oldPriceCourse = null;
+    #[ORM\Column(name: 'oldprice_course', type: 'decimal', precision: 15, scale: 3)]
+    #[Groups(['nomenclature:read'])]
+    private ?float $oldPriceCourse = null;
 
-    #[ORM\Column(name: 'price_course', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?string $priceCourse = null;
+    #[ORM\Column(name: 'price_course', type: 'decimal', precision: 15, scale: 3)]
+    #[Groups(['nomenclature:read'])]
+    private ?float $priceCourse = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?string $nds = null;
+    #[ORM\Column(type: 'decimal', precision: 15, scale: 3)]
+    #[Groups(['nomenclature:read'])]
+    private ?float $nds = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?string $discount = null;
+    #[ORM\Column(type: 'decimal', precision: 15, scale: 3)]
+    #[Groups(['nomenclature:read'])]
+    private ?float $discount = null;
 
     #[ORM\Column(name: 'provider_id')]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
+    #[Groups(['nomenclature:read'])]
     private ?int $providerId = null;
 
     #[ORM\Column(name: 'qr_code')]
-    #[Groups(['nomenclature:read', 'nomenclature:write'])]
-    private ?int $qrCode = null;
+    #[Groups(['nomenclature:read'])]
+    private bool $qrCode = false;
 
     public function getId(): ?int
     {
@@ -156,72 +156,72 @@ class Nomenclature
         return $this;
     }
 
-    public function getOldPrice(): ?string
+    public function getOldPrice(): ?float
     {
         return $this->oldPrice;
     }
 
-    public function setOldPrice(?string $oldPrice): self
+    public function setOldPrice(?float $oldPrice): self
     {
         $this->oldPrice = $oldPrice;
 
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(?string $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
         return $this;
     }
 
-    public function getOldPriceCourse(): ?string
+    public function getOldPriceCourse(): ?float
     {
         return $this->oldPriceCourse;
     }
 
-    public function setOldPriceCourse(?string $oldPriceCourse): self
+    public function setOldPriceCourse(?float $oldPriceCourse): self
     {
         $this->oldPriceCourse = $oldPriceCourse;
 
         return $this;
     }
 
-    public function getPriceCourse(): ?string
+    public function getPriceCourse(): ?float
     {
         return $this->priceCourse;
     }
 
-    public function setPriceCourse(?string $priceCourse): self
+    public function setPriceCourse(?float $priceCourse): self
     {
         $this->priceCourse = $priceCourse;
 
         return $this;
     }
 
-    public function getNds(): ?string
+    public function getNds(): ?float
     {
         return $this->nds;
     }
 
-    public function setNds(?string $nds): self
+    public function setNds(?float $nds): self
     {
         $this->nds = $nds;
 
         return $this;
     }
 
-    public function getDiscount(): ?string
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
-    public function setDiscount(?string $discount): self
+    public function setDiscount(?float $discount): self
     {
         $this->discount = $discount;
 

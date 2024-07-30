@@ -20,44 +20,32 @@ class Store
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store:read'])]
+    #[Groups(['store:read', 'multi_store:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'multi_store_id')]
-    #[Groups(['store:read', 'store:write'])]
-    private ?int $multiStoreId = null;
-
     #[ORM\Column()]
-    #[Groups(['store:read', 'store:write'])]
+    #[Groups(['store:read', 'multi_store:read'])]
     private ?string $name = null;
 
-    #[ORM\Column()]
-    #[Groups(['store:read', 'store:write'])]
-    private ?int $isActive = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['store:read', 'multi_store:read'])]
+    private bool $isActive = true;
 
-    #[ORM\Column(name: 'official_address')]
-    #[Groups(['store:read', 'store:write'])]
+    #[ORM\Column(name: 'official_address', nullable: true)]
+    #[Groups(['store:read', 'multi_store:read'])]
     private ?string $officialAddress = null;
 
-    #[ORM\Column(name: 'coordinate')]
-    #[Groups(['store:read', 'store:write'])]
+    #[ORM\Column(name: 'coordinate', nullable: true)]
+    #[Groups(['store:read', 'multi_store:read'])]
     private ?string $coordinate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stores')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MultiStore $multiStore = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getMultiStoreId(): ?int
-    {
-        return $this->multiStoreId;
-    }
-
-    public function setMultiStoreId(int $multiStoreId): static
-    {
-        $this->multiStoreId = $multiStoreId;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -72,12 +60,12 @@ class Store
         return $this;
     }
 
-    public function getIsActive(): ?int
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
 
-    public function setIsActive(int $isActive): static
+    public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
 
@@ -104,6 +92,18 @@ class Store
     public function setCoordinate(string $coordinate): static
     {
         $this->coordinate = $coordinate;
+
+        return $this;
+    }
+
+    public function getMultiStore(): ?MultiStore
+    {
+        return $this->multiStore;
+    }
+
+    public function setMultiStore(?MultiStore $multiStore): static
+    {
+        $this->multiStore = $multiStore;
 
         return $this;
     }

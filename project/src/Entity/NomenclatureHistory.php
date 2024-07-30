@@ -24,43 +24,43 @@ class NomenclatureHistory
     private ?int $id = null;
 
     #[ORM\Column(name: 'store_id')]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?int $storeId = null;
 
     #[ORM\Column(name: 'nomenclature_id')]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?int $nomenclatureId = null;
 
     #[ORM\Column(name: 'nomenclature_history_id')]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?int $forgiveTypeId = null;
 
     #[ORM\Column(name: 'user_id')]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?int $userId = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?string $comment = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?string $qty = null;
 
     #[ORM\Column(name: 'oldprice', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?string $oldPrice = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?string $price = null;
 
     #[ORM\Column(name: 'oldprice_course', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?string $oldPriceCourse = null;
 
     #[ORM\Column(name: 'price_course', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read', 'nomenclature_history:write'])]
+    #[Groups(['nomenclature_history:read'])]
     private ?string $priceCourse = null;
 
     public function getId(): ?int

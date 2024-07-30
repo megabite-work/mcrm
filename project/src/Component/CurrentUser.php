@@ -25,6 +25,13 @@ class CurrentUser
         return $user;
     }
 
+    public function getId(): int
+    {
+        $userId = $this->getUser()->getId();
+
+        return $userId;
+    }
+
     public function isAuthed(): bool
     {
         return null !== $this->tokenStorage->getToken();

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MultiStoreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -25,20 +27,33 @@ class MultiStore
     private ?int $id = null;
 
     #[ORM\Column()]
-    #[Groups(['multi_store:read', 'multi_store:write'])]
+    #[Groups(['multi_store:read'])]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['multi_store:read', 'multi_store:write'])]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['multi_store:read'])]
     private ?string $profit = null;
 
-    #[ORM\Column(name: 'barcode_TTN')]
-    #[Groups(['multi_store:read', 'multi_store:write'])]
+    #[ORM\Column(name: 'barcode_TTN', nullable: true)]
+    #[Groups(['multi_store:read'])]
     private ?int $barcodeTtn = null;
 
-    #[ORM\Column(name: 'nds')]
-    #[Groups(['multi_store:read', 'multi_store:write'])]
+    #[ORM\Column(name: 'nds', nullable: true)]
+    #[Groups(['multi_store:read'])]
     private ?int $nds = null;
+
+    #[ORM\ManyToOne(inversedBy: 'multiStores')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
+
+    #[ORM\OneToMany(targetEntity: Store::class, mappedBy: 'multiStore', orphanRemoval: true)]
+    #[Groups(['multi_store:read'])]
+    private Collection $stores;
+
+    public function __construct()
+    {
+        $this->stores = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +104,44 @@ class MultiStore
     public function setNds(int $nds): static
     {
         $this->nds = $nds;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getStores(): Collection
+    {
+        return $this->stores;
+    }
+
+    public function addStore(Store $store): static
+    {
+        if (!$this->stores->contains($store)) {
+            $this->stores->add($store);
+            $store->setMultiStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStore(Store $store): static
+    {
+        if ($this->stores->removeElement($store)) {
+            if ($store->getMultiStore() === $this) {
+                $store->setMultiStore(null);
+            }
+        }
 
         return $this;
     }

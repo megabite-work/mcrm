@@ -6,13 +6,13 @@ use App\Repository\UserRepository;
 
 class IndexAction
 {
-    public function __construct(private UserRepository $userRepo)
+    public function __construct(private UserRepository $repo)
     {
     }
 
     public function __invoke(): array
     {
-        $users = $this->userRepo->findAll();
+        $users = $this->repo->findAll();
         return $users;
     }
 }
