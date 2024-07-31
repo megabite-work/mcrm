@@ -17,6 +17,14 @@ final class UserFactory extends PersistentProxyObjectFactory
         return User::class;
     }
 
+    public function admin(): self
+    {
+        return $this->with([
+            'username' => 'admin',
+            'roles' => ['ROLE_ADMIN']
+        ]);
+    }
+
     protected function defaults(): array|callable
     {
         return [
