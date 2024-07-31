@@ -40,24 +40,26 @@ services:
       - php
 
   db:
-    container_name: ${COMPOSE_PROJECT_NAME}-pgsql
-    image: "postgres:16.3-alpine3.20"
+    container_name: mysql
+    image: "mariadb:10.5.2"
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
-      POSTGRES_USER: "${DB_USER:-example}"
-      POSTGRES_DB: "${DB_NAME:-example}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-example}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${DB_NAME:-example}"
+      MYSQL_USER: "${DB_USER:-example}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-example}"
       TZ: Asia/Tashkent
-      PGTZ: Asia/Tashkent
     volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./db/postgresql.conf:/etc/postgresql.conf:ro
+      - "db_data:/var/lib/mysql"
     ports:
-      - "127.0.0.1:${DB_PORT:-5432}:5432"
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
     command:
-      - "postgres"
-      - "-c"
-      - "config_file=/etc/postgresql.conf"
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_general_ci",
+      ]
 
   adminer:
     container_name: ${COMPOSE_PROJECT_NAME}-adminer
@@ -80,23 +82,21 @@ volumes:
   #     ports:
   #         - "127.0.0.1:${REDIS_PORT:-6379}:6379"
   # db:
-  #   container_name: mysql
-  #   image: "mariadb:10.5.2"
+  #   container_name: ${COMPOSE_PROJECT_NAME}-pgsql
+  #   image: "postgres:16.3-alpine3.20"
   #   restart: unless-stopped
   #   environment:
-  #     MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:-example}"
-  #     MYSQL_ROOT_HOST: "%"
-  #     MYSQL_DATABASE: "${DB_NAME:-example}"
-  #     MYSQL_USER: "${DB_USER:-example}"
-  #     MYSQL_PASSWORD: "${DB_PASSWORD:-example}"
+  #     POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
+  #     POSTGRES_USER: "${DB_USER:-example}"
+  #     POSTGRES_DB: "${DB_NAME:-example}"
   #     TZ: Asia/Tashkent
+  #     PGTZ: Asia/Tashkent
   #   volumes:
-  #     - "db_data:/var/lib/mysql"
+  #     - db_data:/var/lib/postgresql/data
+  #     - ./db/postgresql.conf:/etc/postgresql.conf:ro
   #   ports:
-  #     - "127.0.0.1:${DB_PORT:-3306}:3306"
+  #     - "127.0.0.1:${DB_PORT:-5432}:5432"
   #   command:
-  #     [
-  #         'mysqld',
-  #         '--character-set-server=utf8mb4',
-  #         '--collation-server=utf8mb4_general_ci'
-  #     ]
+  #     - "postgres"
+  #     - "-c"
+  #     - "config_file=/etc/postgresql.conf"

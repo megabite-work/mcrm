@@ -16,8 +16,8 @@ nelmio_api_doc:
             /api/auth/login:
                 post:
                     tags:
-                        - User
-                    summary: Login into the api.
+                        - Authorization
+                    summary: Login into the api
                     requestBody:
                         content:
                             application/json:
@@ -49,8 +49,8 @@ nelmio_api_doc:
             /api/auth/refresh-token:
                 post:
                     tags:
-                        - User
-                    summary: Login into the api by refresh token.
+                        - Authorization
+                    summary: Login into the api by refresh token
                     requestBody:
                         content:
                             application/json:

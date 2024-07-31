@@ -2,7 +2,9 @@
 
 namespace App\Dto\User;
 
+use App\Entity\Address;
 use App\Entity\User;
+use Doctrine\Common\Collections\Collection;
 
 final class ShowResponseDto
 {
@@ -11,6 +13,8 @@ final class ShowResponseDto
     private string $username;
     private string $qrCode;
     private array $roles;
+    private ?Collection $phones;
+    private ?Address $address;
 
     public function __construct(User $user)
     {
@@ -19,6 +23,8 @@ final class ShowResponseDto
         $this->username = $user->getUsername();
         $this->qrCode = $user->getQrCode();
         $this->roles = $user->getRoles();
+        $this->phones = $user->getPhones();
+        $this->address = $user->getAddress();
     }
 
     public function getId(): int
@@ -44,5 +50,15 @@ final class ShowResponseDto
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    public function getPhones(): ?Collection
+    {
+        return $this->phones;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
     }
 }

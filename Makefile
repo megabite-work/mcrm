@@ -78,9 +78,10 @@ db_sql:
 	@$(DB) psql -U ${DB_USER}
 
 start:
-	@$(DC) build
+	@$(DC) build --no-cache
 	@$(DC) up  -d --remove-orphans
 	@sleep 5
+	@$(PHP) $(CI)
 	@$(PHP) $(DIF)
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)

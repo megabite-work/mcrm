@@ -24,33 +24,21 @@ class UserCredential
     #[Groups(['credential:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'user_id')]
-    #[Groups(['credential:read', 'credential:write'])]
-    private ?int $userId = null;
-
     #[ORM\Column(length: 255)]
-    #[Groups(['credential:read', 'credential:write'])]
+    #[Groups(['credential:read'])]
     private ?string $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['credential:read', 'credential:write'])]
+    #[Groups(['credential:read'])]
     private ?string $value = null;
+
+    #[ORM\ManyToOne(inversedBy: 'userCredentials')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): static
-    {
-        $this->userId = $userId;
-
-        return $this;
     }
 
     public function getType(): ?string
@@ -73,6 +61,18 @@ class UserCredential
     public function setValue(string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

@@ -11,9 +11,10 @@ class ShowAction
     {
     }
 
-    public function __invoke(int $id): ShowResponseDto
+    public function __invoke(int $id)/* : ShowResponseDto */
     {
-        $user = $this->repo->find($id);
+        $user = $this->repo->getUserWithAddressAndPhonesByUserId($id);
+        return $user;
         return new ShowResponseDto($user);
     }
 }

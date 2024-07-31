@@ -34,17 +34,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
     #[Assert\NotBlank]
-    #[Groups(['user:read', 'user:write', 'multi_store:read'])]
+    #[Groups(['user:read', 'multi_store:read'])]
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['user:read', 'user:write', 'user:login', 'multi_store:read'])]
+    #[Groups(['user:read', 'multi_store:read'])]
     #[Assert\NotBlank]
     private ?string $username = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['user:read', 'user:write', 'multi_store:read'])]
-    private ?string $phone = null;
 
     #[ORM\Column(name: 'qr_code', nullable: true)]
     #[Groups(['user:read', 'multi_store:read'])]
@@ -57,13 +53,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: MultiStore::class, mappedBy: 'owner', orphanRemoval: true)]
     private Collection $multiStores;
+
+    #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'owner')]
+    #[Groups(['user:read'])]
+    private Collection $phones;
+
+    #[ORM\OneToMany(targetEntity: UserCredential::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $userCredentials;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['user:read'])]
+    private ?Address $address = null;
+
+    #[ORM\ManyToMany(targetEntity: Store::class, mappedBy: 'workers')]
+    private Collection $stores;
 
     public function __construct()
     {
         $this->multiStores = new ArrayCollection();
+        $this->phones = new ArrayCollection();
+        $this->userCredentials = new ArrayCollection();
+        $this->stores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,18 +143,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPhone(): string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
     public function getQrCode(): string
     {
         return $this->qrCode;
@@ -176,6 +176,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($multiStore->getOwner() === $this) {
                 $multiStore->setOwner(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getPhones(): Collection
+    {
+        return $this->phones;
+    }
+
+    public function addPhone(Phone $phone): static
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones->add($phone);
+            $phone->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhone(Phone $phone): static
+    {
+        if ($this->phones->removeElement($phone)) {
+            if ($phone->getOwner() === $this) {
+                $phone->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserCredentials(): Collection
+    {
+        return $this->userCredentials;
+    }
+
+    public function addUserCredential(UserCredential $userCredential): static
+    {
+        if (!$this->userCredentials->contains($userCredential)) {
+            $this->userCredentials->add($userCredential);
+            $userCredential->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCredential(UserCredential $userCredential): static
+    {
+        if ($this->userCredentials->removeElement($userCredential)) {
+            if ($userCredential->getOwner() === $this) {
+                $userCredential->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getStores(): Collection
+    {
+        return $this->stores;
+    }
+
+    public function addStore(Store $store): static
+    {
+        if (!$this->stores->contains($store)) {
+            $this->stores->add($store);
+            $store->addWorker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStore(Store $store): static
+    {
+        if ($this->stores->removeElement($store)) {
+            $store->removeWorker($this);
         }
 
         return $this;

@@ -24,7 +24,7 @@ class Currency
     private ?int $id = null;
 
     #[ORM\Column()]
-    #[Groups(['currency:read', 'currency:write'])]
+    #[Groups(['currency:read'])]
     private ?string $name = null;
 
     public function getId(): ?int

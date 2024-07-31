@@ -16,7 +16,6 @@ final class CreateRequestDto
         #[Assert\NotBlank]
         #[Assert\Length(min: 6)]
         private string $password,
-        private string $phone
     ) {
     }
 
@@ -33,10 +32,5 @@ final class CreateRequestDto
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    public function getPhone(): string
-    {
-        return $this->phone;
     }
 }

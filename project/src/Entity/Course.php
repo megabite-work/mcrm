@@ -34,7 +34,7 @@ class Course
 
     #[ORM\Column(name: 'cape_amount', type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups(['course:read', 'course:write'])]
-    private ?string $capeAmount = null;
+    private ?float $capeAmount = null;
 
     #[ORM\Column(name: 'cape_type')]
     #[Groups(['course:read', 'course:write'])]
@@ -46,7 +46,7 @@ class Course
 
     #[ORM\Column(name: 'currency_value', type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups(['course:read', 'course:write'])]
-    private ?string $currencyValue = null;
+    private ?float $currencyValue = null;
 
     public function getId(): ?int
     {
@@ -77,12 +77,12 @@ class Course
         return $this;
     }
 
-    public function getCapeAmount(): ?string
+    public function getCapeAmount(): ?float
     {
         return $this->capeAmount;
     }
 
-    public function setCapeAmount(string $capeAmount): static
+    public function setCapeAmount(float $capeAmount): static
     {
         $this->capeAmount = $capeAmount;
 
@@ -113,12 +113,12 @@ class Course
         return $this;
     }
 
-    public function getCurrencyValue(): ?string
+    public function getCurrencyValue(): ?float
     {
         return $this->currencyValue;
     }
 
-    public function setCurrencyValue(string $currencyValue): static
+    public function setCurrencyValue(float $currencyValue): static
     {
         $this->currencyValue = $currencyValue;
 

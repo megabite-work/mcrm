@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\CounterPartRepository;
+use App\Entity\Address;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
+use App\Repository\CounterPartRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 #[ORM\Entity(repositoryClass: CounterPartRepository::class)]
 #[ORM\Table(name: 'counter_part')]
@@ -25,24 +28,32 @@ class CounterPart
     private ?int $id = null;
 
     #[ORM\Column(name: 'multi_store_id')]
-    #[Groups(['counter_part:read', 'counter_part:write'])]
+    #[Groups(['counter_part:read'])]
     private ?int $multiStoreId = null;
 
     #[ORM\Column(name: 'stir')]
-    #[Groups(['counter_part:read', 'counter_part:write'])]
+    #[Groups(['counter_part:read'])]
     private ?string $stir = null;
 
     #[ORM\Column()]
-    #[Groups(['counter_part:read', 'counter_part:write'])]
+    #[Groups(['counter_part:read'])]
     private ?string $name = null;
 
-    #[ORM\Column()]
-    #[Groups(['counter_part:read', 'counter_part:write'])]
-    private ?string $address = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['counter_part:read'])]
+    private ?Address $address = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups(['counter_part:read', 'counter_part:write'])]
-    private ?string $discount = null;
+    #[Groups(['counter_part:read'])]
+    private ?float $discount = null;
+
+    #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'counterPart')]
+    private Collection $phones;
+
+    public function __construct()
+    {
+        $this->phones = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,26 +96,52 @@ class CounterPart
         return $this;
     }
 
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getDiscount(): ?string
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
-    public function setDiscount(string $discount): static
+    public function setDiscount(float $discount): static
     {
         $this->discount = $discount;
+
+        return $this;
+    }
+
+    public function getPhones(): Collection
+    {
+        return $this->phones;
+    }
+
+    public function addPhone(Phone $phone): static
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones->add($phone);
+            $phone->setCounterPart($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhone(Phone $phone): static
+    {
+        if ($this->phones->removeElement($phone)) {
+            if ($phone->getCounterPart() === $this) {
+                $phone->setCounterPart(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }

@@ -5,7 +5,7 @@ ENV TZ=${TZ}
 
 RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash libpq-dev --update linux-headers
 
-RUN docker-php-ext-install opcache mysqli pdo_mysql pdo_pgsql mbstring
+RUN docker-php-ext-install mysqli pdo_mysql mbstring
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
@@ -16,6 +16,8 @@ ARG XDEBUG_MODE=off
 RUN if [ ${XDEBUG_MODE} = debug ]; \
     then \
         pecl install xdebug && docker-php-ext-enable xdebug; \
+    else \
+        docker-php-ext-install opcache; \
     fi
 
 ARG PUID=1000

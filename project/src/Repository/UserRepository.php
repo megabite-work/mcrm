@@ -19,22 +19,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    public function save(User $entity, bool $flush = false): void
+    public function getUserWithAddressAndPhonesByUserId(int $id): ?User
     {
-        $this->getEntityManager()->persist($entity);
+        $entityManager = $this->getEntityManager();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+        $query = $entityManager->createQuery(
+            'SELECT u, a, p
+            FROM App\Entity\User u
+            JOIN u.address a
+            JOIN u.phones p
+            WHERE u.id = :id'
+        )->setParameter('id', $id);
 
-    public function remove(User $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        return $query->getOneOrNullResult();
     }
 
     public function isUniqueEmail(string $email): bool
@@ -47,9 +44,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->findOneBy(['username' => $username]) === null;
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {

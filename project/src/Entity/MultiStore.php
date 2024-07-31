@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\MultiStoreRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Address;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
+use App\Repository\MultiStoreRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 #[ORM\Entity(repositoryClass: MultiStoreRepository::class)]
 #[ORM\Table(name: 'multi_store')]
@@ -34,13 +35,17 @@ class MultiStore
     #[Groups(['multi_store:read'])]
     private ?string $profit = null;
 
-    #[ORM\Column(name: 'barcode_TTN', nullable: true)]
+    #[ORM\Column(name: 'barcode_TTN', nullable: true, type: Types::BIGINT)]
     #[Groups(['multi_store:read'])]
     private ?int $barcodeTtn = null;
 
     #[ORM\Column(name: 'nds', nullable: true)]
     #[Groups(['multi_store:read'])]
     private ?int $nds = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['counter_part:read'])]
+    private ?Address $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'multiStores')]
     #[ORM\JoinColumn(nullable: false)]
@@ -50,9 +55,14 @@ class MultiStore
     #[Groups(['multi_store:read'])]
     private Collection $stores;
 
+    #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'multiStore')]
+    #[Groups(['multi_store:read'])]
+    private Collection $phones;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
+        $this->phones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +152,44 @@ class MultiStore
                 $store->setMultiStore(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhones(): Collection
+    {
+        return $this->phones;
+    }
+
+    public function addPhone(Phone $phone): static
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones->add($phone);
+            $phone->setMultiStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhone(Phone $phone): static
+    {
+        if ($this->phones->removeElement($phone)) {
+            if ($phone->getMultiStore() === $this) {
+                $phone->setMultiStore(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }
