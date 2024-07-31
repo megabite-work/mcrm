@@ -10,6 +10,7 @@ use App\Action\MultiStore\DeleteAction;
 use App\Action\MultiStore\UpdateAction;
 use App\Dto\MultiStore\CreateRequestDto;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -18,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/api/multi-stores', format: 'json')]
 #[IsGranted('ROLE_DIRECTOR', statusCode: 403)]
+#[OA\Tag(name: 'MultiStore')]
 class MultiStoreController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
@@ -38,7 +40,7 @@ class MultiStoreController extends AbstractController
         return $this->json($action($user, $dto), context: ['groups' => ['multi_store:read']]);
     }
 
-    #[Route('/{id<\d+>}', methods: ['PUT', 'PATCH'])]
+    #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload] CreateRequestDto $dto, UpdateAction $action): JsonResponse
     {
         return $this->json($action($id, $dto), context: ['groups' => ['multi_store:read']]);

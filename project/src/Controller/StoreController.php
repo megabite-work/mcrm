@@ -10,12 +10,14 @@ use App\Action\Store\UpdateAction;
 use App\Dto\Store\CreateRequestDto;
 use App\Dto\Store\UpdateRequestDto;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/api/stores', format: 'json')]
+#[OA\Tag(name: 'Store')]
 class StoreController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
@@ -36,7 +38,7 @@ class StoreController extends AbstractController
         return $this->json($action($dto), context: ['groups' => ['store:read']]);
     }
 
-    #[Route('/{id<\d+>}', methods: ['PUT', 'PATCH'])]
+    #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload] UpdateRequestDto $dto, UpdateAction $action): JsonResponse
     {
         return $this->json($action($id, $dto), context: ['groups' => ['store:read']]);
