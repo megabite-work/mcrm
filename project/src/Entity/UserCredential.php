@@ -21,15 +21,15 @@ class UserCredential
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['credential:read'])]
+    #[Groups(['credential:read', 'user_show_me:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['credential:read'])]
+    #[Groups(['credential:read', 'user_show_me:read'])]
     private ?string $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['credential:read'])]
+    #[Groups(['credential:read', 'user_show_me:read'])]
     private ?string $value = null;
 
     #[ORM\ManyToOne(inversedBy: 'userCredentials')]

@@ -2,6 +2,7 @@
 
 namespace App\Action\User;
 
+use App\Component\Paginator;
 use App\Repository\UserRepository;
 
 class IndexAction
@@ -10,9 +11,10 @@ class IndexAction
     {
     }
 
-    public function __invoke(): array
+    public function __invoke(int $page): Paginator
     {
-        $users = $this->repo->findAll();
+        $users = $this->repo->findAllWithPagination($page);
+
         return $users;
     }
 }

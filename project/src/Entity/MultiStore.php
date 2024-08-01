@@ -24,27 +24,27 @@ class MultiStore
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private ?int $id = null;
 
     #[ORM\Column()]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private ?string $profit = null;
 
     #[ORM\Column(name: 'barcode_TTN', nullable: true, type: Types::BIGINT)]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private ?int $barcodeTtn = null;
 
     #[ORM\Column(name: 'nds', nullable: true)]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private ?int $nds = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['counter_part:read'])]
+    #[Groups(['counter_part:read', 'user_show_me:read'])]
     private ?Address $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'multiStores')]
@@ -56,7 +56,7 @@ class MultiStore
     private Collection $stores;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'multiStore')]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private Collection $phones;
 
     public function __construct()

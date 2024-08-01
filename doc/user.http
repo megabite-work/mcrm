@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:777/api
+@baseUrl = http://localhost:888/api
 
 # @name is_unique_email
 POST  {{baseUrl}}/users/is-unique-email HTTP/1.1
@@ -57,7 +57,7 @@ Content-Type: application/json
 ###
 
 # @name get_all_users
-GET {{baseUrl}}/users HTTP/1.1
+GET {{baseUrl}}/users?page=1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

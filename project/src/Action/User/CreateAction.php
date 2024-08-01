@@ -3,7 +3,7 @@
 namespace App\Action\User;
 
 use App\Dto\User\CreateRequestDto;
-use App\Dto\User\CreateResponseDto;
+use App\Dto\User\ResponseDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
@@ -18,7 +18,7 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(CreateRequestDto $dto): CreateResponseDto
+    public function __invoke(CreateRequestDto $dto): ResponseDto
     {
         $user = (new User())
             ->setEmail($dto->getEmail())
@@ -33,7 +33,7 @@ class CreateAction
 
         $tokens = json_decode($this->handler->handleAuthenticationSuccess($user)->getContent(), true);
 
-        return new CreateResponseDto($user, $tokens);
+        return new ResponseDto($user, $tokens);
     }
 
     private function hashPassword(User $user, string $password): void

@@ -2,7 +2,7 @@
 
 namespace App\Action\User;
 
-use App\Dto\User\ShowResponseDto;
+use App\Dto\User\ResponseDto;
 use App\Dto\User\UpdateRequestDto;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +16,7 @@ class UpdateAction
     ) {
     }
 
-    public function __invoke(int $id, UpdateRequestDto $dto): ShowResponseDto
+    public function __invoke(int $id, UpdateRequestDto $dto): ResponseDto
     {
         $user = $this->repo->find($id);
 
@@ -32,6 +32,6 @@ class UpdateAction
 
         $this->em->flush();
 
-        return new ShowResponseDto($user);
+        return new ResponseDto($user);
     }
 }

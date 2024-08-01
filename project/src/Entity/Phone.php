@@ -8,6 +8,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: PhoneRepository::class)]
 #[ORM\Table(name: 'phone')]
@@ -20,23 +21,27 @@ class Phone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['phone:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['phone:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['phone:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['phone:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $phone = null;
 
     #[ORM\ManyToOne(inversedBy: 'phones')]
+    #[Ignore]
     private ?User $owner = null;
 
     #[ORM\ManyToOne(inversedBy: 'phones')]
+    #[Ignore]
     private ?Store $store = null;
 
     #[ORM\ManyToOne(inversedBy: 'phones')]
+    #[Ignore]
     private ?MultiStore $multiStore = null;
 
     #[ORM\ManyToOne(inversedBy: 'phones')]
+    #[Ignore]
     private ?CounterPart $counterPart = null;
 
     public function getId(): ?int

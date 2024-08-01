@@ -3,11 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Component\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -19,6 +20,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    public function findAllWithPagination(int $page): Paginator
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT u, a, p
+            FROM App\Entity\User u
+            LEFT JOIN u.address a
+            LEFT JOIN u.phones p'
+        );
+
+        return new Paginator($query, $page);
+    }
+
     public function getUserWithAddressAndPhonesByUserId(int $id): ?User
     {
         $entityManager = $this->getEntityManager();
@@ -26,8 +41,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $query = $entityManager->createQuery(
             'SELECT u, a, p
             FROM App\Entity\User u
-            JOIN u.address a
-            JOIN u.phones p
+            LEFT JOIN u.address a
+            LEFT JOIN u.phones p
+            WHERE u.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function getUserWithAllJoinedEntitiesByUserId(int $id): ?User
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT u, a, p, m, s, uc
+            FROM App\Entity\User u
+            LEFT JOIN u.address a
+            LEFT JOIN u.phones p
+            LEFT JOIN u.multiStores m
+            LEFT JOIN u.stores s
+            LEFT JOIN u.userCredentials uc
             WHERE u.id = :id'
         )->setParameter('id', $id);
 

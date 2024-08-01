@@ -8,6 +8,7 @@ use App\Action\User\ShowAction;
 use App\Action\User\IndexAction;
 use App\Action\User\CreateAction;
 use App\Action\User\DeleteAction;
+use App\Action\User\ShowMeAction;
 use App\Action\User\UpdateAction;
 use App\Dto\User\CreateRequestDto;
 use App\Dto\User\UpdateRequestDto;
@@ -23,8 +24,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 
 #[Route(path: '/api/users', format: 'json')]
 #[OA\Tag(name: 'User')]
@@ -40,9 +41,9 @@ class UserController extends AbstractController
             items: new OA\Items(ref: new Model(type: User::class, groups: ['user:read']))
         )
     )]
-    public function index(IndexAction $action): JsonResponse
+    public function index(#[MapQueryParameter()] int $page = 1, IndexAction $action): JsonResponse
     {
-        return $this->json($action(), context: ['groups' => ['user:read']]);
+        return $this->json($action($page), context: ['groups' => ['user:read']]);
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
@@ -52,22 +53,22 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/me', methods: ['GET'])]
-    public function me(#[CurrentUser] User $user): JsonResponse
+    public function me(#[CurrentUser] User $user, ShowMeAction $action): JsonResponse
     {
-        return $this->json($user, context: ['groups' => ['user:read']]);
+        return $this->json($action($user->getId()), context: ['groups' => ['user_show_me:read']]);
     }
 
     #[Route(path: '', methods: ['POST'])]
     #[Security(name: null)]
     public function create(#[MapRequestPayload] CreateRequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['user:read']]);
+        return $this->json($action($dto), context: ['groups' => ['auth:read']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload] UpdateRequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto));
+        return $this->json($action($id, $dto), context: ['groups' => ['user:read']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
@@ -81,6 +82,7 @@ class UserController extends AbstractController
     public function isUniqueEmail(Request $request, IsUniqueEmailAction $action): JsonResponse
     {
         $email = $request->getPayload()->get('email');
+
         return $this->json(['isUnique' => $action($email)]);
     }
 
@@ -89,12 +91,13 @@ class UserController extends AbstractController
     public function IsUniqueUsername(Request $request, IsUniqueUsernameAction $action): JsonResponse
     {
         $username = $request->getPayload()->get('username');
+
         return $this->json(['isUnique' => $action($username)]);
     }
 
     #[Route('/change-password', methods: ['PATCH'])]
     public function changePassword(#[MapRequestPayload] ChangePasswordRequestDto $dto, #[CurrentUser] User $user, ChangePasswordAction $action): JsonResponse
     {
-        return $this->json($action($user, $dto));
+        return $this->json($action($user, $dto), context: ['groups' => ['user:read']]);
     }
 }

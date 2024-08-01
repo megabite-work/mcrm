@@ -13,7 +13,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -28,46 +28,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['user:read', 'multi_store:read'])]
+    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
     #[Assert\NotBlank]
-    #[Groups(['user:read', 'multi_store:read'])]
+    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['user:read', 'multi_store:read'])]
+    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column(name: 'qr_code', nullable: true)]
-    #[Groups(['user:read', 'multi_store:read'])]
+    #[Groups(['user:read', 'multi_store:read', 'user_show_me:read'])]
     private ?string $qrCode = null;
 
     #[ORM\Column]
-    #[Groups(['user:read', 'multi_store:read'])]
+    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
     private array $roles = [];
-
+    
     #[ORM\Column]
     private ?string $password = null;
-
+    
     #[ORM\OneToMany(targetEntity: MultiStore::class, mappedBy: 'owner', orphanRemoval: true)]
+    #[Groups(['user_show_me:read'])]
     private Collection $multiStores;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'owner')]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','user_show_me:read'])]
     private Collection $phones;
 
     #[ORM\OneToMany(targetEntity: UserCredential::class, mappedBy: 'owner', orphanRemoval: true)]
+    #[Groups(['user_show_me:read'])]
     private Collection $userCredentials;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user_show_me:read'])]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: Store::class, mappedBy: 'workers')]
+    #[Groups(['user_show_me:read'])]
     private Collection $stores;
 
     public function __construct()

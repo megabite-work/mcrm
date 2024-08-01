@@ -20,31 +20,31 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $region = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $district = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $street = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $house = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $latitude = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read'])]
+    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
     private ?string $longitude = null;
 
     public function getId(): ?int
