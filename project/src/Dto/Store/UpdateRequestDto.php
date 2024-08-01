@@ -9,9 +9,13 @@ final class UpdateRequestDto
     public function __construct(
         #[Assert\NotBlank]
         private ?string $name,
-        private ?string $officialAddress,
-        private ?string $coordinate,
-        private ?bool $isActive
+        private ?bool $isActive,
+        private ?string $region,
+        private ?string $district,
+        private ?string $street,
+        private ?string $house,
+        private ?string $latitude,
+        private ?string $longitude,
     ) {
     }
 
@@ -20,18 +24,38 @@ final class UpdateRequestDto
         return $this->name;
     }
 
-    public function getOfficialAddress(): ?string
-    {
-        return $this->officialAddress;
-    }
-
-    public function getCoordinate(): ?string
-    {
-        return $this->coordinate;
-    }
-
     public function getIsActive(): ?bool
     {
         return $this->isActive;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function getDistrict(): ?string
+    {
+        return $this->district;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function getHouse(): ?string
+    {
+        return $this->house;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
     }
 }

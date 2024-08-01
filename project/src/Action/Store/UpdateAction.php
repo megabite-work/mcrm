@@ -5,6 +5,7 @@ namespace App\Action\Store;
 use App\Component\EntityNotFoundException;
 use App\Dto\Store\UpdateRequestDto;
 use App\Entity\Store;
+use App\Repository\AddressRepository;
 use App\Repository\StoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -12,7 +13,8 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private StoreRepository $repo
+        private StoreRepository $repo,
+        private AddressRepository $addressRepo
     ) {
     }
 
@@ -27,15 +29,11 @@ class UpdateAction
         if ($dto->getName()) {
             $store->setName($dto->getName());
         }
-        if ($dto->getIsActive() !== null) {
+        if (null !== $dto->getIsActive()) {
             $store->setIsActive($dto->getIsActive());
         }
-        if ($dto->getCoordinate()) {
-            $store->setCoordinate($dto->getCoordinate());
-        }
-        if ($dto->getOfficialAddress()) {
-            $store->setOgetOfficialAddress($dto->getOfficialAddress());
-        }
+
+        $this->addressRepo->checkAddressExistsAndUpdateOrCreate($store, $dto);
 
         $this->em->flush();
 

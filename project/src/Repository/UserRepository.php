@@ -2,13 +2,13 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
 use App\Component\Paginator;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -69,12 +69,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function isUniqueEmail(string $email): bool
     {
-        return $this->findOneBy(['email' => $email]) === null;
+        return null === $this->findOneBy(['email' => $email]);
     }
 
     public function isUniqueUsername(string $username): bool
     {
-        return $this->findOneBy(['username' => $username]) === null;
+        return null === $this->findOneBy(['username' => $username]);
+    }
+
+    public function save(User $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void

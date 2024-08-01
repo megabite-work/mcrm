@@ -4,10 +4,10 @@ namespace App\Entity;
 
 use App\Repository\NomenclatureHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: NomenclatureHistoryRepository::class)]
 #[ORM\Table(name: 'nomenclature_history')]

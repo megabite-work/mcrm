@@ -16,10 +16,10 @@ class ShowAction
     {
         $store = $this->repo->find($id);
 
-        if ($store === null) {
+        if (null === $store) {
             throw new EntityNotFoundException('not found');
         }
-        
+
         return $store;
     }
 }

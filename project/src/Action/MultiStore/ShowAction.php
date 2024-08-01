@@ -16,10 +16,10 @@ class ShowAction
     {
         $multiStore = $this->repo->find($id);
 
-        if ($multiStore === null) {
+        if (null === $multiStore) {
             throw new EntityNotFoundException('not found');
         }
-        
+
         return $multiStore;
     }
 }

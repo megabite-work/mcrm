@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
+use App\Component\Paginator;
 use App\Entity\MultiStore;
 use App\Entity\User;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<MultiStore>
@@ -17,17 +18,20 @@ class MultiStoreRepository extends ServiceEntityRepository
         parent::__construct($registry, MultiStore::class);
     }
 
-    public function findAllMultiStoresByOwner(User $owner): ?array
+    public function findAllMultiStoresByOwner(User $owner, int $page = 1): Paginator
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT m
+            'SELECT m, a, p, s
             FROM App\Entity\MultiStore m
+            LEFT JOIN m.address a
+            LEFT JOIN m.phones p
+            LEFT JOIN m.stores s
             WHERE m.owner = :owner'
         )->setParameter('owner', $owner);
 
-        return $query->getResult();
+        return new Paginator($query, $page);
     }
 
     public function getMultiStoreById(int $multiStoreId): ?MultiStore

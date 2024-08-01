@@ -2,20 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Action\MultiStore\ShowAction;
-use App\Action\MultiStore\IndexAction;
 use App\Action\MultiStore\CreateAction;
 use App\Action\MultiStore\DeleteAction;
+use App\Action\MultiStore\IndexAction;
+use App\Action\MultiStore\ShowAction;
 use App\Action\MultiStore\UpdateAction;
 use App\Dto\MultiStore\CreateRequestDto;
-use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\User;
 use OpenApi\Attributes as OA;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/multi-stores', format: 'json')]
 #[IsGranted('ROLE_DIRECTOR', statusCode: 403)]
@@ -23,9 +24,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MultiStoreController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[CurrentUser] User $user, IndexAction $action): JsonResponse
+    public function index(#[CurrentUser] User $user, IndexAction $action, #[MapQueryParameter()] int $page = 1): JsonResponse
     {
-        return $this->json($action($user), context: ['groups' => ['multi_store:read']]);
+        return $this->json($action($user, $page), context: ['groups' => ['multi_store:read']]);
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]

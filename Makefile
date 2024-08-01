@@ -80,9 +80,9 @@ db_sql:
 start:
 	@$(DC) build --no-cache
 	@$(DC) up  -d --remove-orphans
-	@sleep 10
-	@$(PHP) $(CI)
-	# @$(PHP) $(DIF)
+	@$(PHP) composer install
+	@sleep 20
+	@$(PHP) $(DIF)
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)
 	@$(PHP) bash

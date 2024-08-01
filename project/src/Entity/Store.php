@@ -6,10 +6,10 @@ use App\Repository\StoreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: StoreRepository::class)]
 #[ORM\Table(name: 'store')]
@@ -42,6 +42,7 @@ class Store
     private Collection $phones;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['store:read', 'multi_store:read'])]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'stores')]
@@ -152,5 +153,4 @@ class Store
 
         return $this;
     }
-    
 }

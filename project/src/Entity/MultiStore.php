@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
-use App\Entity\Address;
+use App\Repository\MultiStoreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use App\Repository\MultiStoreRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MultiStoreRepository::class)]
 #[ORM\Table(name: 'multi_store')]
@@ -44,7 +43,7 @@ class MultiStore
     private ?int $nds = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['counter_part:read', 'user_show_me:read'])]
+    #[Groups(['multi_store:read', 'user_show_me:read'])]
     private ?Address $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'multiStores')]

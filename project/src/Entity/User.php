@@ -2,18 +2,17 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Serializer\Attribute\Ignore;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -49,16 +48,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
     private array $roles = [];
-    
+
     #[ORM\Column]
     private ?string $password = null;
-    
+
     #[ORM\OneToMany(targetEntity: MultiStore::class, mappedBy: 'owner', orphanRemoval: true)]
     #[Groups(['user_show_me:read'])]
     private Collection $multiStores;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'owner')]
-    #[Groups(['user:read','user_show_me:read'])]
+    #[Groups(['user:read', 'user_show_me:read'])]
     private Collection $phones;
 
     #[ORM\OneToMany(targetEntity: UserCredential::class, mappedBy: 'owner', orphanRemoval: true)]

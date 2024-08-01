@@ -2,37 +2,37 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use OpenApi\Attributes as OA;
-use App\Action\User\ShowAction;
-use App\Action\User\IndexAction;
+use App\Action\User\ChangePasswordAction;
 use App\Action\User\CreateAction;
 use App\Action\User\DeleteAction;
+use App\Action\User\IndexAction;
+use App\Action\User\IsUniqueEmailAction;
+use App\Action\User\IsUniqueUsernameAction;
+use App\Action\User\ShowAction;
 use App\Action\User\ShowMeAction;
 use App\Action\User\UpdateAction;
+use App\Dto\User\ChangePasswordRequestDto;
 use App\Dto\User\CreateRequestDto;
 use App\Dto\User\UpdateRequestDto;
-use App\Action\User\IsUniqueEmailAction;
-use App\Action\User\ChangePasswordAction;
+use App\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use App\Dto\User\ChangePasswordRequestDto;
-use App\Action\User\IsUniqueUsernameAction;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route(path: '/api/users', format: 'json')]
 #[OA\Tag(name: 'User')]
 class UserController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    #[Operation(['summary' => 'Get all users', 'description' => "lorem ipsum dolor set amet"])]
+    #[Operation(['summary' => 'Get all users', 'description' => 'lorem ipsum dolor set amet'])]
     #[OA\Response(
         response: 200,
         description: 'Returns the users',
@@ -41,7 +41,7 @@ class UserController extends AbstractController
             items: new OA\Items(ref: new Model(type: User::class, groups: ['user:read']))
         )
     )]
-    public function index(#[MapQueryParameter()] int $page = 1, IndexAction $action): JsonResponse
+    public function index(IndexAction $action, #[MapQueryParameter()] int $page = 1): JsonResponse
     {
         return $this->json($action($page), context: ['groups' => ['user:read']]);
     }

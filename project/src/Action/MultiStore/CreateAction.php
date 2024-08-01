@@ -2,9 +2,9 @@
 
 namespace App\Action\MultiStore;
 
-use App\Entity\User;
-use App\Entity\MultiStore;
 use App\Dto\MultiStore\CreateRequestDto;
+use App\Entity\MultiStore;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction

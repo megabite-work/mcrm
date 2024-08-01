@@ -4,6 +4,8 @@ namespace App\Action\User;
 
 use App\Dto\User\ResponseDto;
 use App\Dto\User\UpdateRequestDto;
+use App\Repository\AddressRepository;
+use App\Repository\PhoneRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -12,7 +14,9 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private UserRepository $repo
+        private UserRepository $repo,
+        private AddressRepository $addressRepo,
+        private PhoneRepository $phoneRepo
     ) {
     }
 
@@ -25,10 +29,12 @@ class UpdateAction
         }
 
         if ($dto->getEmail()) {
-            $user->setEmail($dto->getemail());
-        } else if ($dto->getphone()) {
-            $user->setPhone($dto->getPhone());
+            $user->setEmail($dto->getEmail());
         }
+
+        $this->phoneRepo->checkPhoneExistsAndCreate($user, $dto->getPhones());
+
+        $this->addressRepo->checkAddressExistsAndUpdateOrCreate($user, $dto);
 
         $this->em->flush();
 

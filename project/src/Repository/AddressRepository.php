@@ -16,28 +16,47 @@ class AddressRepository extends ServiceEntityRepository
         parent::__construct($registry, Address::class);
     }
 
-//    /**
-//     * @return Address[] Returns an array of Address objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function createAddress($dto): Address
+    {
+        $address = (new Address())
+            ->setRegion($dto->getRegion())
+            ->setDistrict($dto->getDistrict())
+            ->setStreet($dto->getStreet())
+            ->setHouse($dto->getHouse())
+            ->setLatitude($dto->getLatitude())
+            ->setLongitude($dto->getLongitude());
 
-//    public function findOneBySomeField($value): ?Address
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $this->getEntityManager()->persist($address);
+
+        return $address;
+    }
+
+    public function checkAddressExistsAndUpdateOrCreate($entity, $dto): void
+    {
+        $address = $entity->getAddress();
+
+        if (null === $address && $dto->getRegion() && $dto->getDistrict() && $dto->getStreet() && $dto->getHouse()) {
+            $address = $this->createAddress($dto);
+            $entity->setAddress($address);
+        } else {
+            if ($dto->getRegion()) {
+                $address->setRegion($dto->getRegion());
+            }
+            if ($dto->getDistrict()) {
+                $address->setDistrict($dto->getDistrict());
+            }
+            if ($dto->getStreet()) {
+                $address->setStreet($dto->getStreet());
+            }
+            if ($dto->getHouse()) {
+                $address->setHouse($dto->getHouse());
+            }
+            if ($dto->getLongitude()) {
+                $address->setLongitude($dto->getLongitude());
+            }
+            if ($dto->getLatitude()) {
+                $address->setLatitude($dto->getLatitude());
+            }
+        }
+    }
 }

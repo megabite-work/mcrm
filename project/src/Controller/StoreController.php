@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use App\Action\Store\ShowAction;
-use App\Action\Store\IndexAction;
 use App\Action\Store\CreateAction;
 use App\Action\Store\DeleteAction;
+use App\Action\Store\IndexAction;
+use App\Action\Store\ShowAction;
 use App\Action\Store\UpdateAction;
 use App\Dto\Store\CreateRequestDto;
 use App\Dto\Store\UpdateRequestDto;
-use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/stores', format: 'json')]
 #[OA\Tag(name: 'Store')]

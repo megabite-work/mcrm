@@ -4,10 +4,10 @@ namespace App\Entity;
 
 use App\Repository\NomenclatureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: NomenclatureRepository::class)]
 #[ORM\Table(name: 'nomenclature')]
@@ -77,7 +77,7 @@ class Nomenclature
 
     #[ORM\Column(name: 'qr_code')]
     #[Groups(['nomenclature:read'])]
-    private bool $qrCode = false;
+    private ?string $qrCode = null;
 
     public function getId(): ?int
     {
@@ -240,12 +240,12 @@ class Nomenclature
         return $this;
     }
 
-    public function getQrCode(): ?int
+    public function getQrCode(): ?string
     {
         return $this->qrCode;
     }
 
-    public function setQrCode(?int $qrCode): self
+    public function setQrCode(?string $qrCode): self
     {
         $this->qrCode = $qrCode;
 

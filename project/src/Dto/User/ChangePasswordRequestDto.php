@@ -10,15 +10,15 @@ final class ChangePasswordRequestDto
     public function __construct(
         #[SerializedName('old_password')]
         #[Assert\NotBlank]
-        private ?string $oldPassword = null,
+        private ?string $oldPassword,
         #[Assert\NotBlank]
         #[Assert\Length(min: 6)]
-        private ?string $password = null,
+        private ?string $password,
         #[SerializedName('confirm_password')]
         #[Assert\NotBlank]
         #[Assert\Length(min: 6)]
         #[Assert\IdenticalTo(propertyPath: 'password')]
-        private ?string $confirmPassword = null
+        private ?string $confirmPassword
     ) {
     }
 

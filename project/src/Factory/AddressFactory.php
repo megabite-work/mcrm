@@ -20,8 +20,8 @@ final class AddressFactory extends PersistentProxyObjectFactory
     {
         return [
             'region' => self::faker()->country(),
-            'district' => self::faker()->city(255),
-            'street' => self::faker()->streetName(255),
+            'district' => self::faker()->city(),
+            'street' => self::faker()->streetName(),
             'house' => self::faker()->buildingNumber(),
             'latitude' => self::faker()->latitude(),
             'longitude' => self::faker()->longitude(),

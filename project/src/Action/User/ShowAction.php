@@ -14,7 +14,7 @@ class ShowAction
     public function __invoke(int $id): ResponseDto
     {
         $user = $this->repo->getUserWithAddressAndPhonesByUserId($id);
-        
+
         return new ResponseDto($user);
     }
 }

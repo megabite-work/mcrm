@@ -5,7 +5,6 @@ namespace App\Component;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use ArrayIterator;
 
 class Paginator extends DoctrinePaginator
 {
@@ -28,11 +27,7 @@ class Paginator extends DoctrinePaginator
         $this->count = count($this->data);
         $this->page = $page;
 
-        try {
-            $this->totalpages = ceil($this->total / self::ITEMS_PER_PAGE);
-        } catch (\DivisionByZeroError $e) {
-            $this->totalpages = 0;
-        }
+        $this->totalpages = $this->total % self::ITEMS_PER_PAGE ? intdiv($this->total, self::ITEMS_PER_PAGE) + 1 : intdiv($this->total, self::ITEMS_PER_PAGE);
     }
 
     public function getTotal(): int
@@ -88,9 +83,9 @@ class Paginator extends DoctrinePaginator
         return false;
     }
 
-    public function getIterator(): ArrayIterator
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator([
+        return new \ArrayIterator([
             'data' => $this->getData(),
             'pagination' => [
                 'total' => $this->getTotal(),
