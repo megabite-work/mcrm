@@ -20,31 +20,31 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?string $region = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?string $district = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?string $street = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?string $house = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?string $latitude = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:read', 'store:read', 'multi_store:read', 'counter_part:read', 'user_show_me:read'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:read', 'user:me'])]
     private ?string $longitude = null;
 
     public function getId(): ?int

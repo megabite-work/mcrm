@@ -22,15 +22,15 @@ class Store
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store:read', 'multi_store:read'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me'])]
     private ?int $id = null;
 
     #[ORM\Column()]
-    #[Groups(['store:read', 'multi_store:read'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me'])]
     private ?string $name = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(['store:read', 'multi_store:read'])]
+    #[ORM\Column(options: ['default' => 1])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me'])]
     private bool $isActive = true;
 
     #[ORM\ManyToOne(inversedBy: 'stores')]
@@ -38,11 +38,11 @@ class Store
     private ?MultiStore $multiStore = null;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'store')]
-    #[Groups(['store:read', 'multi_store:read'])]
+    #[Groups(['store:show', 'store:update'])]
     private Collection $phones;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['store:read', 'multi_store:read'])]
+    #[Groups(['store:show', 'store:update'])]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'stores')]
@@ -136,6 +136,12 @@ class Store
     public function getWorkers(): Collection
     {
         return $this->workers;
+    }
+
+    #[Groups(['store:index'])]
+    public function getWorkersCount(): ?int
+    {
+        return count($this->workers);
     }
 
     public function addWorker(User $worker): static

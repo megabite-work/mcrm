@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Component\Paginator;
 use App\Entity\MultiStore;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,24 +17,49 @@ class MultiStoreRepository extends ServiceEntityRepository
         parent::__construct($registry, MultiStore::class);
     }
 
-    public function findAllMultiStoresByOwner(User $owner, int $page = 1): Paginator
+    public function findAllMultiStoresByOwnerWithPagination($owner, int $page, int $perPage): Paginator
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m, s
+            FROM App\Entity\MultiStore m
+            LEFT JOIN m.stores s
+            WHERE m.owner = :owner'
+        )->setParameter('owner', $owner);
+
+        return new Paginator($query, $page, $perPage, false);
+    }
+
+    public function findMultiStoreByIdWithAddressAndPhoneAndStore(int $id): ?MultiStore
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             'SELECT m, a, p, s
             FROM App\Entity\MultiStore m
+            LEFT JOIN m.stores s
             LEFT JOIN m.address a
             LEFT JOIN m.phones p
-            LEFT JOIN m.stores s
-            WHERE m.owner = :owner'
-        )->setParameter('owner', $owner);
+            WHERE m.id = :id'
+        )->setParameter('id', $id);
 
-        return new Paginator($query, $page);
+        return $query->getOneOrNullResult();
     }
 
-    public function getMultiStoreById(int $multiStoreId): ?MultiStore
+
+    public function findMultiStoreByIdWithAddressAndPhones(int $id): ?MultiStore
     {
-        return $this->find($multiStoreId);
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m, a, p
+            FROM App\Entity\MultiStore m
+            LEFT JOIN m.address a
+            LEFT JOIN m.phones p
+            WHERE m.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
     }
 }

@@ -23,27 +23,27 @@ class MultiStore
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
+    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $id = null;
 
     #[ORM\Column()]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
+    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
+    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $profit = null;
 
-    #[ORM\Column(name: 'barcode_TTN', nullable: true, type: Types::BIGINT)]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
-    private ?int $barcodeTtn = null;
+    #[ORM\Column(name: 'barcode_TTN', nullable: true)]
+    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    private ?string $barcodeTtn = null;
 
     #[ORM\Column(name: 'nds', nullable: true)]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
+    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $nds = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
+    #[Groups(['multi_store:show', 'multi_store:update'])]
     private ?Address $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'multiStores')]
@@ -51,11 +51,11 @@ class MultiStore
     private ?User $owner = null;
 
     #[ORM\OneToMany(targetEntity: Store::class, mappedBy: 'multiStore', orphanRemoval: true)]
-    #[Groups(['multi_store:read'])]
+    #[Groups(['multi_store:show'])]
     private Collection $stores;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'multiStore')]
-    #[Groups(['multi_store:read', 'user_show_me:read'])]
+    #[Groups(['multi_store:show', 'multi_store:update'])]
     private Collection $phones;
 
     public function __construct()
@@ -86,19 +86,19 @@ class MultiStore
         return $this->profit;
     }
 
-    public function setProfit(string $profit): static
+    public function setProfit(?string $profit): static
     {
         $this->profit = $profit;
 
         return $this;
     }
 
-    public function getBarcodeTtn(): ?int
+    public function getBarcodeTtn(): ?string
     {
         return $this->barcodeTtn;
     }
 
-    public function setBarcodeTtn(int $barcodeTtn): static
+    public function setBarcodeTtn(?string $barcodeTtn): static
     {
         $this->barcodeTtn = $barcodeTtn;
 
@@ -110,7 +110,7 @@ class MultiStore
         return $this->nds;
     }
 
-    public function setNds(int $nds): static
+    public function setNds(?int $nds): static
     {
         $this->nds = $nds;
 
@@ -132,6 +132,12 @@ class MultiStore
     public function getStores(): Collection
     {
         return $this->stores;
+    }
+
+    #[Groups(['multi_stores:index'])]
+    public function getStoresCount(): ?int
+    {
+        return count($this->stores);
     }
 
     public function addStore(Store $store): static

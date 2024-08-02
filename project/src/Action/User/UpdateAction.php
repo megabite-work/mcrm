@@ -2,42 +2,43 @@
 
 namespace App\Action\User;
 
-use App\Dto\User\ResponseDto;
-use App\Dto\User\UpdateRequestDto;
-use App\Repository\AddressRepository;
-use App\Repository\PhoneRepository;
-use App\Repository\UserRepository;
+use App\Entity\User;
+use App\Dto\User\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use App\Component\EntityNotFoundException;
+use App\Entity\Address;
+use App\Entity\Phone;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private UserRepository $repo,
-        private AddressRepository $addressRepo,
-        private PhoneRepository $phoneRepo
+        private EntityManagerInterface $em
     ) {
     }
 
-    public function __invoke(int $id, UpdateRequestDto $dto): ResponseDto
+    public function __invoke(int $id, RequestDto $dto): User
     {
-        $user = $this->repo->find($id);
+        $user = $this->updateUser($id, $dto);
+
+        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($user, $dto->getPhones());
+        $this->em->getRepository(Address::class)->checkAddressExistsAndUpdateOrCreate($user, $dto);
+        $this->em->flush();
+
+        return $user;
+    }
+
+    private function updateUser(int $id, RequestDto $dto)
+    {
+        $user = $this->em->getRepository(User::class)->getUserWithAddressAndPhonesByUserId($id);
 
         if (null === $user) {
-            throw new UserNotFoundException();
+            throw new EntityNotFoundException('not found');
         }
 
         if ($dto->getEmail()) {
             $user->setEmail($dto->getEmail());
         }
 
-        $this->phoneRepo->checkPhoneExistsAndCreate($user, $dto->getPhones());
-
-        $this->addressRepo->checkAddressExistsAndUpdateOrCreate($user, $dto);
-
-        $this->em->flush();
-
-        return new ResponseDto($user);
+        return $user;
     }
 }

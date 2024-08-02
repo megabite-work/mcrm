@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\MultiStore;
 use App\Entity\Store;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\MultiStore;
+use App\Component\Paginator;
+use App\Dto\Store\RequestQueryDto;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Store>
@@ -17,7 +19,7 @@ class StoreRepository extends ServiceEntityRepository
         parent::__construct($registry, Store::class);
     }
 
-    public function findAllStoresByMultiStore(MultiStore $multiStore): ?array
+    public function findAllStoresByMultiStore(MultiStore $multiStore, RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
 
@@ -27,6 +29,37 @@ class StoreRepository extends ServiceEntityRepository
             WHERE s.multiStore = :multiStore'
         )->setParameter('multiStore', $multiStore);
 
-        return $query->getResult();
+        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+    }
+
+    public function findStoreByIdWithAddressAndPhonesAndWorkers(int $id): ?Store
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT s, a, p, w
+            FROM App\Entity\Store s
+            LEFT JOIN s.workers w
+            LEFT JOIN s.address a
+            LEFT JOIN s.phones p
+            WHERE s.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
+    
+    public function findStoreByIdWithAddressAndPhones(int $id): ?Store
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT s, a, p
+            FROM App\Entity\Store s
+            LEFT JOIN s.address a
+            LEFT JOIN s.phones p
+            WHERE s.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
     }
 }

@@ -2,22 +2,21 @@
 
 namespace App\Action\Store;
 
-use App\Dto\Store\CreateRequestDto;
+use App\Dto\Store\RequestDto;
+use App\Entity\MultiStore;
 use App\Entity\Store;
-use App\Repository\MultiStoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private MultiStoreRepository $multiStoreRepo
+        private EntityManagerInterface $em
     ) {
     }
 
-    public function __invoke(CreateRequestDto $dto): Store
+    public function __invoke(RequestDto $dto): Store
     {
-        $multiStore = $this->multiStoreRepo->getMultiStoreById($dto->getMultiStoreId());
+        $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
 
         $store = (new Store())
             ->setName($dto->getName())

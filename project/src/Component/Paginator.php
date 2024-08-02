@@ -8,7 +8,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
 class Paginator extends DoctrinePaginator
 {
-    public const ITEMS_PER_PAGE = 2;
+    public const ITEMS_PER_PAGE = 10;
 
     private int $total;
     private array $data;
@@ -16,10 +16,10 @@ class Paginator extends DoctrinePaginator
     private int $totalpages;
     private int $page;
 
-    public function __construct(QueryBuilder|Query $query, int $page = 1, bool $fetchJoinCollection = true)
+    public function __construct(QueryBuilder|Query $query, int $page = 1, int $perPage = self::ITEMS_PER_PAGE, bool $fetchJoinCollection = true)
     {
-        $query->setFirstResult(($page - 1) * self::ITEMS_PER_PAGE);
-        $query->setMaxResults(self::ITEMS_PER_PAGE);
+        $query->setFirstResult(($page - 1) * $perPage);
+        $query->setMaxResults($perPage);
 
         parent::__construct($query, $fetchJoinCollection);
         $this->total = $this->count();
@@ -27,7 +27,7 @@ class Paginator extends DoctrinePaginator
         $this->count = count($this->data);
         $this->page = $page;
 
-        $this->totalpages = $this->total % self::ITEMS_PER_PAGE ? intdiv($this->total, self::ITEMS_PER_PAGE) + 1 : intdiv($this->total, self::ITEMS_PER_PAGE);
+        $this->totalpages = $this->total % $perPage ? intdiv($this->total, $perPage) + 1 : intdiv($this->total, $perPage);
     }
 
     public function getTotal(): int

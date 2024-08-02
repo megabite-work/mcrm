@@ -2,7 +2,7 @@
 
 namespace App\Action\User;
 
-use App\Dto\User\ResponseDto;
+use App\Entity\User;
 use App\Repository\UserRepository;
 
 class ShowAction
@@ -11,10 +11,10 @@ class ShowAction
     {
     }
 
-    public function __invoke(int $id): ResponseDto
+    public function __invoke(int $id): User
     {
         $user = $this->repo->getUserWithAddressAndPhonesByUserId($id);
 
-        return new ResponseDto($user);
+        return $user;
     }
 }

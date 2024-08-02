@@ -3,6 +3,7 @@
 namespace App\Action\User;
 
 use App\Component\Paginator;
+use App\Dto\User\RequestQueryDto;
 use App\Repository\UserRepository;
 
 class IndexAction
@@ -11,9 +12,9 @@ class IndexAction
     {
     }
 
-    public function __invoke(int $page): Paginator
+    public function __invoke(RequestQueryDto $dto): Paginator
     {
-        $users = $this->repo->findAllWithPagination($page);
+        $users = $this->repo->findUsersWithPagination($dto->getPage(), $dto->getPerPage());
 
         return $users;
     }

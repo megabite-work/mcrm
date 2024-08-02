@@ -2,7 +2,7 @@
 
 namespace App\Action\User;
 
-use App\Dto\User\ResponseDto;
+use App\Entity\User;
 use App\Repository\UserRepository;
 
 class ShowMeAction
@@ -11,10 +11,10 @@ class ShowMeAction
     {
     }
 
-    public function __invoke(int $id): ResponseDto
+    public function __invoke(int $id): User
     {
-        $user = $this->repo->getUserWithAllJoinedEntitiesByUserId($id);
+        $user = $this->repo->getUserByIdWithAllJoinedEntities($id);
 
-        return new ResponseDto($user);
+        return $user;
     }
 }

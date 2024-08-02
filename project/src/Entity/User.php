@@ -27,49 +27,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
     #[Assert\NotBlank]
-    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column(name: 'qr_code', nullable: true)]
-    #[Groups(['user:read', 'multi_store:read', 'user_show_me:read'])]
+    #[Groups(['user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private ?string $qrCode = null;
 
     #[ORM\Column]
-    #[Groups(['auth:read', 'user:read', 'multi_store:read', 'user_show_me:read'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private array $roles = [];
 
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\OneToMany(targetEntity: MultiStore::class, mappedBy: 'owner', orphanRemoval: true)]
-    #[Groups(['user_show_me:read'])]
+    #[Groups(['user:me'])]
     private Collection $multiStores;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'owner')]
-    #[Groups(['user:read', 'user_show_me:read'])]
+    #[Groups(['user:show', 'user:me'])]
     private Collection $phones;
 
     #[ORM\OneToMany(targetEntity: UserCredential::class, mappedBy: 'owner', orphanRemoval: true)]
-    #[Groups(['user_show_me:read'])]
+    #[Groups(['user:me'])]
     private Collection $userCredentials;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user_show_me:read'])]
+    #[Groups(['user:show', 'user:me'])]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: Store::class, mappedBy: 'workers')]
-    #[Groups(['user_show_me:read'])]
+    #[Groups(['user:me'])]
     private Collection $stores;
 
     public function __construct()

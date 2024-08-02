@@ -14,7 +14,7 @@ class ShowAction
 
     public function __invoke(int $id): MultiStore
     {
-        $multiStore = $this->repo->find($id);
+        $multiStore = $this->repo->findMultiStoreByIdWithAddressAndPhoneAndStore($id);
 
         if (null === $multiStore) {
             throw new EntityNotFoundException('not found');

@@ -7,12 +7,12 @@ use App\Action\Store\DeleteAction;
 use App\Action\Store\IndexAction;
 use App\Action\Store\ShowAction;
 use App\Action\Store\UpdateAction;
-use App\Dto\Store\CreateRequestDto;
-use App\Dto\Store\UpdateRequestDto;
+use App\Dto\Store\RequestDto;
+use App\Dto\Store\RequestQueryDto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -21,27 +21,27 @@ use Symfony\Component\Routing\Attribute\Route;
 class StoreController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[MapQueryParameter(filter: \FILTER_VALIDATE_INT)] int $multiStoreId, IndexAction $action): JsonResponse
+    public function index(#[MapQueryString(serializationContext: ['groups' => ['store:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($multiStoreId), context: ['groups' => ['store:read']]);
+        return $this->json($action($dto), context: ['groups' => ['store:index']]);
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['store:read']]);
+        return $this->json($action($id), context: ['groups' => ['store:show']]);
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload] CreateRequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['store:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['store:read']]);
+        return $this->json($action($dto), context: ['groups' => ['store:create']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload] UpdateRequestDto $dto, UpdateAction $action): JsonResponse
+    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['store:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['store:read']]);
+        return $this->json($action($id, $dto), context: ['groups' => ['store:update']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]

@@ -2,25 +2,34 @@
 
 namespace App\Action\Store;
 
-use App\Component\EntityNotFoundException;
-use App\Dto\Store\UpdateRequestDto;
+use App\Entity\Phone;
 use App\Entity\Store;
-use App\Repository\AddressRepository;
-use App\Repository\StoreRepository;
+use App\Entity\Address;
+use App\Dto\Store\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private StoreRepository $repo,
-        private AddressRepository $addressRepo
+        private EntityManagerInterface $em
     ) {
     }
 
-    public function __invoke(int $id, UpdateRequestDto $dto): Store
+    public function __invoke(int $id, RequestDto $dto): Store
     {
-        $store = $this->repo->find($id);
+        $store = $this->updateStore($id, $dto);
+
+        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($store, $dto->getPhones());
+        $this->em->getRepository(Address::class)->checkAddressExistsAndUpdateOrCreate($store, $dto);
+        $this->em->flush();
+
+        return $store;
+    }
+
+    private function updateStore(int $id, RequestDto $dto)
+    {
+        $store = $this->em->getRepository(Store::class)->findStoreByIdWithAddressAndPhones($id);
 
         if (null === $store) {
             throw new EntityNotFoundException('not found');
@@ -32,10 +41,6 @@ class UpdateAction
         if (null !== $dto->getIsActive()) {
             $store->setIsActive($dto->getIsActive());
         }
-
-        $this->addressRepo->checkAddressExistsAndUpdateOrCreate($store, $dto);
-
-        $this->em->flush();
 
         return $store;
     }

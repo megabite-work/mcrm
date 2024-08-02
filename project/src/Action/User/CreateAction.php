@@ -2,7 +2,7 @@
 
 namespace App\Action\User;
 
-use App\Dto\User\CreateRequestDto;
+use App\Dto\User\RequestDto;
 use App\Dto\User\ResponseDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +18,7 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(CreateRequestDto $dto): ResponseDto
+    public function __invoke(RequestDto $dto): array
     {
         $user = (new User())
             ->setEmail($dto->getEmail())
@@ -33,7 +33,7 @@ class CreateAction
 
         $tokens = json_decode($this->handler->handleAuthenticationSuccess($user)->getContent(), true);
 
-        return new ResponseDto($user, $tokens);
+        return compact('user', 'tokens');
     }
 
     private function hashPassword(User $user, string $password): void

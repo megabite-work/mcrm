@@ -78,11 +78,11 @@ db_sql:
 	@$(DB) psql -U ${DB_USER}
 
 start:
-	@$(DC) build --no-cache
-	@$(DC) up  -d --remove-orphans
-	@$(PHP) composer install
+	@$(DC) build
+	@$(DC) up -d --remove-orphans
+	# @$(PHP) composer install
 	@sleep 20
-	@$(PHP) $(DIF)
+	# @$(PHP) $(DIF)
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)
 	@$(PHP) bash

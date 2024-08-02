@@ -2,20 +2,35 @@
 
 namespace App\Dto\Store;
 
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class UpdateRequestDto
+final class RequestDto
 {
     public function __construct(
-        #[Assert\NotBlank]
+        #[Groups(['store:create', 'store:update'])]
+        #[Assert\NotBlank(groups: ['store:create'])]
         private ?string $name,
-        private ?bool $isActive,
+        #[Groups(['store:create'])]
+        #[Assert\NotBlank(groups: ['store:create'])]
+        private ?int $multiStoreId,
+        #[Groups(['store:update'])]
+        #[Assert\Type('bool', groups: ['store:update'])]
+        private ?bool $isActive = true,
+        #[Groups(['store:update'])]
         private ?string $region,
+        #[Groups(['store:update'])]
         private ?string $district,
+        #[Groups(['store:update'])]
         private ?string $street,
+        #[Groups(['store:update'])]
         private ?string $house,
+        #[Groups(['store:update'])]
         private ?string $latitude,
+        #[Groups(['store:update'])]
         private ?string $longitude,
+        #[Groups(['store:update'])]
+        private ?array $phones
     ) {
     }
 
@@ -27,6 +42,11 @@ final class UpdateRequestDto
     public function getIsActive(): ?bool
     {
         return $this->isActive;
+    }
+
+    public function getMultiStoreId(): ?int
+    {
+        return $this->multiStoreId;
     }
 
     public function getRegion(): ?string
@@ -57,5 +77,10 @@ final class UpdateRequestDto
     public function getLongitude(): ?string
     {
         return $this->longitude;
+    }
+
+    public function getPhones(): array
+    {
+        return $this->phones ?? [];
     }
 }

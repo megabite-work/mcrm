@@ -14,7 +14,7 @@ class ShowAction
 
     public function __invoke(int $id): Store
     {
-        $store = $this->repo->find($id);
+        $store = $this->repo->findStoreByIdWithAddressAndPhonesAndWorkers($id);
 
         if (null === $store) {
             throw new EntityNotFoundException('not found');
