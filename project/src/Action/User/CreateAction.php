@@ -3,7 +3,6 @@
 namespace App\Action\User;
 
 use App\Dto\User\RequestDto;
-use App\Dto\User\ResponseDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;

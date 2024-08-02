@@ -2,12 +2,12 @@
 
 namespace App\Action\MultiStore;
 
-use App\Entity\Phone;
+use App\Component\EntityNotFoundException;
+use App\Dto\MultiStore\RequestDto;
 use App\Entity\Address;
 use App\Entity\MultiStore;
-use App\Dto\MultiStore\RequestDto;
+use App\Entity\Phone;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {

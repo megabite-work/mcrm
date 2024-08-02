@@ -15,9 +15,6 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['store:create'])]
         private ?int $multiStoreId,
         #[Groups(['store:update'])]
-        #[Assert\Type('bool', groups: ['store:update'])]
-        private ?bool $isActive = true,
-        #[Groups(['store:update'])]
         private ?string $region,
         #[Groups(['store:update'])]
         private ?string $district,
@@ -30,7 +27,10 @@ final class RequestDto
         #[Groups(['store:update'])]
         private ?string $longitude,
         #[Groups(['store:update'])]
-        private ?array $phones
+        private ?array $phones,
+        #[Groups(['store:update'])]
+        #[Assert\Type('bool', groups: ['store:update'])]
+        private ?bool $isActive = true
     ) {
     }
 

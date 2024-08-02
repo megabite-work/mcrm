@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\Store;
-use App\Entity\MultiStore;
 use App\Component\Paginator;
 use App\Dto\Store\RequestQueryDto;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\MultiStore;
+use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Store>
@@ -47,7 +47,7 @@ class StoreRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
-    
+
     public function findStoreByIdWithAddressAndPhones(int $id): ?Store
     {
         $entityManager = $this->getEntityManager();

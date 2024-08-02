@@ -3,23 +3,34 @@
 namespace App\Dto\User;
 
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class RequestDto
 {
     public function __construct(
-        #[Groups(['user:create', 'user:update'])]
-        #[Assert\Email(groups: ['user:create'])]
-        #[Assert\NotBlank(groups: ['user:create'])]
+        #[Groups(['user:create', 'user:update', 'unique:email'])]
+        #[Assert\Email(groups: ['user:create', 'unique:email'])]
+        #[Assert\NotBlank(groups: ['user:create', 'unique:email'])]
         private ?string $email,
-        #[Groups(['user:create'])]
-        #[Assert\NotBlank(groups: ['user:create'])]
-        #[Assert\Length(min: 3)]
+        #[Groups(['user:create', 'unique:username'])]
+        #[Assert\NotBlank(groups: ['user:create', 'unique:username'])]
+        #[Assert\Length(min: 3, groups: ['user:create', 'unique:username'])]
         private ?string $username,
-        #[Groups(['user:create'])]
-        #[Assert\NotBlank(groups: ['user:create'])]
-        #[Assert\Length(min: 6)]
+        #[Groups(['user:create', 'change:password'])]
+        #[Assert\NotBlank(groups: ['user:create', 'change:password'])]
+        #[Assert\Length(min: 6, groups: ['user:create', 'change:password'])]
         private ?string $password,
+        #[Groups(['change:password'])]
+        #[SerializedName('old_password')]
+        #[Assert\NotBlank(groups: ['change:password'])]
+        private ?string $oldPassword,
+        #[Groups(['change:password'])]
+        #[SerializedName('confirm_password')]
+        #[Assert\NotBlank(groups: ['change:password'])]
+        #[Assert\Length(min: 6, groups: ['change:password'])]
+        #[Assert\IdenticalTo(propertyPath: 'password', groups: ['change:password'])]
+        private ?string $confirmPassword,
         #[Groups(['user:update'])]
         private ?string $region,
         #[Groups(['user:update'])]
@@ -85,5 +96,15 @@ final class RequestDto
     public function getPhones(): array
     {
         return $this->phones ?? [];
+    }
+
+    public function getOldPassword(): ?string
+    {
+        return $this->oldPassword;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
     }
 }

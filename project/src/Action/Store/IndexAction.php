@@ -4,8 +4,8 @@ namespace App\Action\Store;
 
 use App\Component\Paginator;
 use App\Dto\Store\RequestQueryDto;
-use App\Repository\StoreRepository;
 use App\Repository\MultiStoreRepository;
+use App\Repository\StoreRepository;
 
 class IndexAction
 {

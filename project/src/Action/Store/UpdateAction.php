@@ -2,12 +2,12 @@
 
 namespace App\Action\Store;
 
+use App\Component\EntityNotFoundException;
+use App\Dto\Store\RequestDto;
+use App\Entity\Address;
 use App\Entity\Phone;
 use App\Entity\Store;
-use App\Entity\Address;
-use App\Dto\Store\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {

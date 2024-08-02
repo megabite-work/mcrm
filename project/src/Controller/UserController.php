@@ -11,10 +11,8 @@ use App\Action\User\IsUniqueUsernameAction;
 use App\Action\User\ShowAction;
 use App\Action\User\ShowMeAction;
 use App\Action\User\UpdateAction;
-use App\Dto\User\ChangePasswordRequestDto;
 use App\Dto\User\RequestDto;
 use App\Dto\User\RequestQueryDto;
-use App\Dto\User\UpdateRequestDto;
 use App\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
@@ -22,8 +20,6 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -81,25 +77,21 @@ class UserController extends AbstractController
 
     #[Route(path: '/is-unique-email', methods: ['POST'])]
     #[Security(name: null)]
-    public function isUniqueEmail(Request $request, IsUniqueEmailAction $action): JsonResponse
+    public function isUniqueEmail(#[MapRequestPayload(serializationContext: ['groups' => ['unique:email']])] RequestDto $dto, IsUniqueEmailAction $action): JsonResponse
     {
-        $email = $request->getPayload()->get('email');
-
-        return $this->json(['isUnique' => $action($email)]);
+        return $this->json(['isUnique' => $action($dto->getEmail())]);
     }
 
     #[Route(path: '/is-unique-username', methods: ['POST'])]
     #[Security(name: null)]
-    public function IsUniqueUsername(Request $request, IsUniqueUsernameAction $action): JsonResponse
+    public function IsUniqueUsername(#[MapRequestPayload(serializationContext: ['groups' => ['unique:username']])] RequestDto $dto, IsUniqueUsernameAction $action): JsonResponse
     {
-        $username = $request->getPayload()->get('username');
-
-        return $this->json(['isUnique' => $action($username)]);
+        return $this->json(['isUnique' => $action($dto->getUsername())]);
     }
 
     #[Route('/change-password', methods: ['PATCH'])]
-    public function changePassword(#[MapRequestPayload] ChangePasswordRequestDto $dto, #[CurrentUser] User $user, ChangePasswordAction $action): JsonResponse
+    public function changePassword(#[MapRequestPayload(serializationContext: ['groups' => ['change:password']])] RequestDto $dto, #[CurrentUser] User $user, ChangePasswordAction $action): JsonResponse
     {
-        return $this->json($action($user, $dto), context: ['groups' => ['user:read']]);
+        return $this->json(['success' => $action($user, $dto)]);
     }
 }

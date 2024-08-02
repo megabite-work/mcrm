@@ -47,7 +47,6 @@ class MultiStoreRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-
     public function findMultiStoreByIdWithAddressAndPhones(int $id): ?MultiStore
     {
         $entityManager = $this->getEntityManager();
