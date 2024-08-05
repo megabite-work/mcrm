@@ -23,21 +23,21 @@ class NomenclatureHistory
     #[Groups(['nomenclature_history:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'store_id')]
-    #[Groups(['nomenclature_history:read'])]
-    private ?int $storeId = null;
+    #[ORM\ManyToOne(targetEntity: Store::class, inversedBy: 'nomenclatureHistories')]
+    #[ORM\JoinColumn(name: 'store_id', referencedColumnName: 'id')]
+    private ?Store $store = null;
 
-    #[ORM\Column(name: 'nomenclature_id')]
-    #[Groups(['nomenclature_history:read'])]
-    private ?int $nomenclatureId = null;
+    #[ORM\ManyToOne(targetEntity: Nomenclature::class, inversedBy: 'nomenclatureHistories')]
+    #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id')]
+    private ?Nomenclature $nomenclature = null;
 
-    #[ORM\Column(name: 'nomenclature_history_id')]
-    #[Groups(['nomenclature_history:read'])]
-    private ?int $forgiveTypeId = null;
+    #[ORM\ManyToOne(targetEntity: ForgiveType::class, inversedBy: 'nomenclatureHistories')]
+    #[ORM\JoinColumn(name: 'forgive_type_id', referencedColumnName: 'id')]
+    private ?ForgiveType $forgiveType = null;
 
-    #[ORM\Column(name: 'user_id')]
-    #[Groups(['nomenclature_history:read'])]
-    private ?int $userId = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'nomenclatureHistories')]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id')]
+    private ?User $owner = null;
 
     #[ORM\Column]
     #[Groups(['nomenclature_history:read'])]
@@ -68,50 +68,50 @@ class NomenclatureHistory
         return $this->id;
     }
 
-    public function getStoreId(): ?int
+    public function getStore(): ?Store
     {
-        return $this->storeId;
+        return $this->store;
     }
 
-    public function setStoreId(int $storeId): static
+    public function setStore(?Store $store): static
     {
-        $this->storeId = $storeId;
+        $this->store = $store;
 
         return $this;
     }
 
-    public function getNomenclatureId(): ?int
+    public function getNomenclature(): ?Nomenclature
     {
-        return $this->nomenclatureId;
+        return $this->nomenclature;
     }
 
-    public function setNomenclatureId(int $nomenclatureId): static
+    public function setNomenclature(?Nomenclature $nomenclature): static
     {
-        $this->nomenclatureId = $nomenclatureId;
+        $this->nomenclature = $nomenclature;
 
         return $this;
     }
 
-    public function getForgiveTypeId(): ?int
+    public function getOwner(): ?User
     {
-        return $this->forgiveTypeId;
+        return $this->owner;
     }
 
-    public function setForgiveTypeId(int $forgiveTypeId): static
+    public function setOwner(?User $owner): static
     {
-        $this->forgiveTypeId = $forgiveTypeId;
+        $this->owner = $owner;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getForgiveType(): ?ForgiveType
     {
-        return $this->userId;
+        return $this->forgiveType;
     }
 
-    public function setUserId(int $userId): static
+    public function setForgiveType(?ForgiveType $forgiveType): static
     {
-        $this->userId = $userId;
+        $this->forgiveType = $forgiveType;
 
         return $this;
     }

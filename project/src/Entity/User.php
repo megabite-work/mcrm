@@ -72,12 +72,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:me'])]
     private Collection $stores;
 
+    #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'owner')]
+    private Collection $nomenclatureHistories;
+
     public function __construct()
     {
         $this->multiStores = new ArrayCollection();
         $this->phones = new ArrayCollection();
         $this->userCredentials = new ArrayCollection();
         $this->stores = new ArrayCollection();
+        $this->nomenclatureHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +270,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->stores->removeElement($store)) {
             $store->removeWorker($this);
+        }
+
+        return $this;
+    }
+
+    public function getNomenclatureHistories(): ?Collection
+    {
+        return $this->nomenclatureHistories;
+    }
+
+    public function addNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if (!$this->nomenclatureHistories->contains($nomenclatureHistory)) {
+            $this->nomenclatureHistories->add($nomenclatureHistory);
+            $nomenclatureHistory->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if ($this->nomenclatureHistories->removeElement($nomenclatureHistory)) {
+            if ($nomenclatureHistory->getOwner() === $this) {
+                $nomenclatureHistory->setOwner(null);
+            }
         }
 
         return $this;

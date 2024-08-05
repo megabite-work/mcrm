@@ -48,10 +48,18 @@ class Store
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'stores')]
     private Collection $workers;
 
+    #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'store')]
+    private Collection $nomenclatureHistories;
+
+    #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'store')]
+    private Collection $storeNomenclatures;
+
     public function __construct()
     {
         $this->phones = new ArrayCollection();
         $this->workers = new ArrayCollection();
+        $this->nomenclatureHistories = new ArrayCollection();
+        $this->storeNomenclatures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,6 +164,58 @@ class Store
     public function removeWorker(User $worker): static
     {
         $this->workers->removeElement($worker);
+
+        return $this;
+    }
+
+    public function getNomenclatureHistories(): ?Collection
+    {
+        return $this->nomenclatureHistories;
+    }
+
+    public function addNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if (!$this->nomenclatureHistories->contains($nomenclatureHistory)) {
+            $this->nomenclatureHistories->add($nomenclatureHistory);
+            $nomenclatureHistory->setStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if ($this->nomenclatureHistories->removeElement($nomenclatureHistory)) {
+            if ($nomenclatureHistory->getStore() === $this) {
+                $nomenclatureHistory->setStore(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStoreNomenclatures(): ?Collection
+    {
+        return $this->storeNomenclatures;
+    }
+
+    public function addStoreNomenclature(StoreNomenclature $storeNomenclature): static
+    {
+        if (!$this->storeNomenclatures->contains($storeNomenclature)) {
+            $this->storeNomenclatures->add($storeNomenclature);
+            $storeNomenclature->setStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclature(StoreNomenclature $storeNomenclature): static
+    {
+        if ($this->storeNomenclatures->removeElement($storeNomenclature)) {
+            if ($storeNomenclature->getStore() === $this) {
+                $storeNomenclature->setStore(null);
+            }
+        }
 
         return $this;
     }

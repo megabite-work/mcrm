@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ForgiveTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -27,6 +29,14 @@ class ForgiveType
     #[Groups(['forgive_type:read'])]
     private ?string $name = null;
 
+    #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'forgiveType')]
+    private Collection $nomenclatureHistories;
+
+    public function __construct()
+    {
+        $this->nomenclatureHistories = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +50,32 @@ class ForgiveType
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getNomenclatureHistories(): ?Collection
+    {
+        return $this->nomenclatureHistories;
+    }
+
+    public function addNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if (!$this->nomenclatureHistories->contains($nomenclatureHistory)) {
+            $this->nomenclatureHistories->add($nomenclatureHistory);
+            $nomenclatureHistory->setForgiveType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if ($this->nomenclatureHistories->removeElement($nomenclatureHistory)) {
+            if ($nomenclatureHistory->getForgiveType() === $this) {
+                $nomenclatureHistory->setForgiveType(null);
+            }
+        }
 
         return $this;
     }

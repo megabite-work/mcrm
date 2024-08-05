@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\NomenclatureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -22,14 +24,6 @@ class Nomenclature
     #[ORM\Column]
     #[Groups(['nomenclature:read'])]
     private ?int $id = null;
-
-    #[ORM\Column(name: 'category_id')]
-    #[Groups(['nomenclature:read'])]
-    private ?int $categoryId = null;
-
-    #[ORM\Column(name: 'unit_id')]
-    #[Groups(['nomenclature:read'])]
-    private ?int $unitId = null;
 
     #[ORM\Column]
     #[Groups(['nomenclature:read'])]
@@ -71,13 +65,33 @@ class Nomenclature
     #[Groups(['nomenclature:read'])]
     private ?float $discount = null;
 
-    #[ORM\Column(name: 'provider_id')]
-    #[Groups(['nomenclature:read'])]
-    private ?int $providerId = null;
-
     #[ORM\Column(name: 'qr_code')]
     #[Groups(['nomenclature:read'])]
     private ?string $qrCode = null;
+
+    #[ORM\ManyToOne(targetEntity: ProviderList::class, inversedBy: 'nomenclatures')]
+    #[ORM\JoinColumn(name: 'provider_id', referencedColumnName: 'id', nullable: true)]
+    private ?ProviderList $provider = null;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'nomenclatures')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    private ?Category $category = null;
+
+    #[ORM\ManyToOne(targetEntity: Unit::class, inversedBy: 'nomenclatures')]
+    #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id')]
+    private ?Unit $unit = null;
+
+    #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'nomenclature')]
+    private Collection $nomenclatureHistories;
+
+    #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'nomenclature')]
+    private Collection $storeNomenclatures;
+
+    public function __construct()
+    {
+        $this->nomenclatureHistories = new ArrayCollection();
+        $this->storeNomenclatures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,7 +103,7 @@ class Nomenclature
         return $this->mxik;
     }
 
-    public function setMxik(?string $mxik): self
+    public function setMxik(?string $mxik): static
     {
         $this->mxik = $mxik;
 
@@ -101,21 +115,33 @@ class Nomenclature
         return $this->barcode;
     }
 
-    public function setBarcode(?string $barcode): self
+    public function setBarcode(?string $barcode): static
     {
         $this->barcode = $barcode;
 
         return $this;
     }
 
-    public function getCategoryId(): ?int
+    public function getCategory(): ?Category
     {
-        return $this->categoryId;
+        return $this->category;
     }
 
-    public function setCategoryId(?int $categoryId): self
+    public function setCategory(?Category $category): static
     {
-        $this->categoryId = $categoryId;
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUnit(): ?Unit
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(?Unit $unit): static
+    {
+        $this->unit = $unit;
 
         return $this;
     }
@@ -125,7 +151,7 @@ class Nomenclature
         return $this->brand;
     }
 
-    public function setBrand(?string $brand): self
+    public function setBrand(?string $brand): static
     {
         $this->brand = $brand;
 
@@ -137,21 +163,9 @@ class Nomenclature
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(?string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUnitId(): ?int
-    {
-        return $this->unitId;
-    }
-
-    public function setUnitId(?int $unitId): self
-    {
-        $this->unitId = $unitId;
 
         return $this;
     }
@@ -161,7 +175,7 @@ class Nomenclature
         return $this->oldPrice;
     }
 
-    public function setOldPrice(?float $oldPrice): self
+    public function setOldPrice(?float $oldPrice): static
     {
         $this->oldPrice = $oldPrice;
 
@@ -173,7 +187,7 @@ class Nomenclature
         return $this->price;
     }
 
-    public function setPrice(?float $price): self
+    public function setPrice(?float $price): static
     {
         $this->price = $price;
 
@@ -185,7 +199,7 @@ class Nomenclature
         return $this->oldPriceCourse;
     }
 
-    public function setOldPriceCourse(?float $oldPriceCourse): self
+    public function setOldPriceCourse(?float $oldPriceCourse): static
     {
         $this->oldPriceCourse = $oldPriceCourse;
 
@@ -197,7 +211,7 @@ class Nomenclature
         return $this->priceCourse;
     }
 
-    public function setPriceCourse(?float $priceCourse): self
+    public function setPriceCourse(?float $priceCourse): static
     {
         $this->priceCourse = $priceCourse;
 
@@ -209,7 +223,7 @@ class Nomenclature
         return $this->nds;
     }
 
-    public function setNds(?float $nds): self
+    public function setNds(?float $nds): static
     {
         $this->nds = $nds;
 
@@ -221,21 +235,21 @@ class Nomenclature
         return $this->discount;
     }
 
-    public function setDiscount(?float $discount): self
+    public function setDiscount(?float $discount): static
     {
         $this->discount = $discount;
 
         return $this;
     }
 
-    public function getProviderId(): ?int
+    public function getProvider(): ?ProviderList
     {
-        return $this->providerId;
+        return $this->provider;
     }
 
-    public function setProviderId(?int $providerId): self
+    public function setProvider(?ProviderList $provider): static
     {
-        $this->providerId = $providerId;
+        $this->provider = $provider;
 
         return $this;
     }
@@ -245,9 +259,61 @@ class Nomenclature
         return $this->qrCode;
     }
 
-    public function setQrCode(?string $qrCode): self
+    public function setQrCode(?string $qrCode): static
     {
         $this->qrCode = $qrCode;
+
+        return $this;
+    }
+
+    public function getNomenclatureHistories(): ?Collection
+    {
+        return $this->nomenclatureHistories;
+    }
+
+    public function addNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if (!$this->nomenclatureHistories->contains($nomenclatureHistory)) {
+            $this->nomenclatureHistories->add($nomenclatureHistory);
+            $nomenclatureHistory->setNomenclature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclatureHistory(NomenclatureHistory $nomenclatureHistory): static
+    {
+        if ($this->nomenclatureHistories->removeElement($nomenclatureHistory)) {
+            if ($nomenclatureHistory->getNomenclature() === $this) {
+                $nomenclatureHistory->setNomenclature(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStoreNomenclatures(): ?Collection
+    {
+        return $this->storeNomenclatures;
+    }
+
+    public function addStoreNomenclature(StoreNomenclature $storeNomenclature): static
+    {
+        if (!$this->storeNomenclatures->contains($storeNomenclature)) {
+            $this->storeNomenclatures->add($storeNomenclature);
+            $storeNomenclature->setNomenclature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclature(StoreNomenclature $storeNomenclature): static
+    {
+        if ($this->storeNomenclatures->removeElement($storeNomenclature)) {
+            if ($storeNomenclature->getNomenclature() === $this) {
+                $storeNomenclature->setNomenclature(null);
+            }
+        }
 
         return $this;
     }

@@ -21,82 +21,66 @@ class WebNomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['web_nomenclature:read'])]
+    #[Groups(['nomenclature:index'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'multi_store_id')]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
-    private ?int $multiStoreId = null;
+    #[ORM\ManyToOne(targetEntity: MultiStore::class, inversedBy: 'webNomenclatures')]
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    private ?MultiStore $multiStore = null;
 
-    #[ORM\Column(name: 'web_category_id')]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
-    private ?int $webCategoryId = null;
-
-    #[ORM\Column(name: 'nomenclature_id')]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
-    private ?int $nomenclatureId = null;
+    #[ORM\OneToOne(targetEntity: Nomenclature::class)]
+    #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id')]
+    private ?Nomenclature $nomenclature = null;
 
     #[ORM\Column]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
     private ?string $article = null;
 
     #[ORM\Column]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
     private ?string $title = null;
 
     #[ORM\Column]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
     private ?string $document = null;
 
     #[ORM\Column(name: 'is_active')]
-    #[Groups(['web_nomenclature:read', 'web_nomenclature:write'])]
-    private ?int $isActive = null;
+    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    private ?bool $isActive = true;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMultiStoreId(): ?int
+    public function getMultiStore(): ?MultiStore
     {
-        return $this->multiStoreId;
+        return $this->multiStore;
     }
 
-    public function setMultiStoreId(int $multiStoreId): static
+    public function setMultiStore(?MultiStore $multiStore): static
     {
-        $this->multiStoreId = $multiStoreId;
+        $this->multiStore = $multiStore;
 
         return $this;
     }
 
-    public function getWebCategoryId(): ?int
+    public function getNomenclature(): ?Nomenclature
     {
-        return $this->webCategoryId;
+        return $this->nomenclature;
     }
 
-    public function setWebCategoryId(int $webCategoryId): static
+    public function setNomenclatureId(Nomenclature $nomenclature): static
     {
-        $this->webCategoryId = $webCategoryId;
-
-        return $this;
-    }
-
-    public function getNomenclatureId(): ?int
-    {
-        return $this->nomenclatureId;
-    }
-
-    public function setNomenclatureId(int $nomenclatureId): static
-    {
-        $this->nomenclatureId = $nomenclatureId;
+        $this->nomenclature = $nomenclature;
 
         return $this;
     }
@@ -161,12 +145,12 @@ class WebNomenclature
         return $this;
     }
 
-    public function getIsActive(): ?int
+    public function getIsActive(): ?bool
     {
         return $this->isActive;
     }
 
-    public function setIsActive(int $isActive): static
+    public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
 

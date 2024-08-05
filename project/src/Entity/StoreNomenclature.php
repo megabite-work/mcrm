@@ -21,56 +21,56 @@ class StoreNomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store_nomenclature:read'])]
+    #[Groups(['store_nomenclature:index'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'store_id')]
-    #[Groups(['store_nomenclature:read', 'store_nomenclature:write'])]
-    private ?int $storeId = null;
+    #[ORM\ManyToOne(targetEntity: Store::class, inversedBy: 'storeNomenclatures')]
+    #[ORM\JoinColumn(name: 'store_id', referencedColumnName: 'id')]
+    private ?Store $store = null;
 
-    #[ORM\Column(name: 'nomenclature_id')]
-    #[Groups(['store_nomenclature:read', 'store_nomenclature:write'])]
-    private ?int $nomenclatureId = null;
+    #[ORM\ManyToOne(targetEntity: Nomenclature::class, inversedBy: 'storeNomenclatures')]
+    #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id')]
+    private ?Nomenclature $nomenclature = null;
 
     #[ORM\Column(name: 'qty', type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups(['store_nomenclature:read', 'store_nomenclature:write'])]
-    private ?string $qty = null;
+    #[Groups(['store_nomenclature:index', 'store_nomenclature:write'])]
+    private ?float $qty = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStoreId(): ?int
+    public function getStore(): ?Store
     {
-        return $this->storeId;
+        return $this->store;
     }
 
-    public function setStoreId(int $storeId): static
+    public function setStore(?Store $store): static
     {
-        $this->storeId = $storeId;
+        $this->store = $store;
 
         return $this;
     }
 
-    public function getNomenclatureId(): ?int
+    public function getNomenclature(): ?Nomenclature
     {
-        return $this->nomenclatureId;
+        return $this->nomenclature;
     }
 
-    public function setNomenclatureId(int $nomenclatureId): static
+    public function setNomenclature(?Nomenclature $nomenclature): static
     {
-        $this->nomenclatureId = $nomenclatureId;
+        $this->nomenclature = $nomenclature;
 
         return $this;
     }
 
-    public function getQty(): ?string
+    public function getQty(): ?float
     {
         return $this->qty;
     }
 
-    public function setQty(string $qty): static
+    public function setQty(?float $qty): static
     {
         $this->qty = $qty;
 
