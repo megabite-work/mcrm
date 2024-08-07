@@ -21,7 +21,7 @@ class IndexAction
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $multiStores = $this->repo->findAll();
         } else {
-            $multiStores = $this->repo->findAllMultiStoresByOwnerWithPagination($owner, $dto->getPage(), $dto->getPerPage());
+            $multiStores = $this->repo->findAllMultiStoresByOwnerWithPagination($owner, $dto);
         }
 
         return $multiStores;

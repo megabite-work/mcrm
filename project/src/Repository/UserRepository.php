@@ -2,13 +2,14 @@
 
 namespace App\Repository;
 
-use App\Component\Paginator;
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Component\Paginator;
+use App\Dto\User\RequestQueryDto;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -20,7 +21,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    public function findUsersWithPagination(int $page, int $perPage): Paginator
+    public function findUsersWithPagination(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
 
@@ -29,7 +30,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             FROM App\Entity\User u'
         );
 
-        return new Paginator($query, $page, $perPage, false);
+        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
     public function getUserWithAddressAndPhonesByUserId(int $id): ?User

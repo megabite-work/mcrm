@@ -14,7 +14,7 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {
-        $users = $this->repo->findUsersWithPagination($dto->getPage(), $dto->getPerPage());
+        $users = $this->repo->findUsersWithPagination($dto);
 
         return $users;
     }

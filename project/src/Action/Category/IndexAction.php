@@ -17,9 +17,9 @@ class IndexAction
     {
         if ($dto->getParentId()) {
             $parent = $this->repo->find($dto->getParentId());
-            $categories = $this->repo->findAllCategoriesByParent($parent, $dto->getPage(), $dto->getPerPage());
+            $categories = $this->repo->findAllCategoriesByParent($parent, $dto);
         } else {
-            $categories = $this->repo->findAllCategoriesByParentIsNull($dto->getPage(), $dto->getPerPage());
+            $categories = $this->repo->findAllCategoriesByParentIsNull($dto);
         }
 
         return $categories;

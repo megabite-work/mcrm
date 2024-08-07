@@ -22,12 +22,12 @@ class ForgiveType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['forgive_type:read'])]
+    #[Groups(['forgive_type:index', 'forgive_type:show', 'forgive_type:create', 'forgive_type:update'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['forgive_type:read'])]
-    private ?string $name = null;
+    #[Groups(['forgive_type:index', 'forgive_type:show', 'forgive_type:create', 'forgive_type:update'])]
+    private ?array $name = null;
 
     #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'forgiveType')]
     private Collection $nomenclatureHistories;
@@ -42,12 +42,12 @@ class ForgiveType
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): ?array
     {
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(array $name): static
     {
         $this->name = $name;
 

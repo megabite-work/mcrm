@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Component\Paginator;
+use App\Dto\Category\RequestQueryDto;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,7 +18,7 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function findAllCategoriesByParent(Category $parent, int $page, int $perPage): Paginator
+    public function findAllCategoriesByParent(Category $parent, RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
 
@@ -28,10 +29,10 @@ class CategoryRepository extends ServiceEntityRepository
             WHERE c.parent = :parent'
         )->setParameter('parent', $parent);
 
-        return new Paginator($query, $page, $perPage, false);
+        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
-    public function findAllCategoriesByParentIsNull(int $page, int $perPage): Paginator
+    public function findAllCategoriesByParentIsNull(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
 
@@ -41,7 +42,7 @@ class CategoryRepository extends ServiceEntityRepository
             WHERE c.parent IS NULL'
         );
 
-        return new Paginator($query, $page, $perPage, false);
+        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
     public function findCategoryByIdWithParentAndChildrens(int $id): Category
