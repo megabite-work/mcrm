@@ -2,10 +2,10 @@
 
 namespace App\Action\Category;
 
-use App\Entity\Category;
-use App\Dto\Category\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Dto\Category\RequestDto;
+use App\Entity\Category;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
@@ -22,7 +22,7 @@ class CreateAction
 
         if ($dto->getParentId()) {
             $parent = $this->em->find(Category::class, $dto->getParentId());
-            
+
             if (null === $parent) {
                 throw new EntityNotFoundException('parent not found');
             }

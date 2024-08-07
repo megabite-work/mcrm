@@ -13,7 +13,13 @@ final class RequestDto
         private ?int $parentId,
         #[Groups(['category:create', 'category:update'])]
         #[Assert\NotBlank(groups: ['category:create'])]
-        private ?string $name,
+        private ?string $nameUz,
+        #[Groups(['category:create', 'category:update'])]
+        #[Assert\NotBlank(groups: ['category:create'])]
+        private ?string $nameUzc,
+        #[Groups(['category:create', 'category:update'])]
+        #[Assert\NotBlank(groups: ['category:create'])]
+        private ?string $nameRu,
         #[Groups(['category:create', 'category:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['category:create', 'category:update'])]
         private ?string $image,
@@ -23,9 +29,24 @@ final class RequestDto
     ) {
     }
 
-    public function getName(): ?string
+    public function getNameUz(): ?string
     {
-        return $this->name;
+        return $this->nameUz;
+    }
+
+    public function getNameUzc(): ?string
+    {
+        return $this->nameUzc;
+    }
+
+    public function getNameRu(): ?string
+    {
+        return $this->nameRu;
+    }
+
+    public function getName(): ?array
+    {
+        return ['ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
     }
 
     public function getImage(): ?string

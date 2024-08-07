@@ -31,7 +31,7 @@ class Category
 
     #[ORM\Column(type: 'json')]
     #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
-    private ?string $name = null;
+    private ?array $name = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
@@ -128,12 +128,12 @@ class Category
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): ?array
     {
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(array $name): static
     {
         $this->name = $name;
 

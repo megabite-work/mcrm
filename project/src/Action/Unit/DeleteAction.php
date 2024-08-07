@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Action\User;
+namespace App\Action\Unit;
 
-use App\Entity\User;
+use App\Component\EntityNotFoundException;
+use App\Entity\Unit;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class DeleteAction
 {
@@ -15,13 +15,13 @@ class DeleteAction
 
     public function __invoke(int $id): bool
     {
-        $user = $this->em->find(User::class, $id);
+        $unit = $this->em->find(Unit::class, $id);
 
-        if (null === $user) {
-            throw new UserNotFoundException();
+        if (null === $unit) {
+            throw new EntityNotFoundException('not found');
         }
 
-        $this->em->remove($user);
+        $this->em->remove($unit);
         $this->em->flush();
 
         return true;

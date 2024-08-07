@@ -22,19 +22,19 @@ class Unit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['unit:read'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'json')]
-    #[Groups(['unit:read', 'unit:write'])]
+    #[ORM\Column(type: 'json', options: ['charset' => 'UTF8'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
     private ?array $name = null;
 
     #[ORM\Column]
-    #[Groups(['unit:read', 'unit:write'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
     private ?int $code = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['unit:read', 'unit:write'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
     private ?string $icon = null;
 
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'unit')]

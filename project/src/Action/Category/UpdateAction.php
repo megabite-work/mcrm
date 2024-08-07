@@ -37,11 +37,17 @@ class UpdateAction
             if (null === $parent) {
                 throw new EntityNotFoundException('parent not found');
             }
-            
+
             $category->setParent($parent);
         }
-        if ($dto->getName()) {
-            $category->setName($dto->getName());
+        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
+            $categoryName = $category->getName();
+            $name = [
+                'ru' => $dto->getNameRu() ?? $categoryName['ru'],
+                'uz' => $dto->getNameUz() ?? $categoryName['uz'],
+                'uzc' => $dto->getNameUzc() ?? $categoryName['uzc'],
+            ];
+            $category->setName($name);
         }
         if ($dto->getImage()) {
             $category->setImage($dto->getImage());

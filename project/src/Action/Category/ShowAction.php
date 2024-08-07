@@ -16,7 +16,7 @@ class ShowAction
     {
         $category = $this->repo->findCategoryByIdWithParentAndChildrens($id);
 
-        if (null === $category) {
+        if (null == $category) {
             throw new EntityNotFoundException('not found');
         }
 

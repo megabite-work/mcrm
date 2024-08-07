@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\Unit;
+use App\Entity\Category;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Unit>
+ * @extends PersistentProxyObjectFactory<Category>
  */
-final class UnitFactory extends PersistentProxyObjectFactory
+final class CategoryFactory extends PersistentProxyObjectFactory
 {
     public function __construct()
     {
@@ -16,15 +16,16 @@ final class UnitFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Unit::class;
+        return Category::class;
     }
 
     protected function defaults(): array|callable
     {
         return [
-            'name' => ['uz' => '', 'uzc' => '', 'ru' => ''],
-            'code' => self::faker()->randomNumber(7, true),
-            'icon' => self::faker()->imageUrl(),
+            'parent' => null,
+            'name' => [],
+            'isActive' => self::faker()->randomElement([true, false]),
+            'image' => self::faker()->imageUrl(),
             'createdAt' => self::faker()->dateTime(),
             'updatedAt' => self::faker()->dateTime(),
         ];
@@ -33,7 +34,7 @@ final class UnitFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Unit $unit): void {})
+            // ->afterInstantiate(function(Category $category): void {})
         ;
     }
 }

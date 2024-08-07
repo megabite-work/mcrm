@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Component\EntityNotFoundException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,8 @@ class ExceptionListener
         if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());
+        } else if ($exception instanceof EntityNotFoundException) {
+            $response->setStatusCode(404);
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
