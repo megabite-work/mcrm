@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Component\Paginator;
 use App\Entity\MultiStore;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,7 +18,7 @@ class MultiStoreRepository extends ServiceEntityRepository
         parent::__construct($registry, MultiStore::class);
     }
 
-    public function findAllMultiStoresByOwnerWithPagination($owner, int $page, int $perPage): Paginator
+    public function findAllMultiStoresByOwnerWithPagination(User $owner, int $page, int $perPage): Paginator
     {
         $entityManager = $this->getEntityManager();
 

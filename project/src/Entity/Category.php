@@ -22,24 +22,23 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:index'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'childrens')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true)]
-    #[Groups(['category:index', 'category:write'])]
     private ?Category $parent = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['category:index', 'category:write'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['category:index', 'category:write'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
     private ?string $image = null;
 
     #[ORM\Column(name: 'is_active', options: ['default' => true])]
-    #[Groups(['category:index', 'category:write'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
     private ?bool $isActive = true;
 
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'parent')]
@@ -57,6 +56,12 @@ class Category
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
+    public function getParentId(): ?int
+    {
+        return $this->parent?->getId();
     }
 
     public function getParent(): ?Category

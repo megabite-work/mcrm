@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Store;
+namespace App\Dto\Category;
 
 use App\Component\Paginator;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -9,14 +9,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestQueryDto
 {
     public function __construct(
-        #[Groups(['store:index'])]
-        #[Assert\NotBlank]
-        #[Assert\Positive]
-        private int $multiStoreId,
-        #[Groups(['store:index'])]
+        #[Groups(['category:index'])]
+        #[Assert\NotBlank(allowNull: true)]
+        #[Assert\Type(type: ['integer', 'null'])]
+        private ?int $parentId = null,
+        #[Groups(['category:index'])]
         #[Assert\Positive]
         private int $page = 1,
-        #[Groups(['store:index'])]
+        #[Groups(['category:index'])]
         #[Assert\Positive]
         private int $perPage = Paginator::ITEMS_PER_PAGE
     ) {
@@ -32,8 +32,8 @@ final class RequestQueryDto
         return $this->perPage;
     }
 
-    public function getMultiStoreId(): int
+    public function getParentId(): ?int
     {
-        return $this->multiStoreId;
+        return $this->parentId;
     }
 }

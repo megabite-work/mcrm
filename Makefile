@@ -81,8 +81,8 @@ start:
 	@$(DC) build
 	@$(DC) up -d --remove-orphans
 	# @$(PHP) composer install
-	@sleep 20
-	@$(PHP) $(DIF)
+	@sleep 30
+	# @$(PHP) $(DIF)
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)
 	@$(PHP) bash

@@ -2,6 +2,7 @@
 
 namespace App\Dto\User;
 
+use App\Component\Paginator;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +14,7 @@ final class RequestQueryDto
         private int $page = 1,
         #[Groups(['user:index'])]
         #[Assert\Positive]
-        private int $perPage = 10
+        private int $perPage = Paginator::ITEMS_PER_PAGE
     ) {
     }
 
