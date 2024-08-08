@@ -16,11 +16,11 @@ class UpdateAction
 
     public function __invoke(int $id, RequestDto $dto): Category
     {
-        $store = $this->updateCategory($id, $dto);
+        $category = $this->updateCategory($id, $dto);
 
         $this->em->flush();
 
-        return $store;
+        return $category;
     }
 
     private function updateCategory(int $id, RequestDto $dto): Category

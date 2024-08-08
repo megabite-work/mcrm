@@ -61,11 +61,15 @@ class MultiStore
     #[ORM\OneToMany(targetEntity: WebNomenclature::class, mappedBy: 'multiStore')]
     private Collection $webNomenclatures;
 
+    #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'multiStore')]
+    private Collection $nomenclatures;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
         $this->phones = new ArrayCollection();
         $this->webNomenclatures = new ArrayCollection();
+        $this->nomenclatures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -223,6 +227,32 @@ class MultiStore
         if ($this->webNomenclatures->removeElement($webNomenclature)) {
             if ($webNomenclature->getMultiStore() === $this) {
                 $webNomenclature->setMultiStore(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNomenclatures(): ?Collection
+    {
+        return $this->nomenclatures;
+    }
+
+    public function addNomenclature(Nomenclature $nomenclature): static
+    {
+        if (!$this->nomenclatures->contains($nomenclature)) {
+            $this->nomenclatures->add($nomenclature);
+            $nomenclature->setMultiStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNomenclature(Nomenclature $nomenclature): static
+    {
+        if ($this->nomenclatures->removeElement($nomenclature)) {
+            if ($nomenclature->getMultiStore() === $this) {
+                $nomenclature->setMultiStore(null);
             }
         }
 

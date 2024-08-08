@@ -22,7 +22,7 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'childrens')]
@@ -30,11 +30,11 @@ class Category
     private ?Category $parent = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?array $name = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['category:index', 'category:show', 'category:create', 'category:update'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?string $image = null;
 
     #[ORM\Column(name: 'is_active', options: ['default' => true])]
@@ -91,7 +91,7 @@ class Category
         return $this;
     }
 
-    public function removeMultiStore(Category $children): static
+    public function removeChildren(Category $children): static
     {
         if ($this->childrens->removeElement($children)) {
             if ($children->getParent() === $this) {

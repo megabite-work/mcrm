@@ -22,19 +22,19 @@ class Unit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'json', options: ['charset' => 'UTF8'])]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
     private ?array $name = null;
 
     #[ORM\Column]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
     private ?int $code = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
     private ?string $icon = null;
 
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'unit')]

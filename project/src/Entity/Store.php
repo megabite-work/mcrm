@@ -22,11 +22,11 @@ class Store
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\Column()]
-    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'nomenclature:show'])]
     private ?string $name = null;
 
     #[ORM\Column(options: ['default' => 1])]

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NomenclatureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -22,69 +23,76 @@ class Nomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nomenclature:read'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?int $id = null;
 
-    #[ORM\Column]
-    #[Groups(['nomenclature:read'])]
+    #[ORM\Column(nullable: true)]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?string $mxik = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:read'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?string $barcode = null;
 
-    #[ORM\Column]
-    #[Groups(['nomenclature:read'])]
+    #[ORM\Column(nullable: true)]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?string $brand = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['nomenclature:read'])]
-    private ?string $name = null;
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private ?array $name = null;
 
-    #[ORM\Column(name: 'oldprice', type: 'decimal', precision: 15, scale: 3)]
-    #[Groups(['nomenclature:read'])]
-    private ?float $oldPrice = null;
+    #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private float|string $oldPrice = 0;
 
-    #[ORM\Column(type: 'decimal', precision: 15, scale: 3)]
-    #[Groups(['nomenclature:read'])]
-    private ?float $price = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private float|string $price = 0;
 
-    #[ORM\Column(name: 'oldprice_course', type: 'decimal', precision: 15, scale: 3)]
-    #[Groups(['nomenclature:read'])]
-    private ?float $oldPriceCourse = null;
+    #[ORM\Column(name: 'oldprice_course', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private float|string $oldPriceCourse = 0;
 
-    #[ORM\Column(name: 'price_course', type: 'decimal', precision: 15, scale: 3)]
-    #[Groups(['nomenclature:read'])]
-    private ?float $priceCourse = null;
+    #[ORM\Column(name: 'price_course', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private float|string $priceCourse = 0;
 
-    #[ORM\Column(type: 'decimal', precision: 15, scale: 3)]
-    #[Groups(['nomenclature:read'])]
-    private ?float $nds = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private float|string $nds = 0;
 
-    #[ORM\Column(type: 'decimal', precision: 15, scale: 3)]
-    #[Groups(['nomenclature:read'])]
-    private ?float $discount = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private float|string $discount = 0;
 
-    #[ORM\Column(name: 'qr_code')]
-    #[Groups(['nomenclature:read'])]
-    private ?string $qrCode = null;
+    #[ORM\Column(name: 'qr_code', options: ['default' => false])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    private ?bool $qrCode = false;
 
     #[ORM\ManyToOne(targetEntity: ProviderList::class, inversedBy: 'nomenclatures')]
     #[ORM\JoinColumn(name: 'provider_id', referencedColumnName: 'id', nullable: true)]
     private ?ProviderList $provider = null;
 
+    #[ORM\ManyToOne(targetEntity: MultiStore::class, inversedBy: 'nomenclatures')]
+    #[ORM\JoinColumn(name: 'multi_store_id', referencedColumnName: 'id', nullable: false)]
+    private ?MultiStore $multiStore = null;
+
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'nomenclatures')]
-    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(targetEntity: Unit::class, inversedBy: 'nomenclatures')]
-    #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
     private ?Unit $unit = null;
 
     #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'nomenclature')]
     private Collection $nomenclatureHistories;
 
     #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'nomenclature')]
+    #[Groups(['nomenclature:show'])]
     private Collection $storeNomenclatures;
 
     public function __construct()
@@ -134,6 +142,18 @@ class Nomenclature
         return $this;
     }
 
+    public function getMultiStore(): ?MultiStore
+    {
+        return $this->multiStore;
+    }
+
+    public function setMultiStore(?MultiStore $multiStore): static
+    {
+        $this->multiStore = $multiStore;
+
+        return $this;
+    }
+
     public function getUnit(): ?Unit
     {
         return $this->unit;
@@ -158,12 +178,12 @@ class Nomenclature
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): ?array
     {
         return $this->name;
     }
 
-    public function setName(?string $name): static
+    public function setName(?array $name): static
     {
         $this->name = $name;
 
@@ -254,12 +274,12 @@ class Nomenclature
         return $this;
     }
 
-    public function getQrCode(): ?string
+    public function getQrCode(): ?bool
     {
         return $this->qrCode;
     }
 
-    public function setQrCode(?string $qrCode): static
+    public function setQrCode(?bool $qrCode): static
     {
         $this->qrCode = $qrCode;
 
@@ -297,6 +317,12 @@ class Nomenclature
         return $this->storeNomenclatures;
     }
 
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    public function getQty(): ?int
+    {
+        return $this->storeNomenclatures ? $this->storeNomenclatures->reduce(fn ($init, $item): float => $item->getQty() + $init, 0) : 0;
+    }
+
     public function addStoreNomenclature(StoreNomenclature $storeNomenclature): static
     {
         if (!$this->storeNomenclatures->contains($storeNomenclature)) {
@@ -307,7 +333,7 @@ class Nomenclature
         return $this;
     }
 
-    public function removeNomenclature(StoreNomenclature $storeNomenclature): static
+    public function removeStoreNomenclature(StoreNomenclature $storeNomenclature): static
     {
         if ($this->storeNomenclatures->removeElement($storeNomenclature)) {
             if ($storeNomenclature->getNomenclature() === $this) {
