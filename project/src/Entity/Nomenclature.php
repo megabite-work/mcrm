@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: NomenclatureRepository::class)]
 #[ORM\Table(name: 'nomenclature')]
@@ -318,7 +319,7 @@ class Nomenclature
     }
 
     #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
-    public function getQty(): ?int
+    public function getTotalQty(): ?int
     {
         return $this->storeNomenclatures ? $this->storeNomenclatures->reduce(fn ($init, $item): float => $item->getQty() + $init, 0) : 0;
     }
