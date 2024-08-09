@@ -9,6 +9,7 @@ use App\Dto\StoreNomenclature\RequestDto;
 use App\Dto\StoreNomenclature\RequestQueryDto;
 use App\Action\StoreNomenclature\ShowAction;
 use App\Action\StoreNomenclature\IndexAction;
+use App\Action\StoreNomenclature\CreateAction;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -30,6 +31,12 @@ class StoreNomenclatureController extends AbstractController
     public function show(int $storeId, int $nomenclatureId, ShowAction $action): JsonResponse
     {
         return $this->json($action($storeId, $nomenclatureId), context: ['groups' => ['store_nomenclature:show']]);
+    }
+
+    #[Route(path: '/{storeId<\d+>}/nomenclatures', methods: ['POST'])]
+    public function create(int $storeId, #[MapRequestPayload(serializationContext: ['groups' => ['store_nomenclature:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    {
+        return $this->json($action($storeId, $dto), context: ['groups' => ['store_nomenclature:show']]);
     }
 
     #[Route('/{storeId<\d+>}/nomeclatures/{nomenclatureId<\d+>}', methods: ['PATCH'])]

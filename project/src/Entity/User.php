@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 

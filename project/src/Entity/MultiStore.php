@@ -58,9 +58,6 @@ class MultiStore
     #[Groups(['multi_store:show', 'multi_store:update'])]
     private Collection $phones;
 
-    #[ORM\OneToMany(targetEntity: WebNomenclature::class, mappedBy: 'multiStore')]
-    private Collection $webNomenclatures;
-
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'multiStore')]
     private Collection $nomenclatures;
 
@@ -68,7 +65,6 @@ class MultiStore
     {
         $this->stores = new ArrayCollection();
         $this->phones = new ArrayCollection();
-        $this->webNomenclatures = new ArrayCollection();
         $this->nomenclatures = new ArrayCollection();
     }
 
@@ -203,32 +199,6 @@ class MultiStore
     public function setAddress(?Address $address): static
     {
         $this->address = $address;
-
-        return $this;
-    }
-
-    public function getWebNomenclatures(): ?Collection
-    {
-        return $this->webNomenclatures;
-    }
-
-    public function addWebNomenclature(WebNomenclature $webNomenclature): static
-    {
-        if (!$this->webNomenclatures->contains($webNomenclature)) {
-            $this->webNomenclatures->add($webNomenclature);
-            $webNomenclature->setMultiStore($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWebNomenclature(WebNomenclature $webNomenclature): static
-    {
-        if ($this->webNomenclatures->removeElement($webNomenclature)) {
-            if ($webNomenclature->getMultiStore() === $this) {
-                $webNomenclature->setMultiStore(null);
-            }
-        }
 
         return $this;
     }

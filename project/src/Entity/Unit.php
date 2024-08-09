@@ -22,19 +22,19 @@ class Unit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'json', options: ['charset' => 'UTF8'])]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?array $name = null;
 
     #[ORM\Column]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?int $code = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature'])]
+    #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $icon = null;
 
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'unit')]

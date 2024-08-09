@@ -77,12 +77,12 @@ class AppFixtures extends Fixture
             $categoryParents[] = CategoryFactory::createOne(['name' => $category[2]]);
         }
 
-        foreach ($categoryParents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
-            foreach ($childrens as $child) {
-                CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
-            }
-        }
+        // foreach ($categoryParents as $parent) {
+        //     $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+        //     foreach ($childrens as $child) {
+        //         CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+        //     }
+        // }
     }
 
     public function getUnits(): array

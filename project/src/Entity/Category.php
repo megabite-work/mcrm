@@ -22,7 +22,7 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'childrens')]
@@ -30,11 +30,11 @@ class Category
     private ?Category $parent = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?array $name = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
     private ?string $image = null;
 
     #[ORM\Column(name: 'is_active', options: ['default' => true])]

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\NomenclatureHistoryRepository;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -20,48 +22,52 @@ class NomenclatureHistory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nomenclature_history:read'])]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Store::class, inversedBy: 'nomenclatureHistories')]
-    #[ORM\JoinColumn(name: 'store_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'store_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?Store $store = null;
 
     #[ORM\ManyToOne(targetEntity: Nomenclature::class, inversedBy: 'nomenclatureHistories')]
-    #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?Nomenclature $nomenclature = null;
 
     #[ORM\ManyToOne(targetEntity: ForgiveType::class, inversedBy: 'nomenclatureHistories')]
     #[ORM\JoinColumn(name: 'forgive_type_id', referencedColumnName: 'id')]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?ForgiveType $forgiveType = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'nomenclatureHistories')]
-    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?User $owner = null;
 
-    #[ORM\Column]
-    #[Groups(['nomenclature_history:read'])]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $comment = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read'])]
-    private ?string $qty = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    private float|string $qty = 0;
 
-    #[ORM\Column(name: 'oldprice', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read'])]
-    private ?string $oldPrice = null;
+    #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    private float|string $oldPrice = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read'])]
-    private ?string $price = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    private float|string $price = null;
 
-    #[ORM\Column(name: 'oldprice_course', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read'])]
-    private ?string $oldPriceCourse = null;
+    #[ORM\Column(name: 'oldprice_course', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    private float|string $oldPriceCourse = null;
 
-    #[ORM\Column(name: 'price_course', type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['nomenclature_history:read'])]
-    private ?string $priceCourse = null;
+    #[ORM\Column(name: 'price_course', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    private float|string $priceCourse = null;
 
     public function getId(): ?int
     {

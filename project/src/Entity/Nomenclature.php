@@ -24,55 +24,56 @@ class Nomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $mxik = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $barcode = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $brand = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?array $name = null;
 
     #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private float|string $oldPrice = 0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private float|string $price = 0;
 
     #[ORM\Column(name: 'oldprice_course', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private float|string $oldPriceCourse = 0;
 
     #[ORM\Column(name: 'price_course', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private float|string $priceCourse = 0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private float|string $nds = 0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private float|string $discount = 0;
 
     #[ORM\Column(name: 'qr_code', options: ['default' => false])]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?bool $qrCode = false;
 
     #[ORM\ManyToOne(targetEntity: ProviderList::class, inversedBy: 'nomenclatures')]
     #[ORM\JoinColumn(name: 'provider_id', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?ProviderList $provider = null;
 
     #[ORM\ManyToOne(targetEntity: MultiStore::class, inversedBy: 'nomenclatures')]
@@ -81,20 +82,24 @@ class Nomenclature
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'nomenclatures')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(targetEntity: Unit::class, inversedBy: 'nomenclatures')]
     #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id', nullable: true)]
-    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?Unit $unit = null;
 
     #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'nomenclature')]
     private Collection $nomenclatureHistories;
 
     #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'nomenclature')]
-    #[Groups(['nomenclature:show'])]
+    #[Groups(['nomenclature:show', 'web_nomenclature:show'])]
     private Collection $storeNomenclatures;
+
+    #[ORM\OneToOne(targetEntity: WebNomenclature::class, mappedBy: 'nomenclature')]
+    #[Groups(['nomenclature:show'])]
+    private ?WebNomenclature $webNomenclature = null;
 
     public function __construct()
     {
@@ -318,10 +323,10 @@ class Nomenclature
         return $this->storeNomenclatures;
     }
 
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
     public function getTotalQty(): ?int
     {
-        return $this->storeNomenclatures ? $this->storeNomenclatures->reduce(fn ($init, $item): float => $item->getQty() + $init, 0) : 0;
+        return $this->storeNomenclatures ? $this->storeNomenclatures->reduce(fn($init, $item): float => $item->getQty() + $init, 0) : 0;
     }
 
     public function addStoreNomenclature(StoreNomenclature $storeNomenclature): static
@@ -341,6 +346,18 @@ class Nomenclature
                 $storeNomenclature->setNomenclature(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebNomenclature(): ?WebNomenclature
+    {
+        return $this->webNomenclature;
+    }
+
+    public function setWebNomenclature(): static
+    {
+        $this->webNomenclature->setNomenclature($this);
 
         return $this;
     }

@@ -21,39 +21,36 @@ class WebNomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nomenclature:index'])]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?int $id = null;
-
-    #[ORM\ManyToOne(targetEntity: MultiStore::class, inversedBy: 'webNomenclatures')]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
-    private ?MultiStore $multiStore = null;
 
     #[ORM\OneToOne(targetEntity: Nomenclature::class)]
     #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id')]
+    #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
     private ?Nomenclature $nomenclature = null;
 
-    #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $article = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $title = null;
 
-    #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $description = null;
 
-    #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $document = null;
 
-    #[ORM\Column(name: 'is_active')]
-    #[Groups(['nomenclature:index', 'nomenclature:create'])]
+    #[ORM\Column(name: 'is_active', options: ['default' => true])]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?bool $isActive = true;
 
     public function getId(): ?int
@@ -61,24 +58,12 @@ class WebNomenclature
         return $this->id;
     }
 
-    public function getMultiStore(): ?MultiStore
-    {
-        return $this->multiStore;
-    }
-
-    public function setMultiStore(?MultiStore $multiStore): static
-    {
-        $this->multiStore = $multiStore;
-
-        return $this;
-    }
-
     public function getNomenclature(): ?Nomenclature
     {
         return $this->nomenclature;
     }
 
-    public function setNomenclatureId(Nomenclature $nomenclature): static
+    public function setNomenclature(Nomenclature $nomenclature): static
     {
         $this->nomenclature = $nomenclature;
 

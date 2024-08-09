@@ -26,11 +26,11 @@ class ProviderList
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['provider_list:read', 'provider_list:write'])]
+    #[Groups(['provider_list:read', 'provider_list:write', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $type = null;
 
     #[ORM\Column]
-    #[Groups(['provider_list:read', 'provider_list:write'])]
+    #[Groups(['provider_list:read', 'provider_list:write', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $value = null;
 
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'provider')]

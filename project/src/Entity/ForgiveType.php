@@ -26,7 +26,7 @@ class ForgiveType
     private ?int $id = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['forgive_type:index', 'forgive_type:show', 'forgive_type:create', 'forgive_type:update'])]
+    #[Groups(['forgive_type:index', 'forgive_type:show', 'forgive_type:create', 'forgive_type:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?array $name = null;
 
     #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'forgiveType')]
