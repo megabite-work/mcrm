@@ -51,23 +51,23 @@ class NomenclatureHistory
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private float|string $qty = 0;
+    private null|float|string $qty = 0;
 
     #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private float|string $oldPrice = null;
+    private null|float|string $oldPrice = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private float|string $price = null;
+    private null|float|string $price = null;
 
     #[ORM\Column(name: 'oldprice_course', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private float|string $oldPriceCourse = null;
+    private null|float|string $oldPriceCourse = null;
 
     #[ORM\Column(name: 'price_course', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private float|string $priceCourse = null;
+    private null|float|string $priceCourse = null;
 
     public function getId(): ?int
     {
