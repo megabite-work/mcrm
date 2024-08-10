@@ -90,7 +90,7 @@ start:
 prod:
 	@$(DC) build
 	@$(DC) up -d --remove-orphans
-	@$(PHP) composer install  --no-dev --optimize-autoloader
+	@$(PHP) composer install --prefer-dist --no-progress --no-scripts --no-interaction
 	@sleep 30
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)
