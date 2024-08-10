@@ -19,7 +19,6 @@ class CreateAction
         $multiStore = (new MultiStore())
             ->setName($dto->getName())
             ->setProfit($dto->getProfit())
-            ->setBarcodeTtn($dto->getBarcodeTtn())
             ->setNds($dto->getNds())
             ->setOwner($user);
 

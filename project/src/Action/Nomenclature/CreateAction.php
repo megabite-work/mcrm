@@ -13,8 +13,7 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestDto $dto): Nomenclature
     {
@@ -25,9 +24,18 @@ class CreateAction
             throw new EntityNotFoundException('category or multiStore not found');
         }
 
+        $nomenclature = $this->create($dto, $category, $multiStore);
+
+        $this->em->persist($nomenclature);
+        $this->em->flush();
+
+        return $nomenclature;
+    }
+
+    private function create(RequestDto $dto, Category $category, MultiStore $multiStore): Nomenclature
+    {
         $nomenclature = (new Nomenclature())
             ->setName($dto->getName())
-            ->setBarcode($dto->getBarcode())
             ->setMxik($dto->getMxik())
             ->setBrand($dto->getBrand())
             ->setOldPrice($dto->getOldPrice() ?? 0)
@@ -39,9 +47,18 @@ class CreateAction
             ->setMultiStore($multiStore)
             ->setCategory($category);
 
-        $this->em->persist($nomenclature);
-        $this->em->flush();
+        $this->barcode($multiStore, $nomenclature, $dto->getBarcode());
 
         return $nomenclature;
+    }
+
+    private function barcode(MultiStore $multiStore, Nomenclature $nomenclature, ?int $barcode): void
+    {
+        if ($barcode === null) {
+            $barcode = $multiStore->getBarcodeTtn() + 1;
+            $multiStore->setBarcodeTtn($barcode);
+        }
+
+        $nomenclature->setBarcode($barcode);
     }
 }

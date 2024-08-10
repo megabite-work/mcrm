@@ -34,9 +34,9 @@ class MultiStore
     #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $profit = null;
 
-    #[ORM\Column(name: 'barcode_TTN', nullable: true)]
+    #[ORM\Column(name: 'barcode_TTN', nullable: true, type: Types::BIGINT, options: ['default' => 5752022000000])]
     #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
-    private ?string $barcodeTtn = null;
+    private ?int $barcodeTtn = 5752022000000;
 
     #[ORM\Column(name: 'nds', nullable: true)]
     #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
@@ -97,12 +97,12 @@ class MultiStore
         return $this;
     }
 
-    public function getBarcodeTtn(): ?string
+    public function getBarcodeTtn(): ?int
     {
         return $this->barcodeTtn;
     }
 
-    public function setBarcodeTtn(?string $barcodeTtn): static
+    public function setBarcodeTtn(?int $barcodeTtn): static
     {
         $this->barcodeTtn = $barcodeTtn;
 

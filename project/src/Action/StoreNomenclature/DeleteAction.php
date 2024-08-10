@@ -2,11 +2,11 @@
 
 namespace App\Action\StoreNomenclature;
 
-use App\Entity\Store;
+use App\Component\EntityNotFoundException;
 use App\Entity\Nomenclature;
+use App\Entity\Store;
 use App\Entity\StoreNomenclature;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class DeleteAction
 {

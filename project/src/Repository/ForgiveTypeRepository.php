@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\ForgiveType;
 use App\Component\Paginator;
 use App\Dto\ForgiveType\RequestQueryDto;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\ForgiveType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<ForgiveType>

@@ -9,17 +9,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestDto
 {
     public function __construct(
-        #[Groups(['user:create', 'user:update', 'unique:email'])]
-        #[Assert\Email(groups: ['user:create', 'unique:email'])]
-        #[Assert\NotBlank(groups: ['user:create', 'unique:email'])]
+        #[Groups(['user:create', 'user:update', 'unique:email', 'user:create_worker'])]
+        #[Assert\Email(groups: ['user:create', 'unique:email', 'user:create_worker'])]
+        #[Assert\NotBlank(groups: ['user:create', 'unique:email', 'user:create_worker'])]
         private ?string $email,
-        #[Groups(['user:create', 'unique:username'])]
-        #[Assert\NotBlank(groups: ['user:create', 'unique:username'])]
-        #[Assert\Length(min: 3, groups: ['user:create', 'unique:username'])]
+        #[Groups(['user:create', 'unique:username', 'user:create_worker'])]
+        #[Assert\NotBlank(groups: ['user:create', 'unique:username', 'user:create_worker'])]
+        #[Assert\Length(min: 3, groups: ['user:create', 'unique:username', 'user:create_worker'])]
         private ?string $username,
-        #[Groups(['user:create', 'change:password'])]
-        #[Assert\NotBlank(groups: ['user:create', 'change:password'])]
-        #[Assert\Length(min: 6, groups: ['user:create', 'change:password'])]
+        #[Groups(['user:create', 'change:password', 'user:create_worker'])]
+        #[Assert\NotBlank(groups: ['user:create', 'change:password', 'user:create_worker'])]
+        #[Assert\Length(min: 6, groups: ['user:create', 'change:password', 'user:create_worker'])]
         private ?string $password,
         #[Groups(['change:password'])]
         #[SerializedName('old_password')]
@@ -44,9 +44,11 @@ final class RequestDto
         #[Groups(['user:update'])]
         private ?string $longitude,
         #[Groups(['user:update'])]
-        private ?array $phones
-    ) {
-    }
+        private ?array $phones,
+        #[Groups(['user:create_worker'])]
+        #[Assert\NotBlank(groups: ['user:create_worker'])]
+        private ?int $role
+    ) {}
 
     public function getEmail(): ?string
     {
@@ -106,5 +108,10 @@ final class RequestDto
     public function getConfirmPassword(): ?string
     {
         return $this->confirmPassword;
+    }
+
+    public function getRole(): ?int
+    {
+        return $this->role;
     }
 }

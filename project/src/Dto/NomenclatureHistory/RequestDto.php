@@ -19,6 +19,9 @@ final class RequestDto
         private ?int $forgiveTypeId,
         #[Groups(['nomenclature_history:create'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature_history:create'])]
+        private ?string $comment,
+        #[Groups(['nomenclature_history:create'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature_history:create'])]
         private ?float $qty = 0,
         #[Groups(['nomenclature_history:create'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature_history:create'])]
@@ -32,10 +35,8 @@ final class RequestDto
         #[Groups(['nomenclature_history:create'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature_history:create'])]
         private ?float $priceCourse = 0,
-        #[Groups(['nomenclature_history:create'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature_history:create'])]
-        private ?string $comment,
-    ) {}
+    ) {
+    }
 
     public function getStoreId(): ?int
     {

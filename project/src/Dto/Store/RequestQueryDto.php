@@ -13,7 +13,7 @@ final class RequestQueryDto
         #[Assert\NotBlank]
         #[Assert\Positive]
         private int $multiStoreId,
-        #[Groups(['store:index','store:nomenclatures'])]
+        #[Groups(['store:index', 'store:nomenclatures'])]
         #[Assert\Positive]
         private int $page = 1,
         #[Groups(['store:index', 'store:nomenclatures'])]

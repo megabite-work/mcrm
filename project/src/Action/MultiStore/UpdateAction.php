@@ -41,9 +41,6 @@ class UpdateAction
         if ($dto->getProfit()) {
             $multiStore->setProfit($dto->getProfit());
         }
-        if ($dto->getBarcodeTtn()) {
-            $multiStore->setBarcodeTtn($dto->getBarcodeTtn());
-        }
         if ($dto->getNds()) {
             $multiStore->setNds($dto->getNds());
         }

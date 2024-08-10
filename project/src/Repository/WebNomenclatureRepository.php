@@ -3,11 +3,11 @@
 namespace App\Repository;
 
 use App\Component\Paginator;
-use App\Entity\WebNomenclature;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Dto\WebNomenclature\RequestQueryDto;
 use App\Entity\MultiStore;
+use App\Entity\WebNomenclature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<WebNomenclature>

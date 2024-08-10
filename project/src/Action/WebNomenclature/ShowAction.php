@@ -16,7 +16,7 @@ class ShowAction
     {
         $webNomeclature = $this->repo->findWebNomenclatureByIdWithCategoryUnitStoreNomenclature($id);
 
-        if (null === $webNomeclature) {
+        if (null == $webNomeclature) {
             throw new EntityNotFoundException('not found');
         }
 

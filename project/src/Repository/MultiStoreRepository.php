@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
-use App\Entity\MultiStore;
 use App\Component\Paginator;
 use App\Dto\MultiStore\RequestQueryDto;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\MultiStore;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<MultiStore>

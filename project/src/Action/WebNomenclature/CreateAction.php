@@ -2,11 +2,11 @@
 
 namespace App\Action\WebNomenclature;
 
+use App\Component\EntityNotFoundException;
+use App\Dto\WebNomenclature\RequestDto;
 use App\Entity\Nomenclature;
 use App\Entity\WebNomenclature;
-use App\Dto\WebNomenclature\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class CreateAction
 {

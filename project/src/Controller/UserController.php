@@ -2,28 +2,30 @@
 
 namespace App\Controller;
 
-use App\Action\User\ChangePasswordAction;
+use App\Entity\User;
+use App\Dto\User\RequestDto;
+use OpenApi\Attributes as OA;
+use App\Action\User\ShowAction;
+use App\Action\User\IndexAction;
 use App\Action\User\CreateAction;
 use App\Action\User\DeleteAction;
-use App\Action\User\IndexAction;
-use App\Action\User\IsUniqueEmailAction;
-use App\Action\User\IsUniqueUsernameAction;
-use App\Action\User\ShowAction;
 use App\Action\User\ShowMeAction;
 use App\Action\User\UpdateAction;
-use App\Dto\User\RequestDto;
 use App\Dto\User\RequestQueryDto;
-use App\Entity\User;
+use App\Action\User\ShowRoleAction;
+use App\Action\User\CreateWorkerAction;
+use App\Action\User\IsUniqueEmailAction;
+use App\Action\User\ChangePasswordAction;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Operation;
+use App\Action\User\IsUniqueUsernameAction;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/api/users', format: 'json')]
 #[OA\Tag(name: 'User')]
@@ -56,11 +58,23 @@ class UserController extends AbstractController
         return $this->json($action($user->getId()), context: ['groups' => ['user:me']]);
     }
 
+    #[Route(path: '/roles', methods: ['GET'])]
+    public function roles(ShowRoleAction $action): JsonResponse
+    {
+        return $this->json($action());
+    }
+
     #[Route(path: '', methods: ['POST'])]
     #[Security(name: null)]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['user:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['auth:read']]);
+    }
+
+    #[Route(path: '/create-worker', methods: ['POST'])]
+    public function createWorker(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_worker']])] RequestDto $dto, CreateWorkerAction $action): JsonResponse
+    {
+        return $this->json($action($dto), context: ['groups' => ['user:show']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

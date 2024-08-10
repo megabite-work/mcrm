@@ -29,7 +29,8 @@ final class RequestDto
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
         private ?bool $isActive = true
-    ) {}
+    ) {
+    }
 
     public function getNomenclatureId(): ?int
     {

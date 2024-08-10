@@ -34,7 +34,7 @@ class StoreNomenclature
     private ?Nomenclature $nomenclature = null;
 
     #[ORM\Column(name: 'qty', type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
-    #[Groups(['store_nomenclature:index','store_nomenclature:show', 'nomenclature:show', 'web_nomenclature:show'])]
+    #[Groups(['store_nomenclature:index', 'store_nomenclature:show', 'nomenclature:show', 'web_nomenclature:show'])]
     private float|string $qty = 0;
 
     public function getId(): ?int

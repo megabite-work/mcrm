@@ -11,7 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: NomenclatureRepository::class)]
 #[ORM\Table(name: 'nomenclature')]
@@ -31,9 +30,9 @@ class Nomenclature
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?string $mxik = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::BIGINT)]
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private ?string $barcode = null;
+    private ?int $barcode = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
@@ -124,12 +123,12 @@ class Nomenclature
         return $this;
     }
 
-    public function getBarcode(): ?string
+    public function getBarcode(): ?int
     {
         return $this->barcode;
     }
 
-    public function setBarcode(?string $barcode): static
+    public function setBarcode(?int $barcode): static
     {
         $this->barcode = $barcode;
 
@@ -326,7 +325,7 @@ class Nomenclature
     #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
     public function getTotalQty(): ?int
     {
-        return $this->storeNomenclatures ? $this->storeNomenclatures->reduce(fn($init, $item): float => $item->getQty() + $init, 0) : 0;
+        return $this->storeNomenclatures->count() ? $this->storeNomenclatures->reduce(fn ($init, $item): float => $item->getQty() + $init, 0) : 0;
     }
 
     public function addStoreNomenclature(StoreNomenclature $storeNomenclature): static

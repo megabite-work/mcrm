@@ -8,15 +8,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestDto
 {
     public function __construct(
-        #[Groups(['nomenclature:create'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create'])]
+        #[Groups(['nomenclature:create', 'nomenclature:is_unique_barcode'])]
+        #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_barcode'])]
         private ?int $multiStoreId,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:create'])]
         private ?int $categoryId,
-        #[Groups(['nomenclature:create', 'nomenclature:update'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create'])]
-        private ?string $barcode,
+        #[Groups(['nomenclature:create', 'nomenclature:update', 'nomenclature:is_unique_barcode'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:create', 'nomenclature:is_unique_barcode'])]
+        private ?int $barcode,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:create'])]
         private ?string $nameUz,
@@ -81,7 +81,7 @@ final class RequestDto
         return $this->categoryId;
     }
 
-    public function getBarcode(): ?string
+    public function getBarcode(): ?int
     {
         return $this->barcode;
     }

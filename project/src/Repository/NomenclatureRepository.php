@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Store;
+use App\Entity\MultiStore;
 use App\Component\Paginator;
 use App\Entity\Nomenclature;
+use App\Dto\Nomenclature\RequestDto;
 use App\Dto\Nomenclature\RequestQueryDto;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Dto\StoreNomenclature\RequestQueryDto as StoreNomenclatureRequestQueryDto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Dto\StoreNomenclature\RequestQueryDto as StoreNomenclatureRequestQueryDto;
 
 /**
  * @extends ServiceEntityRepository<Nomenclature>
@@ -113,5 +115,13 @@ class NomenclatureRepository extends ServiceEntityRepository
         )->setParameters(['id' => $nomenclatureId, 'store' => $store]);
 
         return $query->getOneOrNullResult();
+    }
+
+    public function IsUniqueBarcodeByMultiStore(RequestDto $dto): ?bool
+    {
+        $entityManager = $this->getEntityManager();
+        $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
+
+        return null === $this->findOneBy(['multiStore' => $multiStore, 'barcode' => $dto->getBarcode()]);
     }
 }

@@ -14,8 +14,6 @@ final class RequestDto
         #[Groups(['multi_store:create', 'multi_store:update'])]
         private ?string $profit,
         #[Groups(['multi_store:create', 'multi_store:update'])]
-        private ?string $barcodeTtn,
-        #[Groups(['multi_store:create', 'multi_store:update'])]
         private ?int $nds,
         #[Groups(['multi_store:update'])]
         private ?string $region,
@@ -42,11 +40,6 @@ final class RequestDto
     public function getProfit(): ?string
     {
         return $this->profit;
-    }
-
-    public function getBarcodeTtn(): ?string
-    {
-        return $this->barcodeTtn;
     }
 
     public function getNds(): ?int

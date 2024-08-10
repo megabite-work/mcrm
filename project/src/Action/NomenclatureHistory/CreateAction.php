@@ -2,19 +2,21 @@
 
 namespace App\Action\NomenclatureHistory;
 
-use App\Entity\User;
-use App\Entity\Store;
+use App\Action\StoreNomenclature\CreateOrUpdateAction;
+use App\Component\EntityNotFoundException;
+use App\Dto\NomenclatureHistory\RequestDto;
 use App\Entity\ForgiveType;
 use App\Entity\Nomenclature;
 use App\Entity\NomenclatureHistory;
+use App\Entity\Store;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
-use App\Dto\NomenclatureHistory\RequestDto;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
+        private CreateOrUpdateAction $createOrUpdateAction
     ) {}
 
     public function __invoke(RequestDto $dto, User $user): NomenclatureHistory
@@ -26,6 +28,16 @@ class CreateAction
             throw new EntityNotFoundException('store or nomenclature not found');
         }
 
+        $nomenclatureHistory = $this->create($user, $nomenclature, $store, $dto);
+        $this->createOrUpdateAction->__invoke($store, $nomenclature, $dto->getQty());
+
+        $this->em->flush();
+
+        return $nomenclatureHistory;
+    }
+
+    private function create(User $user, Nomenclature $nomenclature, Store $store, RequestDto $dto): NomenclatureHistory
+    {
         $nomenclatureHistory = (new NomenclatureHistory())
             ->setOwner($user)
             ->setNomenclature($nomenclature)
@@ -43,7 +55,6 @@ class CreateAction
         }
 
         $this->em->persist($nomenclatureHistory);
-        $this->em->flush();
 
         return $nomenclatureHistory;
     }

@@ -6,8 +6,8 @@ namespace App\Component;
 
 class EntityNotFoundException extends \RuntimeException
 {
-    public function __construct($message = '')
+    public function __construct($message = '', $code = 404)
     {
-        parent::__construct($message);
+        parent::__construct($message, $code);
     }
 }

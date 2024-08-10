@@ -20,7 +20,7 @@ class IndexAction
         } else {
             $nomenclatures = $this->repo->findAllNomenclatures($dto);
         }
-        
+
         return $nomenclatures;
     }
 }

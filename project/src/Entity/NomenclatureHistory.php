@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\NomenclatureHistoryRepository;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -51,23 +50,23 @@ class NomenclatureHistory
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private null|float|string $qty = 0;
+    private float|string|null $qty = 0;
 
     #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private null|float|string $oldPrice = null;
+    private float|string|null $oldPrice = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private null|float|string $price = null;
+    private float|string|null $price = null;
 
     #[ORM\Column(name: 'oldprice_course', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private null|float|string $oldPriceCourse = null;
+    private float|string|null $oldPriceCourse = null;
 
     #[ORM\Column(name: 'price_course', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private null|float|string $priceCourse = null;
+    private float|string|null $priceCourse = null;
 
     public function getId(): ?int
     {
@@ -127,67 +126,67 @@ class NomenclatureHistory
         return $this->comment;
     }
 
-    public function setComment(string $comment): static
+    public function setComment(?string $comment): static
     {
         $this->comment = $comment;
 
         return $this;
     }
 
-    public function getQty(): ?string
+    public function getQty(): ?float
     {
         return $this->qty;
     }
 
-    public function setQty(string $qty): static
+    public function setQty(?float $qty): static
     {
         $this->qty = $qty;
 
         return $this;
     }
 
-    public function getOldPrice(): ?string
+    public function getOldPrice(): ?float
     {
         return $this->oldPrice;
     }
 
-    public function setOldPrice(string $oldPrice): static
+    public function setOldPrice(?float $oldPrice): static
     {
         $this->oldPrice = $oldPrice;
 
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(?float $price): static
     {
         $this->price = $price;
 
         return $this;
     }
 
-    public function getOldPriceCourse(): ?string
+    public function getOldPriceCourse(): ?float
     {
         return $this->oldPriceCourse;
     }
 
-    public function setOldPriceCourse(string $oldPriceCourse): static
+    public function setOldPriceCourse(?float $oldPriceCourse): static
     {
         $this->oldPriceCourse = $oldPriceCourse;
 
         return $this;
     }
 
-    public function getPriceCourse(): ?string
+    public function getPriceCourse(): ?float
     {
         return $this->priceCourse;
     }
 
-    public function setPriceCourse(string $priceCourse): static
+    public function setPriceCourse(?float $priceCourse): static
     {
         $this->priceCourse = $priceCourse;
 

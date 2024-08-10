@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\Store;
 use App\Component\Paginator;
-use App\Entity\NomenclatureHistory;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Dto\NomenclatureHistory\RequestQueryDto;
+use App\Entity\NomenclatureHistory;
+use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<NomenclatureHistory>

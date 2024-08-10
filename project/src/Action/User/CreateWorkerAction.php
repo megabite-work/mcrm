@@ -2,23 +2,22 @@
 
 namespace App\Action\User;
 
-use App\Entity\User;
-use App\Dto\User\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Dto\User\RequestDto;
+use App\Entity\Role;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 
-class CreateAction
+class CreateWorkerAction
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private EntityManagerInterface $em,
-        private AuthenticationSuccessHandler $handler
+        private EntityManagerInterface $em
     ) {
     }
 
-    public function __invoke(RequestDto $dto): array
+    public function __invoke(RequestDto $dto): User
     {
         $isUniqueEmail = $this->em->getRepository(User::class)->isUniqueEmail($dto->getEmail());
         $isUniqueUsername = $this->em->getRepository(User::class)->isUniqueUsername($dto->getUsername());
@@ -26,21 +25,19 @@ class CreateAction
         if (!$isUniqueEmail || !$isUniqueUsername) {
             throw new EntityNotFoundException('this email or username already exists', 400);
         }
-        
+
         $user = (new User())
             ->setEmail($dto->getEmail())
-            ->setUsername($dto->getUsername())
-            ->setRoles(['ROLE_DIRECTOR']);
+            ->setUsername($dto->getUsername());
 
+        $this->setRole($user, $dto->getRole());
         $this->hashPassword($user, $dto->getPassword());
         $this->setQrCode($user, $dto->getEmail());
 
         $this->em->persist($user);
         $this->em->flush();
 
-        $tokens = json_decode($this->handler->handleAuthenticationSuccess($user)->getContent(), true);
-
-        return compact('user', 'tokens');
+        return $user;
     }
 
     private function hashPassword(User $user, string $password): void
@@ -53,5 +50,17 @@ class CreateAction
     {
         $qrCode = base64_encode($data);
         $user->setQrCode($qrCode);
+    }
+
+    private function setRole(User $user, int $role): void
+    {
+        $roles = array_column(Role::getRoles(), 'id');
+
+        if (!in_array($role, $roles)) {
+            throw new EntityNotFoundException('role not found');
+        }
+
+        $roleName = Role::getRoleName($role);
+        $user->setRoles($roleName);
     }
 }

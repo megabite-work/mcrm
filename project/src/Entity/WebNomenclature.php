@@ -75,7 +75,7 @@ class WebNomenclature
         return $this->article;
     }
 
-    public function setArticle(string $article): static
+    public function setArticle(?string $article): static
     {
         $this->article = $article;
 
@@ -87,7 +87,7 @@ class WebNomenclature
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
@@ -99,7 +99,7 @@ class WebNomenclature
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): static
     {
         $this->image = $image;
 
@@ -111,7 +111,7 @@ class WebNomenclature
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -123,7 +123,7 @@ class WebNomenclature
         return $this->document;
     }
 
-    public function setDocument(string $document): static
+    public function setDocument(?string $document): static
     {
         $this->document = $document;
 
@@ -135,7 +135,7 @@ class WebNomenclature
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): static
+    public function setIsActive(?bool $isActive): static
     {
         $this->isActive = $isActive;
 
