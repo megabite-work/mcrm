@@ -20,6 +20,8 @@ services:
       - ./../project/:/var/www/html:rw
     depends_on:
       - db
+    networks:
+      - default
 
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
@@ -38,6 +40,8 @@ services:
       - ./../project/:/var/www/html:rw
     depends_on:
       - php
+    networks:
+      - default
 
   db:
     container_name: mysql
@@ -60,6 +64,9 @@ services:
         "--character-set-server=utf8mb4",
         "--collation-server=utf8mb4_general_ci",
       ]
+    networks:
+      - mysql_api
+      - default
 
   adminer:
     container_name: ${COMPOSE_PROJECT_NAME}-adminer
@@ -69,9 +76,17 @@ services:
       - 8999:8080
     environment:
       ADMINER_DESIGN: dracula
+    networks:
+      - default
 
 volumes:
   db_data:
+
+networks:
+  default:
+  mysql_api:
+    name: mysql_api
+    external: true
 
   # redis:
   #     container_name: redis
