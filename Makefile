@@ -86,3 +86,11 @@ start:
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)
 	@$(PHP) bash
+
+prod:
+	@$(DC) build
+	@$(DC) up -d --remove-orphans
+	@$(PHP) composer install  --no-dev --optimize-autoloader
+	@sleep 30
+	@$(PHP) $(DMM)
+	@$(PHP) $(DFL)
