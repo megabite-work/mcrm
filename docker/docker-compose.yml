@@ -62,7 +62,7 @@ services:
         "--collation-server=utf8mb4_general_ci",
       ]
     networks:
-      - mysql_api
+      # - mysql_api
       - default
 
 volumes:
@@ -70,6 +70,6 @@ volumes:
 
 networks:
   default:
-  mysql_api:
-    name: mysql_api
-    external: true
+  # mysql_api:
+  #   name: mysql_api
+  #   external: true

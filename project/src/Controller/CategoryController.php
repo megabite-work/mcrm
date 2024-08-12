@@ -10,7 +10,7 @@ use App\Action\Category\CreateAction;
 use App\Action\Category\DeleteAction;
 use App\Action\Category\UpdateAction;
 use App\Dto\Category\RequestQueryDto;
-use Symfony\Bundle\SecurityBundle\Security;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;

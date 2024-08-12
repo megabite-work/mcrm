@@ -6,7 +6,7 @@ use OpenApi\Attributes as OA;
 use App\Dto\WebNomenclature\RequestDto;
 use App\Action\WebNomenclature\ShowAction;
 use App\Action\WebNomenclature\IndexAction;
-use Symfony\Bundle\SecurityBundle\Security;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use App\Action\WebNomenclature\CreateAction;
 use App\Action\WebNomenclature\DeleteAction;
 use App\Action\WebNomenclature\UpdateAction;
