@@ -97,6 +97,3 @@ prod:
 	@$(DC) up -d --remove-orphans
 	@$(PHP) composer install --no-dev --optimize-autoloader
 	@$(PHP) bin/console cache:clear
-	@sleep 30
-	@$(PHP) $(DMM)
-	@$(PHP) $(DFL)
