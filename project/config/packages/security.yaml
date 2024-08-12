@@ -35,46 +35,46 @@ security:
     - {
         path: ^/api/users/(login|refresh-token),
         roles: PUBLIC_ACCESS,
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/auth/(login|refresh-token),
         roles: PUBLIC_ACCESS,
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/users($|is-unique-email$|is-unique-username$),
         roles: PUBLIC_ACCESS,
         methods: [POST],
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/(doc|doc.json),
         roles: PUBLIC_ACCESS,
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/categories($|/\d+$),
         roles: PUBLIC_ACCESS,
         methods: [GET],
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/web-nomenclatures($|/\d+$),
         roles: PUBLIC_ACCESS,
         methods: [GET],
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/units/\d+$,
         roles: PUBLIC_ACCESS,
         methods: [GET],
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
     - {
         path: ^/api/.+,
         roles: IS_AUTHENTICATED_FULLY,
-        ips: ['%env(TRUSTED_IPS)%'],
+        ips: [127.0.0.1, 81.95.238.234],
       }
 
 when@test:
