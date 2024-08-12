@@ -35,7 +35,11 @@ dc_logs:
 	@$(DC) logs -f
 
 dc_down:
-	@$(DC) down -v --rmi=local --remove-orphans
+	@$(DC) down --rmi=local --remove-orphans
+
+php_refresh:
+	@$(DC) up --build --no-deps php
+	@$(PHP) bin/console cache:clear
 
 
 ##################
