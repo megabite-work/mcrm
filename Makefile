@@ -5,11 +5,12 @@ PHP = $(DC) exec -u www-data php
 NGINX = $(DC) exec -it nginx
 DB = $(DC) exec -it db
 CI = composer install --prefer-dist --no-progress --no-scripts --no-interaction
-DDC = bin/console d:d:c --if-not-exists
-DMM = bin/console d:m:m -n
-DFL = bin/console d:f:load -n
-DIF = bin/console d:m:diff
 BIN = bin/console
+DDC = $(BIN) d:d:c --if-not-exists
+DMM = $(BIN) d:m:m -n
+DFL = $(BIN) d:f:load -n
+DIF = $(BIN) d:m:diff
+CC = $(BIN) c:c
 
 ##################
 # Docker compose
@@ -55,6 +56,9 @@ php_ci:
 
 php_ddc:
 	@$(PHP) $(DDC) 
+
+php_cc:
+	@$(PHP) $(CC) 
 
 php_dmm:
 	@sleep 5
