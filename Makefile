@@ -48,7 +48,7 @@ nginx_bash:
 	@$(NGINX) bash
 
 db_bash:
-	@$(DB) sh
+	@$(DB) bash
 
 php_ci:
 	@$(PHP) $(CI)
@@ -74,15 +74,12 @@ bc: ## Run bin/console, pass the parameter "c=" to run a given command, example:
 	@$(eval c ?=)
 	@$(PHP) $(BIN) $(c)
 
-db_sql:
-	@$(DB) psql -U ${DB_USER}
-
 start:
 	@$(DC) build
 	@$(DC) up -d --remove-orphans
-	# @$(PHP) composer install
+	@$(PHP) composer install
 	@sleep 30
-	@$(PHP) $(DIF)
+	# @$(PHP) $(DIF)
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)
 	@$(PHP) bash
@@ -90,7 +87,8 @@ start:
 prod:
 	@$(DC) build
 	@$(DC) up -d --remove-orphans
-	@$(PHP) composer install --prefer-dist --no-progress --no-scripts --no-interaction
+	@$(PHP) composer install --no-dev --optimize-autoloader
+	@$(PHP) bin/console cache:clear
 	@sleep 30
 	@$(PHP) $(DMM)
 	@$(PHP) $(DFL)

@@ -3,11 +3,10 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-php
     build:
       context: ./php
+      target: ${TARGET:-dev}
       args:
         - PUID=${PUID}
         - PGID=${PGID}
-        - XDEBUG_MODE=${XDEBUG_MODE}
-        - TZ=${TZ:-Asia/Tashkent}
     image: ${COMPOSE_PROJECT_NAME}-php-fpm:1.0.0
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -56,8 +55,6 @@ services:
       TZ: Asia/Tashkent
     volumes:
       - "db_data:/var/lib/mysql"
-    # ports:
-    #   - "127.0.0.1:${DB_PORT:-3306}:3306"
     command:
       [
         "mysqld",
@@ -65,18 +62,7 @@ services:
         "--collation-server=utf8mb4_general_ci",
       ]
     networks:
-      - mysql_api
-      - default
-
-  adminer:
-    container_name: ${COMPOSE_PROJECT_NAME}-adminer
-    image: adminer
-    restart: unless-stopped
-    ports:
-      - 8999:8080
-    environment:
-      ADMINER_DESIGN: dracula
-    networks:
+      # - mysql_api
       - default
 
 volumes:
@@ -84,36 +70,6 @@ volumes:
 
 networks:
   default:
-  mysql_api:
-    name: mysql_api
-    external: true
-
-  # redis:
-  #     container_name: redis
-  #     image: "redis:alpine"
-  #     restart: unless-stopped
-  #     environment:
-  #         TZ: Asia/Tashkent
-  #     volumes:
-  #         - "./docker/data/redis:/data"
-  #     ports:
-  #         - "127.0.0.1:${REDIS_PORT:-6379}:6379"
-  # db:
-  #   container_name: ${COMPOSE_PROJECT_NAME}-pgsql
-  #   image: "postgres:16.3-alpine3.20"
-  #   restart: unless-stopped
-  #   environment:
-  #     POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
-  #     POSTGRES_USER: "${DB_USER:-example}"
-  #     POSTGRES_DB: "${DB_NAME:-example}"
-  #     TZ: Asia/Tashkent
-  #     PGTZ: Asia/Tashkent
-  #   volumes:
-  #     - db_data:/var/lib/postgresql/data
-  #     - ./db/postgresql.conf:/etc/postgresql.conf:ro
-  #   ports:
-  #     - "127.0.0.1:${DB_PORT:-5432}:5432"
-  #   command:
-  #     - "postgres"
-  #     - "-c"
-  #     - "config_file=/etc/postgresql.conf"
+  # mysql_api:
+  #   name: mysql_api
+  #   external: true

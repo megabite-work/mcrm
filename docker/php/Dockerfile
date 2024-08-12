@@ -1,33 +1,45 @@
-FROM php:8.2-fpm-alpine3.20
+FROM php:8.2-fpm-alpine3.20 AS base
 
-ARG TZ=Asia/Tashkent
-ENV TZ=${TZ}
-
-RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash libpq-dev --update linux-headers
-
-RUN docker-php-ext-install mysqli pdo_mysql mbstring
+RUN apk add --no-cache \
+    curl \
+    git \
+    build-base \
+    zlib-dev \
+    oniguruma-dev \
+    autoconf \
+    bash \
+    zip \
+    libzip-dev \
+    icu-dev \
+    --update linux-headers &&\
+    docker-php-ext-configure intl && \
+    docker-php-ext-install \
+    intl \
+    mysqli \
+    pdo_mysql \
+    mbstring \
+    zip
 
 COPY php.ini /usr/local/etc/php/php.ini
-COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-ARG XDEBUG_MODE=off
-
-RUN if [ ${XDEBUG_MODE} = debug ]; \
-    then \
-        pecl install xdebug && docker-php-ext-enable xdebug; \
-    else \
-        docker-php-ext-install opcache; \
-    fi
 
 ARG PUID=1000
 ARG PGID=1000
+
 RUN apk --no-cache add shadow && \
     groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-EXPOSE 9000
+FROM base AS dev
 
-CMD php-fpm
+COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
+
+FROM base AS prod
+
+COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+RUN docker-php-ext-install opcache

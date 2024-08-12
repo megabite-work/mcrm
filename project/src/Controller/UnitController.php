@@ -2,19 +2,20 @@
 
 namespace App\Controller;
 
+use App\Dto\Unit\RequestDto;
+use OpenApi\Attributes as OA;
+use App\Action\Unit\ShowAction;
+use App\Action\Unit\IndexAction;
 use App\Action\Unit\CreateAction;
 use App\Action\Unit\DeleteAction;
-use App\Action\Unit\IndexAction;
-use App\Action\Unit\ShowAction;
 use App\Action\Unit\UpdateAction;
-use App\Dto\Unit\RequestDto;
 use App\Dto\Unit\RequestQueryDto;
-use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/api/units', format: 'json')]
 #[OA\Tag(name: 'Unit')]
@@ -27,6 +28,7 @@ class UnitController extends AbstractController
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
+    #[Security(name: null)]
     public function show(int $id, ShowAction $action): JsonResponse
     {
         return $this->json($action($id), context: ['groups' => ['unit:show']]);
