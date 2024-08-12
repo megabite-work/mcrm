@@ -5226,4 +5226,4 @@ INSERT INTO `category` (`id`, `parent_id`, `name`) VALUES
 (7318, 2881, '{"ru":"Турникеты", "uz": NULL, "uzc": NULL}'),
 (7319, 2881, '{"ru":"Комплектующие для турникетов", "uz": NULL, "uzc": NULL}'),
 (7320, 2881, '{"ru":"Карты и метки", "uz": NULL, "uzc": NULL}'),
-(7321, 2881, '{"ru":"Металлодетекторы, "uz": NULL, "uzc": NULL}';
+(7321, 2881, '{"ru":"Металлодетекторы, "uz": NULL, "uzc": NULL}');

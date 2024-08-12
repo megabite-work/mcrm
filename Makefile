@@ -38,7 +38,7 @@ dc_down:
 	@$(DC) down --rmi=local --remove-orphans
 
 php_refresh:
-	@$(DC) up --build --no-deps php
+	@$(DC) up -d --build --no-deps php
 	@$(PHP) bin/console cache:clear
 
 
