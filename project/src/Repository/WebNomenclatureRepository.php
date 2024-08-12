@@ -37,7 +37,7 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
-    public function findWebNomenclatureByIdWithCategoryUnitStoreNomenclature(int $id): WebNomenclature
+    public function findWebNomenclatureByIdWithCategoryUnitStoreNomenclature(int $id): ?WebNomenclature
     {
         $entityManager = $this->getEntityManager();
 

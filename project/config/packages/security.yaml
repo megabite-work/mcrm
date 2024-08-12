@@ -17,12 +17,6 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-    user_register:
-      stateless: true
-      pattern: ^/api/users
-      methods:
-        - post
-      security: false
     api:
       pattern: ^/api
       stateless: true
@@ -36,9 +30,17 @@ security:
       refresh_jwt:
         check_path: api_refresh_token
   access_control:
+    - { path: ^/api/users/(login|refresh-token), roles: PUBLIC_ACCESS }
     - { path: ^/api/auth/(login|refresh-token), roles: PUBLIC_ACCESS }
-    - { path: ^/api/users/(is-unique-email|is-unique-username), roles: PUBLIC_ACCESS }
+    - {
+        path: ^/api/users($|is-unique-email$|is-unique-username$),
+        roles: PUBLIC_ACCESS,
+        methods: [POST],
+      }
     - { path: ^/api/(doc|doc.json), roles: PUBLIC_ACCESS }
+    - { path: ^/api/categories($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-nomenclatures($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/units/\d+$, roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/.+, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:

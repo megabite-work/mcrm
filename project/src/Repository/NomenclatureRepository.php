@@ -84,7 +84,7 @@ class NomenclatureRepository extends ServiceEntityRepository
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), true);
     }
 
-    public function findNomenclatureById(int $id): Nomenclature
+    public function findNomenclatureById(int $id): ?Nomenclature
     {
         $entityManager = $this->getEntityManager();
 
@@ -100,7 +100,7 @@ class NomenclatureRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findNomenclatureByIdWithStore(int $storeId, int $nomenclatureId): Nomenclature
+    public function findNomenclatureByIdWithStore(int $storeId, int $nomenclatureId): ?Nomenclature
     {
         $entityManager = $this->getEntityManager();
         $store = $entityManager->find(Store::class, $storeId);

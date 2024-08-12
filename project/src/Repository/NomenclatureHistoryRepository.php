@@ -40,7 +40,7 @@ class NomenclatureHistoryRepository extends ServiceEntityRepository
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
-    public function findNomenclatureHistoryById(int $id): NomenclatureHistory
+    public function findNomenclatureHistoryById(int $id): ?NomenclatureHistory
     {
         $entityManager = $this->getEntityManager();
 

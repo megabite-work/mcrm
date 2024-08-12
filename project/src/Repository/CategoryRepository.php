@@ -45,7 +45,7 @@ class CategoryRepository extends ServiceEntityRepository
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
-    public function findCategoryByIdWithParentAndChildrens(int $id): Category
+    public function findCategoryByIdWithParentAndChildrens(int $id): ?Category
     {
         $entityManager = $this->getEntityManager();
 
