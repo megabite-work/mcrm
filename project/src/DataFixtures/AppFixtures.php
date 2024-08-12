@@ -77,12 +77,44 @@ class AppFixtures extends Fixture
             $categoryParents[] = CategoryFactory::createOne(['name' => $category[2]]);
         }
 
-        // foreach ($categoryParents as $parent) {
-        //     $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
-        //     foreach ($childrens as $child) {
-        //         CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
-        //     }
-        // }
+        $category2Parents = [];
+        foreach ($categoryParents as $parent) {
+            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            foreach ($childrens as $child) {
+                $category2Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+            }
+        }
+
+        $category3Parents = [];
+        foreach ($category2Parents as $parent) {
+            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            foreach ($childrens as $child) {
+                $category3Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+            }
+        }
+
+        $category4Parents = [];
+        foreach ($category3Parents as $parent) {
+            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            foreach ($childrens as $child) {
+                $category4Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+            }
+        }
+
+        $category5Parents = [];
+        foreach ($category4Parents as $parent) {
+            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            foreach ($childrens as $child) {
+                $category5Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+            }
+        }
+
+        foreach ($category5Parents as $parent) {
+            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            foreach ($childrens as $child) {
+                CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+            }
+        }
     }
 
     public function getUnits(): array
