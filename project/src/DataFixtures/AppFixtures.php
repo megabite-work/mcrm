@@ -17,116 +17,138 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        UserFactory::createMany(
-            5,
-            fn(int $i) => [
-                'email' => "user$i@gmail.com",
-                'username' => "user$i",
-                'address' => AddressFactory::new(),
-            ]
+        // UserFactory::createMany(
+        //     5,
+        //     fn(int $i) => [
+        //         'email' => "user$i@gmail.com",
+        //         'username' => "user$i",
+        //         'address' => AddressFactory::new(),
+        //     ]
+        // );
+
+        // MultiStoreFactory::createMany(
+        //     5,
+        //     fn(int $i) => [
+        //         'owner' => UserFactory::random(),
+        //         'address' => AddressFactory::new(),
+        //     ]
+        // );
+
+        // UserFactory::new(['address' => AddressFactory::new()])->admin()->create();
+
+        // StoreFactory::createMany(
+        //     5,
+        //     fn(int $i) => [
+        //         'multiStore' => MultiStoreFactory::random(),
+        //         'address' => AddressFactory::new(),
+        //     ]
+        // );
+
+        // PhoneFactory::createMany(
+        //     6,
+        //     fn() => [
+        //         'owner' => UserFactory::random(),
+        //     ]
+        // );
+
+        // PhoneFactory::createMany(
+        //     5,
+        //     fn() => [
+        //         'store' => StoreFactory::random(),
+        //     ]
+        // );
+
+        // PhoneFactory::createMany(
+        //     5,
+        //     fn() => [
+        //         'multiStore' => MultiStoreFactory::random(),
+        //     ]
+        // );
+
+        $units = $this->getUnits();
+        UnitFactory::createSequence(function () use ($units) {
+            foreach ($units as $unit) {
+                yield [
+                    'name' => [
+                        'uz' => $unit['uz'],
+                        'uzc' => $unit['uzc'],
+                        'ru' => $unit['ru']
+                    ],
+                    'code' => $unit['code']
+                ];
+            }
+        });
+
+        $base = $this->getCategories();
+        $start = microtime(true);
+        $categories = array_filter($base, fn($category) => null === $category[1]);
+
+        $parents_1 = CategoryFactory::createSequence(
+            function () use ($categories) {
+                foreach ($categories as $category) {
+                    yield ['name' => $category[2]];
+                }
+            }
         );
-
-        MultiStoreFactory::createMany(
-            5,
-            fn(int $i) => [
-                'owner' => UserFactory::random(),
-                'address' => AddressFactory::new(),
-            ]
-        );
-
-        UserFactory::new(['address' => AddressFactory::new()])->admin()->create();
-
-        StoreFactory::createMany(
-            5,
-            fn(int $i) => [
-                'multiStore' => MultiStoreFactory::random(),
-                'address' => AddressFactory::new(),
-            ]
-        );
-
-        PhoneFactory::createMany(
-            6,
-            fn() => [
-                'owner' => UserFactory::random(),
-            ]
-        );
-
-        PhoneFactory::createMany(
-            5,
-            fn() => [
-                'store' => StoreFactory::random(),
-            ]
-        );
-
-        PhoneFactory::createMany(
-            5,
-            fn() => [
-                'multiStore' => MultiStoreFactory::random(),
-            ]
-        );
-
-        foreach ($this->getUnits() as $unit) {
-            UnitFactory::createOne([
-                'name' => ['uz' => $unit['uz'], 'uzc' => $unit['uzc'], 'ru' => $unit['ru']],
-                'code' => $unit['code'],
-            ]);
-        }
-
-        $categories = array_filter($this->getCategories(), fn($category) => null === $category[1]);
-        $parents_1 = CategoryFactory::createMany(count($categories), fn($i) => ['name' => $categories[$i - 1][2]]);
+        dump("parent_1 => " . count($parents_1) . ", time => " . microtime(true) - $start);
+        $start = microtime(true);
         foreach ($parents_1 as $parent) {
-            
-        }
-
-
-
-        $categoryParents = [];
-        foreach ($categories as $category) {
-            $categoryParents[] = CategoryFactory::createOne(['name' => $category[2]]);
-        }
-        dump('1-foreach counti', count($categoryParents));
-
-        $category2Parents = [];
-        foreach ($categoryParents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
-            foreach ($childrens as $child) {
-                $category2Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
-            }
-        }
-        dump('2-foreach counti', count($category2Parents));
-
-
-        $category3Parents = [];
-        foreach ($category2Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
-            foreach ($childrens as $child) {
-                $category3Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
-            }
-        }
-        dump('3-foreach counti', count($category3Parents));
-
-        $category4Parents = [];
-        foreach ($category3Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
-            foreach ($childrens as $child) {
-                $category4Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
-            }
-        }
-        dump('4-foreach counti', count($category4Parents));
-
-        $category5Parents = [];
-        foreach ($category4Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
-            foreach ($childrens as $child) {
-                $category5Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
-            }
-        }
-        dump('5-foreach counti', count($category5Parents));
-
-        foreach ($category5Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
-            foreach ($childrens as $child) {
-                CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
+            $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
+            dump("parent_2 => " . count($childrens) . ", time => " . microtime(true) - $start);
+            $parents_2 = CategoryFactory::createSequence(
+                function () use ($childrens, $parent) {
+                    foreach ($childrens as $category) {
+                        yield ['parent' => $parent, 'name' => $category[2]];
+                    }
+                }
+            );
+            $start = microtime(true);
+            foreach ($parents_2 as $parent) {
+                $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
+                dump("parent_3 => " . count($childrens) . ", time => " . microtime(true) - $start);
+                $parents_3 = CategoryFactory::createSequence(
+                    function () use ($childrens, $parent) {
+                        foreach ($childrens as $category) {
+                            yield ['parent' => $parent, 'name' => $category[2]];
+                        }
+                    }
+                );
+                $start = microtime(true);
+                foreach ($parents_3 as $parent) {
+                    $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
+                    dump("parent_4 => " . count($childrens) . ", time => " . microtime(true) - $start);
+                    $parents_4 = CategoryFactory::createSequence(
+                        function () use ($childrens, $parent) {
+                            foreach ($childrens as $category) {
+                                yield ['parent' => $parent, 'name' => $category[2]];
+                            }
+                        }
+                    );
+                    // $start = microtime(true);
+                    // foreach ($parents_4 as $parent) {
+                    //     $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
+                    //     dump("parent_5 => " . count($childrens) . ", time => " . microtime(true) - $start);
+                    //     $parents_5 = CategoryFactory::createSequence(
+                    //         function () use ($childrens, $parent) {
+                    //             foreach ($childrens as $category) {
+                    //                 yield ['parent' => $parent, 'name' => $category[2]];
+                    //             }
+                    //         }
+                    //     );
+                    //     $start = microtime(true);
+                    //     foreach ($parents_5 as $parent) {
+                    //         $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
+                    //         dump("parent_6 => " . count($childrens) . ", time => " . microtime(true) - $start);
+                    //         CategoryFactory::createSequence(
+                    //             function () use ($childrens, $parent) {
+                    //                 foreach ($childrens as $category) {
+                    //                     yield ['parent' => $parent, 'name' => $category[2]];
+                    //                 }
+                    //             }
+                    //         );
+                    //     }
+                    // }
+                }
             }
         }
     }

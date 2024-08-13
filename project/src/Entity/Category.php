@@ -133,7 +133,7 @@ class Category
         return $this->name;
     }
 
-    public function setName(array $name): static
+    public function setName(?array $name): static
     {
         $this->name = $name;
 

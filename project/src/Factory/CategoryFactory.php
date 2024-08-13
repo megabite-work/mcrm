@@ -19,6 +19,16 @@ final class CategoryFactory extends PersistentProxyObjectFactory
         return Category::class;
     }
 
+    public function parent($parent): self
+    {
+        return $this->with(['parent' => $parent]);
+    }    
+    
+    public function name(array $name): self
+    {
+        return $this->with(['name' => $name]);
+    }
+
     protected function defaults(): array|callable
     {
         return [

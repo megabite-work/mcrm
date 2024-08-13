@@ -37,14 +37,21 @@ dc_logs:
 dc_down:
 	@$(DC) down --rmi=local --remove-orphans
 
-php_refresh:
-	@$(DC) up -d --build --no-deps php
-	@$(PHP) bin/console cache:clear
 
 
 ##################
 # App
 ##################
+
+php_refresh:
+	@$(DC) up -d --build --no-deps php
+	@$(PHP) $(BIN) c:c
+
+db_refresh:
+	@$(PHP) $(BIN) d:d:d -f
+	@$(PHP) $(BIN) d:d:c
+	@$(PHP) $(BIN) d:m:m -n
+	@$(PHP) $(BIN) d:f:load -n
 
 php_bash:
 	@$(PHP) bash
@@ -85,6 +92,7 @@ bc: ## Run bin/console, pass the parameter "c=" to run a given command, example:
 restart:
 	@$(DC) down -v --rmi=local --remove-orphans
 	@$(DC) up -d --build --remove-orphans
+	@$(PHP) bin/console cache:clear
 	# @$(PHP) composer install
 	@sleep 30
 	# @$(PHP) $(DIF)
