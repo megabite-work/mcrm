@@ -18,6 +18,8 @@ class Paginator extends DoctrinePaginator
 
     public function __construct(QueryBuilder|Query $query, int $page = 1, int $perPage = self::ITEMS_PER_PAGE, bool $fetchJoinCollection = true)
     {
+        $page = $page ?? 1;
+        $perPage = $perPage ?? self::ITEMS_PER_PAGE;
         $query->setFirstResult(($page - 1) * $perPage);
         $query->setMaxResults($perPage);
 
