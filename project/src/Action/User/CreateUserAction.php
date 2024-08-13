@@ -7,16 +7,18 @@ use App\Dto\User\RequestDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 
 class CreateUserAction
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private AuthenticationSuccessHandler $handler
     ) {
     }
 
-    public function __invoke(RequestDto $dto): User
+    public function __invoke(RequestDto $dto): array
     {
         $isUniqueEmail = $this->em->getRepository(User::class)->isUniqueEmail($dto->getEmail());
         $isUniqueUsername = $this->em->getRepository(User::class)->isUniqueUsername($dto->getUsername());
@@ -35,7 +37,9 @@ class CreateUserAction
         $this->em->persist($user);
         $this->em->flush();
 
-        return $user;
+        $tokens = json_decode($this->handler->handleAuthenticationSuccess($user)->getContent(), true);
+
+        return compact('user', 'tokens');
     }
 
     private function hashPassword(User $user, string $password): void
