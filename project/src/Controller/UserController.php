@@ -72,15 +72,15 @@ class UserController extends AbstractController
         return $this->json($action($dto), context: ['groups' => ['auth:read']]);
     }
 
-    #[Route(path: '/create-worker', methods: ['POST'])]
-    public function createWorker(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_worker']])] RequestDto $dto, CreateWorkerAction $action): JsonResponse
+    #[Route(path: '/create-user', methods: ['POST'])]
+    #[Security(name: null)]
+    public function createUser(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_user']])] RequestDto $dto, CreateUserAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['user:show']]);
     }
 
-    #[Route(path: '/create-user', methods: ['POST'])]
-    #[Security(name: null)]
-    public function createUser(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_user']])] RequestDto $dto, CreateUserAction $action): JsonResponse
+    #[Route(path: '/create-worker', methods: ['POST'])]
+    public function createWorker(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_worker']])] RequestDto $dto, CreateWorkerAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['user:show']]);
     }
