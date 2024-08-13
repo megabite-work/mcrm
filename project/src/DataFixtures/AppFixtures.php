@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use App\Factory\AddressFactory;
 use App\Factory\CategoryFactory;
 use App\Factory\MultiStoreFactory;
@@ -18,7 +19,7 @@ class AppFixtures extends Fixture
     {
         UserFactory::createMany(
             5,
-            fn (int $i) => [
+            fn(int $i) => [
                 'email' => "user$i@gmail.com",
                 'username' => "user$i",
                 'address' => AddressFactory::new(),
@@ -27,7 +28,7 @@ class AppFixtures extends Fixture
 
         MultiStoreFactory::createMany(
             5,
-            fn (int $i) => [
+            fn(int $i) => [
                 'owner' => UserFactory::random(),
                 'address' => AddressFactory::new(),
             ]
@@ -37,7 +38,7 @@ class AppFixtures extends Fixture
 
         StoreFactory::createMany(
             5,
-            fn (int $i) => [
+            fn(int $i) => [
                 'multiStore' => MultiStoreFactory::random(),
                 'address' => AddressFactory::new(),
             ]
@@ -45,21 +46,21 @@ class AppFixtures extends Fixture
 
         PhoneFactory::createMany(
             6,
-            fn () => [
+            fn() => [
                 'owner' => UserFactory::random(),
             ]
         );
 
         PhoneFactory::createMany(
             5,
-            fn () => [
+            fn() => [
                 'store' => StoreFactory::random(),
             ]
         );
 
         PhoneFactory::createMany(
             5,
-            fn () => [
+            fn() => [
                 'multiStore' => MultiStoreFactory::random(),
             ]
         );
@@ -71,46 +72,59 @@ class AppFixtures extends Fixture
             ]);
         }
 
-        $categories = array_filter($this->getCategories(), fn ($category) => null === $category[1]);
+        $categories = array_filter($this->getCategories(), fn($category) => null === $category[1]);
+        $parents_1 = CategoryFactory::createMany(count($categories), fn($i) => ['name' => $categories[$i - 1][2]]);
+        foreach ($parents_1 as $parent) {
+            
+        }
+
+
+
         $categoryParents = [];
         foreach ($categories as $category) {
             $categoryParents[] = CategoryFactory::createOne(['name' => $category[2]]);
         }
+        dump('1-foreach counti', count($categoryParents));
 
         $category2Parents = [];
         foreach ($categoryParents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
             foreach ($childrens as $child) {
                 $category2Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
             }
         }
+        dump('2-foreach counti', count($category2Parents));
+
 
         $category3Parents = [];
         foreach ($category2Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
             foreach ($childrens as $child) {
                 $category3Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
             }
         }
+        dump('3-foreach counti', count($category3Parents));
 
         $category4Parents = [];
         foreach ($category3Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
             foreach ($childrens as $child) {
                 $category4Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
             }
         }
+        dump('4-foreach counti', count($category4Parents));
 
         $category5Parents = [];
         foreach ($category4Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
             foreach ($childrens as $child) {
                 $category5Parents[] = CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
             }
         }
+        dump('5-foreach counti', count($category5Parents));
 
         foreach ($category5Parents as $parent) {
-            $childrens = array_filter($this->getCategories(), fn ($category) => $category[1] === $parent->getId());
+            $childrens = array_filter($this->getCategories(), fn($category) => $category[1] === $parent->getId());
             foreach ($childrens as $child) {
                 CategoryFactory::createOne(['parent' => $parent, 'name' => $child[2]]);
             }

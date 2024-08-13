@@ -1,6 +1,6 @@
 include docker/.env
 
-DC = docker compose -f ./docker/docker-compose.yml
+DC = docker compose -f ./docker/docker-compose-$(TARGET).yml
 PHP = $(DC) exec -u www-data php
 NGINX = $(DC) exec -it nginx
 DB = $(DC) exec -it db
@@ -82,10 +82,10 @@ bc: ## Run bin/console, pass the parameter "c=" to run a given command, example:
 	@$(eval c ?=)
 	@$(PHP) $(BIN) $(c)
 
-start:
-	@$(DC) build
-	@$(DC) up -d --remove-orphans
-	@$(PHP) composer install
+restart:
+	@$(DC) down -v --rmi=local --remove-orphans
+	@$(DC) up -d --build --remove-orphans
+	# @$(PHP) composer install
 	@sleep 30
 	# @$(PHP) $(DIF)
 	@$(PHP) $(DMM)
@@ -93,7 +93,6 @@ start:
 	@$(PHP) bash
 
 prod:
-	@$(DC) build
-	@$(DC) up -d --remove-orphans
+	@$(DC) up -d --build --remove-orphans
 	@$(PHP) composer install --no-dev --optimize-autoloader
 	@$(PHP) bin/console cache:clear
