@@ -18,12 +18,12 @@ final class RequestQueryDto
     ) {
     }
 
-    public function getPage(): int
+    public function getPage(): ?int
     {
         return $this->page;
     }
 
-    public function getPerPage(): int
+    public function getPerPage(): ?int
     {
         return $this->perPage;
     }
