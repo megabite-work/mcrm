@@ -110,8 +110,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
+        $roles = array_unique($roles);
 
-        return array_unique($roles);
+        return Role::getRole($roles[0]);
     }
 
     public function setRoles(array $roles): self
@@ -133,9 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 
     public function getUsername(): string
     {

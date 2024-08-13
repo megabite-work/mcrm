@@ -8,6 +8,6 @@ class ShowRoleAction
 {
     public function __invoke(): array
     {
-        return Role::getRoles();
+        return array_slice(Role::getRoles(), 2);
     }
 }
