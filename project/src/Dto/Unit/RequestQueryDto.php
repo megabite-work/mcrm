@@ -10,10 +10,10 @@ final class RequestQueryDto
 {
     public function __construct(
         #[Groups(['unit:index'])]
-        #[Assert\Positive]
+        #[Assert\Positive(message: "This value should be positive")]
         private ?int $page = 1,
         #[Groups(['unit:index'])]
-        #[Assert\Positive]
+        #[Assert\Positive(message: "This value should be positive")]
         private ?int $perPage = Paginator::ITEMS_PER_PAGE
     ) {
     }
