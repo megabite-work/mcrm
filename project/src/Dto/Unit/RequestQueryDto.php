@@ -11,10 +11,10 @@ final class RequestQueryDto
     public function __construct(
         #[Groups(['unit:index'])]
         #[Assert\Positive]
-        private int $page = 1,
+        private ?int $page = 1,
         #[Groups(['unit:index'])]
         #[Assert\Positive]
-        private int $perPage = Paginator::ITEMS_PER_PAGE
+        private ?int $perPage = Paginator::ITEMS_PER_PAGE
     ) {
     }
 
