@@ -9,17 +9,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestDto
 {
     public function __construct(
-        #[Groups(['user:create', 'user:update', 'unique:email', 'user:create_worker'])]
-        #[Assert\Email(groups: ['user:create', 'unique:email', 'user:create_worker'])]
-        #[Assert\NotBlank(groups: ['user:create', 'unique:email', 'user:create_worker'])]
+        #[Groups(['user:create', 'user:update', 'unique:email', 'user:create_worker', 'user:create_user'])]
+        #[Assert\Email(groups: ['user:create', 'unique:email', 'user:create_worker', 'user:create_user'])]
+        #[Assert\NotBlank(groups: ['user:create', 'unique:email', 'user:create_worker', 'user:create_user'])]
         private ?string $email,
-        #[Groups(['user:create', 'unique:username', 'user:create_worker'])]
-        #[Assert\NotBlank(groups: ['user:create', 'unique:username', 'user:create_worker'])]
-        #[Assert\Length(min: 3, groups: ['user:create', 'unique:username', 'user:create_worker'])]
+        #[Groups(['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
+        #[Assert\NotBlank(groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
+        #[Assert\Length(min: 3, groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
         private ?string $username,
-        #[Groups(['user:create', 'change:password', 'user:create_worker'])]
-        #[Assert\NotBlank(groups: ['user:create', 'change:password', 'user:create_worker'])]
-        #[Assert\Length(min: 6, groups: ['user:create', 'change:password', 'user:create_worker'])]
+        #[Groups(['user:create', 'change:password', 'user:create_worker', 'user:create_user'])]
+        #[Assert\NotBlank(groups: ['user:create', 'change:password', 'user:create_worker', 'user:create_user'])]
+        #[Assert\Length(min: 6, groups: ['user:create', 'change:password', 'user:create_worker', 'user:create_user'])]
         private ?string $password,
         #[Groups(['change:password'])]
         #[SerializedName('old_password')]

@@ -14,6 +14,7 @@ use App\Action\User\UpdateAction;
 use App\Dto\User\RequestQueryDto;
 use App\Action\User\ShowRoleAction;
 use App\Action\User\CreateWorkerAction;
+use App\Action\User\CreateUserAction;
 use App\Action\User\IsUniqueEmailAction;
 use App\Action\User\ChangePasswordAction;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -73,6 +74,12 @@ class UserController extends AbstractController
 
     #[Route(path: '/create-worker', methods: ['POST'])]
     public function createWorker(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_worker']])] RequestDto $dto, CreateWorkerAction $action): JsonResponse
+    {
+        return $this->json($action($dto), context: ['groups' => ['user:show']]);
+    }
+
+    #[Route(path: '/create-user', methods: ['POST'])]
+    public function createUser(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_user']])] RequestDto $dto, CreateUserAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['user:show']]);
     }
