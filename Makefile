@@ -90,14 +90,10 @@ bc: ## Run bin/console, pass the parameter "c=" to run a given command, example:
 	@$(PHP) $(BIN) $(c)
 
 restart:
-	@$(DC) down -v --rmi=local --remove-orphans
+	@$(DC) down --rmi=local --remove-orphans
 	@$(DC) up -d --build --remove-orphans
 	@$(PHP) bin/console cache:clear
-	# @$(PHP) composer install
-	@sleep 30
-	# @$(PHP) $(DIF)
-	@$(PHP) $(DMM)
-	@$(PHP) $(DFL)
+	@$(PHP) composer install
 	@$(PHP) bash
 
 prod:
