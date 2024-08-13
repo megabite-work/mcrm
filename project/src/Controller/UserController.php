@@ -79,6 +79,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/create-user', methods: ['POST'])]
+    #[Security(name: null)]
     public function createUser(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_user']])] RequestDto $dto, CreateUserAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['user:show']]);
