@@ -17,7 +17,8 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private CreateOrUpdateAction $createOrUpdateAction
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto, User $user): NomenclatureHistory
     {

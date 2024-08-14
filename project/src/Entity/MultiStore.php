@@ -141,7 +141,7 @@ class MultiStore
     #[Groups(['multi_stores:index'])]
     public function getStoresCount(): ?int
     {
-        return count($this->stores);
+        return count($this->getStores());
     }
 
     public function addStore(Store $store): static

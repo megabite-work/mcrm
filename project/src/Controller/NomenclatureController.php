@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\Nomenclature\RequestDto;
-use App\Action\Nomenclature\ShowAction;
-use App\Action\Nomenclature\IndexAction;
 use App\Action\Nomenclature\CreateAction;
 use App\Action\Nomenclature\DeleteAction;
+use App\Action\Nomenclature\IndexAction;
+use App\Action\Nomenclature\IsUniqueBarcodeByMultiStoreAction;
+use App\Action\Nomenclature\ShowAction;
 use App\Action\Nomenclature\UpdateAction;
+use App\Dto\Nomenclature\RequestDto;
 use App\Dto\Nomenclature\RequestQueryDto;
-use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use App\Action\Nomenclature\IsUniqueBarcodeByMultiStoreAction;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/nomenclatures', format: 'json')]
 #[OA\Tag(name: 'Nomenclature')]

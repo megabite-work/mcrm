@@ -13,7 +13,8 @@ class CreateOrUpdateAction
     public function __construct(
         private EntityManagerInterface $em,
         private StoreNomenclatureRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(Store $store, Nomenclature $nomenclature, float $qty): void
     {

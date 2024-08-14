@@ -4,19 +4,20 @@ namespace App\Action\UserCredential;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\UserCredential\RequestDto;
-use App\Entity\User;
 use App\Entity\UserCredential;
 use App\Repository\UserCredentialRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private UserCredentialRepository $repo
-    ) {}
+    ) {
+    }
 
-    public function __invoke(User $user, int $id, RequestDto $dto): UserCredential
+    public function __invoke(UserInterface $user, int $id, RequestDto $dto): UserCredential
     {
         $userCredential = $this->repo->findOneBy(['id' => $id, 'owner' => $user, 'type' => $dto->getType()]);
 
@@ -28,7 +29,8 @@ class UpdateAction
             'company' => $this->updateCompany($userCredential, $dto),
             'click' => $this->updateClick($userCredential, $dto),
             'payme' => $this->updatePayme($userCredential, $dto),
-            'uzum' => $this->updateUzum($userCredential, $dto)
+            'uzum' => $this->updateUzum($userCredential, $dto),
+            default => $userCredential
         };
 
         $this->em->flush();
@@ -46,7 +48,7 @@ class UpdateAction
             'director' => $dto->getDirector() ?: $company['director'],
             'address' => $dto->getAddress() ?: $company['address'],
             'phones' => $dto->getPhones() ?: $company['phones'],
-            'oferta' => null !== $dto->getOferta() ?: $company['oferta'],
+            'oferta' => $dto->getOferta(),
         ];
 
         $userCredential->setValue($company);

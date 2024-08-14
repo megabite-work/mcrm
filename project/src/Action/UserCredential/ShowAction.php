@@ -3,9 +3,9 @@
 namespace App\Action\UserCredential;
 
 use App\Component\EntityNotFoundException;
-use App\Entity\User;
 use App\Entity\UserCredential;
 use App\Repository\UserCredentialRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ShowAction
 {
@@ -13,7 +13,7 @@ class ShowAction
     {
     }
 
-    public function __invoke(User $user, int $id): UserCredential
+    public function __invoke(UserInterface $user, int $id): UserCredential
     {
         $userCredential = $this->repo->findOneBy(['id' => $id, 'owner' => $user]);
 

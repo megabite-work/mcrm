@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -45,8 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private ?string $qrCode = null;
 
-    #[ORM\Column]
-    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
     #[ORM\Column]
@@ -110,9 +110,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
-        $roles = array_unique($roles);
 
-        return Role::getRole([$roles[0]]);
+        return array_unique($roles);
+    }
+
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
+    public function getRole(): array
+    {
+        $roles = $this->getRoles();
+        $roleName = array_shift($roles);
+
+        return Role::getRole($roleName);
     }
 
     public function setRoles(array $roles): self
@@ -134,7 +142,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function eraseCredentials(): void {}
+    public function eraseCredentials(): void
+    {
+    }
 
     public function getUsername(): string
     {

@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
 use App\Component\Paginator;
-use App\Entity\UserCredential;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Dto\UserCredential\RequestQueryDto;
+use App\Entity\UserCredential;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<UserCredential>
@@ -19,7 +19,7 @@ class UserCredentialRepository extends ServiceEntityRepository
         parent::__construct($registry, UserCredential::class);
     }
 
-    public function findAllUserCredentials(User $user, RequestQueryDto $dto): Paginator
+    public function findAllUserCredentials(UserInterface $user, RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
 
@@ -32,7 +32,7 @@ class UserCredentialRepository extends ServiceEntityRepository
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
-    public function findUserCredentialByType(User $user, string $type): ?UserCredential
+    public function findUserCredentialByType(UserInterface $user, string $type): ?UserCredential
     {
         $entityManager = $this->getEntityManager();
 

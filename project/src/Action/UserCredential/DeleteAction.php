@@ -2,10 +2,10 @@
 
 namespace App\Action\UserCredential;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
 use App\Repository\UserCredentialRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DeleteAction
 {
@@ -15,7 +15,7 @@ class DeleteAction
     ) {
     }
 
-    public function __invoke(User $user, int $id): bool
+    public function __invoke(UserInterface $user, int $id): bool
     {
         $userCredential = $this->repo->findOneBy(['id' => $id, 'owner' => $user]);
 

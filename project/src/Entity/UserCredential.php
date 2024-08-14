@@ -18,7 +18,7 @@ class UserCredential
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
-    public const TYPES = ["company", "click", "payme", "uzum"];
+    public const TYPES = ['company', 'click', 'payme', 'uzum'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

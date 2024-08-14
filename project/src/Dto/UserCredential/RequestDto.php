@@ -49,14 +49,15 @@ final class RequestDto
         #[Assert\Type(['bool'], groups: ['user_credential:company_create'])]
         private bool $oferta = false,
         private ?string $type = null
-    ) {}
+    ) {
+    }
 
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(?string $type): self
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -65,15 +66,18 @@ final class RequestDto
 
     public function getValue(): array
     {
+        $value = [];
         if ($this->isCompany()) {
-            return $this->getCompany();
-        } else if ($this->isClick()) {
-            return $this->getClick();
-        } else if ($this->isPayme()) {
-            return $this->getPayme();
-        } else if ($this->isUzum()) {
-            return $this->getUzum();
+            $value = $this->getCompany();
+        } elseif ($this->isClick()) {
+            $value = $this->getClick();
+        } elseif ($this->isPayme()) {
+            $value = $this->getPayme();
+        } elseif ($this->isUzum()) {
+            $value = $this->getUzum();
         }
+
+        return $value;
     }
 
     private function getCompany(): array
@@ -85,7 +89,7 @@ final class RequestDto
             'director' => $this->director,
             'address' => $this->address,
             'phones' => $this->phones,
-            'oferta' => $this->oferta
+            'oferta' => $this->oferta,
         ];
     }
 
@@ -95,14 +99,14 @@ final class RequestDto
             'serviceId' => $this->serviceId,
             'merchantId' => $this->merchantId,
             'secretKey' => $this->secretKey,
-            'merchantUserId' => $this->merchantUserId
+            'merchantUserId' => $this->merchantUserId,
         ];
     }
 
     private function getPayme(): array
     {
         return [
-            'merchantId' => $this->merchantId
+            'merchantId' => $this->merchantId,
         ];
     }
 
@@ -110,13 +114,13 @@ final class RequestDto
     {
         return [
             'xTerminalId' => $this->xTerminalId,
-            'xApiKey' => $this->xApiKey
+            'xApiKey' => $this->xApiKey,
         ];
     }
 
     private function isCompany(): bool
     {
-        return $this->inn && $this->address && $this->director && $this->name  && $this->phones && $this->oferta !== null;
+        return $this->inn && $this->address && $this->director && $this->name && $this->phones && null !== $this->oferta;
     }
 
     private function isClick(): bool

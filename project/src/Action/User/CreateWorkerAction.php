@@ -21,7 +21,7 @@ class CreateWorkerAction
     {
         $isUniqueEmail = $this->em->getRepository(User::class)->isUniqueEmail($dto->getEmail());
         $isUniqueUsername = $this->em->getRepository(User::class)->isUniqueUsername($dto->getUsername());
-        
+
         if (!$isUniqueEmail || !$isUniqueUsername) {
             throw new EntityNotFoundException('this email or username already exists', 400);
         }

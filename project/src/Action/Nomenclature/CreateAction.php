@@ -13,7 +13,8 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): Nomenclature
     {
@@ -54,7 +55,7 @@ class CreateAction
 
     private function barcode(MultiStore $multiStore, Nomenclature $nomenclature, ?int $barcode): void
     {
-        if ($barcode === null) {
+        if (null === $barcode) {
             $barcode = $multiStore->getBarcodeTtn() + 1;
             $multiStore->setBarcodeTtn($barcode);
         }

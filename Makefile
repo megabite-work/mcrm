@@ -45,6 +45,7 @@ dc_down:
 
 php_refresh:
 	@$(DC) up -d --build --no-deps php
+	@$(PHP) composer install
 	@$(PHP) $(BIN) c:c
 
 db_refresh:

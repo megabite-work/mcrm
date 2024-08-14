@@ -48,7 +48,8 @@ final class RequestDto
         #[Groups(['user:create_worker'])]
         #[Assert\NotBlank(groups: ['user:create_worker'])]
         private ?int $role
-    ) {}
+    ) {
+    }
 
     public function getEmail(): ?string
     {

@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\Category\RequestDto;
-use App\Action\Category\ShowAction;
-use App\Action\Category\IndexAction;
 use App\Action\Category\CreateAction;
 use App\Action\Category\DeleteAction;
+use App\Action\Category\IndexAction;
+use App\Action\Category\ShowAction;
 use App\Action\Category\UpdateAction;
+use App\Dto\Category\RequestDto;
 use App\Dto\Category\RequestQueryDto;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/categories', format: 'json')]
 #[OA\Tag(name: 'Category')]

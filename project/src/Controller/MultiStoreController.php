@@ -25,7 +25,7 @@ class MultiStoreController extends AbstractController
     #[Route(path: '', methods: ['GET'])]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['multi_store:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['multi_stores:index']]);
+        return $this->json($action($dto), context: ['groups' => ['multi_stores:index']]);
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
@@ -37,7 +37,7 @@ class MultiStoreController extends AbstractController
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['multi_store:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['multi_store:create']]);
+        return $this->json($action($dto), context: ['groups' => ['multi_store:create']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

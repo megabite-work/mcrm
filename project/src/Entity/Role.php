@@ -4,14 +4,14 @@ namespace App\Entity;
 
 class Role
 {
-    const ROLE_ADMIN = 1;
-    const ROLE_DIRECTOR = 2;
-    const ROLE_MANAGER = 3;
-    const ROLE_ACCOUNTANT = 4;
-    const ROLE_STOCK_KEEPER = 5;
-    const ROLE_CASHIER = 6;
-    const ROLE_USER = 7;
-    const ROLE_NAMES = [
+    public const ROLE_ADMIN = 1;
+    public const ROLE_DIRECTOR = 2;
+    public const ROLE_MANAGER = 3;
+    public const ROLE_ACCOUNTANT = 4;
+    public const ROLE_STOCK_KEEPER = 5;
+    public const ROLE_CASHIER = 6;
+    public const ROLE_USER = 7;
+    public const ROLE_NAMES = [
         1 => ['ROLE_ADMIN'],
         2 => ['ROLE_DIRECTOR'],
         3 => ['ROLE_MANAGER'],
@@ -31,7 +31,7 @@ class Role
                     'ru' => 'Админ',
                     'uz' => 'Admin',
                     'uzc' => 'Админ',
-                ]
+                ],
             ],
             [
                 'id' => static::ROLE_DIRECTOR,
@@ -40,7 +40,7 @@ class Role
                     'ru' => 'Директор',
                     'uz' => 'Direktor',
                     'uzc' => 'Директор',
-                ]
+                ],
             ],
             [
                 'id' => static::ROLE_MANAGER,
@@ -49,7 +49,7 @@ class Role
                     'ru' => 'Менежер',
                     'uz' => 'Menejer',
                     'uzc' => 'Менежер',
-                ]
+                ],
             ],
             [
                 'id' => static::ROLE_ACCOUNTANT,
@@ -58,7 +58,7 @@ class Role
                     'ru' => 'Бухгалтер',
                     'uz' => 'Buxgalter',
                     'uzc' => 'Бухгалтер',
-                ]
+                ],
             ],
             [
                 'id' => static::ROLE_STOCK_KEEPER,
@@ -67,7 +67,7 @@ class Role
                     'ru' => 'Кладовшик',
                     'uz' => 'Omborchi',
                     'uzc' => 'Омборчи',
-                ]
+                ],
             ],
             [
                 'id' => static::ROLE_CASHIER,
@@ -76,7 +76,7 @@ class Role
                     'ru' => 'Кассир',
                     'uz' => 'Kassir',
                     'uzc' => 'Кассир',
-                ]
+                ],
             ],
             [
                 'id' => static::ROLE_USER,
@@ -85,7 +85,7 @@ class Role
                     'ru' => 'Клиент',
                     'uz' => 'Mijoz',
                     'uzc' => 'Мижоз',
-                ]
+                ],
             ],
         ];
     }
@@ -95,9 +95,10 @@ class Role
         return static::ROLE_NAMES[$role];
     }
 
-    public static function getRole(array $roleName): array
+    public static function getRole(string $roleName): array
     {
-        $idx = array_keys(array_filter(static::ROLE_NAMES, fn($role) => $roleName === $role))[0] - 1;
+        $idx = array_keys(array_filter(static::ROLE_NAMES, fn ($role) => $roleName === $role[0]))[0];
+
         return static::getRoles()[$idx];
     }
 }

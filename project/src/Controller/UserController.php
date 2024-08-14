@@ -2,31 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Dto\User\RequestDto;
-use OpenApi\Attributes as OA;
-use App\Action\User\ShowAction;
-use App\Action\User\IndexAction;
-use App\Action\User\CreateAction;
-use App\Action\User\DeleteAction;
-use App\Action\User\ShowMeAction;
-use App\Action\User\UpdateAction;
-use App\Dto\User\RequestQueryDto;
-use App\Action\User\ShowRoleAction;
-use App\Action\User\CreateWorkerAction;
-use App\Action\User\CreateUserAction;
-use App\Action\User\IsUniqueEmailAction;
 use App\Action\User\ChangePasswordAction;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Action\User\CreateAction;
+use App\Action\User\CreateUserAction;
+use App\Action\User\CreateWorkerAction;
+use App\Action\User\DeleteAction;
+use App\Action\User\IndexAction;
+use App\Action\User\IsUniqueEmailAction;
 use App\Action\User\IsUniqueUsernameAction;
-use Nelmio\ApiDocBundle\Annotation\Security;
+use App\Action\User\ShowAction;
+use App\Action\User\ShowMeAction;
+use App\Action\User\ShowRoleAction;
+use App\Action\User\UpdateAction;
+use App\Dto\User\RequestDto;
+use App\Dto\User\RequestQueryDto;
+use App\Entity\User;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Symfony\Component\Routing\Attribute\Route;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route(path: '/api/users', format: 'json')]
 #[OA\Tag(name: 'User')]

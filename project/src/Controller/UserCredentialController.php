@@ -2,22 +2,22 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\UserCredential\RequestDto;
-use App\Action\UserCredential\ShowAction;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use App\Action\UserCredential\IndexAction;
 use App\Action\UserCredential\CreateAction;
 use App\Action\UserCredential\DeleteAction;
-use App\Action\UserCredential\UpdateAction;
-use App\Dto\UserCredential\RequestQueryDto;
-use Symfony\Component\Routing\Attribute\Route;
+use App\Action\UserCredential\IndexAction;
+use App\Action\UserCredential\ShowAction;
 use App\Action\UserCredential\ShowByTypeAction;
+use App\Action\UserCredential\UpdateAction;
+use App\Dto\UserCredential\RequestDto;
+use App\Dto\UserCredential\RequestQueryDto;
 use App\Entity\UserCredential;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/user-credentials', format: 'json')]
 #[OA\Tag(name: 'UserCredential')]
@@ -30,17 +30,17 @@ class UserCredentialController extends AbstractController
     }
 
     #[OA\Parameter(
-        name: "type",
-        in: "path",
+        name: 'type',
+        in: 'path',
         required: true,
         schema: new OA\Schema(
-            type: "string",
-            enum: ["company", "click", "payme", "uzum"]
+            type: 'string',
+            enum: ['company', 'click', 'payme', 'uzum']
         )
     )]
     #[OA\Response(
         response: 200,
-        description: "Return the user credential by type",
+        description: 'Return the user credential by type',
         content: new OA\JsonContent(
             type: 'object',
             ref: new Model(type: UserCredential::class, groups: ['user_credential:index'])
@@ -63,7 +63,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('company');
 
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
     }
 
     #[Route(path: '/click', methods: ['POST'])]
@@ -71,7 +71,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('click');
 
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
     }
 
     #[Route(path: '/payme', methods: ['POST'])]
@@ -79,7 +79,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('payme');
 
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
     }
 
     #[Route(path: '/uzum', methods: ['POST'])]
@@ -87,7 +87,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('uzum');
 
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
     }
 
     #[Route('/{id<\d+>}/company', methods: ['PATCH'])]

@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Factory\AddressFactory;
 use App\Factory\CategoryFactory;
 use App\Factory\MultiStoreFactory;
@@ -72,16 +71,16 @@ class AppFixtures extends Fixture
                     'name' => [
                         'uz' => $unit['uz'],
                         'uzc' => $unit['uzc'],
-                        'ru' => $unit['ru']
+                        'ru' => $unit['ru'],
                     ],
-                    'code' => $unit['code']
+                    'code' => $unit['code'],
                 ];
             }
         });
 
         $base = $this->getCategories();
         $start = microtime(true);
-        $categories = array_filter($base, fn($category) => null === $category[1]);
+        $categories = array_filter($base, fn ($category) => null === $category[1]);
 
         $parents_1 = CategoryFactory::createSequence(
             function () use ($categories) {
@@ -90,11 +89,8 @@ class AppFixtures extends Fixture
                 }
             }
         );
-        dump("parent_1 => " . count($parents_1) . ", time => " . microtime(true) - $start);
-        $start = microtime(true);
         foreach ($parents_1 as $parent) {
-            $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
-            dump("parent_2 => " . count($childrens) . ", time => " . microtime(true) - $start);
+            $childrens = array_filter($base, fn ($category) => $category[1] === $parent->getId());
             $parents_2 = CategoryFactory::createSequence(
                 function () use ($childrens, $parent) {
                     foreach ($childrens as $category) {
@@ -102,10 +98,8 @@ class AppFixtures extends Fixture
                     }
                 }
             );
-            $start = microtime(true);
             foreach ($parents_2 as $parent) {
-                $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
-                dump("parent_3 => " . count($childrens) . ", time => " . microtime(true) - $start);
+                $childrens = array_filter($base, fn ($category) => $category[1] === $parent->getId());
                 $parents_3 = CategoryFactory::createSequence(
                     function () use ($childrens, $parent) {
                         foreach ($childrens as $category) {
@@ -113,10 +107,8 @@ class AppFixtures extends Fixture
                         }
                     }
                 );
-                $start = microtime(true);
                 foreach ($parents_3 as $parent) {
-                    $childrens = array_filter($base, fn($category) => $category[1] === $parent->getId());
-                    dump("parent_4 => " . count($childrens) . ", time => " . microtime(true) - $start);
+                    $childrens = array_filter($base, fn ($category) => $category[1] === $parent->getId());
                     $parents_4 = CategoryFactory::createSequence(
                         function () use ($childrens, $parent) {
                             foreach ($childrens as $category) {
