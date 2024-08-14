@@ -18,19 +18,21 @@ class UserCredential
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
+    public const TYPES = ["company", "click", "payme", "uzum"];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['credential:read', 'user:me'])]
+    #[Groups(['user_credential:index', 'user:me'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['credential:read', 'user:me'])]
+    #[Groups(['user_credential:index', 'user:me'])]
     private ?string $type = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['credential:read', 'user:me'])]
-    private ?string $value = null;
+    #[ORM\Column(type: Types::JSON)]
+    #[Groups(['user_credential:index', 'user:me'])]
+    private ?array $value = null;
 
     #[ORM\ManyToOne(inversedBy: 'userCredentials')]
     #[ORM\JoinColumn(nullable: false)]
@@ -53,12 +55,12 @@ class UserCredential
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue(): ?array
     {
         return $this->value;
     }
 
-    public function setValue(string $value): static
+    public function setValue(array $value): static
     {
         $this->value = $value;
 

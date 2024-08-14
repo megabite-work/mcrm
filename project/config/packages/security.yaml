@@ -30,13 +30,13 @@ security:
       refresh_jwt:
         check_path: api_refresh_token
   access_control:
-    - { path: ^/api/auth/(login|refresh-token), roles: PUBLIC_ACCESS }
+    - { path: ^/api/auth/(login$|refresh-token$), roles: PUBLIC_ACCESS }
     - {
         path: ^/api/users($|/is-unique-email$|/is-unique-username$|/create-user$),
         roles: PUBLIC_ACCESS,
         methods: [POST],
       }
-    - { path: ^/api/(doc|doc.json), roles: PUBLIC_ACCESS }
+    - { path: ^/api/(doc$|doc.json$), roles: PUBLIC_ACCESS }
     - { path: ^/api/categories($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
     - {
         path: ^/api/web-nomenclatures($|/\d+$),
