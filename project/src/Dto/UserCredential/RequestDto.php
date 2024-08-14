@@ -25,10 +25,6 @@ final class RequestDto
         private ?string $address,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        #[Assert\Type(['bool'], groups: ['user_credential:company_create'])]
-        private bool $oferta = false,
-        #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
-        #[Assert\NotBlank(groups: ['user_credential:company_create'])]
         private ?array $phones,
         #[Groups(['user_credential:click_create', 'user_credential:click_update'])]
         #[Assert\NotBlank(groups: ['user_credential:click_create'])]
@@ -48,6 +44,10 @@ final class RequestDto
         #[Groups(['user_credential:uzum_create', 'user_credential:uzum_update'])]
         #[Assert\NotBlank(groups: ['user_credential:uzum_create'])]
         private ?string $xApiKey,
+        #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
+        #[Assert\NotBlank(groups: ['user_credential:company_create'])]
+        #[Assert\Type(['bool'], groups: ['user_credential:company_create'])]
+        private bool $oferta = false,
         private ?string $type = null
     ) {}
 
