@@ -9,14 +9,12 @@ use App\Action\MultiStore\ShowAction;
 use App\Action\MultiStore\UpdateAction;
 use App\Dto\MultiStore\RequestDto;
 use App\Dto\MultiStore\RequestQueryDto;
-use App\Entity\User;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/multi-stores', format: 'json')]
@@ -25,9 +23,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class MultiStoreController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[CurrentUser] User $user, IndexAction $action, #[MapQueryString(serializationContext: ['groups' => ['multi_store:index']])] RequestQueryDto $dto): JsonResponse
+    public function index(#[MapQueryString(serializationContext: ['groups' => ['multi_store:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($user, $dto), context: ['groups' => ['multi_stores:index']]);
+        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['multi_stores:index']]);
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
@@ -37,9 +35,9 @@ class MultiStoreController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['multi_store:create']])] RequestDto $dto, #[CurrentUser] User $user, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['multi_store:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($user, $dto), context: ['groups' => ['multi_store:create']]);
+        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['multi_store:create']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
