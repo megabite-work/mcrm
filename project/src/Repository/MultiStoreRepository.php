@@ -24,9 +24,10 @@ class MultiStoreRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT m, s
+            'SELECT m, s, w
             FROM App\Entity\MultiStore m
             LEFT JOIN m.stores s
+            LEFT JOIN s.workers w
             WHERE m.owner = :user'
         )->setParameter('user', $user);
 

@@ -144,6 +144,17 @@ class MultiStore
         return count($this->getStores());
     }
 
+    #[Groups(['multi_stores:index'])]
+    public function getStoreWorkersCount(): ?int
+    {
+        return $this
+            ->getStores()
+            ->reduce(
+                fn($init, $store) => $store->getWorkersCount() + $init,
+                0
+            );
+    }
+
     public function addStore(Store $store): static
     {
         if (!$this->stores->contains($store)) {
