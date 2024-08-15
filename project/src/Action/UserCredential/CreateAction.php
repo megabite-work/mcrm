@@ -18,7 +18,7 @@ class CreateAction
 
     public function __invoke(RequestDto $dto): UserCredential
     {
-        $userCredential = $this->em->getRepository(UserCredential::class)->findUserCredentialByType($this->user, $dto->getType());
+        $userCredential = $this->em->getRepository(UserCredential::class)->findUserCredentialByType($this->user->getUser(), $dto->getType());
 
         if (null !== $userCredential) {
             throw new EntityNotFoundException('credential already exists');

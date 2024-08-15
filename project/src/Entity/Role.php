@@ -97,7 +97,7 @@ class Role
 
     public static function getRole(string $roleName): array
     {
-        $idx = array_keys(array_filter(static::ROLE_NAMES, fn ($role) => $roleName === $role[0]))[0];
+        $idx = array_keys(array_filter(static::ROLE_NAMES, fn($role) => $roleName === $role[0]))[0] - 1;
 
         return static::getRoles()[$idx];
     }
