@@ -4,6 +4,7 @@ namespace App\Action\User;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\User\RequestDto;
+use App\Entity\MultiStore;
 use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,21 +15,25 @@ class CreateWorkerAction
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestDto $dto): User
     {
         $isUniqueEmail = $this->em->getRepository(User::class)->isUniqueEmail($dto->getEmail());
         $isUniqueUsername = $this->em->getRepository(User::class)->isUniqueUsername($dto->getUsername());
+        $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
 
-        if (!$isUniqueEmail || !$isUniqueUsername) {
+        if (!$isUniqueEmail || !$isUniqueUsername || null === $multiStore) {
             throw new EntityNotFoundException('this email or username already exists', 400);
+        }
+        if (null === $multiStore) {
+            throw new EntityNotFoundException('multi store not found', 404);
         }
 
         $user = (new User())
             ->setEmail($dto->getEmail())
-            ->setUsername($dto->getUsername());
+            ->setUsername($dto->getUsername())
+            ->addWorkPlace($multiStore);
 
         $this->setRole($user, $dto->getRole());
         $this->hashPassword($user, $dto->getPassword());

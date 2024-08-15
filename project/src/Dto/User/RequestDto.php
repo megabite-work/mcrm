@@ -47,9 +47,11 @@ final class RequestDto
         private ?array $phones,
         #[Groups(['user:create_worker'])]
         #[Assert\NotBlank(groups: ['user:create_worker'])]
-        private ?int $role
-    ) {
-    }
+        private ?int $role,
+        #[Groups(['user:create_worker'])]
+        #[Assert\NotBlank(groups: ['user:create_worker'])]
+        private ?int $multiStoreId,
+    ) {}
 
     public function getEmail(): ?string
     {
@@ -114,5 +116,10 @@ final class RequestDto
     public function getRole(): ?int
     {
         return $this->role;
+    }
+
+    public function getMultiStoreId(): ?int
+    {
+        return $this->multiStoreId;
     }
 }

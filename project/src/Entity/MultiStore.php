@@ -61,10 +61,14 @@ class MultiStore
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'multiStore')]
     private Collection $nomenclatures;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'workPlaces')]
+    private Collection $workers;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
         $this->phones = new ArrayCollection();
+        $this->workers = new ArrayCollection();
         $this->nomenclatures = new ArrayCollection();
     }
 
@@ -142,17 +146,6 @@ class MultiStore
     public function getStoresCount(): ?int
     {
         return count($this->getStores());
-    }
-
-    #[Groups(['multi_stores:index'])]
-    public function getStoreWorkersCount(): ?int
-    {
-        return $this
-            ->getStores()
-            ->reduce(
-                fn($init, $store) => $store->getWorkersCount() + $init,
-                0
-            );
     }
 
     public function addStore(Store $store): static
@@ -236,6 +229,33 @@ class MultiStore
                 $nomenclature->setMultiStore(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWorkers(): Collection
+    {
+        return $this->workers;
+    }
+
+    #[Groups(['multi_stores:index'])]
+    public function getWorkersCount(): ?int
+    {
+        return count($this->getWorkers());
+    }
+
+    public function addWorker(User $worker): static
+    {
+        if (!$this->workers->contains($worker)) {
+            $this->workers->add($worker);
+        }
+
+        return $this;
+    }
+
+    public function removeWorker(User $worker): static
+    {
+        $this->workers->removeElement($worker);
 
         return $this;
     }

@@ -75,12 +75,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'owner')]
     private Collection $nomenclatureHistories;
 
+    #[ORM\ManyToMany(targetEntity: MultiStore::class, mappedBy: 'workers')]
+    private Collection $workPlaces;
+
     public function __construct()
     {
-        $this->multiStores = new ArrayCollection();
         $this->phones = new ArrayCollection();
-        $this->userCredentials = new ArrayCollection();
         $this->stores = new ArrayCollection();
+        $this->workPlaces = new ArrayCollection();
+        $this->multiStores = new ArrayCollection();
+        $this->userCredentials = new ArrayCollection();
         $this->nomenclatureHistories = new ArrayCollection();
     }
 
@@ -305,6 +309,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($nomenclatureHistory->getOwner() === $this) {
                 $nomenclatureHistory->setOwner(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getWorkPlaces(): Collection
+    {
+        return $this->workPlaces;
+    }
+
+    public function addWorkPlace(MultiStore $multiStore): static
+    {
+        if (!$this->workPlaces->contains($multiStore)) {
+            $this->workPlaces->add($multiStore);
+            $multiStore->addWorker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkPlace(MultiStore $multiStore): static
+    {
+        if ($this->workPlaces->removeElement($multiStore)) {
+            $multiStore->removeWorker($this);
         }
 
         return $this;
