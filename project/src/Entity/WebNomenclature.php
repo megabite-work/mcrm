@@ -24,7 +24,7 @@ class WebNomenclature
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Nomenclature::class)]
+    #[ORM\OneToOne(targetEntity: Nomenclature::class, inversedBy: 'webNomenclature')]
     #[ORM\JoinColumn(name: 'nomenclature_id', referencedColumnName: 'id')]
     #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
     private ?Nomenclature $nomenclature = null;

@@ -16,8 +16,7 @@ class IndexAction
     public function __invoke(RequestQueryDto $dto): Paginator
     {
         if ($dto->getParentId()) {
-            $parent = $this->repo->find($dto->getParentId());
-            $categories = $this->repo->findAllCategoriesByParent($parent, $dto);
+            $categories = $this->repo->findAllCategoriesByParent($dto);
         } else {
             $categories = $this->repo->findAllCategoriesByParentIsNull($dto);
         }

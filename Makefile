@@ -51,7 +51,7 @@ db_refresh:
 	@$(PHP) $(BIN) d:d:d -f
 	@$(PHP) $(BIN) d:d:c
 	@$(PHP) $(BIN) d:m:m -n
-	@$(PHP) $(BIN) d:f:load -n
+	@$(PHP) php category.php
 
 php_bash:
 	@$(PHP) bash

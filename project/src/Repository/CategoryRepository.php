@@ -18,14 +18,16 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function findAllCategoriesByParent(Category $parent, RequestQueryDto $dto): Paginator
+    public function findAllCategoriesByParent(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
+        $parent = $this->find($dto->getParentId());
 
         $query = $entityManager->createQuery(
             'SELECT c
             FROM App\Entity\Category c
-            LEFT JOIN c.parent p
+            -- LEFT JOIN c.childrens ch
+            -- LEFT JOIN ch.nomenclatures n
             WHERE c.parent = :parent'
         )->setParameter('parent', $parent);
 
