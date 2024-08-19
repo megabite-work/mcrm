@@ -64,11 +64,15 @@ class MultiStore
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'workPlaces')]
     private Collection $workers;
 
+    #[ORM\ManyToMany(targetEntity: CounterPart::class, inversedBy: 'multiStore')]
+    private Collection $counterParts;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
         $this->phones = new ArrayCollection();
         $this->workers = new ArrayCollection();
+        $this->counterParts = new ArrayCollection();
         $this->nomenclatures = new ArrayCollection();
     }
 
@@ -256,6 +260,32 @@ class MultiStore
     public function removeWorker(User $worker): static
     {
         $this->workers->removeElement($worker);
+
+        return $this;
+    }
+
+    public function getCounterParts(): Collection
+    {
+        return $this->counterParts;
+    }
+
+    public function addCounterPart(CounterPart $counterPart): static
+    {
+        if (!$this->counterParts->contains($counterPart)) {
+            $this->counterParts->add($counterPart);
+            $counterPart->setMultiStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCounterPart(CounterPart $counterPart): static
+    {
+        if ($this->counterParts->removeElement($counterPart)) {
+            if ($counterPart->getMultiStore() === $this) {
+                $counterPart->setMultiStore(null);
+            }
+        }
 
         return $this;
     }

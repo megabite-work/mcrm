@@ -23,30 +23,31 @@ class CounterPart
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['counter_part:read'])]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'multi_store_id')]
-    #[Groups(['counter_part:read'])]
-    private ?int $multiStoreId = null;
+    #[ORM\ManyToOne(inversedBy: 'counterParts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MultiStore $multiStore = null;
 
-    #[ORM\Column(name: 'inn')]
-    #[Groups(['counter_part:read'])]
+    #[ORM\Column(name: 'inn', nullable: true)]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private ?string $inn = null;
 
     #[ORM\Column]
-    #[Groups(['counter_part:read'])]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private ?string $name = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['counter_part:read'])]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private ?Address $address = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups(['counter_part:read'])]
-    private ?float $discount = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
+    private null|string|float $discount = null;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'counterPart')]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private Collection $phones;
 
     public function __construct()
@@ -71,14 +72,14 @@ class CounterPart
         return $this;
     }
 
-    public function getMultiStoreId(): ?int
+    public function getMultiStore(): ?MultiStore
     {
-        return $this->multiStoreId;
+        return $this->multiStore;
     }
 
-    public function setMultiStoreId(int $multiStoreId): static
+    public function setMultiStore(?MultiStore $multiStore): static
     {
-        $this->multiStoreId = $multiStoreId;
+        $this->multiStore = $multiStore;
 
         return $this;
     }

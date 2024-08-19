@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -38,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 
@@ -78,6 +78,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: MultiStore::class, mappedBy: 'workers')]
     private Collection $workPlaces;
 
+    /**
+     * @var Collection<int, CashboxShift>
+     */
+    #[ORM\OneToMany(targetEntity: CashboxShift::class, mappedBy: 'user')]
+    private Collection $cashboxShifts;
+
     public function __construct()
     {
         $this->phones = new ArrayCollection();
@@ -86,6 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->multiStores = new ArrayCollection();
         $this->userCredentials = new ArrayCollection();
         $this->nomenclatureHistories = new ArrayCollection();
+        $this->cashboxShifts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,9 +153,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 
     public function getUsername(): string
     {
@@ -333,6 +338,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->workPlaces->removeElement($multiStore)) {
             $multiStore->removeWorker($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashboxShift>
+     */
+    public function getCashboxShifts(): Collection
+    {
+        return $this->cashboxShifts;
+    }
+
+    public function addCashboxShift(CashboxShift $cashboxShift): static
+    {
+        if (!$this->cashboxShifts->contains($cashboxShift)) {
+            $this->cashboxShifts->add($cashboxShift);
+            $cashboxShift->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashboxShift(CashboxShift $cashboxShift): static
+    {
+        if ($this->cashboxShifts->removeElement($cashboxShift)) {
+            // set the owning side to null (unless already changed)
+            if ($cashboxShift->getUser() === $this) {
+                $cashboxShift->setUser(null);
+            }
         }
 
         return $this;

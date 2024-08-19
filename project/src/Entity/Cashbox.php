@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -61,6 +63,17 @@ class Cashbox
     #[ORM\Column(options: ['default' => true])]
     #[Groups(['cashbox:index', 'cashbox:show', 'cashbox:create', 'cashbox:update'])]
     private ?bool $isActive = true;
+
+    /**
+     * @var Collection<int, CashboxShift>
+     */
+    #[ORM\OneToMany(targetEntity: CashboxShift::class, mappedBy: 'cashbox')]
+    private Collection $cashboxShifts;
+
+    public function __construct()
+    {
+        $this->cashboxShifts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -183,6 +196,36 @@ class Cashbox
     public function setIsActive(?bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashboxShift>
+     */
+    public function getCashboxShifts(): Collection
+    {
+        return $this->cashboxShifts;
+    }
+
+    public function addCashboxShift(CashboxShift $cashboxShift): static
+    {
+        if (!$this->cashboxShifts->contains($cashboxShift)) {
+            $this->cashboxShifts->add($cashboxShift);
+            $cashboxShift->setCashbox($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashboxShift(CashboxShift $cashboxShift): static
+    {
+        if ($this->cashboxShifts->removeElement($cashboxShift)) {
+            // set the owning side to null (unless already changed)
+            if ($cashboxShift->getCashbox() === $this) {
+                $cashboxShift->setCashbox(null);
+            }
+        }
 
         return $this;
     }
