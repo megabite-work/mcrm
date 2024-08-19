@@ -63,7 +63,7 @@ class NomenclatureRepository extends ServiceEntityRepository
             ->select('n, sn')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->join('n.multiStore', 'm')
-            ->where($qb->expr()->andX(
+            ->where($qb->expr()->orX(
                 $qb->expr()->eq('m.id', ':mid'),
                 $qb->expr()->orX(
                     $qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'),
