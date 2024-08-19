@@ -5,6 +5,7 @@ PHP = $(DC) exec -u www-data php
 NGINX = $(DC) exec -it nginx
 DB = $(DC) exec -it db
 CI = composer install --prefer-dist --no-progress --no-scripts --no-interaction
+CIP = composer install --no-progress --no-scripts --no-interaction --no-dev --optimize-autoloader
 BIN = bin/console
 DDC = $(BIN) d:d:c --if-not-exists
 DMM = $(BIN) d:m:m -n
@@ -45,6 +46,7 @@ dc_down:
 
 php_refresh:
 	@$(DC) up -d --build --no-deps php
+	@$(PHP) $(CIP)
 	@$(PHP) $(BIN) c:c
 
 db_refresh:
@@ -98,5 +100,5 @@ restart:
 
 prod:
 	@$(DC) up -d --build --remove-orphans
-	@$(PHP) composer install --no-dev --optimize-autoloader
+	@$(PHP) $(CIP)
 	@$(PHP) bin/console cache:clear
