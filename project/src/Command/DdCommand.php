@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Dto\Nomenclature\RequestQueryDto;
+use App\Repository\NomenclatureRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class DdCommand extends Command
 {
-    public function __construct()
+    public function __construct(private NomenclatureRepository $repo)
     {
         parent::__construct();
     }
@@ -30,6 +32,9 @@ class DdCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $dto = new RequestQueryDto(1);
+        $data = $this->repo->findAllNomenclatures($dto);
+        dd($data);
         return Command::SUCCESS;
     }
 }

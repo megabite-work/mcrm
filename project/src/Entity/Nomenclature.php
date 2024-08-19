@@ -38,7 +38,7 @@ class Nomenclature
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $brand = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: 'json', options: ['charset' => 'utf8mb4_unicode_ci'])]
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?array $name = null;
 

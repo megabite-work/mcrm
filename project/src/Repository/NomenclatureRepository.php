@@ -72,7 +72,7 @@ class NomenclatureRepository extends ServiceEntityRepository
                 )
             ))
             ->setParameters($params);
-
+        
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
