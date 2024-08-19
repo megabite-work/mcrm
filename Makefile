@@ -55,6 +55,7 @@ db_refresh:
 	# @$(PHP) $(BIN) d:m:diff -n
 	@$(PHP) $(BIN) d:m:m -n
 	@$(PHP) php category.php
+	@$(PHP) $(BIN) d:f:load -n --append
 
 php_bash:
 	@$(PHP) bash
