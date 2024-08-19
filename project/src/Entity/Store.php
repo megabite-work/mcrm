@@ -54,10 +54,14 @@ class Store
     #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'store')]
     private Collection $storeNomenclatures;
 
+    #[ORM\OneToMany(targetEntity: Cashbox::class, mappedBy: 'store')]
+    private Collection $cashboxes;
+
     public function __construct()
     {
         $this->phones = new ArrayCollection();
         $this->workers = new ArrayCollection();
+        $this->cashboxes = new ArrayCollection();
         $this->nomenclatureHistories = new ArrayCollection();
         $this->storeNomenclatures = new ArrayCollection();
     }
@@ -214,6 +218,32 @@ class Store
         if ($this->storeNomenclatures->removeElement($storeNomenclature)) {
             if ($storeNomenclature->getStore() === $this) {
                 $storeNomenclature->setStore(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCashboxes(): Collection
+    {
+        return $this->cashboxes;
+    }
+
+    public function addCashbox(Cashbox $cashbox): static
+    {
+        if (!$this->cashboxes->contains($cashbox)) {
+            $this->cashboxes->add($cashbox);
+            $cashbox->setStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashbox(Cashbox $cashbox): static
+    {
+        if ($this->cashboxes->removeElement($cashbox)) {
+            if ($cashbox->getStore() === $this) {
+                $cashbox->setStore(null);
             }
         }
 
