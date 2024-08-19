@@ -18,6 +18,10 @@ final class RequestQueryDto
         #[Assert\Type(type: ['integer', 'null'], groups: ['nomenclature:index'])]
         private ?int $categoryId = null,
         #[Groups(['nomenclature:index'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:index'])]
+        #[Assert\Type(type: ['string', 'null'], groups: ['nomenclature:index'])]
+        private ?string $name = null,
+        #[Groups(['nomenclature:index'])]
         #[Assert\Positive(groups: ['nomenclature:index'])]
         private int $page = 1,
         #[Groups(['nomenclature:index'])]
@@ -44,5 +48,10 @@ final class RequestQueryDto
     public function getMultiStoreId(): ?int
     {
         return $this->multiStoreId;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 }

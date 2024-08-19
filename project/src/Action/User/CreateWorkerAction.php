@@ -15,7 +15,8 @@ class CreateWorkerAction
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): User
     {
@@ -26,7 +27,7 @@ class CreateWorkerAction
         if (!$isUniqueEmail || !$isUniqueUsername || null === $multiStore) {
             throw new EntityNotFoundException('this email or username already exists', 400);
         }
-        if (null === $multiStore) {
+        if (null == $multiStore) {
             throw new EntityNotFoundException('multi store not found', 404);
         }
 

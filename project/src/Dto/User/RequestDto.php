@@ -51,7 +51,8 @@ final class RequestDto
         #[Groups(['user:create_worker'])]
         #[Assert\NotBlank(groups: ['user:create_worker'])]
         private ?int $multiStoreId,
-    ) {}
+    ) {
+    }
 
     public function getEmail(): ?string
     {

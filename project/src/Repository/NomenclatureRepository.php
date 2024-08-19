@@ -10,6 +10,9 @@ use App\Entity\MultiStore;
 use App\Entity\Nomenclature;
 use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,31 +27,48 @@ class NomenclatureRepository extends ServiceEntityRepository
 
     public function findAllNomenclaturesByCategory(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $qb = $this->createQueryBuilder('n');
 
-        $query = $entityManager->createQuery(
-            'SELECT n, sn
-            FROM App\Entity\Nomenclature n
-            LEFT JOIN n.storeNomenclatures sn
-            JOIN n.category c
-            JOIN n.multiStore m
-            WHERE c.id = :cid AND m.id = :mid'
-        )->setParameters(['cid' => $dto->getCategoryId(), 'mid' => $dto->getMultiStoreId()]);
+        $params = new ArrayCollection([
+            new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
+            new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
+            new Parameter('name', $dto->getName(), Types::STRING),
+        ]);
+
+        $query = $qb
+            ->select('n, sn')
+            ->leftJoin('n.storeNomenclatures', 'sn')
+            ->join('n.category', 'c')
+            ->join('n.multiStore', 'm')
+            ->where('m.id = :mid')
+            ->andWhere('c.id = :cid')
+            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'))
+            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'))
+            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name'))
+            ->setParameters($params);
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
     public function findAllNomenclatures(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $qb = $this->createQueryBuilder('n');
 
-        $query = $entityManager->createQuery(
-            'SELECT n, sn
-            FROM App\Entity\Nomenclature n
-            LEFT JOIN n.storeNomenclatures sn
-            JOIN n.multiStore m
-            WHERE m.id = :mid'
-        )->setParameters(['mid' => $dto->getMultiStoreId()]);
+        $params = new ArrayCollection([
+            new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
+            new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
+            new Parameter('name', $dto->getName(), Types::STRING),
+        ]);
+
+        $query = $qb
+            ->select('n, sn')
+            ->leftJoin('n.storeNomenclatures', 'sn')
+            ->join('n.multiStore', 'm')
+            ->where('m.id = :mid')
+            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'))
+            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'))
+            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name'))
+            ->setParameters($params);
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
