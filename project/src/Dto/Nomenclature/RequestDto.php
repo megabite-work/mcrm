@@ -74,6 +74,11 @@ final class RequestDto
     public function getName(): ?array
     {
         return ['ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
+    }    
+    
+    public function getSerializedName(): ?string
+    {
+        return json_decode(json_encode($this->getName(), JSON_UNESCAPED_UNICODE), true);
     }
 
     public function getCategoryId(): ?int

@@ -41,15 +41,7 @@ class UpdateAction
 
             $nomenclature->setCategory($category);
         }
-        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
-            $nomenclatureName = $nomenclature->getName();
-            $name = [
-                'ru' => $dto->getNameRu() ?? $nomenclatureName['ru'],
-                'uz' => $dto->getNameUz() ?? $nomenclatureName['uz'],
-                'uzc' => $dto->getNameUzc() ?? $nomenclatureName['uzc'],
-            ];
-            $nomenclature->setName($name);
-        }
+
         if (null !== $dto->getQrCode()) {
             $nomenclature->setQrCode($dto->getQrCode());
         }
@@ -82,5 +74,20 @@ class UpdateAction
         }
 
         return $nomenclature;
+    }
+
+    private function setName(Nomenclature $nomenclature, RequestDto $dto): void
+    {
+        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
+            $nomenclatureName = $nomenclature->getName();
+            $name = [
+                'ru' => $dto->getNameRu() ?? $nomenclatureName['ru'],
+                'uz' => $dto->getNameUz() ?? $nomenclatureName['uz'],
+                'uzc' => $dto->getNameUzc() ?? $nomenclatureName['uzc'],
+            ];
+
+            $name = json_decode(json_encode($name, JSON_UNESCAPED_UNICODE), true);
+            $nomenclature->setName($name);
+        }
     }
 }

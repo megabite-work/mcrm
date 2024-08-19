@@ -11,8 +11,7 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $id, RequestDto $dto): Category
     {
@@ -31,6 +30,36 @@ class UpdateAction
             throw new EntityNotFoundException('not found');
         }
 
+        $this->setName($category, $dto);
+        $this->setParent($category, $dto);
+
+        if ($dto->getImage()) {
+            $category->setImage($dto->getImage());
+        }
+        if (null !== $dto->getIsActive()) {
+            $category->setIsActive($dto->getIsActive());
+        }
+
+        return $category;
+    }
+
+    private function setName(Category $category, RequestDto $dto): void
+    {
+        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
+            $categoryName = $category->getName();
+            $name = [
+                'ru' => $dto->getNameRu() ?? $categoryName['ru'],
+                'uz' => $dto->getNameUz() ?? $categoryName['uz'],
+                'uzc' => $dto->getNameUzc() ?? $categoryName['uzc'],
+            ];
+
+            $name = json_decode(json_encode($name, JSON_UNESCAPED_UNICODE), true);
+            $category->setName($name);
+        }
+    }
+
+    private function setParent(Category $category, RequestDto $dto): void
+    {
         if ($dto->getParentId()) {
             $parent = $this->em->find(Category::class, $dto->getParentId());
 
@@ -40,22 +69,5 @@ class UpdateAction
 
             $category->setParent($parent);
         }
-        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
-            $categoryName = $category->getName();
-            $name = [
-                'ru' => $dto->getNameRu() ?? $categoryName['ru'],
-                'uz' => $dto->getNameUz() ?? $categoryName['uz'],
-                'uzc' => $dto->getNameUzc() ?? $categoryName['uzc'],
-            ];
-            $category->setName($name);
-        }
-        if ($dto->getImage()) {
-            $category->setImage($dto->getImage());
-        }
-        if (null !== $dto->getIsActive()) {
-            $category->setIsActive($dto->getIsActive());
-        }
-
-        return $category;
     }
 }

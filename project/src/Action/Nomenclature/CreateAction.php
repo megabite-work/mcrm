@@ -36,7 +36,7 @@ class CreateAction
     private function create(RequestDto $dto, Category $category, MultiStore $multiStore): Nomenclature
     {
         $nomenclature = (new Nomenclature())
-            ->setName($dto->getName())
+            ->setName($dto->getSerializedName())
             ->setMxik($dto->getMxik())
             ->setBrand($dto->getBrand())
             ->setOldPrice($dto->getOldPrice() ?? 0)
