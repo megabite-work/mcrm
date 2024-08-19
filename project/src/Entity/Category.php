@@ -29,9 +29,9 @@ class Category
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true)]
     private ?Category $parent = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column]
     #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private ?array $name = null;
+    private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
@@ -130,12 +130,12 @@ class Category
 
     public function getName(): ?array
     {
-        return $this->name;
+        return json_decode($this->name, true);
     }
 
     public function setName(?array $name): static
     {
-        $this->name = $name;
+        $this->name = json_encode($name, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
@@ -145,7 +145,7 @@ class Category
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): static
     {
         $this->image = $image;
 

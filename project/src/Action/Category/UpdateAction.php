@@ -30,8 +30,8 @@ class UpdateAction
             throw new EntityNotFoundException('not found');
         }
 
-        $this->setName($category, $dto);
-        $this->setParent($category, $dto);
+        $this->updateName($category, $dto);
+        $this->updateParent($category, $dto);
 
         if ($dto->getImage()) {
             $category->setImage($dto->getImage());
@@ -43,7 +43,7 @@ class UpdateAction
         return $category;
     }
 
-    private function setName(Category $category, RequestDto $dto): void
+    private function updateName(Category $category, RequestDto $dto): void
     {
         if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
             $categoryName = $category->getName();
@@ -58,7 +58,7 @@ class UpdateAction
         }
     }
 
-    private function setParent(Category $category, RequestDto $dto): void
+    private function updateParent(Category $category, RequestDto $dto): void
     {
         if ($dto->getParentId()) {
             $parent = $this->em->find(Category::class, $dto->getParentId());

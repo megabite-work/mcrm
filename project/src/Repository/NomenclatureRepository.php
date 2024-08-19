@@ -32,7 +32,7 @@ class NomenclatureRepository extends ServiceEntityRepository
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
             new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
-            new Parameter('name', $dto->getName(), Types::STRING),
+            new Parameter('name', '%' . $dto->getName() . '%', Types::STRING),
         ]);
 
         $query = $qb
@@ -56,7 +56,7 @@ class NomenclatureRepository extends ServiceEntityRepository
 
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
-            new Parameter('name', $dto->getName(), Types::STRING),
+            new Parameter('name', '%' . $dto->getName() . '%', Types::STRING),
         ]);
 
         $query = $qb
@@ -72,7 +72,7 @@ class NomenclatureRepository extends ServiceEntityRepository
                 )
             ))
             ->setParameters($params);
-        
+
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 

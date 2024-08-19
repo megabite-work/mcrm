@@ -30,11 +30,11 @@ class CounterPart
     #[Groups(['counter_part:read'])]
     private ?int $multiStoreId = null;
 
-    #[ORM\Column(name: 'stir')]
+    #[ORM\Column(name: 'inn')]
     #[Groups(['counter_part:read'])]
-    private ?string $stir = null;
+    private ?string $inn = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     #[Groups(['counter_part:read'])]
     private ?string $name = null;
 
@@ -83,14 +83,14 @@ class CounterPart
         return $this;
     }
 
-    public function getStir(): ?string
+    public function getInn(): ?string
     {
-        return $this->stir;
+        return $this->inn;
     }
 
-    public function setStir(string $stir): static
+    public function setInn(?string $inn): static
     {
-        $this->stir = $stir;
+        $this->inn = $inn;
 
         return $this;
     }
@@ -100,7 +100,7 @@ class CounterPart
         return $this->discount;
     }
 
-    public function setDiscount(float $discount): static
+    public function setDiscount(?float $discount): static
     {
         $this->discount = $discount;
 

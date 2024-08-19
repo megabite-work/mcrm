@@ -24,7 +24,7 @@ class MoveDetail
     #[Groups(['move_detail:read'])]
     private ?int $id = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     #[Groups(['move_detail:read', 'move_detail:write'])]
     private ?string $status = null;
 
@@ -56,7 +56,7 @@ class MoveDetail
     #[Groups(['move_detail:read', 'move_detail:write'])]
     private ?int $totalItem = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     #[Groups(['move_detail:read', 'move_detail:write'])]
     private ?string $comment = null;
 

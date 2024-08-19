@@ -26,11 +26,11 @@ class MultiStore
     #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $id = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(nullable: true)]
     #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $profit = null;
 

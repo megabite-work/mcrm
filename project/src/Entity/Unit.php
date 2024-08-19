@@ -25,9 +25,9 @@ class Unit
     #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'json', options: ['charset' => 'UTF8'])]
+    #[ORM\Column]
     #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private ?array $name = null;
+    private ?string $name = null;
 
     #[ORM\Column]
     #[Groups(['unit:index', 'unit:show', 'unit:create', 'unit:update', 'nomenclature:show', 'store:nomenclature', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
@@ -52,12 +52,12 @@ class Unit
 
     public function getName(): ?array
     {
-        return $this->name;
+        return json_decode($this->name, true);
     }
 
-    public function setName(array $name): static
+    public function setName(?array $name): static
     {
-        $this->name = $name;
+        $this->name = json_encode($name, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

@@ -17,7 +17,7 @@ class CreateAction
     public function __invoke(RequestDto $dto): Category
     {
         $category = (new Category())
-            ->setName($dto->getSerializedName())
+            ->setName($dto->getName())
             ->setImage($dto->getImage());
 
         if ($dto->getParentId()) {

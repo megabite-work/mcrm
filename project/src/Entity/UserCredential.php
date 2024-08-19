@@ -30,9 +30,9 @@ class UserCredential
     #[Groups(['user_credential:index', 'user:me'])]
     private ?string $type = null;
 
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups(['user_credential:index', 'user:me'])]
-    private ?array $value = null;
+    private ?string $value = null;
 
     #[ORM\ManyToOne(inversedBy: 'userCredentials')]
     #[ORM\JoinColumn(nullable: false)]
@@ -57,12 +57,12 @@ class UserCredential
 
     public function getValue(): ?array
     {
-        return $this->value;
+        return json_decode($this->value, true);
     }
 
     public function setValue(array $value): static
     {
-        $this->value = $value;
+        $this->value = json_encode($value, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

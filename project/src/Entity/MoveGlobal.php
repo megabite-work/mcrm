@@ -24,7 +24,7 @@ class MoveGlobal
     #[Groups(['move_global:read'])]
     private ?int $id = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     #[Groups(['move_global:read', 'move_global:write'])]
     private ?string $status = null;
 

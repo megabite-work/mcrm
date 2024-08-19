@@ -32,15 +32,9 @@ class UpdateAction
 
     private function updateNomenclature(RequestDto $dto, Nomenclature $nomenclature): Nomenclature
     {
-        if ($dto->getCategoryId()) {
-            $category = $this->em->find(Category::class, $dto->getCategoryId());
 
-            if (null === $category) {
-                throw new EntityNotFoundException('category not found');
-            }
-
-            $nomenclature->setCategory($category);
-        }
+        $this->updateCategory($nomenclature, $dto);
+        $this->updateName($nomenclature, $dto);
 
         if (null !== $dto->getQrCode()) {
             $nomenclature->setQrCode($dto->getQrCode());
@@ -76,7 +70,7 @@ class UpdateAction
         return $nomenclature;
     }
 
-    private function setName(Nomenclature $nomenclature, RequestDto $dto): void
+    private function updateName(Nomenclature $nomenclature, RequestDto $dto): void
     {
         if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
             $nomenclatureName = $nomenclature->getName();
@@ -88,6 +82,19 @@ class UpdateAction
 
             $name = json_decode(json_encode($name, JSON_UNESCAPED_UNICODE), true);
             $nomenclature->setName($name);
+        }
+    }
+
+    private function updateCategory(Nomenclature $nomenclature, RequestDto $dto): void
+    {
+        if ($dto->getCategoryId()) {
+            $category = $this->em->find(Category::class, $dto->getCategoryId());
+
+            if (null === $category) {
+                throw new EntityNotFoundException('category not found');
+            }
+
+            $nomenclature->setCategory($category);
         }
     }
 }

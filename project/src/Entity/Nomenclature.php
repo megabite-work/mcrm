@@ -38,9 +38,9 @@ class Nomenclature
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $brand = null;
 
-    #[ORM\Column(type: 'json', options: ['charset' => 'utf8mb4_unicode_ci'])]
+    #[ORM\Column]
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
-    private ?array $name = null;
+    private ?string $name = null;
 
     #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
@@ -185,12 +185,12 @@ class Nomenclature
 
     public function getName(): ?array
     {
-        return $this->name;
+        return json_decode($this->name, true);
     }
 
     public function setName(?array $name): static
     {
-        $this->name = $name;
+        $this->name = json_encode($name, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

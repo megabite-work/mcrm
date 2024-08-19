@@ -23,7 +23,7 @@ class Currency
     #[Groups(['currency:read'])]
     private ?int $id = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     #[Groups(['currency:read'])]
     private ?string $name = null;
 

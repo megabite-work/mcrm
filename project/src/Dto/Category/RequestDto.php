@@ -49,11 +49,6 @@ final class RequestDto
         return ['ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
     }
 
-    public function getSerializedName(): ?array
-    {
-        return json_decode(json_encode($this->getName(), JSON_UNESCAPED_UNICODE), true);
-    }
-
     public function getImage(): ?string
     {
         return $this->image;
