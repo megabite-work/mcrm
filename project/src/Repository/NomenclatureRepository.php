@@ -63,14 +63,14 @@ class NomenclatureRepository extends ServiceEntityRepository
             ->select('n, sn')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->join('n.multiStore', 'm')
-            ->where('m.id = :mid')
-            ->andWhere(
-                $qb->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name')),
-                $qb->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name')),
-                $qb->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name'))
-            )
-            // ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'))
-            // ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name'))
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('m.id', ':mid'),
+                $qb->expr()->orX(
+                    $qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name')
+                )
+            ))
             ->setParameters($params);
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
