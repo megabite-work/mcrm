@@ -56,7 +56,6 @@ class NomenclatureRepository extends ServiceEntityRepository
 
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
-            new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
             new Parameter('name', $dto->getName(), Types::STRING),
         ]);
 
