@@ -19,9 +19,13 @@ class CreateAction
     public function __invoke(RequestDto $dto): CounterPart
     {
         $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
+        $counterPart = $this->repo->findOneBy(['name' => $dto->getName(), 'inn' => $dto->getInn()]);
 
         if (null == $multiStore) {
             throw new EntityNotFoundException('not found');
+        }
+        if ($counterPart !== null) {
+            throw new EntityNotFoundException('already exists');
         }
 
         $cashbox = $this->create($multiStore, $dto);
