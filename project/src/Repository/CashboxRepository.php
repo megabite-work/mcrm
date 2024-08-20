@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\Cashbox;
 use App\Component\Paginator;
 use App\Dto\Cashbox\RequestQueryDto;
+use App\Entity\Cashbox;
 use App\Entity\Store;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Cashbox>

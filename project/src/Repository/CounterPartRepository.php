@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\CounterPart;
 use App\Component\Paginator;
 use App\Dto\CounterPart\RequestQueryDto;
+use App\Entity\CounterPart;
 use App\Entity\MultiStore;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<CounterPart>

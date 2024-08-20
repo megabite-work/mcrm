@@ -32,7 +32,6 @@ class UpdateAction
 
     private function updateNomenclature(RequestDto $dto, Nomenclature $nomenclature): Nomenclature
     {
-
         $this->updateCategory($nomenclature, $dto);
         $this->updateName($nomenclature, $dto);
 

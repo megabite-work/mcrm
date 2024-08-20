@@ -2,19 +2,21 @@
 
 namespace App\Action\CounterPart;
 
-use App\Entity\MultiStore;
-use App\Entity\CounterPart;
-use App\Dto\CounterPart\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\CounterPartRepository;
 use App\Component\EntityNotFoundException;
+use App\Dto\CounterPart\RequestDto;
+use App\Entity\CounterPart;
+use App\Entity\MultiStore;
+use App\Entity\Phone;
+use App\Repository\CounterPartRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private CounterPartRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): CounterPart
     {
@@ -24,11 +26,12 @@ class CreateAction
         if (null == $multiStore) {
             throw new EntityNotFoundException('not found');
         }
-        if ($counterPart !== null) {
+        if (null !== $counterPart) {
             throw new EntityNotFoundException('already exists');
         }
 
         $cashbox = $this->create($multiStore, $dto);
+        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($counterPart, $dto->getPhones());
 
         $this->em->flush();
 

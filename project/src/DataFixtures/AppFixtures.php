@@ -16,7 +16,7 @@ class AppFixtures extends Fixture
     {
         UserFactory::createMany(
             5,
-            fn(int $i) => [
+            fn (int $i) => [
                 'email' => "user$i@gmail.com",
                 'username' => "user$i",
                 'address' => AddressFactory::new(),
@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
 
         MultiStoreFactory::createMany(
             5,
-            fn(int $i) => [
+            fn (int $i) => [
                 'owner' => UserFactory::random(),
                 'address' => AddressFactory::new(),
             ]
@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
 
         StoreFactory::createMany(
             5,
-            fn(int $i) => [
+            fn (int $i) => [
                 'multiStore' => MultiStoreFactory::random(),
                 'address' => AddressFactory::new(),
             ]
@@ -43,21 +43,21 @@ class AppFixtures extends Fixture
 
         PhoneFactory::createMany(
             6,
-            fn() => [
+            fn () => [
                 'owner' => UserFactory::random(),
             ]
         );
 
         PhoneFactory::createMany(
             5,
-            fn() => [
+            fn () => [
                 'store' => StoreFactory::random(),
             ]
         );
 
         PhoneFactory::createMany(
             5,
-            fn() => [
+            fn () => [
                 'multiStore' => MultiStoreFactory::random(),
             ]
         );

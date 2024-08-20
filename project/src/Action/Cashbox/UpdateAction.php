@@ -2,18 +2,19 @@
 
 namespace App\Action\Cashbox;
 
-use App\Entity\Cashbox;
+use App\Component\EntityNotFoundException;
 use App\Dto\Cashbox\RequestDto;
+use App\Entity\Cashbox;
 use App\Repository\CashboxRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private CashboxRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): Cashbox
     {
@@ -37,9 +38,6 @@ class UpdateAction
         }
         if (null !== $dto->getIsActive()) {
             $cashbox->setIsActive($dto->getIsActive());
-        }
-        if ($dto->getChequeNumber()) {
-            $cashbox->setChequeNumber($dto->getChequeNumber());
         }
         if ($dto->getTerminalId()) {
             $cashbox->setTerminalId($dto->getTerminalId());

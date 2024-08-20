@@ -10,7 +10,8 @@ class IndexAction
 {
     public function __construct(
         private CashboxRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {

@@ -4,8 +4,8 @@ namespace App\Action\Cashbox;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\Cashbox\RequestDto;
-use App\Entity\Store;
 use App\Entity\Cashbox;
+use App\Entity\Store;
 use App\Repository\CashboxRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,7 +14,8 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private CashboxRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): Cashbox
     {

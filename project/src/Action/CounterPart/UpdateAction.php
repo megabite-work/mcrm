@@ -2,20 +2,21 @@
 
 namespace App\Action\CounterPart;
 
-use App\Entity\Phone;
+use App\Component\EntityNotFoundException;
+use App\Dto\CounterPart\RequestDto;
 use App\Entity\Address;
 use App\Entity\CounterPart;
-use App\Dto\CounterPart\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Phone;
 use App\Repository\CounterPartRepository;
-use App\Component\EntityNotFoundException;
+use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private CounterPartRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): CounterPart
     {

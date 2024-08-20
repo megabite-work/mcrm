@@ -32,7 +32,7 @@ class NomenclatureRepository extends ServiceEntityRepository
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
             new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
-            new Parameter('name', '%' . $dto->getName() . '%', Types::STRING),
+            new Parameter('name', '%'.$dto->getName().'%', Types::STRING),
         ]);
 
         $query = $qb
@@ -40,11 +40,15 @@ class NomenclatureRepository extends ServiceEntityRepository
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->join('n.category', 'c')
             ->join('n.multiStore', 'm')
-            ->where('m.id = :mid')
-            ->andWhere('c.id = :cid')
-            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'))
-            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'))
-            ->orWhere($qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name'))
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('m.id', ':mid'),
+                $qb->expr()->eq('c.id', ':cid'),
+                $qb->expr()->orX(
+                    $qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name')
+                )
+            ))
             ->setParameters($params);
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
@@ -56,7 +60,7 @@ class NomenclatureRepository extends ServiceEntityRepository
 
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
-            new Parameter('name', '%' . $dto->getName() . '%', Types::STRING),
+            new Parameter('name', '%'.$dto->getName().'%', Types::STRING),
         ]);
 
         $query = $qb

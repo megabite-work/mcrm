@@ -15,26 +15,28 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['counter_part:create'])]
         private string $name,
         #[Groups(['counter_part:create', 'counter_part:update'])]
-        #[Assert\NotBlank(groups: ['counter_part:create'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['counter_part:create'])]
         private ?string $inn,
         #[Groups(['counter_part:create', 'counter_part:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['counter_part:create', 'counter_part:update'])]
         private ?float $discount,
-        #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Groups(['counter_part:update'])]
         private ?string $region,
-        #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Groups(['counter_part:update'])]
         private ?string $district,
-        #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Groups(['counter_part:update'])]
         private ?string $street,
-        #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Groups(['counter_part:update'])]
         private ?string $house,
-        #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Groups(['counter_part:update'])]
         private ?string $latitude,
-        #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Groups(['counter_part:update'])]
         private ?string $longitude,
         #[Groups(['counter_part:create', 'counter_part:update'])]
+        #[Assert\NotBlank(groups: ['counter_part:create'])]
         private ?array $phones,
-    ) {}
+    ) {
+    }
 
     public function getMultiStoreId(): ?int
     {

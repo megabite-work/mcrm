@@ -74,7 +74,7 @@ final class RequestDto
     public function getName(): ?array
     {
         return ['ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
-    }    
+    }
 
     public function getCategoryId(): ?int
     {

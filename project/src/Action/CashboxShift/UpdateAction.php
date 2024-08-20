@@ -2,15 +2,16 @@
 
 namespace App\Action\CashboxShift;
 
+use App\Component\EntityNotFoundException;
 use App\Entity\CashboxShift;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id): CashboxShift
     {

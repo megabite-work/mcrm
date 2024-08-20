@@ -15,8 +15,6 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['cashbox:create'])]
         private ?int $storeId,
         #[Groups(['cashbox:update'])]
-        private ?int $chequeNumber,
-        #[Groups(['cashbox:update'])]
         private ?string $terminalId,
         #[Groups(['cashbox:update'])]
         private ?int $shiftNumber,
@@ -31,7 +29,8 @@ final class RequestDto
         #[Groups(['cashbox:update'])]
         #[Assert\Type('bool', groups: ['cashbox:update'])]
         private ?bool $isActive = true
-    ) {}
+    ) {
+    }
 
     public function getName(): ?string
     {
@@ -46,11 +45,6 @@ final class RequestDto
     public function getStoreId(): ?int
     {
         return $this->storeId;
-    }
-
-    public function getChequeNumber(): ?int
-    {
-        return $this->chequeNumber;
     }
 
     public function getTerminalId(): ?string

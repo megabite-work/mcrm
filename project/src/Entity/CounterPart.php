@@ -23,7 +23,7 @@ class CounterPart
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'counterParts')]
@@ -35,7 +35,7 @@ class CounterPart
     private ?string $inn = null;
 
     #[ORM\Column]
-    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?string $name = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -43,16 +43,23 @@ class CounterPart
     private ?Address $address = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
-    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
-    private null|string|float $discount = null;
+    #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    private string|float|null $discount = 0;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'counterPart')]
     #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private Collection $phones;
 
+    /**
+     * @var Collection<int, CashboxDetail>
+     */
+    #[ORM\OneToMany(targetEntity: CashboxDetail::class, mappedBy: 'counterPart')]
+    private Collection $cashboxDetails;
+
     public function __construct()
     {
         $this->phones = new ArrayCollection();
+        $this->cashboxDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +149,36 @@ class CounterPart
     public function setAddress(?Address $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashboxDetail>
+     */
+    public function getCashboxDetails(): Collection
+    {
+        return $this->cashboxDetails;
+    }
+
+    public function addCashboxDetail(CashboxDetail $cashboxDetail): static
+    {
+        if (!$this->cashboxDetails->contains($cashboxDetail)) {
+            $this->cashboxDetails->add($cashboxDetail);
+            $cashboxDetail->setCounterPart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashboxDetail(CashboxDetail $cashboxDetail): static
+    {
+        if ($this->cashboxDetails->removeElement($cashboxDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($cashboxDetail->getCounterPart() === $this) {
+                $cashboxDetail->setCounterPart(null);
+            }
+        }
 
         return $this;
     }

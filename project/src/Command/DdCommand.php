@@ -35,6 +35,7 @@ class DdCommand extends Command
         $dto = new RequestQueryDto(1);
         $data = $this->repo->findAllNomenclatures($dto);
         dd($data);
+
         return Command::SUCCESS;
     }
 }

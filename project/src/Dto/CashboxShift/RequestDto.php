@@ -17,8 +17,8 @@ final class RequestDto
         #[Groups(['cashbox_shift:create'])]
         #[Assert\NotBlank(groups: ['cashbox_shift:create'])]
         private ?int $shiftNumber
-    ) {}
-
+    ) {
+    }
 
     public function getCashboxId(): ?int
     {

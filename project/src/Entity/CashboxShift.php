@@ -102,10 +102,10 @@ class CashboxShift
     #[Groups(['cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update'])]
     public function getWorkingTime(): ?int
     {
-        if ($this->getClosedAt() === null) {
+        if (null === $this->getClosedAt()) {
             return 0;
         }
-        
+
         $interval = $this->getCreatedAt()->diff($this->getClosedAt());
 
         return ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;

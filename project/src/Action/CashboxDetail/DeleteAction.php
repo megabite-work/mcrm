@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Action\CashboxShift;
+namespace App\Action\CashboxDetail;
 
 use App\Component\EntityNotFoundException;
-use App\Entity\CashboxShift;
+use App\Entity\CashboxDetail;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DeleteAction
@@ -15,7 +15,7 @@ class DeleteAction
 
     public function __invoke(int $id): bool
     {
-        $entity = $this->em->find(CashboxShift::class, $id);
+        $entity = $this->em->find(CashboxDetail::class, $id);
 
         if (null === $entity) {
             throw new EntityNotFoundException('not found');

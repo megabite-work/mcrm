@@ -3245,6 +3245,16 @@ $units = [
     ["ru" => "Литр", "uz" => "Litr", "uzc" => "Литр", "code" => 1465941],
 ];
 
+$paymentTypes = [
+    ['type' => 'ordinary', 'name' => ['en' => 'cash', 'uz' => 'Naqd', 'uzc' => 'Накд', 'ru' => 'Наличный']],
+    ['type' => 'ordinary', 'name' => ['en' => 'terminal', 'uz' => 'Terminal', 'uzc' => 'Терминал', 'ru' => 'Терминал']],
+    ['type' => 'ordinary', 'name' => ['en' => 'card', 'uz' => 'Karta', 'uzc' => 'Карта', 'ru' => 'Карта']],
+    ['type' => 'ordinary', 'name' => ['en' => 'transfer', 'uz' => '', 'uzc' => '', 'ru' => 'Перечисление']],
+    ['type' => 'e_wallets', 'name' => ['en' => 'click', 'uz' => 'Click', 'uzc' => 'Click', 'ru' => 'Click']],
+    ['type' => 'e_wallets', 'name' => ['en' => 'uzum', 'uz' => 'Uzum', 'uzc' => 'Uzum', 'ru' => 'Uzum']],
+    ['type' => 'e_wallets', 'name' => ['en' => 'payme', 'uz' => 'Payme', 'uzc' => 'Payme', 'ru' => 'Payme']],
+];
+
 $pdo->query("SET FOREIGN_KEY_CHECKS = 0");
 $pdo->query("TRUNCATE TABLE category");
 $pdo->query("TRUNCATE TABLE unit");
@@ -3282,4 +3292,9 @@ foreach ($parents as $parent) {
 $stmt = $pdo->prepare("INSERT INTO unit(name,code,created_at,updated_at) VALUES (?,?,?,?)");
 foreach ($units as $unit) {
     $stmt->execute([json_encode(['uz' => $unit['uz'], 'uzc' => $unit['uzc'], 'ru' => $unit['ru']], JSON_UNESCAPED_UNICODE), $unit['code'], $date, $date]);
+}
+
+$stmt = $pdo->prepare("INSERT INTO payment_type(type,name,created_at,updated_at) VALUES (?,?,?,?)");
+foreach ($paymentTypes as $type) {
+    $stmt->execute([$type['type'], json_encode($type['name'], JSON_UNESCAPED_UNICODE), $date, $date]);
 }
