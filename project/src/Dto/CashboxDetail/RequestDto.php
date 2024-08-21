@@ -15,6 +15,12 @@ final class RequestDto
         #[Assert\Choice(choices: ['sale', 'return'])]
         private ?string $type,
         #[Groups(['cashbox_detail:create'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create'])]
+        private ?int $counterPartId,
+        #[Groups(['cashbox_detail:create'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:update'])]
+        private ?int $detailId,
+        #[Groups(['cashbox_detail:create'])]
         #[Assert\Choice(choices: ['credit', 'advance', 'credit_pay', null])]
         private ?string $creditType = null,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
@@ -44,12 +50,6 @@ final class RequestDto
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
         private ?float $remain = 0,
-        #[Groups(['cashbox_detail:create'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:update'])]
-        private ?int $detailId,
-        #[Groups(['cashbox_detail:create'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create'])]
-        private ?int $counterPartId,
         private ?int $chequeNumber = null,
 
     ) {}
