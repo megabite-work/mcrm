@@ -53,7 +53,7 @@ php_refresh:
 db_refresh:
 	@$(PHP) $(BIN) d:d:d -f
 	@$(PHP) $(BIN) d:d:c
-	@$(PHP) $(BIN) d:m:diff -n
+	# @$(PHP) $(BIN) d:m:diff -n
 	@$(PHP) $(BIN) d:m:m -n
 	@$(PHP) php category.php
 	@$(PHP) $(BIN) d:f:load -n --append
