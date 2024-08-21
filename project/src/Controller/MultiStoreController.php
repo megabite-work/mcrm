@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/multi-stores', format: 'json')]
-#[IsGranted('ROLE_DIRECTOR', statusCode: 403)]
+#[IsGranted('ROLE_DIRECTOR', statusCode: 403, message: 'Access Denied')]
 #[OA\Tag(name: 'MultiStore')]
 class MultiStoreController extends AbstractController
 {

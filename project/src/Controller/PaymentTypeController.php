@@ -31,21 +31,21 @@ class PaymentTypeController extends AbstractController
         return $this->json($action($id), context: ['groups' => ['payment_type:show']]);
     }
 
-    #[IsGranted('ROLE_ADMIN', statusCode: 403)]
+    #[IsGranted('ROLE_ADMIN', statusCode: 403, message: 'Access Denied')]
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['payment_type:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['payment_type:create']]);
     }
 
-    #[IsGranted('ROLE_ADMIN', statusCode: 403)]
+    #[IsGranted('ROLE_ADMIN', statusCode: 403, message: 'Access Denied')]
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['payment_type:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         return $this->json($action($id, $dto), context: ['groups' => ['payment_type:update']]);
     }
 
-    #[IsGranted('ROLE_ADMIN', statusCode: 403)]
+    #[IsGranted('ROLE_ADMIN', statusCode: 403, message: 'Access Denied')]
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {

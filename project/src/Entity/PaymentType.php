@@ -20,16 +20,16 @@ class PaymentType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['payment_type:index', 'payment_type:show', 'payment_type:create', 'payment_type:update'])]
+    #[Groups(['payment_type:index', 'payment_type:show', 'payment_type:create', 'payment_type:update','cashbox_payment:index', 'cashbox_payment:show'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Choice(choices: ['ordinary', 'e_wallets'])]
-    #[Groups(['payment_type:index', 'payment_type:show', 'payment_type:create', 'payment_type:update'])]
+    #[Groups(['payment_type:index', 'payment_type:show', 'payment_type:create', 'payment_type:update','cashbox_payment:index', 'cashbox_payment:show'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['payment_type:index', 'payment_type:show', 'payment_type:create', 'payment_type:update'])]
+    #[Groups(['payment_type:index', 'payment_type:show', 'payment_type:create', 'payment_type:update', 'cashbox_payment:index', 'cashbox_payment:show'])]
     private ?string $name = null;
 
     public function getId(): ?int

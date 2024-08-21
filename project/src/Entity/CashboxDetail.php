@@ -23,11 +23,11 @@ class CashboxDetail
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update', 'cashbox_payment:index', 'cashbox_payment:show', 'cashbox_payment:create'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update', 'cashbox_payment:index', 'cashbox_payment:show', 'cashbox_payment:create'])]
     private ?int $chequeNumber = null;
 
     #[ORM\Column(length: 255)]
@@ -98,9 +98,13 @@ class CashboxDetail
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show'])]
     private Collection $cashboxDetails;
 
+    #[ORM\OneToMany(targetEntity: CashboxPayment::class, mappedBy: 'cashboxDetail')]
+    private Collection $cashboxPayments;
+
     public function __construct()
     {
         $this->cashboxDetails = new ArrayCollection();
+        $this->cashboxPayments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -326,6 +330,32 @@ class CashboxDetail
         if ($this->cashboxDetails->removeElement($cashboxDetail)) {
             if ($cashboxDetail->getDetail() === $this) {
                 $cashboxDetail->setDetail(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCashboxPayments(): Collection
+    {
+        return $this->cashboxPayments;
+    }
+
+    public function addCashboxPayment(CashboxPayment $cashboxPayment): static
+    {
+        if (!$this->cashboxPayments->contains($cashboxPayment)) {
+            $this->cashboxPayments->add($cashboxPayment);
+            $cashboxPayment->setCashboxDetail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashboxPayment(CashboxPayment $cashboxPayment): static
+    {
+        if ($this->cashboxPayments->removeElement($cashboxPayment)) {
+            if ($cashboxPayment->getCashboxDetail() === $this) {
+                $cashboxPayment->setCashboxDetail(null);
             }
         }
 
