@@ -23,7 +23,7 @@ class Nomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_global:index', 'cashbox_global:show', 'cashbox_global:create', 'cashbox_global:update'])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
@@ -31,7 +31,7 @@ class Nomenclature
     private ?string $mxik = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_global:index', 'cashbox_global:show', 'cashbox_global:create', 'cashbox_global:update'])]
     private ?int $barcode = null;
 
     #[ORM\Column(nullable: true)]
@@ -39,7 +39,7 @@ class Nomenclature
     private ?string $brand = null;
 
     #[ORM\Column]
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_global:index', 'cashbox_global:show', 'cashbox_global:create', 'cashbox_global:update'])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'oldprice', type: Types::DECIMAL, precision: 15, scale: 3, options: ['default' => 0])]
@@ -202,7 +202,7 @@ class Nomenclature
 
     public function setOldPrice(?float $oldPrice): static
     {
-        $this->oldPrice = $oldPrice;
+        $this->oldPrice = $oldPrice ?? 0;
 
         return $this;
     }
@@ -214,7 +214,7 @@ class Nomenclature
 
     public function setPrice(?float $price): static
     {
-        $this->price = $price;
+        $this->price = $price ?? 0;
 
         return $this;
     }
@@ -226,7 +226,7 @@ class Nomenclature
 
     public function setOldPriceCourse(?float $oldPriceCourse): static
     {
-        $this->oldPriceCourse = $oldPriceCourse;
+        $this->oldPriceCourse = $oldPriceCourse ?? 0;
 
         return $this;
     }
@@ -238,7 +238,7 @@ class Nomenclature
 
     public function setPriceCourse(?float $priceCourse): static
     {
-        $this->priceCourse = $priceCourse;
+        $this->priceCourse = $priceCourse ?? 0;
 
         return $this;
     }
@@ -250,7 +250,7 @@ class Nomenclature
 
     public function setNds(?float $nds): static
     {
-        $this->nds = $nds;
+        $this->nds = $nds ?? 0;
 
         return $this;
     }
@@ -262,7 +262,7 @@ class Nomenclature
 
     public function setDiscount(?float $discount): static
     {
-        $this->discount = $discount;
+        $this->discount = $discount ?? 0;
 
         return $this;
     }

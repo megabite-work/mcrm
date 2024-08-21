@@ -101,10 +101,14 @@ class CashboxDetail
     #[ORM\OneToMany(targetEntity: CashboxPayment::class, mappedBy: 'cashboxDetail')]
     private Collection $cashboxPayments;
 
+    #[ORM\OneToMany(targetEntity: CashboxGlobal::class, mappedBy: 'cashboxDetail')]
+    private Collection $cashboxGlobals;
+
     public function __construct()
     {
         $this->cashboxDetails = new ArrayCollection();
         $this->cashboxPayments = new ArrayCollection();
+        $this->cashboxGlobals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -356,6 +360,36 @@ class CashboxDetail
         if ($this->cashboxPayments->removeElement($cashboxPayment)) {
             if ($cashboxPayment->getCashboxDetail() === $this) {
                 $cashboxPayment->setCashboxDetail(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashboxGlobal>
+     */
+    public function getCashboxGlobals(): Collection
+    {
+        return $this->cashboxGlobals;
+    }
+
+    public function addCashboxGlobal(CashboxGlobal $cashboxGlobal): static
+    {
+        if (!$this->cashboxGlobals->contains($cashboxGlobal)) {
+            $this->cashboxGlobals->add($cashboxGlobal);
+            $cashboxGlobal->setCashboxDetail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashboxGlobal(CashboxGlobal $cashboxGlobal): static
+    {
+        if ($this->cashboxGlobals->removeElement($cashboxGlobal)) {
+            // set the owning side to null (unless already changed)
+            if ($cashboxGlobal->getCashboxDetail() === $this) {
+                $cashboxGlobal->setCashboxDetail(null);
             }
         }
 

@@ -3256,14 +3256,14 @@ $paymentTypes = [
 ];
 
 $pdo->query("SET FOREIGN_KEY_CHECKS = 0");
-$pdo->query("TRUNCATE TABLE category");
-$pdo->query("TRUNCATE TABLE unit");
-// $tables = $pdo->prepare('SHOW TABLES');
-// $tables->execute();
+// $pdo->query("TRUNCATE TABLE category");
+// $pdo->query("TRUNCATE TABLE unit");
+$tables = $pdo->prepare('SHOW TABLES');
+$tables->execute();
 
-// foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
-//     $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
-// }
+foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
+    $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
+}
 $pdo->query("SET FOREIGN_KEY_CHECKS = 1");
 
 $date = date("Y-m-d H:i:s");
