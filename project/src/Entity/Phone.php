@@ -21,11 +21,11 @@ class Phone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['phone:read', 'user:show', 'user:update', 'store:show', 'multi_store:show', 'multi_store:update', 'store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me'])]
+    #[Groups(['phone:read', 'user:show', 'user:update', 'store:show', 'multi_store:show', 'multi_store:update', 'store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['phone:read', 'user:show', 'user:update', 'store:show', 'multi_store:show', 'multi_store:update', 'store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me'])]
+    #[Groups(['phone:read', 'user:show', 'user:update', 'store:show', 'multi_store:show', 'multi_store:update', 'store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
     private ?string $phone = null;
 
     #[ORM\ManyToOne(inversedBy: 'phones')]

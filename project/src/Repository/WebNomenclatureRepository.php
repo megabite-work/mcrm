@@ -36,12 +36,15 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('wn, n, c, u, sn')
+            ->select('wn, n, c, u, sn, s, a, p')
             ->from(WebNomenclature::class, 'wn')
             ->join('wn.nomenclature', 'n')
             ->leftJoin('n.category', 'c')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
+            ->leftJoin('sn.store', 's')
+            ->join('s.address', 'a')
+            ->join('s.phones', 'p')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('n.multiStore', ':multiStore'),
                 $qb->expr()->orX(
@@ -59,12 +62,15 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT wn, n, c, u, sn
+            'SELECT wn, n, c, u, sn, s, a, p
             FROM App\Entity\WebNomenclature wn
             JOIN wn.nomenclature n
             LEFT JOIN n.category c
             LEFT JOIN n.unit u
             LEFT JOIN n.storeNomenclatures sn
+            LEFT JOIN sn.store s
+            JOIN s.address a
+            JOIN s.phones p
             WHERE wn.id = :id'
         )->setParameter('id', $id);
 

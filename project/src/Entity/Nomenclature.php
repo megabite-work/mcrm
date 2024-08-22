@@ -93,7 +93,7 @@ class Nomenclature
     private Collection $nomenclatureHistories;
 
     #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'nomenclature')]
-    #[Groups(['nomenclature:show', 'web_nomenclature:show'])]
+    #[Groups(['nomenclature:show', 'web_nomenclature:show', 'web_nomenclature:index'])]
     private Collection $storeNomenclatures;
 
     #[ORM\OneToOne(targetEntity: WebNomenclature::class, mappedBy: 'nomenclature')]
