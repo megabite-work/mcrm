@@ -22,15 +22,15 @@ class Store
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'web_nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'web_nomenclature:show'])]
     private ?string $name = null;
 
     #[ORM\Column(options: ['default' => 1])]
-    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store:index', 'store:show', 'store:create', 'store:update', 'multi_store:show', 'user:me', 'web_nomenclature:show'])]
     private bool $isActive = true;
 
     #[ORM\ManyToOne(inversedBy: 'stores')]
@@ -38,11 +38,11 @@ class Store
     private ?MultiStore $multiStore = null;
 
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'store')]
-    #[Groups(['store:show', 'store:update', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store:show', 'store:update', 'web_nomenclature:show'])]
     private Collection $phones;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['store:show', 'store:update', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store:show', 'store:update', 'web_nomenclature:show'])]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'stores')]

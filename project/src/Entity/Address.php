@@ -20,31 +20,31 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?string $region = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?string $district = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?string $street = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?string $house = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?string $latitude = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['address:read', 'user:show', 'user:update', 'store:show', 'store:update', 'multi_store:show', 'multi_store:update', 'counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create', 'user:me', 'web_nomenclature:show'])]
     private ?string $longitude = null;
 
     public function getId(): ?int
