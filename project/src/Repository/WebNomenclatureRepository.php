@@ -43,8 +43,8 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->leftJoin('sn.store', 's')
-            ->join('s.address', 'a')
-            ->join('s.phones', 'p')
+            ->leftJoin('s.address', 'a')
+            ->leftJoin('s.phones', 'p')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('n.multiStore', ':multiStore'),
                 $qb->expr()->orX(
@@ -69,8 +69,8 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             LEFT JOIN n.unit u
             LEFT JOIN n.storeNomenclatures sn
             LEFT JOIN sn.store s
-            JOIN s.address a
-            JOIN s.phones p
+            LEFT JOIN s.address a
+            LEFT JOIN s.phones p
             WHERE wn.id = :id'
         )->setParameter('id', $id);
 
