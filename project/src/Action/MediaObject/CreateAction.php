@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class CreateAction
 {
-    public const UPLOAD_DIR = '%kernel.project_dir%/public/media';
+    public const UPLOAD_DIR = 'media';
 
     public function __construct(
         private EntityManagerInterface $em,
