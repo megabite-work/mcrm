@@ -36,17 +36,10 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('wn')
+            ->select('wn', 'n', 'u', 'sn')
             ->join('wn.nomenclature', 'n')
-            ->addSelect('n', 'c', 'u')
-            ->leftJoin('n.category', 'c')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
-            ->addSelect('sn')
-            ->leftJoin('sn.store', 's')
-            ->addSelect('s', 'a', 'p')
-            ->leftJoin('s.address', 'a')
-            ->leftJoin('s.phones', 'p')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('n.multiStore', ':multiStore'),
                 $qb->expr()->orX(
@@ -56,7 +49,7 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             ))
             ->setParameters($params);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), true);
     }
 
     public function findWebNomenclatureByIdWithCategoryUnitStoreNomenclature(int $id): ?WebNomenclature
