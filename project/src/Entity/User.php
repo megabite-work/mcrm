@@ -78,15 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: MultiStore::class, mappedBy: 'workers')]
     private Collection $workPlaces;
 
-    /**
-     * @var Collection<int, CashboxShift>
-     */
     #[ORM\OneToMany(targetEntity: CashboxShift::class, mappedBy: 'user')]
     private Collection $cashboxShifts;
 
-    /**
-     * @var Collection<int, CashboxDetail>
-     */
     #[ORM\OneToMany(targetEntity: CashboxDetail::class, mappedBy: 'user')]
     private Collection $cashboxDetails;
 
@@ -352,9 +346,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, CashboxShift>
-     */
     public function getCashboxShifts(): Collection
     {
         return $this->cashboxShifts;
@@ -373,7 +364,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCashboxShift(CashboxShift $cashboxShift): static
     {
         if ($this->cashboxShifts->removeElement($cashboxShift)) {
-            // set the owning side to null (unless already changed)
             if ($cashboxShift->getUser() === $this) {
                 $cashboxShift->setUser(null);
             }
@@ -382,9 +372,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, CashboxDetail>
-     */
     public function getCashboxDetails(): Collection
     {
         return $this->cashboxDetails;
@@ -403,7 +390,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCashboxDetail(CashboxDetail $cashboxDetail): static
     {
         if ($this->cashboxDetails->removeElement($cashboxDetail)) {
-            // set the owning side to null (unless already changed)
             if ($cashboxDetail->getUser() === $this) {
                 $cashboxDetail->setUser(null);
             }

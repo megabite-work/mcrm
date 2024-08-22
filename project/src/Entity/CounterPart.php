@@ -50,9 +50,6 @@ class CounterPart
     #[Groups(['counter_part:index', 'counter_part:show', 'counter_part:update', 'counter_part:create'])]
     private Collection $phones;
 
-    /**
-     * @var Collection<int, CashboxDetail>
-     */
     #[ORM\OneToMany(targetEntity: CashboxDetail::class, mappedBy: 'counterPart')]
     private Collection $cashboxDetails;
 

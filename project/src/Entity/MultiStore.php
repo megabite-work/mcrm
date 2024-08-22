@@ -64,7 +64,7 @@ class MultiStore
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'workPlaces')]
     private Collection $workers;
 
-    #[ORM\ManyToMany(targetEntity: CounterPart::class, inversedBy: 'multiStore')]
+    #[ORM\OneToMany(targetEntity: CounterPart::class, mappedBy: 'multiStore')]
     private Collection $counterParts;
 
     public function __construct()

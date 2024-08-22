@@ -27,7 +27,7 @@ class WebNomenclatureRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
-        $qb = $entityManager->createQueryBuilder();
+        $qb = $this->createQueryBuilder('wn');
 
         $params = new ArrayCollection([
             new Parameter('multiStore', $multiStore),
@@ -36,15 +36,17 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('wn, n, c, u, sn')
-            ->from(WebNomenclature::class, 'wn')
+            ->select('wn', 'n', 'c', 'u', 'sn')
             ->join('wn.nomenclature', 'n')
+            // ->addSelect('n', 'c', 'u')
             ->leftJoin('n.category', 'c')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
-            // ->leftJoin('sn.store', 's')
-            // ->leftJoin('s.address', 'a')
-            // ->leftJoin('s.phones', 'p')
+            // ->addSelect('sn')
+            ->leftJoin('sn.store', 's')
+            // ->addSelect('s')
+            ->leftJoin('s.address', 'a')
+            ->leftJoin('s.phones', 'p')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('n.multiStore', ':multiStore'),
                 $qb->expr()->orX(
