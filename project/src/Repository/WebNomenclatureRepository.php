@@ -36,15 +36,15 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('wn', 'n', 'c', 'u', 'sn')
+            ->select('wn')
             ->join('wn.nomenclature', 'n')
-            // ->addSelect('n', 'c', 'u')
+            ->addSelect('n', 'c', 'u')
             ->leftJoin('n.category', 'c')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
-            // ->addSelect('sn')
+            ->addSelect('sn')
             ->leftJoin('sn.store', 's')
-            // ->addSelect('s')
+            ->addSelect('s', 'a', 'p')
             ->leftJoin('s.address', 'a')
             ->leftJoin('s.phones', 'p')
             ->where($qb->expr()->andX(
