@@ -36,9 +36,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('n, wn, c, u, sn')
-            ->from(Nomenclature::class, 'n')
-            ->join('n.webNomenclature', 'wn')
+            ->select('wn, n, c, u, sn')
+            ->from(WebNomenclature::class, 'wn')
+            ->join('wn.nomenclature', 'n')
             ->leftJoin('n.category', 'c')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
@@ -59,9 +59,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT n, wn, c, u, sn
-            FROM App\Entity\Nomenclature n
-            JOIN n.webNomenclature wn
+            'SELECT wn, n, c, u, sn
+            FROM App\Entity\WebNomenclature wn
+            JOIN wn.nomenclature n
             LEFT JOIN n.category c
             LEFT JOIN n.unit u
             LEFT JOIN n.storeNomenclatures sn

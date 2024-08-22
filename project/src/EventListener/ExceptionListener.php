@@ -23,7 +23,7 @@ class ExceptionListener
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());
         } elseif ($exception instanceof EntityNotFoundException) {
-            $response->setStatusCode(404);
+            $response->setStatusCode($exception->getCode());
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
