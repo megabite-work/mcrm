@@ -21,12 +21,12 @@ class StoreNomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:show'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Store::class, inversedBy: 'storeNomenclatures')]
     #[ORM\JoinColumn(name: 'store_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['nomenclature:show', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['nomenclature:show', 'web_nomenclature:show'])]
     private ?Store $store = null;
 
     #[ORM\ManyToOne(targetEntity: Nomenclature::class, inversedBy: 'storeNomenclatures')]
@@ -34,7 +34,7 @@ class StoreNomenclature
     private ?Nomenclature $nomenclature = null;
 
     #[ORM\Column(name: 'qty', type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
-    #[Groups(['store_nomenclature:index', 'store_nomenclature:show', 'nomenclature:show', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['store_nomenclature:index', 'store_nomenclature:show', 'nomenclature:show', 'web_nomenclature:show'])]
     private float|string $qty = 0;
 
     public function getId(): ?int

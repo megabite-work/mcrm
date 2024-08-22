@@ -81,7 +81,7 @@ class Nomenclature
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'nomenclatures')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(targetEntity: Unit::class, inversedBy: 'nomenclatures')]
@@ -93,7 +93,7 @@ class Nomenclature
     private Collection $nomenclatureHistories;
 
     #[ORM\OneToMany(targetEntity: StoreNomenclature::class, mappedBy: 'nomenclature')]
-    #[Groups(['nomenclature:show', 'web_nomenclature:show', 'web_nomenclature:index'])]
+    #[Groups(['nomenclature:show', 'web_nomenclature:show'])]
     private Collection $storeNomenclatures;
 
     #[ORM\OneToOne(targetEntity: WebNomenclature::class, mappedBy: 'nomenclature')]
@@ -325,7 +325,7 @@ class Nomenclature
     #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
     public function getTotalQty(): ?int
     {
-        return $this->storeNomenclatures->count() ? $this->storeNomenclatures->reduce(fn ($init, $item): float => $item->getQty() + $init, 0) : 0;
+        return $this->getStoreNomenclatures()->count() ? $this->getStoreNomenclatures()->reduce(fn ($init, $item): float => $item->getQty() + $init, 0) : 0;
     }
 
     public function addStoreNomenclature(StoreNomenclature $storeNomenclature): static
