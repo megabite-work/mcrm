@@ -67,6 +67,10 @@ class MultiStore
     #[ORM\OneToMany(targetEntity: CounterPart::class, mappedBy: 'multiStore')]
     private Collection $counterParts;
 
+    #[ORM\OneToOne(targetEntity: WebCredential::class, mappedBy: 'multiStore')]
+    #[Groups(['multi_store:show'])]
+    private ?WebCredential $webCredential = null;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
@@ -286,6 +290,18 @@ class MultiStore
                 $counterPart->setMultiStore(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebCredential(): ?WebCredential
+    {
+        return $this->webCredential;
+    }
+
+    public function setWebCredential(?WebCredential $webCredential): static
+    {
+        $this->webCredential = $webCredential;
 
         return $this;
     }

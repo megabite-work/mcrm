@@ -64,4 +64,18 @@ class MultiStoreRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function findMultiStoreByIdWithWebCredential(int $id): ?MultiStore
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m, wc
+            FROM App\Entity\MultiStore m
+            LEFT JOIN m.webCredential wc
+            WHERE m.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
 }
