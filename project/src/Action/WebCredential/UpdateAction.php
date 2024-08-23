@@ -5,30 +5,43 @@ namespace App\Action\WebCredential;
 use App\Component\EntityNotFoundException;
 use App\Dto\WebCredential\RequestDto;
 use App\Entity\WebCredential;
-use App\Repository\WebCredentialRepository;
+use App\Repository\MultiStoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private WebCredentialRepository $repo
-    ) {
-    }
+        private MultiStoreRepository $repo
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): WebCredential
+    public function __invoke(int $multiStoreId, RequestDto $dto): WebCredential
     {
-        $cashbox = $this->repo->findCashboxByIdWithStore($id);
+        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId)->getWebCredential();
 
-        if (null === $cashbox) {
+        if (null === $entity) {
             throw new EntityNotFoundException('not found');
         }
 
-        // $cashbox = $this->updateCashbox($cashbox, $dto);
+        $entity = $this->update($entity, $dto);
 
         $this->em->flush();
 
-        return $cashbox;
+        return $entity;
     }
 
+    private function update(WebCredential $entity, RequestDto $dto): WebCredential
+    {
+        if ($dto->getCategory()) {
+            $entity->setCategory($dto->getCategory());
+        }
+        if ($dto->getSecrets()) {
+            $entity->setSecrets($dto->getSecrets());
+        }
+        if ($dto->getSocial()) {
+            $entity->setSocial($dto->getSocial());
+        }
+
+        return $entity;
+    }
 }

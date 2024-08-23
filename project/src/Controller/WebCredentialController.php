@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Action\WebCredential\CreateAction;
+use App\Action\WebCredential\ArticleAction;
 use App\Action\WebCredential\ShowAction;
 use App\Action\WebCredential\UpdateAction;
 use App\Dto\WebCredential\RequestDto;
@@ -17,11 +18,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[OA\Tag(name: 'WebCredential')]
 class WebCredentialController extends AbstractController
 {
-    #[Route(path: '/{id<\d+>}', methods: ['GET'])]
+    #[Route(path: '/{multiStoreId<\d+>}', methods: ['GET'])]
     #[Security(name: null)]
-    public function show(int $id, ShowAction $action): JsonResponse
+    public function show(int $multiStoreId, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['web_credential:show']]);
+        return $this->json($action($multiStoreId), context: ['groups' => ['web_credential:show']]);
     }
 
     #[Route(path: '', methods: ['POST'])]
@@ -30,9 +31,15 @@ class WebCredentialController extends AbstractController
         return $this->json($action($dto), context: ['groups' => ['web_credential:create']]);
     }
 
-    #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_credential:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    #[Route(path: '/{multiStoreId<\d+>}', methods: ['POST'])]
+    public function increment(int $multiStoreId, ArticleAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['web_credential:update']]);
+        return $this->json($action($multiStoreId));
+    }
+
+    #[Route('/{multiStoreId<\d+>}', methods: ['PATCH'])]
+    public function update(int $multiStoreId, #[MapRequestPayload(serializationContext: ['groups' => ['web_credential:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    {
+        return $this->json($action($multiStoreId, $dto), context: ['groups' => ['web_credential:update']]);
     }
 }
