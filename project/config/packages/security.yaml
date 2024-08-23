@@ -35,6 +35,7 @@ security:
         path: ^/api/users($|/is-unique-email$|/is-unique-username$|/create-user$),
         roles: PUBLIC_ACCESS,
         methods: [POST],
+        ip: '%env(TRUSTED_PROXIES)%'
       }
     - { path: ^/api/(doc$|doc.json$), roles: PUBLIC_ACCESS }
     - { path: ^/api/categories($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
