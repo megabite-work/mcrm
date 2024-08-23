@@ -47,7 +47,7 @@ dc_down:
 php_refresh:
 	@$(DC) up -d --build --no-deps php
 	@$(PHP) $(CIP)
-	@$(PHP) $(BIN) d:m:m -n
+	# @$(PHP) $(BIN) d:m:m -n
 	@$(PHP) $(BIN) c:c
 
 db_refresh:
