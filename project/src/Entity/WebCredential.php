@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\MultiStore;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -25,7 +26,7 @@ class WebCredential
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: MultiStore::class, inversedBy: 'webCredential')]
-    #[ORM\JoinColumn(name: 'multi_store_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update'])]
     private ?MultiStore $multiStore = null;
 
@@ -55,7 +56,7 @@ class WebCredential
         return $this->multiStore;
     }
 
-    public function setMultiStoreId(?MultiStore $multiStore): static
+    public function setMultiStore(?MultiStore $multiStore): static
     {
         $this->multiStore = $multiStore;
 
