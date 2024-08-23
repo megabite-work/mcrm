@@ -1,9 +1,9 @@
 FROM nginx:1.27-alpine3.19
 
+RUN apk update && apk upgrade && apk add --no-cache bash
+
 COPY nginx.conf /etc/nginx/
 COPY default.conf /etc/nginx/conf.d/
-
-RUN apk update && apk upgrade && apk add --no-cache bash
 
 RUN set -x ; \
     addgroup -g 82 -S www-data ; \
