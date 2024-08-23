@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240821121658 extends AbstractMigration
+final class Version20240823125553 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -35,7 +35,6 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('CREATE TABLE move_global (id INT AUTO_INCREMENT NOT NULL, status VARCHAR(255) NOT NULL, move_detail_id INT NOT NULL, nomenclature_id INT NOT NULL, qty NUMERIC(10, 2) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE multi_store (id INT AUTO_INCREMENT NOT NULL, address_id INT DEFAULT NULL, owner_id INT NOT NULL, name VARCHAR(255) NOT NULL, profit VARCHAR(255) DEFAULT NULL, barcode_TTN BIGINT DEFAULT 5752022000000, nds INT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_A869D5ABF5B7AF75 (address_id), INDEX IDX_A869D5AB7E3C61F9 (owner_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE multi_store_user (multi_store_id INT NOT NULL, user_id INT NOT NULL, INDEX IDX_E71387307B4D9FBF (multi_store_id), INDEX IDX_E7138730A76ED395 (user_id), PRIMARY KEY(multi_store_id, user_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE multi_store_counter_part (multi_store_id INT NOT NULL, counter_part_id INT NOT NULL, INDEX IDX_FD0DBA2D7B4D9FBF (multi_store_id), INDEX IDX_FD0DBA2DC28817CD (counter_part_id), PRIMARY KEY(multi_store_id, counter_part_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE nomenclature (id INT AUTO_INCREMENT NOT NULL, provider_id INT DEFAULT NULL, multi_store_id INT NOT NULL, category_id INT NOT NULL, unit_id INT DEFAULT NULL, mxik VARCHAR(255) DEFAULT NULL, barcode BIGINT NOT NULL, brand VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, oldprice NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, price NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, oldprice_course NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, price_course NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, nds NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, discount NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, qr_code TINYINT(1) DEFAULT 0 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_799A3652A53A8AA (provider_id), INDEX IDX_799A36527B4D9FBF (multi_store_id), INDEX IDX_799A365212469DE2 (category_id), INDEX IDX_799A3652F8BD700D (unit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE nomenclature_history (id INT AUTO_INCREMENT NOT NULL, store_id INT NOT NULL, nomenclature_id INT NOT NULL, forgive_type_id INT DEFAULT NULL, owner_id INT NOT NULL, comment LONGTEXT DEFAULT NULL, qty NUMERIC(10, 2) DEFAULT NULL, oldprice NUMERIC(10, 2) DEFAULT NULL, price NUMERIC(10, 2) DEFAULT NULL, oldprice_course NUMERIC(10, 2) DEFAULT NULL, price_course NUMERIC(10, 2) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_C77D427EB092A811 (store_id), INDEX IDX_C77D427E90BFD4B8 (nomenclature_id), INDEX IDX_C77D427EF920CE6F (forgive_type_id), INDEX IDX_C77D427E7E3C61F9 (owner_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE payment_type (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -48,8 +47,8 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('CREATE TABLE unit (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, code INT NOT NULL, icon VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `user` (id INT AUTO_INCREMENT NOT NULL, address_id INT DEFAULT NULL, email VARCHAR(180) NOT NULL, username VARCHAR(255) NOT NULL, qr_code VARCHAR(255) DEFAULT NULL, roles JSON NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649F5B7AF75 (address_id), UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), UNIQUE INDEX UNIQ_IDENTIFIER_NAME (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user_credential (id INT AUTO_INCREMENT NOT NULL, owner_id INT NOT NULL, type VARCHAR(255) NOT NULL, value LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_A218DBA77E3C61F9 (owner_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE web_credential (id INT AUTO_INCREMENT NOT NULL, multi_store_id INT NOT NULL, class_list LONGTEXT NOT NULL, article INT NOT NULL, insta_login VARCHAR(255) NOT NULL, insta_password VARCHAR(255) NOT NULL, ftp_login VARCHAR(255) NOT NULL, ftp_password VARCHAR(255) NOT NULL, ftp_ip VARCHAR(255) NOT NULL, ftp_image_path VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE web_nomenclature (id INT AUTO_INCREMENT NOT NULL, nomenclature_id INT DEFAULT NULL, article VARCHAR(255) DEFAULT NULL, title VARCHAR(255) NOT NULL, image VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, document VARCHAR(255) DEFAULT NULL, is_active TINYINT(1) DEFAULT 1 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_FE9BA2AC90BFD4B8 (nomenclature_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE web_credential (id INT AUTO_INCREMENT NOT NULL, multi_store_id INT NOT NULL, category VARCHAR(255) NOT NULL, article BIGINT DEFAULT 5952022000000, secrets VARCHAR(255) DEFAULT NULL, social VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_841FA7477B4D9FBF (multi_store_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE web_nomenclature (id INT AUTO_INCREMENT NOT NULL, nomenclature_id INT NOT NULL, article VARCHAR(255) DEFAULT NULL, title VARCHAR(255) NOT NULL, image VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, document VARCHAR(255) DEFAULT NULL, is_active TINYINT(1) DEFAULT 1 NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_FE9BA2AC90BFD4B8 (nomenclature_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE cashbox ADD CONSTRAINT FK_53928122B092A811 FOREIGN KEY (store_id) REFERENCES store (id)');
         $this->addSql('ALTER TABLE cashbox_detail ADD CONSTRAINT FK_2885A3E4D8D003BB FOREIGN KEY (detail_id) REFERENCES cashbox_detail (id)');
         $this->addSql('ALTER TABLE cashbox_detail ADD CONSTRAINT FK_2885A3E4A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
@@ -68,8 +67,6 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('ALTER TABLE multi_store ADD CONSTRAINT FK_A869D5AB7E3C61F9 FOREIGN KEY (owner_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE multi_store_user ADD CONSTRAINT FK_E71387307B4D9FBF FOREIGN KEY (multi_store_id) REFERENCES multi_store (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE multi_store_user ADD CONSTRAINT FK_E7138730A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE multi_store_counter_part ADD CONSTRAINT FK_FD0DBA2D7B4D9FBF FOREIGN KEY (multi_store_id) REFERENCES multi_store (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE multi_store_counter_part ADD CONSTRAINT FK_FD0DBA2DC28817CD FOREIGN KEY (counter_part_id) REFERENCES counter_part (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE nomenclature ADD CONSTRAINT FK_799A3652A53A8AA FOREIGN KEY (provider_id) REFERENCES provider_list (id)');
         $this->addSql('ALTER TABLE nomenclature ADD CONSTRAINT FK_799A36527B4D9FBF FOREIGN KEY (multi_store_id) REFERENCES multi_store (id)');
         $this->addSql('ALTER TABLE nomenclature ADD CONSTRAINT FK_799A365212469DE2 FOREIGN KEY (category_id) REFERENCES category (id)');
@@ -90,6 +87,7 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('ALTER TABLE store_nomenclature ADD CONSTRAINT FK_6EF31D6690BFD4B8 FOREIGN KEY (nomenclature_id) REFERENCES nomenclature (id)');
         $this->addSql('ALTER TABLE `user` ADD CONSTRAINT FK_8D93D649F5B7AF75 FOREIGN KEY (address_id) REFERENCES address (id)');
         $this->addSql('ALTER TABLE user_credential ADD CONSTRAINT FK_A218DBA77E3C61F9 FOREIGN KEY (owner_id) REFERENCES `user` (id)');
+        $this->addSql('ALTER TABLE web_credential ADD CONSTRAINT FK_841FA7477B4D9FBF FOREIGN KEY (multi_store_id) REFERENCES multi_store (id)');
         $this->addSql('ALTER TABLE web_nomenclature ADD CONSTRAINT FK_FE9BA2AC90BFD4B8 FOREIGN KEY (nomenclature_id) REFERENCES nomenclature (id)');
     }
 
@@ -114,8 +112,6 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('ALTER TABLE multi_store DROP FOREIGN KEY FK_A869D5AB7E3C61F9');
         $this->addSql('ALTER TABLE multi_store_user DROP FOREIGN KEY FK_E71387307B4D9FBF');
         $this->addSql('ALTER TABLE multi_store_user DROP FOREIGN KEY FK_E7138730A76ED395');
-        $this->addSql('ALTER TABLE multi_store_counter_part DROP FOREIGN KEY FK_FD0DBA2D7B4D9FBF');
-        $this->addSql('ALTER TABLE multi_store_counter_part DROP FOREIGN KEY FK_FD0DBA2DC28817CD');
         $this->addSql('ALTER TABLE nomenclature DROP FOREIGN KEY FK_799A3652A53A8AA');
         $this->addSql('ALTER TABLE nomenclature DROP FOREIGN KEY FK_799A36527B4D9FBF');
         $this->addSql('ALTER TABLE nomenclature DROP FOREIGN KEY FK_799A365212469DE2');
@@ -136,6 +132,7 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('ALTER TABLE store_nomenclature DROP FOREIGN KEY FK_6EF31D6690BFD4B8');
         $this->addSql('ALTER TABLE `user` DROP FOREIGN KEY FK_8D93D649F5B7AF75');
         $this->addSql('ALTER TABLE user_credential DROP FOREIGN KEY FK_A218DBA77E3C61F9');
+        $this->addSql('ALTER TABLE web_credential DROP FOREIGN KEY FK_841FA7477B4D9FBF');
         $this->addSql('ALTER TABLE web_nomenclature DROP FOREIGN KEY FK_FE9BA2AC90BFD4B8');
         $this->addSql('DROP TABLE address');
         $this->addSql('DROP TABLE cashbox');
@@ -152,7 +149,6 @@ final class Version20240821121658 extends AbstractMigration
         $this->addSql('DROP TABLE move_global');
         $this->addSql('DROP TABLE multi_store');
         $this->addSql('DROP TABLE multi_store_user');
-        $this->addSql('DROP TABLE multi_store_counter_part');
         $this->addSql('DROP TABLE nomenclature');
         $this->addSql('DROP TABLE nomenclature_history');
         $this->addSql('DROP TABLE payment_type');
