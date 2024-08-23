@@ -14,8 +14,6 @@ final class RequestDto
         #[Groups(['web_credential:update'])]
         private ?string $category,
         #[Groups(['web_credential:update'])]
-        private ?int $article,
-        #[Groups(['web_credential:update'])]
         private ?array $secrets,
         #[Groups(['web_credential:update'])]
         private ?array $social,
@@ -29,11 +27,6 @@ final class RequestDto
     public function getCategory(): ?string
     {
         return $this->category;
-    }
-
-    public function getArticle(): ?int
-    {
-        return $this->article;
     }
 
     public function getSecrets(): ?array
