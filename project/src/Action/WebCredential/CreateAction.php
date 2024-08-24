@@ -20,7 +20,7 @@ class CreateAction
     {
         $multiStore = $this->multiStoreRepository->findMultiStoreByIdWithWebCredential($dto->getMultiStoreId());
 
-        if (!$multiStore->getWebCredential()) {
+        if ($multiStore->getWebCredential()) {
             throw new EntityNotFoundException('already exists', 400);
         }
 

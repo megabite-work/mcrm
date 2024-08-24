@@ -26,7 +26,6 @@ class WebCredential
 
     #[ORM\OneToOne(targetEntity: MultiStore::class, inversedBy: 'webCredential')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update'])]
     private ?MultiStore $multiStore = null;
 
     #[ORM\Column]

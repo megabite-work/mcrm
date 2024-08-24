@@ -7,7 +7,6 @@ use App\Action\WebCredential\CreateAction;
 use App\Action\WebCredential\ShowAction;
 use App\Action\WebCredential\UpdateAction;
 use App\Dto\WebCredential\RequestDto;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +18,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class WebCredentialController extends AbstractController
 {
     #[Route(path: '/{multiStoreId<\d+>}', methods: ['GET'])]
-    #[Security(name: null)]
     public function show(int $multiStoreId, ShowAction $action): JsonResponse
     {
         return $this->json($action($multiStoreId), context: ['groups' => ['web_credential:show']]);

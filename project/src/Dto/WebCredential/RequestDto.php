@@ -17,8 +17,7 @@ final class RequestDto
         private ?array $secrets,
         #[Groups(['web_credential:update'])]
         private ?array $social,
-    ) {
-    }
+    ) {}
 
     public function getMultiStoreId(): ?int
     {
