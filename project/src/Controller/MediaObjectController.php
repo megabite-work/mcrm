@@ -2,17 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\MediaObject;
-use OpenApi\Attributes as OA;
 use App\Action\MediaObject\UploadAction;
 use App\Action\MediaObject\UploadsAction;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Route(path: '/api/media-objects', format: 'json')]
@@ -33,7 +31,7 @@ class MediaObjectController extends AbstractController
                             type: 'string',
                             format: 'binary',
                             description: 'The file to upload'
-                        )
+                        ),
                     ]
                 )
             ),
@@ -49,7 +47,7 @@ class MediaObjectController extends AbstractController
                         new OA\Property(
                             property: 'filePath',
                             type: 'string',
-                        )
+                        ),
                     ]
                 )
             ),
@@ -60,16 +58,16 @@ class MediaObjectController extends AbstractController
                     type: 'string',
                     example: 'File upload failed.'
                 )
-            )
+            ),
         ]
     )]
     public function upload(
         #[MapUploadedFile(constraints: [
-            new Assert\NotBlank,
+            new Assert\NotBlank(),
             new Assert\File(
                 maxSize: '10M',
                 extensions: ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'xlsx', 'docx', 'doc', 'xls']
-            )
+            ),
         ])] UploadedFile $file,
         UploadAction $action
     ): JsonResponse {
@@ -93,7 +91,7 @@ class MediaObjectController extends AbstractController
                                 format: 'binary'
                             ),
                             description: 'Multiple files'
-                        )
+                        ),
                     ],
                     required: ['files[]']
                 )
@@ -118,12 +116,13 @@ class MediaObjectController extends AbstractController
                     type: 'string',
                     example: 'File upload failed.'
                 )
-            )
+            ),
         ]
     )]
     public function uploads(Request $request, UploadsAction $action): JsonResponse
     {
         $files = $request->files->get('files', []);
+
         return $this->json($action($files));
     }
 }

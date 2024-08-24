@@ -5,15 +5,16 @@ namespace App\Action\PaymentType;
 use App\Component\EntityNotFoundException;
 use App\Dto\PaymentType\RequestDto;
 use App\Entity\PaymentType;
-use App\Repository\PaymenttypeRepository;
+use App\Repository\PaymentTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private PaymenttypeRepository $repo
-    ) {}
+        private PaymentTypeRepository $repo
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): PaymentType
     {

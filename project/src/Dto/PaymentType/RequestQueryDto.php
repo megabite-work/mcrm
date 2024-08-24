@@ -15,7 +15,8 @@ final class RequestQueryDto
         #[Groups(['payment_type:index'])]
         #[Assert\Positive]
         private int $perPage = Paginator::ITEMS_PER_PAGE
-    ) {}
+    ) {
+    }
 
     public function getPage(): int
     {

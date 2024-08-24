@@ -3,7 +3,6 @@
 namespace App\Action\WebCredential;
 
 use App\Component\EntityNotFoundException;
-use App\Dto\WebCredential\RequestDto;
 use App\Repository\MultiStoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -12,9 +11,10 @@ class ArticleAction
     public function __construct(
         private EntityManagerInterface $em,
         private MultiStoreRepository $repo
-    ) {}
+    ) {
+    }
 
-    public function __invoke(int $multiStoreId, RequestDto $dto): array
+    public function __invoke(int $multiStoreId): array
     {
         $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId)->getWebCredential();
 

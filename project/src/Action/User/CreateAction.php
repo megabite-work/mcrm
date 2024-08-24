@@ -5,6 +5,7 @@ namespace App\Action\User;
 use App\Component\EntityNotFoundException;
 use App\Dto\User\RequestDto;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -14,14 +15,14 @@ class CreateAction
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
         private EntityManagerInterface $em,
-        private AuthenticationSuccessHandler $handler
-    ) {
-    }
+        private AuthenticationSuccessHandler $handler,
+        private UserRepository $repo
+    ) {}
 
     public function __invoke(RequestDto $dto): array
     {
-        $isUniqueEmail = $this->em->getRepository(User::class)->isUniqueEmail($dto->getEmail());
-        $isUniqueUsername = $this->em->getRepository(User::class)->isUniqueUsername($dto->getUsername());
+        $isUniqueEmail = $this->repo->isUniqueEmail($dto->getEmail());
+        $isUniqueUsername = $this->repo->isUniqueUsername($dto->getUsername());
 
         if (!$isUniqueEmail || !$isUniqueUsername) {
             throw new EntityNotFoundException('this email or username already exists', 400);

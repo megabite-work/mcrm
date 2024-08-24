@@ -7,14 +7,12 @@ use App\Dto\CashboxShift\RequestDto;
 use App\Entity\Cashbox;
 use App\Entity\CashboxShift;
 use App\Entity\User;
-use App\Repository\CashboxShiftRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private CashboxShiftRepository $repo
+        private EntityManagerInterface $em
     ) {
     }
 

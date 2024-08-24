@@ -2,21 +2,21 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\CashboxGlobal\RequestDto;
-use App\Action\CashboxGlobal\ShowAction;
-use App\Action\CashboxGlobal\IndexAction;
 use App\Action\CashboxGlobal\CreateAction;
 use App\Action\CashboxGlobal\DeleteAction;
+use App\Action\CashboxGlobal\IndexAction;
+use App\Action\CashboxGlobal\ShowAction;
 use App\Action\CashboxGlobal\UpdateAction;
+use App\Dto\CashboxGlobal\RequestDto;
 use App\Dto\CashboxGlobal\RequestQueryDto;
 use App\Dto\CashboxGlobal\UpdateRequestDto;
-use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/cashbox-globals', format: 'json')]
 #[OA\Tag(name: 'CashboxGlobal')]

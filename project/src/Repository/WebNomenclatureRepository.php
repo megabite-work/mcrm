@@ -2,16 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\MultiStore;
 use App\Component\Paginator;
-use Doctrine\DBAL\Types\Types;
+use App\Dto\WebNomenclature\RequestQueryDto;
+use App\Entity\MultiStore;
 use App\Entity\WebNomenclature;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Dto\WebNomenclature\RequestQueryDto;
-use App\Entity\Nomenclature;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<WebNomenclature>

@@ -4,17 +4,19 @@ namespace App\Action\CounterPart;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\CounterPart\RequestDto;
-use App\Entity\Address;
 use App\Entity\CounterPart;
-use App\Entity\Phone;
 use App\Repository\CounterPartRepository;
+use App\Repository\PhoneRepository;
+use App\Repository\AddressRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private CounterPartRepository $repo
+        private CounterPartRepository $repo,
+        private PhoneRepository $phoneRepository,
+        private AddressRepository $addressRepository,
     ) {
     }
 
@@ -28,8 +30,8 @@ class UpdateAction
 
         $counterPart = $this->updateCounterPart($counterPart, $dto);
 
-        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($counterPart, $dto->getPhones());
-        $this->em->getRepository(Address::class)->checkAddressExistsAndUpdateOrCreate($counterPart, $dto);
+        $this->phoneRepository->checkPhoneExistsAndCreate($counterPart, $dto->getPhones());
+        $this->addressRepository->checkAddressExistsAndUpdateOrCreate($counterPart, $dto);
 
         $this->em->flush();
 

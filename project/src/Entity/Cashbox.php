@@ -21,7 +21,7 @@ class Cashbox
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['cashbox:index', 'cashbox:show', 'cashbox:create', 'cashbox:update','cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    #[Groups(['cashbox:index', 'cashbox:show', 'cashbox:create', 'cashbox:update', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'cashboxes')]
@@ -29,7 +29,7 @@ class Cashbox
     private ?Store $store = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['cashbox:index', 'cashbox:show', 'cashbox:create', 'cashbox:update','cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    #[Groups(['cashbox:index', 'cashbox:show', 'cashbox:create', 'cashbox:update', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]

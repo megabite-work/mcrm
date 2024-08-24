@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Repository\CashboxGlobalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CashboxGlobalRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -104,7 +104,7 @@ class CashboxGlobal
 
     public function setQty(float $qty): static
     {
-        $this->qty = $qty ?? 0;
+        $this->qty = $qty;
 
         return $this;
     }

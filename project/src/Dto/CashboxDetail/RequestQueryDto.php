@@ -31,7 +31,8 @@ final class RequestQueryDto
         #[Groups(['cashbox_detail:index'])]
         #[Assert\Positive]
         private int $perPage = Paginator::ITEMS_PER_PAGE
-    ) {}
+    ) {
+    }
 
     public function getPage(): int
     {

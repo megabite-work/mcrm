@@ -4,27 +4,27 @@ namespace App\Action\WebCredential;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\WebCredential\RequestDto;
-use App\Entity\WebCredential;
 use App\Entity\MultiStore;
-use App\Repository\WebCredentialRepository;
+use App\Entity\WebCredential;
+use App\Repository\MultiStoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private WebCredentialRepository $repo
+        private MultiStoreRepository $multiStoreRepository
     ) {}
 
     public function __invoke(RequestDto $dto): WebCredential
     {
-        $multiStore = $this->em->getRepository(MultiStore::class)->findMultiStoreByIdWithWebCredential($dto->getMultiStoreId());
+        $multiStore = $this->multiStoreRepository->findMultiStoreByIdWithWebCredential($dto->getMultiStoreId());
 
         if (!$multiStore->getWebCredential()) {
             throw new EntityNotFoundException('already exists', 400);
         }
 
-        $entity = $this->create($multiStore, $dto);
+        $entity = $this->create($multiStore);
 
         $this->em->flush();
 
@@ -34,7 +34,7 @@ class CreateAction
     private function create(MultiStore $multiStore): WebCredential
     {
         $entity = (new WebCredential())
-            ->setMultiStoreId($multiStore);
+            ->setMultiStore($multiStore);
 
         $this->em->persist($entity);
 

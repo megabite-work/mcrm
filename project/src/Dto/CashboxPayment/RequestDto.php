@@ -17,7 +17,8 @@ final class RequestDto
         #[Groups(['cashbox_payment:create'])]
         #[Assert\NotBlank(groups: ['cashbox_payment:create'])]
         private ?float $amount
-    ) {}
+    ) {
+    }
 
     public function getCashboxDetailId(): ?int
     {

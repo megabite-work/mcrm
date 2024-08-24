@@ -6,19 +6,21 @@ use App\Component\CurrentUser;
 use App\Component\EntityNotFoundException;
 use App\Dto\UserCredential\RequestDto;
 use App\Entity\UserCredential;
+use App\Repository\UserCredentialRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private CurrentUser $user
+        private CurrentUser $user,
+        private UserCredentialRepository $repo
     ) {
     }
 
     public function __invoke(RequestDto $dto): UserCredential
     {
-        $userCredential = $this->em->getRepository(UserCredential::class)->findUserCredentialByType($this->user->getUser(), $dto->getType());
+        $userCredential = $this->repo->findUserCredentialByType($this->user->getUser(), $dto->getType());
 
         if (null !== $userCredential) {
             throw new EntityNotFoundException('credential already exists');

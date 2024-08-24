@@ -4,15 +4,19 @@ namespace App\Action\User;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\User\RequestDto;
-use App\Entity\Address;
-use App\Entity\Phone;
 use App\Entity\User;
+use App\Repository\AddressRepository;
+use App\Repository\PhoneRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private AddressRepository $addressRepository,
+        private PhoneRepository $phoneRepository,
+        private UserRepository $repo
     ) {
     }
 
@@ -20,8 +24,8 @@ class UpdateAction
     {
         $user = $this->updateUser($id, $dto);
 
-        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($user, $dto->getPhones());
-        $this->em->getRepository(Address::class)->checkAddressExistsAndUpdateOrCreate($user, $dto);
+        $this->phoneRepository->checkPhoneExistsAndCreate($user, $dto->getPhones());
+        $this->addressRepository->checkAddressExistsAndUpdateOrCreate($user, $dto);
         $this->em->flush();
 
         return $user;
@@ -29,7 +33,7 @@ class UpdateAction
 
     private function updateUser(int $id, RequestDto $dto)
     {
-        $user = $this->em->getRepository(User::class)->getUserWithAddressAndPhonesByUserId($id);
+        $user = $this->repo->getUserWithAddressAndPhonesByUserId($id);
 
         if (null === $user) {
             throw new EntityNotFoundException('not found');

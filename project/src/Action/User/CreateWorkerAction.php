@@ -2,26 +2,28 @@
 
 namespace App\Action\User;
 
-use App\Component\EntityNotFoundException;
-use App\Dto\User\RequestDto;
-use App\Entity\MultiStore;
 use App\Entity\Role;
 use App\Entity\User;
+use App\Entity\MultiStore;
+use App\Dto\User\RequestDto;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Component\EntityNotFoundException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateWorkerAction
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private UserRepository $repo,
     ) {
     }
 
     public function __invoke(RequestDto $dto): User
     {
-        $isUniqueEmail = $this->em->getRepository(User::class)->isUniqueEmail($dto->getEmail());
-        $isUniqueUsername = $this->em->getRepository(User::class)->isUniqueUsername($dto->getUsername());
+        $isUniqueEmail = $this->repo->isUniqueEmail($dto->getEmail());
+        $isUniqueUsername = $this->repo->isUniqueUsername($dto->getUsername());
         $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
 
         if (!$isUniqueEmail || !$isUniqueUsername || null === $multiStore) {

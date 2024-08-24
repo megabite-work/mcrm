@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\CashboxDetailRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CashboxDetailRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -50,31 +50,31 @@ class CashboxDetail
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $surrender = 0;
+    private float|string|null $surrender = 0;
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $sale = 0;
+    private float|string|null $sale = 0;
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $discount = 0;
+    private float|string|null $discount = 0;
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $nds = 0;
+    private float|string|null $nds = 0;
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $advance = 0;
+    private float|string|null $advance = 0;
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $credit = 0;
+    private float|string|null $credit = 0;
 
     #[ORM\Column(nullable: true, type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
-    private null|float|string $remain = 0;
+    private float|string|null $remain = 0;
 
     #[ORM\ManyToOne(inversedBy: 'cashboxDetails')]
     #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
@@ -121,7 +121,7 @@ class CashboxDetail
         return $this->cashbox;
     }
 
-    public function setCashbox(Cashbox $cashbox): static
+    public function setCashbox(?Cashbox $cashbox): static
     {
         $this->cashbox = $cashbox;
 

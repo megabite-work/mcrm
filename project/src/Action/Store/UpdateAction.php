@@ -2,26 +2,29 @@
 
 namespace App\Action\Store;
 
-use App\Component\EntityNotFoundException;
-use App\Dto\Store\RequestDto;
-use App\Entity\Address;
-use App\Entity\Phone;
 use App\Entity\Store;
+use App\Dto\Store\RequestDto;
+use App\Repository\PhoneRepository;
+use App\Repository\StoreRepository;
+use App\Repository\AddressRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
-    ) {
-    }
+        private EntityManagerInterface $em,
+        private PhoneRepository $phoneRepository,
+        private AddressRepository $addressRepository,
+        private StoreRepository $storeRepository,
+    ) {}
 
     public function __invoke(int $id, RequestDto $dto): Store
     {
         $store = $this->updateStore($id, $dto);
 
-        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($store, $dto->getPhones());
-        $this->em->getRepository(Address::class)->checkAddressExistsAndUpdateOrCreate($store, $dto);
+        $this->phoneRepository->checkPhoneExistsAndCreate($store, $dto->getPhones());
+        $this->addressRepository->checkAddressExistsAndUpdateOrCreate($store, $dto);
         $this->em->flush();
 
         return $store;
@@ -29,7 +32,7 @@ class UpdateAction
 
     private function updateStore(int $id, RequestDto $dto)
     {
-        $store = $this->em->getRepository(Store::class)->findStoreByIdWithAddressAndPhones($id);
+        $store = $this->storeRepository->findStoreByIdWithAddressAndPhones($id);
 
         if (null === $store) {
             throw new EntityNotFoundException('not found');

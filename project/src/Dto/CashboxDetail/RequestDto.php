@@ -51,8 +51,8 @@ final class RequestDto
         #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
         private ?float $remain = 0,
         private ?int $chequeNumber = null,
-
-    ) {}
+    ) {
+    }
 
     public function getCashboxId(): int
     {

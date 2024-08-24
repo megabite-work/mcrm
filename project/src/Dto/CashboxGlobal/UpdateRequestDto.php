@@ -37,7 +37,8 @@ final class UpdateRequestDto
         #[Groups(['cashbox_global:create', 'cashbox_global:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['cashbox_global:create', 'cashbox_global:update'])]
         private ?float $discountSum = 0,
-    ) {}
+    ) {
+    }
 
     public function getNomenclatureId(): ?int
     {

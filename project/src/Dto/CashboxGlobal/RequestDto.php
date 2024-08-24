@@ -3,7 +3,6 @@
 namespace App\Dto\CashboxGlobal;
 
 use App\Component\EntityNotFoundException;
-use App\Dto\CashboxGlobal\UpdateRequestDto;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -51,7 +50,7 @@ final class RequestDto
                 );
             }, $items);
         } catch (\Throwable $th) {
-            throw new EntityNotFoundException("nomenclatureId should be int, null given", 422);
+            throw new EntityNotFoundException('nomenclatureId should be int, null given', 422);
         }
     }
 }

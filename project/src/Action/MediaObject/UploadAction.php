@@ -3,8 +3,8 @@
 namespace App\Action\MediaObject;
 
 use App\Component\EntityNotFoundException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadAction
 {
@@ -21,12 +21,12 @@ class UploadAction
 
     public function upload(UploadedFile $file): string
     {
-        $newFilename = uniqid() . '.' . $file->guessExtension();
+        $newFilename = uniqid().'.'.$file->guessExtension();
 
         try {
             $file->move(static::UPLOAD_DIR, $newFilename);
         } catch (FileException $e) {
-            throw new EntityNotFoundException('Failed to upload file: ' . $e->getMessage(), 500);
+            throw new EntityNotFoundException('Failed to upload file: '.$e->getMessage(), 500);
         }
 
         return $newFilename;

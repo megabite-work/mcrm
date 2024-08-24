@@ -24,12 +24,12 @@ final class RequestDto
         #[Groups(['payment_type:create', 'payment_type:update'])]
         #[Assert\NotBlank(groups: ['payment_type:create'])]
         private ?string $nameEn,
-        private ?string $name = null,
-    ) {}
+    ) {
+    }
 
     public function getName(): ?array
     {
-        return ['en' => $this->getNameEn(), 'ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];;
+        return ['en' => $this->getNameEn(), 'ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
     }
 
     public function getType(): ?string

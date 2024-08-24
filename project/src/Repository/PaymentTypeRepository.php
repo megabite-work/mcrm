@@ -2,13 +2,13 @@
 
 namespace App\Repository;
 
+use App\Dto\PaymentType\RequestDto;
 use App\Entity\PaymentType;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Query\Parameter;
-use App\Dto\PaymentType\RequestDto;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<PaymentType>

@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\CashboxPayment\RequestDto;
-use App\Action\CashboxPayment\ShowAction;
-use App\Action\CashboxPayment\IndexAction;
 use App\Action\CashboxPayment\CreateAction;
 use App\Action\CashboxPayment\DeleteAction;
+use App\Action\CashboxPayment\IndexAction;
+use App\Action\CashboxPayment\ShowAction;
+use App\Dto\CashboxPayment\RequestDto;
 use App\Dto\CashboxPayment\RequestQueryDto;
-use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/cashbox-payments', format: 'json')]
 #[OA\Tag(name: 'CashboxPayment')]

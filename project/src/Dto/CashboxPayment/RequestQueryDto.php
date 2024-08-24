@@ -13,21 +13,21 @@ final class RequestQueryDto
         #[Assert\NotBlank(allowNull: true)]
         #[Assert\When(
             expression: 'this.getCashboxDetailId() != null',
-            constraints: [new Assert\Positive]
+            constraints: [new Assert\Positive()]
         )]
         private ?int $cashboxDetailId,
         #[Groups(['cashbox_payment:index'])]
         #[Assert\NotBlank(allowNull: true)]
         #[Assert\When(
             expression: 'this.getPaymentTypeId() != null',
-            constraints: [new Assert\Positive]
+            constraints: [new Assert\Positive()]
         )]
         private ?int $paymentTypeId,
         #[Groups(['cashbox_payment:index'])]
         #[Assert\NotBlank(allowNull: true)]
         #[Assert\When(
             expression: 'this.getPaymentTypeId() != null && this.getCashboxDetailId() == null',
-            constraints: [new Assert\NotBlank(message: "cashboxId should not be blank."), new Assert\Positive]
+            constraints: [new Assert\NotBlank(message: 'cashboxId should not be blank.'), new Assert\Positive()]
         )]
         private ?int $cashboxId,
         #[Groups(['cashbox_payment:index'])]
@@ -36,7 +36,8 @@ final class RequestQueryDto
         #[Groups(['cashbox_payment:index'])]
         #[Assert\Positive]
         private int $perPage = Paginator::ITEMS_PER_PAGE
-    ) {}
+    ) {
+    }
 
     public function getPage(): int
     {

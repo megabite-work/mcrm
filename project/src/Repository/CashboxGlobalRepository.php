@@ -3,11 +3,11 @@
 namespace App\Repository;
 
 use App\Component\Paginator;
+use App\Dto\CashboxGlobal\RequestQueryDto;
 use App\Entity\CashboxDetail;
 use App\Entity\CashboxGlobal;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Dto\CashboxGlobal\RequestQueryDto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<CashboxGlobal>

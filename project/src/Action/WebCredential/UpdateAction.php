@@ -13,7 +13,8 @@ class UpdateAction
     public function __construct(
         private EntityManagerInterface $em,
         private MultiStoreRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $multiStoreId, RequestDto $dto): WebCredential
     {

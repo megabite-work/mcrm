@@ -8,7 +8,9 @@ use App\Repository\MultiStoreRepository;
 
 class ShowAction
 {
-    public function __construct(private MultiStoreRepository $repo) {}
+    public function __construct(private MultiStoreRepository $repo)
+    {
+    }
 
     public function __invoke(int $multiStoreId): WebCredential
     {

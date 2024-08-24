@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update','cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -38,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(unique: true)]
-    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update','cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
+    #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     #[Assert\NotBlank]
     private ?string $username = null;
 

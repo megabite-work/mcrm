@@ -2,15 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\Cashbox;
 use App\Component\Paginator;
-use App\Entity\CashboxDetail;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\NoResultException;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Dto\CashboxDetail\RequestQueryDto;
-use Doctrine\ORM\NonUniqueResultException;
+use App\Entity\Cashbox;
+use App\Entity\CashboxDetail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<CashboxDetail>
@@ -52,10 +52,10 @@ class CashboxDetailRepository extends ServiceEntityRepository
         if ($dto->getCreditType()) {
             $query->andWhere('cd.creditType = :creditType')->setParameter('creditType', $dto->getCreditType());
         }
-        if ($dto->getReturnStatus() !== null) {
+        if (null !== $dto->getReturnStatus()) {
             $query->andWhere('cd.returnStatus = :returnStatus')->setParameter('returnStatus', $dto->getReturnStatus());
         }
-        if ($dto->getCreditStatus() !== null) {
+        if (null !== $dto->getCreditStatus()) {
             $query->andWhere('cd.creditStatus = :creditStatus')->setParameter('creditStatus', $dto->getCreditStatus());
         }
 
@@ -76,7 +76,6 @@ class CashboxDetailRepository extends ServiceEntityRepository
             WHERE cd.id = :id'
         )->setParameter('id', $id);
 
-
         return $query->getOneOrNullResult();
     }
 
@@ -94,8 +93,9 @@ class CashboxDetailRepository extends ServiceEntityRepository
 
         try {
             $chequeNumber = $query->getSingleScalarResult();
+
             return (int) $chequeNumber + 1;
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException $e) {
             return 1;
         }
     }
@@ -110,7 +110,6 @@ class CashboxDetailRepository extends ServiceEntityRepository
             JOIN cd.cashbox c
             WHERE cd.id = :id'
         )->setParameter('id', $id);
-
 
         return $query->getOneOrNullResult();
     }

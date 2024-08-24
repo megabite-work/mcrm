@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\PaymentType\RequestDto;
-use App\Action\PaymentType\ShowAction;
-use App\Action\PaymentType\IndexAction;
 use App\Action\PaymentType\CreateAction;
 use App\Action\PaymentType\DeleteAction;
+use App\Action\PaymentType\IndexAction;
+use App\Action\PaymentType\ShowAction;
 use App\Action\PaymentType\UpdateAction;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use App\Dto\PaymentType\RequestDto;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/payment-types', format: 'json')]
 #[OA\Tag(name: 'PaymentType')]

@@ -6,15 +6,16 @@ use App\Component\EntityNotFoundException;
 use App\Dto\CounterPart\RequestDto;
 use App\Entity\CounterPart;
 use App\Entity\MultiStore;
-use App\Entity\Phone;
 use App\Repository\CounterPartRepository;
+use App\Repository\PhoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private CounterPartRepository $repo
+        private CounterPartRepository $repo,
+        private PhoneRepository $phoneRepository,
     ) {
     }
 
@@ -31,7 +32,7 @@ class CreateAction
         }
 
         $cashbox = $this->create($multiStore, $dto);
-        $this->em->getRepository(Phone::class)->checkPhoneExistsAndCreate($counterPart, $dto->getPhones());
+        $this->phoneRepository->checkPhoneExistsAndCreate($counterPart, $dto->getPhones());
 
         $this->em->flush();
 

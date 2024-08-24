@@ -5,8 +5,8 @@ namespace App\Action\CashboxDetail;
 use App\Component\CurrentUser;
 use App\Component\EntityNotFoundException;
 use App\Dto\CashboxDetail\RequestDto;
-use App\Entity\CashboxDetail;
 use App\Entity\Cashbox;
+use App\Entity\CashboxDetail;
 use App\Entity\CounterPart;
 use App\Repository\CashboxDetailRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +17,8 @@ class CreateAction
         private EntityManagerInterface $em,
         private CashboxDetailRepository $repo,
         private CurrentUser $user
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): CashboxDetail
     {
@@ -54,7 +55,7 @@ class CreateAction
             ->setCounterPart($this->getCounterPartOrNull($dto))
             ->setUser($this->user->getUser())
             ->setCashbox($cashbox);
-        
+
         $entity = $this->setDetail($entity, $dto);
 
         $this->em->persist($entity);

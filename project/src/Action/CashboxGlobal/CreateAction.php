@@ -13,7 +13,8 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): array
     {
@@ -29,7 +30,7 @@ class CreateAction
         $cashboxDetail = $this->em->find(CashboxDetail::class, $dto->getCashboxDetailId());
 
         if (!$cashboxDetail) {
-            throw new EntityNotFoundException("cashboxDetail not found");
+            throw new EntityNotFoundException('cashboxDetail not found');
         }
 
         $entities = [];
@@ -59,7 +60,7 @@ class CreateAction
         $nomenclature = $this->em->find(Nomenclature::class, $id);
 
         if (!$nomenclature) {
-            throw new EntityNotFoundException("cashboxDetail not found");
+            throw new EntityNotFoundException('cashboxDetail not found');
         }
 
         return $nomenclature;

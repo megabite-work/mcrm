@@ -13,7 +13,8 @@ class UpdateAction
     public function __construct(
         private EntityManagerInterface $em,
         private CashboxDetailRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): CashboxDetail
     {
@@ -65,6 +66,4 @@ class UpdateAction
 
         return $entity;
     }
-
-
 }

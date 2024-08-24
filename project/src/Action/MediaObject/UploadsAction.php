@@ -2,14 +2,14 @@
 
 namespace App\Action\MediaObject;
 
-use App\Action\MediaObject\UploadAction;
 use App\Component\EntityNotFoundException;
 
 class UploadsAction
 {
     public function __construct(
         private UploadAction $action
-    ) {}
+    ) {
+    }
 
     public function __invoke(array $files): array
     {

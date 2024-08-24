@@ -35,7 +35,7 @@ class CashboxPayment
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, options: ['default' => 0])]
     #[Groups(['cashbox_payment:index', 'cashbox_payment:show', 'cashbox_payment:create'])]
-    private null|float|string $amount = 0;
+    private float|string|null $amount = 0;
 
     public function getId(): ?int
     {
