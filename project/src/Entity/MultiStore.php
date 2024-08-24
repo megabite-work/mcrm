@@ -71,6 +71,12 @@ class MultiStore
     #[Groups(['multi_store:show'])]
     private ?WebCredential $webCredential = null;
 
+    /**
+     * @var Collection<int, WebBanner>
+     */
+    #[ORM\OneToMany(targetEntity: WebBanner::class, mappedBy: 'multiStore')]
+    private Collection $webBanners;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
@@ -78,6 +84,7 @@ class MultiStore
         $this->workers = new ArrayCollection();
         $this->counterParts = new ArrayCollection();
         $this->nomenclatures = new ArrayCollection();
+        $this->webBanners = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -302,6 +309,36 @@ class MultiStore
     public function setWebCredential(): static
     {
         $this->webCredential->setMultiStore($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WebBanner>
+     */
+    public function getWebBanners(): Collection
+    {
+        return $this->webBanners;
+    }
+
+    public function addWebBanner(WebBanner $webBanner): static
+    {
+        if (!$this->webBanners->contains($webBanner)) {
+            $this->webBanners->add($webBanner);
+            $webBanner->setMultiStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWebBanner(WebBanner $webBanner): static
+    {
+        if ($this->webBanners->removeElement($webBanner)) {
+            // set the owning side to null (unless already changed)
+            if ($webBanner->getMultiStore() === $this) {
+                $webBanner->setMultiStore(null);
+            }
+        }
 
         return $this;
     }
