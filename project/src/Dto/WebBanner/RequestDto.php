@@ -13,6 +13,7 @@ final class RequestDto
         private ?int $multiStoreId,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create'])]
+        #[Assert\Choice(choices: ['product', 'category', 'page', null], groups: ['web_banner:create'])]
         private ?string $type,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create'])]
