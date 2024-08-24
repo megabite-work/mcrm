@@ -3262,6 +3262,7 @@ $tables = $pdo->prepare('SHOW TABLES');
 $tables->execute();
 
 foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
+    if ($table == 'doctrine_migration_versions') continue;
     $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
 }
 $pdo->query("SET FOREIGN_KEY_CHECKS = 1");
