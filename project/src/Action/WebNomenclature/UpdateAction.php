@@ -37,8 +37,8 @@ class UpdateAction
         if ($dto->getArticle()) {
             $webNomenclature->setArticle($dto->getArticle());
         }
-        if ($dto->getImage()) {
-            $webNomenclature->setImage($dto->getImage());
+        if ($dto->getImages()) {
+            $webNomenclature->setImages($dto->getImages());
         }
         if ($dto->getDescription()) {
             $webNomenclature->setDescription($dto->getDescription());

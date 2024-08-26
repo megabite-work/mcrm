@@ -19,7 +19,7 @@ final class RequestDto
         private ?string $article,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create', 'web_nomenclature:update'])]
-        private ?string $image,
+        private ?array $images,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create'])]
         private ?string $description,
@@ -47,9 +47,9 @@ final class RequestDto
         return $this->article;
     }
 
-    public function getImage(): ?string
+    public function getImages(): ?array
     {
-        return $this->image;
+        return $this->images;
     }
 
     public function getDescription(): ?string

@@ -39,7 +39,7 @@ class WebNomenclature
 
     #[ORM\Column(nullable: true)]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
-    private ?string $image = null;
+    private ?string $images = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
@@ -94,14 +94,14 @@ class WebNomenclature
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImages(): ?array
     {
-        return $this->image;
+        return json_decode($this->images, true);
     }
 
-    public function setImage(?string $image): static
+    public function setImages(?array $images): static
     {
-        $this->image = $image;
+        $this->images = json_encode($images, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

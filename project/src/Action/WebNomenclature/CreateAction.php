@@ -27,7 +27,7 @@ class CreateAction
             ->setTitle($dto->getTitle())
             ->setNomenclature($nomenclature)
             ->setArticle($dto->getArticle())
-            ->setImage($dto->getImage())
+            ->setImages($dto->getImages())
             ->setDescription($dto->getDescription())
             ->setDocument($dto->getDocument());
 
