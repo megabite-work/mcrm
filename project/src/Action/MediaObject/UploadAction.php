@@ -21,14 +21,14 @@ class UploadAction
 
     public function upload(UploadedFile $file): string
     {
-        $newFilename = uniqid().'.'.$file->guessExtension();
+        $newFilename = uniqid() . '.' . $file->guessExtension();
 
         try {
             $file->move(static::UPLOAD_DIR, $newFilename);
         } catch (FileException $e) {
-            throw new EntityNotFoundException('Failed to upload file: '.$e->getMessage(), 500);
+            throw new EntityNotFoundException('Failed to upload file: ' . $e->getMessage(), 500);
         }
 
-        return $newFilename;
+        return static::UPLOAD_DIR . '/' . $newFilename;
     }
 }

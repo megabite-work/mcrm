@@ -7,9 +7,6 @@ use App\Dto\WebNomenclature\RequestQueryDto;
 use App\Entity\MultiStore;
 use App\Entity\WebNomenclature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -28,13 +25,6 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
         $qb = $this->createQueryBuilder('wn');
 
-        // $params = new ArrayCollection([
-        //     new Parameter('multiStore', $multiStore),
-        //     new Parameter('nid', $dto->getNomenclatureId(), Types::INTEGER),
-        //     new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
-        //     new Parameter('title', '%' . $dto->getTitle() . '%', Types::STRING),
-        // ]);
-
         $query = $qb
             ->select('wn', 'n', 'u', 'sn', 'c')
             ->join('wn.nomenclature', 'n')
@@ -42,14 +32,6 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->where('n.multiStore = :multiStore')
-            // ->where($qb->expr()->andX(
-            //     $qb->expr()->eq('n.multiStore', ':multiStore'),
-            //     $qb->expr()->orX(
-            //         $qb->expr()->eq('n.id', ':nid'),
-            //         $qb->expr()->eq('n.category.id', ':cid'),
-            //         $qb->expr()->like('wn.title', ':title')
-            //     )
-            // ))
             ->setParameter('multiStore', $multiStore);
 
         if ($dto->getNomenclatureId()) {
