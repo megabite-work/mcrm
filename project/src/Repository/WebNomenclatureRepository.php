@@ -28,25 +28,38 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
         $qb = $this->createQueryBuilder('wn');
 
-        $params = new ArrayCollection([
-            new Parameter('multiStore', $multiStore),
-            new Parameter('id', $dto->getNomenclatureId(), Types::INTEGER),
-            new Parameter('title', '%'.$dto->getTitle().'%', Types::STRING),
-        ]);
+        // $params = new ArrayCollection([
+        //     new Parameter('multiStore', $multiStore),
+        //     new Parameter('nid', $dto->getNomenclatureId(), Types::INTEGER),
+        //     new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
+        //     new Parameter('title', '%' . $dto->getTitle() . '%', Types::STRING),
+        // ]);
 
         $query = $qb
             ->select('wn', 'n', 'u', 'sn')
             ->join('wn.nomenclature', 'n')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
-            ->where($qb->expr()->andX(
-                $qb->expr()->eq('n.multiStore', ':multiStore'),
-                $qb->expr()->orX(
-                    $qb->expr()->eq('n.id', ':id'),
-                    $qb->expr()->like('wn.title', ':title')
-                )
-            ))
-            ->setParameters($params);
+            ->where('n.multiStore = :multiStore')
+            // ->where($qb->expr()->andX(
+            //     $qb->expr()->eq('n.multiStore', ':multiStore'),
+            //     $qb->expr()->orX(
+            //         $qb->expr()->eq('n.id', ':nid'),
+            //         $qb->expr()->eq('n.category.id', ':cid'),
+            //         $qb->expr()->like('wn.title', ':title')
+            //     )
+            // ))
+            ->setParameter('multiStore', $multiStore);
+
+        if ($dto->getNomenclatureId()) {
+            $query->andWhere('n.id = :nid')->setParameter('nid', $dto->getNomenclatureId());
+        }
+        if ($dto->getCategoryId()) {
+            $query->andWhere('n.category.id = :cid')->setParameter('cid', $dto->getCategoryId());
+        }
+        if ($dto->getNomenclatureId()) {
+            $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%' . $dto->getTitle() . '%');
+        }
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), true);
     }

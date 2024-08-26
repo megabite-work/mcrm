@@ -18,6 +18,9 @@ final class RequestQueryDto
         private ?int $nomenclatureId,
         #[Groups(['web_nomenclature:index'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
+        private ?int $categoryId,
+        #[Groups(['web_nomenclature:index'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
         private ?string $title,
         #[Groups(['web_nomenclature:index'])]
         #[Assert\Positive]
@@ -25,8 +28,7 @@ final class RequestQueryDto
         #[Groups(['web_nomenclature:index'])]
         #[Assert\Positive]
         private int $perPage = Paginator::ITEMS_PER_PAGE
-    ) {
-    }
+    ) {}
 
     public function getPage(): int
     {
@@ -51,5 +53,10 @@ final class RequestQueryDto
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function getCategoryId(): ?int
+    {
+        return $this->categoryId;
     }
 }
