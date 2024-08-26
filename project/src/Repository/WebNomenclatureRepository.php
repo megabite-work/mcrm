@@ -36,8 +36,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         // ]);
 
         $query = $qb
-            ->select('wn', 'n', 'u', 'sn')
+            ->select('wn', 'n', 'u', 'sn', 'c')
             ->join('wn.nomenclature', 'n')
+            ->join('n.category', 'c')
             ->leftJoin('n.unit', 'u')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->where('n.multiStore = :multiStore')
@@ -55,9 +56,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             $query->andWhere('n.id = :nid')->setParameter('nid', $dto->getNomenclatureId());
         }
         if ($dto->getCategoryId()) {
-            $query->andWhere('n.category.id = :cid')->setParameter('cid', $dto->getCategoryId());
+            $query->andWhere('c.id = :cid')->setParameter('cid', $dto->getCategoryId());
         }
-        if ($dto->getNomenclatureId()) {
+        if ($dto->getTitle()) {
             $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%' . $dto->getTitle() . '%');
         }
 
