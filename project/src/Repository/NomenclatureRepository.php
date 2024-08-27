@@ -116,11 +116,12 @@ class NomenclatureRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT n, sn, c, u
+            'SELECT n, sn, c, u, wn
             FROM App\Entity\Nomenclature n
             LEFT JOIN n.category c
             LEFT JOIN n.unit u
             LEFT JOIN n.storeNomenclatures sn
+            LEFT JOIN n.webNomenclatures wn
             WHERE n.id = :id'
         )->setParameter('id', $id);
 
