@@ -12,7 +12,7 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['multi_store:create'])]
         private ?string $name,
         #[Groups(['multi_store:create', 'multi_store:update'])]
-        private ?string $profit,
+        private ?array $profit,
         #[Groups(['multi_store:create', 'multi_store:update'])]
         private ?int $nds,
         #[Groups(['multi_store:update'])]
@@ -37,7 +37,7 @@ final class RequestDto
         return $this->name;
     }
 
-    public function getProfit(): ?string
+    public function getProfit(): ?array
     {
         return $this->profit;
     }

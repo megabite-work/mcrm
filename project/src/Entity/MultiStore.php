@@ -71,9 +71,6 @@ class MultiStore
     #[Groups(['multi_store:show'])]
     private ?WebCredential $webCredential = null;
 
-    /**
-     * @var Collection<int, WebBanner>
-     */
     #[ORM\OneToMany(targetEntity: WebBanner::class, mappedBy: 'multiStore')]
     private Collection $webBanners;
 
@@ -104,14 +101,14 @@ class MultiStore
         return $this;
     }
 
-    public function getProfit(): ?string
+    public function getProfit(): ?array
     {
-        return $this->profit;
+        return json_decode($this->profit, true);
     }
 
-    public function setProfit(?string $profit): static
+    public function setProfit(?array $profit): static
     {
-        $this->profit = $profit;
+        $this->profit = json_encode($profit, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
@@ -160,7 +157,7 @@ class MultiStore
     #[Groups(['multi_stores:index'])]
     public function getStoresCount(): ?int
     {
-        return count($this->getStores());
+        return $this->getStores()->count();
     }
 
     public function addStore(Store $store): static
@@ -313,9 +310,6 @@ class MultiStore
         return $this;
     }
 
-    /**
-     * @return Collection<int, WebBanner>
-     */
     public function getWebBanners(): Collection
     {
         return $this->webBanners;
@@ -334,7 +328,6 @@ class MultiStore
     public function removeWebBanner(WebBanner $webBanner): static
     {
         if ($this->webBanners->removeElement($webBanner)) {
-            // set the owning side to null (unless already changed)
             if ($webBanner->getMultiStore() === $this) {
                 $webBanner->setMultiStore(null);
             }
