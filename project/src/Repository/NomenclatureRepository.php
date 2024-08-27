@@ -36,8 +36,9 @@ class NomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('n, sn')
+            ->select('n, sn, wn')
             ->leftJoin('n.storeNomenclatures', 'sn')
+            ->leftJoin('n.webNomenclature', 'wn')
             ->join('n.category', 'c')
             ->join('n.multiStore', 'm')
             ->where($qb->expr()->andX(
