@@ -1,0 +1,20 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy api.mcrm.uz
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd projects/mcrm/dynamic/api.mcrm.uz
+            git pull
+            make php_refresh
