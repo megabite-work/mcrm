@@ -121,7 +121,7 @@ class NomenclatureRepository extends ServiceEntityRepository
             LEFT JOIN n.category c
             LEFT JOIN n.unit u
             LEFT JOIN n.storeNomenclatures sn
-            LEFT JOIN n.webNomenclatures wn
+            LEFT JOIN n.webNomenclature wn
             WHERE n.id = :id'
         )->setParameter('id', $id);
 
