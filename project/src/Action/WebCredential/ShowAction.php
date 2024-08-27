@@ -14,12 +14,15 @@ class ShowAction
 
     public function __invoke(int $multiStoreId): WebCredential
     {
-        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId)->getWebCredential();
+        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
 
-        if (null === $entity) {
+        if (null === $entity || !$entity->getWebCredential()) {
             throw new EntityNotFoundException('not found');
         }
 
-        return $entity;
+        $webCredential = $entity->getWebCredential();
+
+
+        return $webCredential;
     }
 }

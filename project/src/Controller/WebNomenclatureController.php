@@ -7,6 +7,7 @@ use App\Action\WebNomenclature\DeleteAction;
 use App\Action\WebNomenclature\IndexAction;
 use App\Action\WebNomenclature\ShowAction;
 use App\Action\WebNomenclature\UpdateAction;
+use App\Action\WebNomenclature\AssignAction;
 use App\Dto\WebNomenclature\RequestDto;
 use App\Dto\WebNomenclature\RequestQueryDto;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -39,6 +40,12 @@ class WebNomenclatureController extends AbstractController
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['web_nomenclature:create']]);
+    }
+
+    #[Route(path: '/assign', methods: ['POST'])]
+    public function assign(#[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:assign']])] RequestDto $dto, AssignAction $action): JsonResponse
+    {
+        return $this->json(['success' => $action($dto)]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

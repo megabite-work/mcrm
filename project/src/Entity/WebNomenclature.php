@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WebNomenclatureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -52,6 +54,14 @@ class WebNomenclature
     #[ORM\Column(name: 'is_active', options: ['default' => true])]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?bool $isActive = true;
+
+    #[ORM\OneToMany(targetEntity: WebAttributeValue::class, mappedBy: 'webNomenclature')]
+    private Collection $webAttributeValues;
+
+    public function __construct()
+    {
+        $this->webAttributeValues = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +148,32 @@ class WebNomenclature
     public function setIsActive(?bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getWebAttributeValues(): Collection
+    {
+        return $this->webAttributeValues;
+    }
+
+    public function addWebAttributeValue(WebAttributeValue $webAttributeValue): static
+    {
+        if (!$this->webAttributeValues->contains($webAttributeValue)) {
+            $this->webAttributeValues->add($webAttributeValue);
+            $webAttributeValue->setWebNomenclature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWebAttributeValue(WebAttributeValue $webAttributeValue): static
+    {
+        if ($this->webAttributeValues->removeElement($webAttributeValue)) {
+            if ($webAttributeValue->getWebNomenclature() === $this) {
+                $webAttributeValue->setWebNomenclature(null);
+            }
+        }
 
         return $this;
     }

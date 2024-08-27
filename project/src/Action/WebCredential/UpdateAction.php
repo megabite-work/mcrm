@@ -18,17 +18,19 @@ class UpdateAction
 
     public function __invoke(int $multiStoreId, RequestDto $dto): WebCredential
     {
-        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId)->getWebCredential();
+        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
 
-        if (null === $entity) {
+        if (null === $entity || !$entity->getWebCredential()) {
             throw new EntityNotFoundException('not found');
         }
 
-        $entity = $this->update($entity, $dto);
+        $webCredential = $entity->getWebCredential();
+
+        $webCredential = $this->update($webCredential, $dto);
 
         $this->em->flush();
 
-        return $entity;
+        return $webCredential;
     }
 
     private function update(WebCredential $entity, RequestDto $dto): WebCredential

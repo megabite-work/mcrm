@@ -47,10 +47,14 @@ class Category
     #[ORM\OneToMany(targetEntity: Nomenclature::class, mappedBy: 'category')]
     private Collection $nomenclatures;
 
+    #[ORM\ManyToMany(targetEntity: AttributeEntity::class, mappedBy: 'categories')]
+    private Collection $attributes;
+
     public function __construct()
     {
         $this->childrens = new ArrayCollection();
         $this->nomenclatures = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,6 +164,30 @@ class Category
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getAttributes(): Collection
+    {
+        return $this->attributes;
+    }
+
+    public function addAttribute(AttributeEntity $attribute): static
+    {
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes->add($attribute);
+            $attribute->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttribute(AttributeEntity $attribute): static
+    {
+        if ($this->attributes->removeElement($attribute)) {
+            $attribute->removeCategory($this);
+        }
 
         return $this;
     }

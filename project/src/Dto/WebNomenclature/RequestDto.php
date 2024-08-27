@@ -8,6 +8,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestDto
 {
     public function __construct(
+        #[Groups(['web_nomenclature:assign'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
+        private ?int $webNomenclatureId,
+        #[Groups(['web_nomenclature:assign'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
+        #[Assert\All(constraints: [new Assert\NotBlank(), new Assert\Positive()], groups: ['web_nomenclature:assign'])]
+        private ?array $attributeValues,
         #[Groups(['web_nomenclature:create'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:create'])]
         private ?int $nomenclatureId,
@@ -29,8 +36,7 @@ final class RequestDto
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
         private ?bool $isActive = true
-    ) {
-    }
+    ) {}
 
     public function getNomenclatureId(): ?int
     {
@@ -65,5 +71,15 @@ final class RequestDto
     public function getIsActive(): ?bool
     {
         return $this->isActive;
+    }
+
+    public function getWebNomenclatureId(): ?int
+    {
+        return $this->webNomenclatureId;
+    }
+
+    public function getAttributeValues(): ?array
+    {
+        return $this->attributeValues;
     }
 }

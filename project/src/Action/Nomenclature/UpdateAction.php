@@ -79,7 +79,6 @@ class UpdateAction
                 'uzc' => $dto->getNameUzc() ?? $nomenclatureName['uzc'],
             ];
 
-            $name = json_decode(json_encode($name, JSON_UNESCAPED_UNICODE), true);
             $nomenclature->setName($name);
         }
     }

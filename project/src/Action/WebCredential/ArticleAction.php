@@ -11,19 +11,19 @@ class ArticleAction
     public function __construct(
         private EntityManagerInterface $em,
         private MultiStoreRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $multiStoreId): array
     {
-        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId)->getWebCredential();
+        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
 
-        if (null === $entity) {
+        if (null === $entity || !$entity->getWebCredential()) {
             throw new EntityNotFoundException('not found');
         }
 
-        $article = $entity->getArticle();
-        $entity->setArticle($article + 1);
+        $webCredential = $entity->getWebCredential();
+        $article = $webCredential->getArticle();
+        $webCredential->setArticle($article + 1);
 
         $this->em->flush();
 

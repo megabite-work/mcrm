@@ -66,4 +66,18 @@ class WebNomenclatureRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function findWebNomenclatureWithWebAttributeValues(int $id): ?WebNomenclature
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT wn, wav
+            FROM App\Entity\WebNomenclature wn
+            LEFT JOIN wn.webAttributeValues wav
+            WHERE wn.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
 }
