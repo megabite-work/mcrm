@@ -370,6 +370,6 @@ class Nomenclature
     #[Groups(['nomenclature:index'])]
     public function getHasWebNomenclature(): bool
     {
-        return null === $this->getWebNomenclature();
+        return null !== $this->getWebNomenclature();
     }
 }
