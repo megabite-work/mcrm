@@ -45,17 +45,17 @@ final class RequestDto
         #[Groups(['web_nomenclature:client_article'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
         private ?string $attributeUzc,
-        #[Groups(['web_nomenclature:client_article_value'])]
-        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        #[Groups(['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
         private ?string $valueUz,
-        #[Groups(['web_nomenclature:client_article_value'])]
-        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        #[Groups(['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
         private ?string $valueRu,
-        #[Groups(['web_nomenclature:client_article_value'])]
-        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        #[Groups(['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
         private ?string $valueUzc,
-        #[Groups(['web_nomenclature:client_article_value'])]
-        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        #[Groups(['web_nomenclature:client_article_value_create'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_create'])]
         private ?int $clientArticleAttributeId,
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]

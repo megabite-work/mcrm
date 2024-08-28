@@ -126,7 +126,7 @@ class WebNomenclatureController extends AbstractController
     #[Route(path: '/{id<\d+>}/client-article-value', methods: ['POST'])]
     public function clientArticleAttributeValueCreate(
         int $id,
-        #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article_value']])] RequestDto $dto,
+        #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article_value_create']])] RequestDto $dto,
         ClientArticleAttributeValueCreateAction $action
     ): JsonResponse {
         return $this->json($action($id, $dto), context: ['groups' => ['web_nomenclature:client_article_value']]);
@@ -136,7 +136,7 @@ class WebNomenclatureController extends AbstractController
     public function clientArticleAttributeValueUpdate(
         int $id,
         int $valueId,
-        #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article_value']])] RequestDto $dto,
+        #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article_value_update']])] RequestDto $dto,
         ClientArticleAttributeValueUpdateAction $action
     ): JsonResponse {
         return $this->json($action($id, $valueId, $dto), context: ['groups' => ['web_nomenclature:client_article_value']]);

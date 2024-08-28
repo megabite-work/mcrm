@@ -22,7 +22,7 @@ class ClientArticleAttributeValueIndexAction
             throw new EntityNotFoundException('web nomenclature not found');
         }
 
-        $entities = $this->repo->findBy(['webNomenclature' => $webNomenclature]);
+        $entities = $this->repo->findAllByWebNomenclatureWithAttribute($webNomenclature);
 
         return $entities;
     }

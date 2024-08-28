@@ -39,7 +39,7 @@ class ClientArticleAttributeValue
     }
 
     #[SerializedName('attribute')]
-    #[Groups(['web_nomenclature:client_article_value_index', 'web_nomenclature:client_article_value'])]
+    #[Groups(['web_nomenclature:client_article_value_index'])]
     public function getAttributeName(): ?array
     {
         return $this->attribute->getAttribute();
