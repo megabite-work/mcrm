@@ -9,7 +9,7 @@ final class RequestDto
 {
     public function __construct(
         #[Groups(['web_nomenclature:article_attributes'])]
-        #[Assert\NotBlank(groups: ['web_nomenclature:article_attributes'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:article_attribute'])]
         private ?int $multiStoreId,
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
