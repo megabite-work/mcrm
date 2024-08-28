@@ -63,7 +63,7 @@ class AssignAction
         }
     }
 
-    private function createArticleAttribute(MultiStore $multiStore, int $article, array $attributeIds): void
+    private function createArticleAttribute(MultiStore $multiStore, string $article, array $attributeIds): void
     {
         $entity = (new ArticleAttribute())
             ->setArticle($article)

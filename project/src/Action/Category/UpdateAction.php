@@ -54,7 +54,6 @@ class UpdateAction
                 'uzc' => $dto->getNameUzc() ?? $categoryName['uzc'],
             ];
 
-            $name = json_decode(json_encode($name, JSON_UNESCAPED_UNICODE), true);
             $category->setName($name);
         }
     }

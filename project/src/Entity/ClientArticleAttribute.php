@@ -2,24 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleAttributeRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\ClientArticleAttributeRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: ArticleAttributeRepository::class)]
-#[Gedmo\SoftDeleteable]
-class ArticleAttribute
+#[ORM\Entity(repositoryClass: ClientArticleAttributeRepository::class)]
+class ClientArticleAttribute
 {
-    use TimestampableEntity;
-    use SoftDeleteableEntity;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['web_nomenclature:client_article'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
@@ -27,11 +20,12 @@ class ArticleAttribute
     private ?MultiStore $multiStore = null;
 
     #[ORM\Column]
+    #[Groups(['web_nomenclature:client_article'])]
     private ?string $article = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['web_nomenclature:article_attributes'])]
-    private ?string $attributes = null;
+    #[Groups(['web_nomenclature:client_article'])]
+    private ?string $attribute = null;
 
     public function getId(): ?int
     {
@@ -62,14 +56,14 @@ class ArticleAttribute
         return $this;
     }
 
-    public function getAttributes(): ?array
+    public function getAttribute(): ?array
     {
-        return json_decode($this->attributes, true);
+        return json_decode($this->attribute, true);
     }
 
-    public function setAttributes(array $attributes): static
+    public function setAttribute(array $attribute): static
     {
-        $this->attributes = json_encode($attributes, JSON_UNESCAPED_UNICODE);
+        $this->attribute = json_encode($attribute, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

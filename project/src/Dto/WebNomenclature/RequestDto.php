@@ -26,7 +26,7 @@ final class RequestDto
         private ?string $title,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update', 'web_nomenclature:article_attributes'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:article_attributes'])]
-        private ?int $article,
+        private ?string $article,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create', 'web_nomenclature:update'])]
         private ?array $images,
@@ -36,6 +36,27 @@ final class RequestDto
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create'])]
         private ?string $document,
+        #[Groups(['web_nomenclature:client_article'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
+        private ?string $attributeUz,
+        #[Groups(['web_nomenclature:client_article'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
+        private ?string $attributeRu,
+        #[Groups(['web_nomenclature:client_article'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
+        private ?string $attributeUzc,
+        #[Groups(['web_nomenclature:client_article_value'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        private ?string $valueUz,
+        #[Groups(['web_nomenclature:client_article_value'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        private ?string $valueRu,
+        #[Groups(['web_nomenclature:client_article_value'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        private ?string $valueUzc,
+        #[Groups(['web_nomenclature:client_article_value'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value'])]
+        private ?int $clientArticleAttributeId,
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
         private ?bool $isActive = true,
@@ -54,7 +75,7 @@ final class RequestDto
         return $this->title;
     }
 
-    public function getArticle(): ?int
+    public function getArticle(): ?string
     {
         return $this->article;
     }
@@ -97,5 +118,50 @@ final class RequestDto
     public function isRemember(): bool
     {
         return $this->remember;
+    }
+
+    public function getAttributeUz(): ?string
+    {
+        return $this->attributeUz;
+    }
+
+    public function getAttributeRu(): ?string
+    {
+        return $this->attributeRu;
+    }
+
+    public function getAttributeUzc(): ?string
+    {
+        return $this->attributeUzc;
+    }
+
+    public function getAttribute(): ?array
+    {
+        return ['uz' => $this->getAttributeUz(), 'uzc' => $this->getAttributeUzc(), 'ru' => $this->getAttributeRu()];
+    }
+
+    public function getValueUz(): ?string
+    {
+        return $this->valueUz;
+    }
+
+    public function getValueRu(): ?string
+    {
+        return $this->valueRu;
+    }
+
+    public function getValueUzc(): ?string
+    {
+        return $this->valueUzc;
+    }
+
+    public function getValue(): ?array
+    {
+        return ['uz' => $this->getValueUz(), 'uzc' => $this->getValueUzc(), 'ru' => $this->getValueRu()];
+    }
+
+    public function getClientArticleAttributeId(): ?int
+    {
+        return $this->clientArticleAttributeId;
     }
 }

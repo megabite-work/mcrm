@@ -31,9 +31,9 @@ class WebNomenclature
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?Nomenclature $nomenclature = null;
 
-    #[ORM\Column(nullable: true, type: Types::BIGINT)]
+    #[ORM\Column(nullable: true)]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
-    private ?int $article = null;
+    private ?string $article = null;
 
     #[ORM\Column]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
@@ -58,9 +58,13 @@ class WebNomenclature
     #[ORM\OneToMany(targetEntity: WebAttributeValue::class, mappedBy: 'webNomenclature')]
     private Collection $webAttributeValues;
 
+    #[ORM\OneToMany(targetEntity: ClientArticleAttributeValue::class, mappedBy: 'webNomenclature')]
+    private Collection $clientArticleAttributeValues;
+
     public function __construct()
     {
         $this->webAttributeValues = new ArrayCollection();
+        $this->clientArticleAttributeValues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,12 +84,12 @@ class WebNomenclature
         return $this;
     }
 
-    public function getArticle(): ?int
+    public function getArticle(): ?string
     {
         return $this->article;
     }
 
-    public function setArticle(?int $article): static
+    public function setArticle(?string $article): static
     {
         $this->article = $article;
 
@@ -172,6 +176,36 @@ class WebNomenclature
         if ($this->webAttributeValues->removeElement($webAttributeValue)) {
             if ($webAttributeValue->getWebNomenclature() === $this) {
                 $webAttributeValue->setWebNomenclature(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ClientArticleAttributeValue>
+     */
+    public function getClientArticleAttributeValues(): Collection
+    {
+        return $this->clientArticleAttributeValues;
+    }
+
+    public function addClientArticleAttributeValue(ClientArticleAttributeValue $clientArticleAttributeValue): static
+    {
+        if (!$this->clientArticleAttributeValues->contains($clientArticleAttributeValue)) {
+            $this->clientArticleAttributeValues->add($clientArticleAttributeValue);
+            $clientArticleAttributeValue->setWebNomenclature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientArticleAttributeValue(ClientArticleAttributeValue $clientArticleAttributeValue): static
+    {
+        if ($this->clientArticleAttributeValues->removeElement($clientArticleAttributeValue)) {
+            // set the owning side to null (unless already changed)
+            if ($clientArticleAttributeValue->getWebNomenclature() === $this) {
+                $clientArticleAttributeValue->setWebNomenclature(null);
             }
         }
 
