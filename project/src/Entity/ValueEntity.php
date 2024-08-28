@@ -21,7 +21,7 @@ class ValueEntity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['value:index', 'value:show', 'value:create', 'value:update'])]
+    #[Groups(['value:show', 'value:create', 'value:update'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

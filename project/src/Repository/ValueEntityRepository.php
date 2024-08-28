@@ -19,15 +19,15 @@ class ValueEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, ValueEntity::class);
     }
 
-    public function findAllAttributesByCategory(RequestQueryDto $dto): Paginator
+    public function findAllValuesByAttribute(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
         $attribute = $entityManager->find(AttributeEntity::class, $dto->getAttributeId());
 
         $query = $entityManager->createQuery(
-            'SELECT v
-            FROM App\Entity\ValueEntity v
-            JOIN v.attributeValues av
+            'SELECT av, v
+            FROM App\Entity\AttributeValue av
+            LEFT JOIN av.value v
             WHERE av.attribute = :attribute'
         )->setParameter('attribute', $attribute);
 

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AttributeValueRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use App\Repository\AttributeValueRepository;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: AttributeValueRepository::class)]
 #[Gedmo\SoftDeleteable]
@@ -18,6 +20,8 @@ class AttributeValue
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['value:index'])]
+    #[SerializedName('attributeValueId')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'attributeValues')]
@@ -55,5 +59,11 @@ class AttributeValue
         $this->value = $value;
 
         return $this;
+    }
+
+    #[Groups(['value:index'])]
+    public function getName(): ?array
+    {
+        return $this->getValue()->getName();
     }
 }
