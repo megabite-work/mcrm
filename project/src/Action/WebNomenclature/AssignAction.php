@@ -31,7 +31,9 @@ class AssignAction
 
         $attributeIds = [];
         foreach ($attributeValues as $attributeValue) {
-            $attributeIds[] = $attributeValue->getAttribute()->getId();
+            if ($dto->isRemember()) {
+                $attributeIds[] = $attributeValue->getAttribute()->getId();
+            }
 
             $entity = (new WebAttributeValue())
                 ->setWebNomenclature($webNomenclature)

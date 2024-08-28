@@ -38,7 +38,10 @@ final class RequestDto
         private ?string $document,
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
-        private ?bool $isActive = true
+        private ?bool $isActive = true,
+        #[Groups(['web_nomenclature:assign'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
+        private ?bool $remember = false,
     ) {}
 
     public function getNomenclatureId(): ?int
@@ -89,5 +92,10 @@ final class RequestDto
     public function getMultiStoreId(): ?int
     {
         return $this->multiStoreId;
+    }
+
+    public function isRemember(): bool
+    {
+        return $this->remember;
     }
 }

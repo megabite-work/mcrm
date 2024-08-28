@@ -20,7 +20,6 @@ class ArticleAttribute
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['web_nomenclature:article_attributes'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
