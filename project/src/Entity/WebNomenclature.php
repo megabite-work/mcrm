@@ -31,9 +31,9 @@ class WebNomenclature
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?Nomenclature $nomenclature = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, type: Types::BIGINT)]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
-    private ?string $article = null;
+    private ?int $article = null;
 
     #[ORM\Column]
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
@@ -80,12 +80,12 @@ class WebNomenclature
         return $this;
     }
 
-    public function getArticle(): ?string
+    public function getArticle(): ?int
     {
         return $this->article;
     }
 
-    public function setArticle(?string $article): static
+    public function setArticle(?int $article): static
     {
         $this->article = $article;
 

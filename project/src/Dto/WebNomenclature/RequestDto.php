@@ -8,6 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestDto
 {
     public function __construct(
+        #[Groups(['web_nomenclature:article_attributes'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:article_attributes'])]
+        private ?int $multiStoreId,
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
         private ?int $webNomenclatureId,
@@ -21,9 +24,9 @@ final class RequestDto
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:create'])]
         private ?string $title,
-        #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create'])]
-        private ?string $article,
+        #[Groups(['web_nomenclature:create', 'web_nomenclature:update', 'web_nomenclature:article_attributes'])]
+        #[Assert\NotBlank(groups: ['web_nomenclature:article_attributes'])]
+        private ?int $article,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create', 'web_nomenclature:update'])]
         private ?array $images,
@@ -48,7 +51,7 @@ final class RequestDto
         return $this->title;
     }
 
-    public function getArticle(): ?string
+    public function getArticle(): ?int
     {
         return $this->article;
     }
@@ -81,5 +84,10 @@ final class RequestDto
     public function getAttributeValues(): ?array
     {
         return $this->attributeValues;
+    }
+
+    public function getMultiStoreId(): ?int
+    {
+        return $this->multiStoreId;
     }
 }
