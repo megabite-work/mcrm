@@ -12,6 +12,7 @@ use App\Dto\MultiStore\RequestQueryDto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,8 +35,8 @@ class MultiStoreController extends AbstractController
         return $this->json($action($id), context: ['groups' => ['multi_store:show']]);
     }
 
-    #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['multi_store:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    #[Route(path: '', methods: ['POST'], condition: "request.server.get('HTTP_ORIGIN') in ['https://mcrm.uz', 'http://localhost:777', 'https://api.mcrm.uz']")]
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['multi_store:create']])] RequestDto $dto, CreateAction $action, Request $request): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['multi_store:create']]);
     }
