@@ -44,6 +44,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         if ($dto->getTitle()) {
             $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%' . $dto->getTitle() . '%');
         }
+        if (null !== $dto->getIsActive()) {
+            $query->andWhere('wn.isActive = :isActive')->setParameter('isActive', $dto->getIsActive());
+        }
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), true);
     }
@@ -80,5 +83,22 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         )->setParameter('id', $id);
 
         return $query->getOneOrNullResult();
+    }
+
+    public function findAllUserFavoritesByIds(array $ids): Paginator
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT wn, n, un, sn, c
+            FROM App\Entity\WebNomenclature wn
+            JOIN wn.nomenclature n
+            JOIN n.category c
+            LEFT JOIN n.unit un
+            LEFT JOIN n.storeNomenclatures sn
+            WHERE wn.id IN (:ids)'
+        )->setParameter('ids', $ids);
+
+        return new Paginator($query);
     }
 }

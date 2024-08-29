@@ -95,21 +95,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
-    public function findAllUserFavorites(int $id): Paginator
+    public function findAllUserFavoriteIds(int $id): array
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT u, wn, n, un, sn, c
+            'SELECT wn.id
             FROM App\Entity\User u
             LEFT JOIN u.favorites wn
-            JOIN wn.nomenclature n
-            JOIN n.category c
-            JOIN n.unit un
-            LEFT JOIN n.storeNomenclatures sn
             WHERE u.id = :id'
         )->setParameter('id', $id);
 
-        return new Paginator($query, fetchJoinCollection: false);
+        return array_column($query->getScalarResult(), 'id');
     }
 }

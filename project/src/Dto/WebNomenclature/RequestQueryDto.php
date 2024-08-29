@@ -23,6 +23,10 @@ final class RequestQueryDto
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
         private ?string $title,
         #[Groups(['web_nomenclature:index'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
+        #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:index'])]
+        private ?bool $isActive = null,
+        #[Groups(['web_nomenclature:index'])]
         #[Assert\Positive]
         private int $page = 1,
         #[Groups(['web_nomenclature:index'])]
@@ -58,5 +62,10 @@ final class RequestQueryDto
     public function getCategoryId(): ?int
     {
         return $this->categoryId;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
     }
 }

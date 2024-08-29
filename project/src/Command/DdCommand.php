@@ -2,11 +2,13 @@
 
 namespace App\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
+use App\Repository\UserRepository;
+use App\Repository\WebNomenclatureRepository;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class DdCommand extends Command
 {
-    public function __construct()
+    public function __construct(private WebNomenclatureRepository $webNomenclatureRepository, private UserRepository $repo)
     {
         parent::__construct();
     }
@@ -30,6 +32,9 @@ class DdCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $ids = $this->repo->findAllUserFavoriteIds(3);
+        $favorites = $this->webNomenclatureRepository->findAllUserFavoritesByIds($ids);
+        print_r($favorites);
         return Command::SUCCESS;
     }
 }
