@@ -49,6 +49,9 @@ class UpdateAction
         if (null !== $dto->getIsActive()) {
             $webNomenclature->setIsActive($dto->getIsActive());
         }
+        if (null !== $dto->getShowComment()) {
+            $webNomenclature->setShowComment($dto->getShowComment());
+        }
 
         return $webNomenclature;
     }

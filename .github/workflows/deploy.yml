@@ -16,5 +16,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd projects/mcrm/dynamic/api.mcrm.uz
+            git reset --hard
             git pull
             make php_refresh

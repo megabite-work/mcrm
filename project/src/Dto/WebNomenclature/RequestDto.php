@@ -60,6 +60,9 @@ final class RequestDto
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
         private ?bool $isActive = true,
+        #[Groups(['web_nomenclature:update'])]
+        #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
+        private ?bool $showComment = true,
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
         private ?bool $remember = false,
@@ -163,5 +166,10 @@ final class RequestDto
     public function getClientArticleAttributeId(): ?int
     {
         return $this->clientArticleAttributeId;
+    }
+
+    public function getShowComment(): ?bool
+    {
+        return $this->showComment;
     }
 }

@@ -55,6 +55,10 @@ class WebNomenclature
     #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
     private ?bool $isActive = true;
 
+    #[ORM\Column(options: ['default' => true])]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
+    private ?bool $showComment = true;
+
     #[ORM\OneToMany(targetEntity: WebAttributeValue::class, mappedBy: 'webNomenclature')]
     private Collection $webAttributeValues;
 
@@ -182,9 +186,6 @@ class WebNomenclature
         return $this;
     }
 
-    /**
-     * @return Collection<int, ClientArticleAttributeValue>
-     */
     public function getClientArticleAttributeValues(): Collection
     {
         return $this->clientArticleAttributeValues;
@@ -203,11 +204,22 @@ class WebNomenclature
     public function removeClientArticleAttributeValue(ClientArticleAttributeValue $clientArticleAttributeValue): static
     {
         if ($this->clientArticleAttributeValues->removeElement($clientArticleAttributeValue)) {
-            // set the owning side to null (unless already changed)
             if ($clientArticleAttributeValue->getWebNomenclature() === $this) {
                 $clientArticleAttributeValue->setWebNomenclature(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShowComment(): ?bool
+    {
+        return $this->showComment;
+    }
+
+    public function setShowComment(?bool $showComment): static
+    {
+        $this->showComment = $showComment;
 
         return $this;
     }

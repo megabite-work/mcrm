@@ -78,6 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: MultiStore::class, mappedBy: 'workers')]
     private Collection $workPlaces;
 
+    #[ORM\ManyToMany(targetEntity: WebNomenclature::class)]
+    private Collection $favorites;
+
     #[ORM\OneToMany(targetEntity: CashboxShift::class, mappedBy: 'user')]
     private Collection $cashboxShifts;
 
@@ -94,6 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->nomenclatureHistories = new ArrayCollection();
         $this->cashboxShifts = new ArrayCollection();
         $this->cashboxDetails = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,9 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 
     public function getUsername(): string
     {
@@ -394,6 +396,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $cashboxDetail->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(WebNomenclature $favorite): static
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites->add($favorite);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(WebNomenclature $favorite): static
+    {
+        $this->favorites->removeElement($favorite);
 
         return $this;
     }
