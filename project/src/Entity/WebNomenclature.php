@@ -23,7 +23,7 @@ class WebNomenclature
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update'])]
+    #[Groups(['web_nomenclature:index', 'web_nomenclature:show', 'nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'favorite:index'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: Nomenclature::class, inversedBy: 'webNomenclature')]
