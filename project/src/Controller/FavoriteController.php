@@ -18,7 +18,7 @@ class FavoriteController extends AbstractController
     #[Route(path: '', methods: ['GET'])]
     public function index(IndexAction $action, CurrentUser $user): JsonResponse
     {
-        return $this->json($action($user->getUser()), context: ['groups' => ['favorite:index']]);
+        return $this->json($action($user->getUser())/* , context: ['groups' => ['favorite:index']] */);
     }
 
     #[Route('/{webNomenclatureId<\d+>}/assign', methods: ['POST'])]
