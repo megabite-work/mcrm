@@ -79,6 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $workPlaces;
 
     #[ORM\ManyToMany(targetEntity: WebNomenclature::class)]
+    #[Groups(['web_nomenclature:index'])]
     private Collection $favorites;
 
     #[ORM\OneToMany(targetEntity: CashboxShift::class, mappedBy: 'user')]

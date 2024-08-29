@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Component\Paginator;
 use App\Dto\WebNomenclature\RequestQueryDto;
 use App\Entity\MultiStore;
+use App\Entity\User;
 use App\Entity\WebNomenclature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
