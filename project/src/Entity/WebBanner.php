@@ -42,6 +42,9 @@ class WebBanner
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?bool $isActive = true;
 
+    #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
+    private ?string $title = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +106,18 @@ class WebBanner
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }

@@ -78,7 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: MultiStore::class, mappedBy: 'workers')]
     private Collection $workPlaces;
 
-    #[ORM\ManyToMany(targetEntity: WebNomenclature::class, inversedBy: 'clients')]
+    #[ORM\ManyToMany(targetEntity: WebNomenclature::class)]
     private Collection $favorites;
 
     #[ORM\OneToMany(targetEntity: CashboxShift::class, mappedBy: 'user')]

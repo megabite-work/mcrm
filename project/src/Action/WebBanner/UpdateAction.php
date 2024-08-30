@@ -2,10 +2,12 @@
 
 namespace App\Action\WebBanner;
 
-use App\Component\EntityNotFoundException;
-use App\Dto\WebBanner\RequestDto;
+use App\Entity\Category;
 use App\Entity\WebBanner;
+use App\Entity\WebNomenclature;
+use App\Dto\WebBanner\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
@@ -25,7 +27,7 @@ class UpdateAction
 
         $this->em->flush();
 
-        return $entity;
+        return $this->getWebBannerByType($entity, $entity->getType(), $entity->getTypeId());
     }
 
     private function update(WebBanner $entity, RequestDto $dto)
@@ -44,5 +46,18 @@ class UpdateAction
         }
 
         return $entity;
+    }
+
+    private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): WebBanner
+    {
+        if ($type === 'product') {
+            $title = $this->em->find(WebNomenclature::class, $id)?->getTitle();
+        } else if ($type === 'category') {
+            $title = $this->em->find(Category::class, $id)?->getName()['ru'];
+        }
+        
+        $webBanner->setTitle($title);
+
+        return $webBanner;
     }
 }
