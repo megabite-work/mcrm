@@ -2,20 +2,21 @@
 
 namespace App\Controller;
 
+use OpenApi\Attributes as OA;
+use App\Dto\Nomenclature\RequestDto;
+use App\Action\Nomenclature\ShowAction;
+use App\Action\Nomenclature\IndexAction;
 use App\Action\Nomenclature\CreateAction;
 use App\Action\Nomenclature\DeleteAction;
-use App\Action\Nomenclature\IndexAction;
-use App\Action\Nomenclature\IsUniqueBarcodeByMultiStoreAction;
-use App\Action\Nomenclature\ShowAction;
 use App\Action\Nomenclature\UpdateAction;
-use App\Dto\Nomenclature\RequestDto;
 use App\Dto\Nomenclature\RequestQueryDto;
-use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use App\Action\Nomenclature\IsUniqueNameByMultiStoreAction;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Attribute\Route;
+use App\Action\Nomenclature\IsUniqueBarcodeByMultiStoreAction;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(path: '/api/nomenclatures', format: 'json')]
 #[OA\Tag(name: 'Nomenclature')]
@@ -42,7 +43,13 @@ class NomenclatureController extends AbstractController
     #[Route(path: '/is-unique-barcode', methods: ['POST'])]
     public function isUniqueBarcode(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:is_unique_barcode']])] RequestDto $dto, IsUniqueBarcodeByMultiStoreAction $action): JsonResponse
     {
-        return $this->json($action($dto));
+        return $this->json(['success' => $action($dto)]);
+    }
+
+    #[Route(path: '/is-unique-name', methods: ['POST'])]
+    public function isUniqueName(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:is_unique_name']])] RequestDto $dto, IsUniqueNameByMultiStoreAction $action): JsonResponse
+    {
+        return $this->json(['success' => $action($dto)]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

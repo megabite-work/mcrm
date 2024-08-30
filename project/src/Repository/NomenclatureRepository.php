@@ -32,7 +32,7 @@ class NomenclatureRepository extends ServiceEntityRepository
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
             new Parameter('cid', $dto->getCategoryId(), Types::INTEGER),
-            new Parameter('name', '%'.$dto->getName().'%', Types::STRING),
+            new Parameter('name', '%' . $dto->getName() . '%', Types::STRING),
         ]);
 
         $query = $qb
@@ -61,7 +61,7 @@ class NomenclatureRepository extends ServiceEntityRepository
 
         $params = new ArrayCollection([
             new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
-            new Parameter('name', '%'.$dto->getName().'%', Types::STRING),
+            new Parameter('name', '%' . $dto->getName() . '%', Types::STRING),
         ]);
 
         $query = $qb
@@ -152,5 +152,26 @@ class NomenclatureRepository extends ServiceEntityRepository
         $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
 
         return null === $this->findOneBy(['multiStore' => $multiStore, 'barcode' => $dto->getBarcode()]);
+    }
+
+    public function IsUniqueNameByMultiStore(RequestDto $dto): bool
+    {
+        $qb = $this->createQueryBuilder('n');
+
+        $params = new ArrayCollection([
+            new Parameter('mid', $dto->getMultiStoreId(), Types::INTEGER),
+            new Parameter('name', $dto->getNameRu(), Types::STRING),
+        ]);
+
+        $query = $qb
+            ->select('n.id')
+            ->join('n.multiStore', 'm')
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('m.id', ':mid'),
+                $qb->expr()->eq("JSON_EXTRACT(n.name, '$.ru')", ':name'),
+            ))
+            ->setParameters($params)->getQuery();
+
+        return count($query->getScalarResult()) ? false : true;
     }
 }

@@ -8,8 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestDto
 {
     public function __construct(
-        #[Groups(['nomenclature:create', 'nomenclature:is_unique_barcode'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_barcode'])]
+        #[Groups(['nomenclature:create', 'nomenclature:is_unique_barcode', 'nomenclature:is_unique_name'])]
+        #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_barcode', 'nomenclature:is_unique_name'])]
         private ?int $multiStoreId,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:create'])]
@@ -23,8 +23,8 @@ final class RequestDto
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:create'])]
         private ?string $nameUzc,
-        #[Groups(['nomenclature:create', 'nomenclature:update'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create'])]
+        #[Groups(['nomenclature:create', 'nomenclature:update', 'nomenclature:is_unique_name'])]
+        #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_name'])]
         private ?string $nameRu,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:create', 'nomenclature:update'])]
