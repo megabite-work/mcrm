@@ -39,7 +39,7 @@ services:
       - php
 
   db:
-    container_name: mysql
+    container_name: ${COMPOSE_PROJECT_NAME}-mysql
     image: "mariadb:10.5.2"
     restart: unless-stopped
     environment:
