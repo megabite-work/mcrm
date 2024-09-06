@@ -34,7 +34,7 @@ services:
     environment:
       TZ: Asia/Tashkent
     ports:
-      - ${NGINX_HOST_HTTP_PORT}:80
+      - 127.0.0.1:${NGINX_HOST_HTTP_PORT}:80
     volumes:
       - ./../project/:/var/www/html:rw
     depends_on:
