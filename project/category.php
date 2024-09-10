@@ -3255,50 +3255,50 @@ $paymentTypes = [
     ['type' => 'e_wallets', 'name' => ['en' => 'payme', 'uz' => 'Payme', 'uzc' => 'Payme', 'ru' => 'Payme']],
 ];
 
-// $pdo->query("SET FOREIGN_KEY_CHECKS = 0");
-// // $pdo->query("TRUNCATE TABLE category");
-// // $pdo->query("TRUNCATE TABLE unit");
-// $tables = $pdo->prepare('SHOW TABLES');
-// $tables->execute();
+$pdo->query("SET FOREIGN_KEY_CHECKS = 0");
+// $pdo->query("TRUNCATE TABLE category");
+// $pdo->query("TRUNCATE TABLE unit");
+$tables = $pdo->prepare('SHOW TABLES');
+$tables->execute();
 
-// foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
-//     if ($table == 'doctrine_migration_versions') continue;
-//     $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
-// }
-// $pdo->query("SET FOREIGN_KEY_CHECKS = 1");
+foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
+    if ($table == 'doctrine_migration_versions') continue;
+    $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
+}
+$pdo->query("SET FOREIGN_KEY_CHECKS = 1");
 
-// $date = date("Y-m-d H:i:s");
-// $stmt = $pdo->prepare("INSERT INTO category(parent_id,name,created_at,updated_at) VALUES (?,?,?,?)");
+$date = date("Y-m-d H:i:s");
+$stmt = $pdo->prepare("INSERT INTO category(parent_id,name,created_at,updated_at) VALUES (?,?,?,?)");
 
-// $categories = array_filter($base, fn($category) => null === $category[1]);
-// foreach ($categories as $item) {
-//     $stmt->execute([$item[1], json_encode($item[2], JSON_UNESCAPED_UNICODE), $date, $date]);
-// }
+$categories = array_filter($base, fn($category) => null === $category[1]);
+foreach ($categories as $item) {
+    $stmt->execute([$item[1], json_encode($item[2], JSON_UNESCAPED_UNICODE), $date, $date]);
+}
 
-// foreach ($categories as $parent) {
-//     $childrens = array_filter($base, fn($category) => $category[1] === $parent[0] && is_array($category[2]) && is_int($category[0]));
-//     foreach ($childrens as $child) {
-//         $stmt->execute([$child[1], json_encode($child[2], JSON_UNESCAPED_UNICODE), $date, $date]);
-//     }
-// }
+foreach ($categories as $parent) {
+    $childrens = array_filter($base, fn($category) => $category[1] === $parent[0] && is_array($category[2]) && is_int($category[0]));
+    foreach ($childrens as $child) {
+        $stmt->execute([$child[1], json_encode($child[2], JSON_UNESCAPED_UNICODE), $date, $date]);
+    }
+}
 
-// $parents = array_filter($base, fn($category) => is_int($category[0]) && is_int($category[1]) && is_array($category[2]));
-// foreach ($parents as $parent) {
-//     $childrens = array_filter($base, fn($category) => $category[0] === $parent[0] && is_array($category[1]) && count($category) === 2);
-//     foreach ($childrens as $child) {
-//         $stmt->execute([$child[0], json_encode($child[1], JSON_UNESCAPED_UNICODE), $date, $date]);
-//     }
-// }
+$parents = array_filter($base, fn($category) => is_int($category[0]) && is_int($category[1]) && is_array($category[2]));
+foreach ($parents as $parent) {
+    $childrens = array_filter($base, fn($category) => $category[0] === $parent[0] && is_array($category[1]) && count($category) === 2);
+    foreach ($childrens as $child) {
+        $stmt->execute([$child[0], json_encode($child[1], JSON_UNESCAPED_UNICODE), $date, $date]);
+    }
+}
 
-// $stmt = $pdo->prepare("INSERT INTO unit(name,code,created_at,updated_at) VALUES (?,?,?,?)");
-// foreach ($units as $unit) {
-//     $stmt->execute([json_encode(['uz' => $unit['uz'], 'uzc' => $unit['uzc'], 'ru' => $unit['ru']], JSON_UNESCAPED_UNICODE), $unit['code'], $date, $date]);
-// }
+$stmt = $pdo->prepare("INSERT INTO unit(name,code,created_at,updated_at) VALUES (?,?,?,?)");
+foreach ($units as $unit) {
+    $stmt->execute([json_encode(['uz' => $unit['uz'], 'uzc' => $unit['uzc'], 'ru' => $unit['ru']], JSON_UNESCAPED_UNICODE), $unit['code'], $date, $date]);
+}
 
-// $stmt = $pdo->prepare("INSERT INTO payment_type(type,name,created_at,updated_at) VALUES (?,?,?,?)");
-// foreach ($paymentTypes as $type) {
-//     $stmt->execute([$type['type'], json_encode($type['name'], JSON_UNESCAPED_UNICODE), $date, $date]);
-// }
+$stmt = $pdo->prepare("INSERT INTO payment_type(type,name,created_at,updated_at) VALUES (?,?,?,?)");
+foreach ($paymentTypes as $type) {
+    $stmt->execute([$type['type'], json_encode($type['name'], JSON_UNESCAPED_UNICODE), $date, $date]);
+}
 
 
 $uz = [
@@ -3994,9 +3994,7 @@ $ru = [
         "Город Тахиаташ"
     ]
 ];
-$pdo->query("SET FOREIGN_KEY_CHECKS = 0");
-$pdo->query("TRUNCATE TABLE region");
-$pdo->query("SET FOREIGN_KEY_CHECKS = 1");
+
 $stmt = $pdo->prepare("INSERT INTO region(name) VALUES (?)");
 $uzKeys = array_keys($uz);
 $uzcKeys = array_keys($uzc);
