@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegionController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[MapQueryParameter] ?int $parentId = null, IndexAction $action): JsonResponse
+    public function index(IndexAction $action, #[MapQueryParameter] ?int $parentId = null): JsonResponse
     {
         return $this->json($action($parentId), context: ['groups' => ['region:index']]);
     }
