@@ -3255,47 +3255,760 @@ $paymentTypes = [
     ['type' => 'e_wallets', 'name' => ['en' => 'payme', 'uz' => 'Payme', 'uzc' => 'Payme', 'ru' => 'Payme']],
 ];
 
+// $pdo->query("SET FOREIGN_KEY_CHECKS = 0");
+// // $pdo->query("TRUNCATE TABLE category");
+// // $pdo->query("TRUNCATE TABLE unit");
+// $tables = $pdo->prepare('SHOW TABLES');
+// $tables->execute();
+
+// foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
+//     if ($table == 'doctrine_migration_versions') continue;
+//     $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
+// }
+// $pdo->query("SET FOREIGN_KEY_CHECKS = 1");
+
+// $date = date("Y-m-d H:i:s");
+// $stmt = $pdo->prepare("INSERT INTO category(parent_id,name,created_at,updated_at) VALUES (?,?,?,?)");
+
+// $categories = array_filter($base, fn($category) => null === $category[1]);
+// foreach ($categories as $item) {
+//     $stmt->execute([$item[1], json_encode($item[2], JSON_UNESCAPED_UNICODE), $date, $date]);
+// }
+
+// foreach ($categories as $parent) {
+//     $childrens = array_filter($base, fn($category) => $category[1] === $parent[0] && is_array($category[2]) && is_int($category[0]));
+//     foreach ($childrens as $child) {
+//         $stmt->execute([$child[1], json_encode($child[2], JSON_UNESCAPED_UNICODE), $date, $date]);
+//     }
+// }
+
+// $parents = array_filter($base, fn($category) => is_int($category[0]) && is_int($category[1]) && is_array($category[2]));
+// foreach ($parents as $parent) {
+//     $childrens = array_filter($base, fn($category) => $category[0] === $parent[0] && is_array($category[1]) && count($category) === 2);
+//     foreach ($childrens as $child) {
+//         $stmt->execute([$child[0], json_encode($child[1], JSON_UNESCAPED_UNICODE), $date, $date]);
+//     }
+// }
+
+// $stmt = $pdo->prepare("INSERT INTO unit(name,code,created_at,updated_at) VALUES (?,?,?,?)");
+// foreach ($units as $unit) {
+//     $stmt->execute([json_encode(['uz' => $unit['uz'], 'uzc' => $unit['uzc'], 'ru' => $unit['ru']], JSON_UNESCAPED_UNICODE), $unit['code'], $date, $date]);
+// }
+
+// $stmt = $pdo->prepare("INSERT INTO payment_type(type,name,created_at,updated_at) VALUES (?,?,?,?)");
+// foreach ($paymentTypes as $type) {
+//     $stmt->execute([$type['type'], json_encode($type['name'], JSON_UNESCAPED_UNICODE), $date, $date]);
+// }
+
+
+$uz = [
+    "Toshkent shahri" => [
+        "Bektemir tumani",
+        "Mirobod tumani",
+        "Sergeli tumani",
+        "Yashnobod tumani",
+        "Shayxontohur tumani",
+        "Mirzo Ulug'bek tumani",
+        "Olmazor tumani",
+        "Uchtepa tumani",
+        "Chilonzor tumani",
+        "Yunusobod tumani",
+        "Yakkasaroy tumani"
+    ],
+    "Farg'ona viloyati" => [
+        "Farg‘ona shahri",
+        "Farg‘ona tumani",
+        "Beshariq tumani",
+        "Bog‘dod tumani",
+        "Buvayda tumani",
+        "Dang‘ara tumani",
+        "Yozyovon tumani",
+        "Quva tumani",
+        "Quvasoy shahri",
+        "Qo‘qon shahri",
+        "Qo‘shtepa tumani",
+        "Marg‘ilon shahri",
+        "Oltiariq tumani",
+        "Rishton tumani",
+        "So‘x tumani",
+        "Toshloq tumani",
+        "Uchko‘prik tumani",
+        "O‘zbekiston tumani",
+        "Furqat tumani"
+    ],
+    "Sirdaryo viloyati" => [
+        "Sirdaryo tumani",
+        "Shirin shahri",
+        "Yangiyer shahri",
+        "Boyovut tumani",
+        "Guliston tumani",
+        "Guliston shahri",
+        "Mirzaobod tumani",
+        "Oqoltin tumani",
+        "Sayxunobod tumani",
+        "Sardoba tumani",
+        "Xovos tumani"
+    ],
+    "Samarqand viloyati" => [
+        "Samarqand shahri",
+        "Samarqand tumani",
+        "Bulung‘ur tumani",
+        "Jomboy tumani",
+        "Ishtixon tumani",
+        "Kattaqo‘rg‘on tumani",
+        "Kattaqo‘rg‘on shahri",
+        "Qo‘shrabot tumani",
+        "Narpay tumani",
+        "Nurabod tumani",
+        "Oqdaryo tumani",
+        "Payariq tumani",
+        "Pastarg‘om tumani",
+        "Paxtachi tumani",
+        "Toyloq tumani",
+        "Urgut tumani"
+    ],
+    "Navoiy viloyati" => [
+        "Navoiy shahri",
+        "Zarafshon shahri",
+        "Karmana tumani",
+        "Qiziltepa tumani",
+        "Konimex tumani",
+        "Navbahor tumani",
+        "Nurota tumani",
+        "Tomdi tumani",
+        "Uchquduq tumani",
+        "Xatirchi tumani"
+    ],
+    "Jizzax viloyati" => [
+        "Jizzax shahri",
+        "Arnasoy tumani",
+        "Baxmal tumani",
+        "G‘allaorol tumani",
+        "Do‘stlik tumani",
+        "Sharof Rashidov tumani",
+        "Zarbdor tumani",
+
+        "Zafarobod tumani",
+        "Zomin tumani",
+        "Mirzacho‘l tumani",
+        "Paxtakor tumani",
+        "Forish tumani",
+        "Yangiobod tumani"
+    ],
+    "Andijon viloyati" => [
+        "Andijon shahri",
+        "Andijon tumani",
+        "Asaka tumani",
+        "Baliqchi tumani",
+        "Buloqboshi tumani",
+        "Bo‘z tumani",
+        "Jalaquduq tumani",
+        "Izbosgan tumani",
+        "Qorasuv shahri",
+        "Qo‘rg‘ontepa tumani",
+        "Marhamat tumani",
+        "Oltinko‘l tumani",
+        "Paxtaobod tumani",
+        "Ulug‘nor tumani",
+        "Xonabod shahri",
+        "Xo‘jaobod tumani",
+        "Shaxrixon tumani",
+        "Asaka shahri"
+    ],
+    "Xorazm viloyati" => [
+        "Urganch shahri",
+        "Bog‘ot tumani",
+        "Gurlan tumani",
+        "Qo‘shko‘pir tumani",
+        "Urganch tumani",
+        "Xiva tumani",
+        "Xazorasp tumani",
+        "Xonqa tumani",
+        "Shavot tumani",
+        "Yangiariq tumani",
+        "Yangibozor tumani"
+    ],
+    "Toshkent viloyati" => [
+        "Toshkent tumani",
+        "Angiren shahri",
+        "Olmaliq shahri",
+        "Bekabod tumani",
+        "Bekabod shahri",
+        "Bo‘ka tumani",
+        "Bo‘stonliq tumani",
+        "Zangiota tumani",
+        "Qibray tumani",
+        "Quyichirchiq tumani",
+        "Oqqo‘rg‘on tumani",
+        "Ohangaron tumani",
+        "Parkent tumani",
+        "Piskent tumani",
+        "O‘rtachirchiq tumani",
+        "Chinoz tumani",
+        "Chirchiq shahri",
+        "Yuqorichirchiq tumani",
+        "Yangiyo‘l tumani",
+        "Ohangaron shahri",
+        "Yangiyo‘l shahri"
+    ],
+    "Surxondaryo viloyati" => [
+        "Termiz shahri",
+        "Termiz tumani",
+        "Angor tumani",
+        "Boysun tumani",
+        "Denov tumani",
+        "Jarqo‘rg‘on tumani",
+        "Qiziriq tumani",
+        "Qo‘mqo‘rg‘on tumani",
+        "Muzrabot tumani",
+        "Oltinsoy tumani",
+        "Sariosiyo tumani",
+        "Uzun tumani",
+        "Sherobod tumani",
+        "Sho‘rchi tumani",
+        "Bandixon tumani"
+    ],
+    "Namangan viloyati" => [
+        "Namangan shahri",
+        "Namangan tumani",
+        "Kosonsoy tumani",
+        "Mingbuloq tumani",
+        "Norin tumani",
+        "Pop tumani",
+        "To‘raqo‘rg‘on tumani",
+        "Uychi tumani",
+        "Uchqo‘rg‘on tumani",
+        "Chortoq tumani",
+        "Chust tumani",
+        "Yangiqo‘rg‘on tumani"
+    ],
+    "Qashqadaryo viloyati" => [
+        "Qarshi shahri",
+        "Qarshi tumani",
+        "G‘uzor tumani",
+        "Dehqonobod tumani",
+        "Qamashi tumani",
+        "Kasbi tumani",
+        "Kitob tumani",
+        "Koson tumani",
+        "Mirishkor tumani",
+        "Muborak tumani",
+        "Nishon tumani",
+        "Chiroqchi tumani",
+        "Shahrisabz tumani",
+        "Yakkabog‘ tumani"
+    ],
+    "Buxoro viloyati" => [
+        "Buxoro shahri",
+        "Buxoro tumani",
+        "Vobkent tumani",
+        "G‘ijduvon tumani",
+        "Jondor tumani",
+        "Kogon tumani",
+        "Kogon shahri",
+        "Qorako‘l tumani",
+        "Qorovulbozor tumani",
+        "Olot tumani",
+        "Peshku tumani",
+        "Romitan tumani",
+        "Shofirkon tumani"
+    ],
+    "Qoraqalpog'iston" => [
+        "Nukus shahri",
+        "Nukus tumani",
+        "Amudaryo tumani",
+        "Beruniy tumani",
+        "Kegayli tumani",
+        "Qonliko‘l tumani",
+        "Qorao‘zak tumani",
+        "Qo‘ng‘irot tumani",
+        "Mo‘ynoq tumani",
+        "Taxtako‘pir tumani",
+        "To‘rtko‘l tumani",
+        "Xo‘jayli tumani",
+        "Chimboy tumani",
+        "Shumanay tumani",
+        "Ellikqala tumani",
+        "Taxiatosh shahri"
+    ]
+];
+
+$uzc = [
+    "Тошкент шаҳри" => [
+        "Бектемир тумани",
+        "Миробод тумани",
+        "Сергели тумани",
+        "Яшнобод тумани",
+        "Шайхонтохур тумани",
+        "Мирзо Улуғбек тумани",
+        "Олмазор тумани",
+        "Учтепа тумани",
+        "Чилонзор тумани",
+        "Юнусобод тумани",
+        "Яккасарой тумани"
+    ],
+    "Фарғона вилояти" => [
+        "Фарғона шаҳри",
+        "Фарғона тумани",
+        "Бешариқ тумани",
+        "Боғдод тумани",
+        "Бувайда тумани",
+        "Данғара тумани",
+        "Ёзёвон тумани",
+        "Қува тумани",
+        "Қувасой шаҳри",
+        "Қўқон шаҳри",
+        "Қўштепа тумани",
+        "Марғилон шаҳри",
+        "Олтиариқ тумани",
+        "Риштон тумани",
+        "Сўх тумани",
+        "Тошлоқ тумани",
+        "Учкўприк тумани",
+        "Ўзбекистон тумани",
+        "Фурқат тумани"
+    ],
+    "Сирдарё вилояти" => [
+        "Сирдарё тумани",
+        "Ширин шаҳри",
+        "Янгиер шаҳри",
+        "Бойовут тумани",
+        "Гулистон тумани",
+        "Гулистон шаҳри",
+        "Мирзаобод тумани",
+        "Оқолтин тумани",
+        "Сайҳунобод тумани",
+        "Сардооба тумани",
+        "Ховос тумани"
+    ],
+    "Самарқанд вилояти" => [
+        "Самарқанд шаҳри",
+        "Самарқанд тумани",
+        "Булунғур тумани",
+        "Жомбой тумани",
+        "Иштихон тумани",
+        "Каттақўрғон тумани",
+        "Каттақўрғон шаҳри",
+        "Қўшработ тумани",
+        "Нарпай тумани",
+        "Нурабод тумани",
+        "Оқдарё тумани",
+        "Пайариқ тумани",
+        "Пастдарғом тумани",
+        "Пахтачи тумани",
+        "Тойлоқ тумани",
+        "Ургут тумани"
+    ],
+    "Навоий вилояти" => [
+        "Навоий шаҳри",
+        "Зарафшон шаҳри",
+        "Кармана тумани",
+        "Қизилтепа тумани",
+        "Конимех тумани",
+        "Навбахор тумани",
+        "Нурота тумани",
+        "Томди тумани",
+        "Учқудуқ тумани",
+        "Хатирчи тумани"
+    ],
+    "Жиззах вилояти" => [
+        "Жиззах шаҳри",
+        "Арнасой тумани",
+        "Бахмал тумани",
+        "Ғаллаорол тумани",
+        "Дўстлик тумани",
+        "Шароф Рашидов тумани",
+        "Зарбдор тумани",
+        "Зафаробод тумани",
+        "Зомин тумани",
+        "Мирзачўл тумани",
+        "Пахтакор тумани",
+        "Фориш тумани",
+        "Янгиобод тумани"
+    ],
+    "Андижон вилояти" => [
+        "Андижон шаҳри",
+        "Андижон тумани",
+        "Асака тумани",
+        "Балиқчи тумани",
+        "Булоқбоши тумани",
+        "Бўз тумани",
+        "Жалақудуқ тумани",
+        "Избосган тумани",
+        "Қорасув шаҳри",
+        "Қўрғонтепа тумани",
+        "Марҳамат тумани",
+        "Олтинкўл тумани",
+        "Пахтаобод тумани",
+        "Улуғнор тумани",
+        "Хонобод шаҳри",
+        "Хўжаобод тумани",
+        "Шаҳрихон тумани",
+        "Асака шаҳри"
+    ],
+    "Хоразм вилояти" => [
+        "Урганч шаҳри",
+        "Боғот тумани",
+        "Гурлан тумани",
+        "Қўшкўпир тумани",
+        "Урганч тумани",
+        "Хива тумани",
+        "Хазорасп тумани",
+        "Хонқа тумани",
+        "Шовот тумани",
+        "Янгиариқ тумани",
+        "Янгибозор тумани"
+    ],
+    "Тошкент вилояти" => [
+        "Тошкент тумани",
+        "Ангирен шаҳри",
+        "Олмалиқ шаҳри",
+        "Бекобод тумани",
+        "Бекобод шаҳри",
+        "Бўка тумани",
+        "Бўстонлиқ тумани",
+        "Зангиота тумани",
+        "Қибрай тумани",
+        "Қуйичирчиқ тумани",
+        "Оққўрғон тумани",
+        "Оҳангарон тумани",
+        "Паркент тумани",
+        "Пискент тумани",
+        "Ўртачирчиқ тумани",
+        "Чиноз тумани",
+        "Чирчиқ шаҳри",
+        "Юқоричирчиқ тумани",
+        "Янгийўл тумани",
+        "Оҳангарон шаҳри",
+        "Янгийўл шаҳри"
+    ],
+    "Сурхондарё вилояти" => [
+        "Термиз шаҳри",
+        "Термиз тумани",
+        "Ангор тумани",
+        "Бойсун тумани",
+        "Денов тумани",
+        "Жарқўрғон тумани",
+        "Қизириқ тумани",
+        "Қумқўрғон тумани",
+        "Музработ тумани",
+        "Олтинсой тумани",
+        "Сариосиё тумани",
+        "Узун тумани",
+        "Шеробод тумани",
+        "Шўрчи тумани",
+        "Бандихон тумани"
+    ],
+    "Наманган вилояти" => [
+        "Наманган шаҳри",
+        "Наманган тумани",
+        "Косонсой тумани",
+        "Мингбулоқ тумани",
+        "Норин тумани",
+        "Поп тумани",
+        "Тўрақўрғон тумани",
+        "Уйчи тумани",
+        "Учқўрғон тумани",
+        "Чортоқ тумани",
+        "Чуст тумани",
+        "Янгиқўрғон тумани"
+    ],
+    "Қашқадарё вилояти" => [
+        "Қарши шаҳри",
+        "Қарши тумани",
+        "Ғузор тумани",
+        "Деҳқонобод тумани",
+        "Қамаши тумани",
+        "Касби тумани",
+        "Китоб тумани",
+        "Косон тумани",
+        "Миришкор тумани",
+        "Муборак тумани",
+        "Нишон тумани",
+        "Чироқчи тумани",
+        "Шаҳрисабз тумани",
+        "Яккабоғ тумани"
+    ],
+    "Бухоро вилояти" => [
+        "Бухоро шаҳри",
+        "Бухоро тумани",
+        "Вобкент тумани",
+        "Ғиждувон тумани",
+        "Жондор тумани",
+        "Когон тумани",
+        "Когон шаҳри",
+        "Қоракўл тумани",
+        "Қоровулбозор тумани",
+        "Олот тумани",
+        "Пешку тумани",
+        "Ромитан тумани",
+        "Шофиркон тумани"
+    ],
+    "Қорақалпоғистон" => [
+        "Нукус шаҳри",
+        "Нукус тумани",
+        "Амударё тумани",
+        "Беруний тумани",
+        "Кегайли тумани",
+        "Қонликўл тумани",
+        "Қораўзак тумани",
+        "Қўнғирот тумани",
+        "Мўйноқ тумани",
+        "Тахтакўпир тумани",
+        "Тўрткўл тумани",
+        "Хўжайли тумани",
+        "Чимбой тумани",
+        "Шуманай тумани",
+        "Элликқалъа тумани",
+        "Тахиатош шаҳри"
+    ]
+];
+
+$ru = [
+    "Город Ташкент" => [
+        "Бектемирский район",
+        "Мирободский район",
+        "Сергелийский район",
+        "Яшнабадский район",
+        "Шайхантахурский район",
+        "Мирзо Улугбекский район",
+        "Алмазарский район",
+        "Учтепинский район",
+        "Чиланзарский район",
+        "Юнусабадский район",
+        "Яккасарайский район"
+    ],
+    "Ферганская область" => [
+        "Город Фергана",
+        "Ферганский район",
+        "Бешарыкский район",
+        "Багдадский район",
+        "Бувайдинский район",
+        "Дангаринский район",
+        "Ёзёванский район",
+        "Кувинский район",
+        "Город Кувасай",
+        "Город Коканд",
+        "Куштепинский район",
+        "Город Маргилан",
+        "Алтыарыкский район",
+        "Риштанский район",
+        "Сохский район",
+        "Ташлакский район",
+        "Учкуприкский район",
+        "Узбекистанский район",
+        "Фуркатский район"
+    ],
+    "Сырдарьинская область" => [
+        "Сырдарьинский район",
+        "Город Ширин",
+        "Город Янгиер",
+        "Баяутский район",
+        "Гулистанский район",
+        "Город Гулистан",
+        "Мирзаабадский район",
+        "Акалтынский район",
+        "Сайхунабадский район",
+        "Сардобинский район",
+        "Ховосский район"
+    ],
+    "Самаркандская область" => [
+        "Город Самарканд",
+        "Самаркандский район",
+        "Булунгурский район",
+        "Джамбайский район",
+        "Иштыханский район",
+        "Каттакурганский район",
+        "Город Каттакурган",
+        "Кушрабадский район",
+        "Нарпайский район",
+        "Нурабадский район",
+        "Акдарьинский район",
+        "Пайарыкский район",
+        "Пастдаргомский район",
+        "Пахтачинский район",
+        "Тайлакский район",
+        "Ургутский район"
+    ],
+    "Навоийская область" => [
+        "Город Навои",
+        "Город Зарафшан",
+        "Карманинский район",
+        "Кызылтепинский район",
+        "Канимехский район",
+        "Навбахорский район",
+        "Нуратинский район",
+        "Тамдынский район",
+        "Учкудукский район",
+        "Хатырчинский район"
+    ],
+    "Джизакская область" => [
+        "Город Джизак",
+        "Арнасайский район",
+        "Бахмальский район",
+        "Галляаральский район",
+        "Дустликский район",
+        "Шараф Рашидовский район",
+        "Зарбдорский район",
+        "Зафарабадский район",
+        "Заминский район",
+        "Мирзачульский район",
+        "Пахтакорский район",
+        "Фаришский район",
+        "Янгиабадский район"
+    ],
+    "Андижанская область" => [
+        "Город Андижан",
+        "Андижанский район",
+        "Асакинский район",
+        "Балыкчинский район",
+        "Булокбошинский район",
+        "Бозский район",
+        "Джалакудукский район",
+        "Избасканский район",
+        "Город Карасу",
+        "Кургантепинский район",
+        "Мархаматский район",
+        "Алтынкульский район",
+        "Пахтаабадский район",
+        "Улугнорский район",
+        "Город Ханабад",
+        "Ходжаабадский район",
+        "Шахриханский район",
+        "Город Асака"
+    ],
+    "Хорезмская область" => [
+        "Город Ургенч",
+        "Багатский район",
+        "Гурленский район",
+        "Кушкупырский район",
+        "Ургенчский район",
+        "Хивинский район",
+        "Хазараспский район",
+        "Ханкинский район",
+        "Шаватский район",
+        "Янгиарыкский район",
+        "Янгибазарский район"
+    ],
+    "Ташкентская область" => [
+        "Ташкентский район",
+        "Город Ангрен",
+        "Город Алмалык",
+        "Бекабадский район",
+        "Город Бекабад",
+        "Букаский район",
+        "Бостанлыкский район",
+        "Зангиатинский район",
+        "Кибрайский район",
+        "Куйичирчикский район",
+        "Аккурганский район",
+        "Ахангаранский район",
+        "Паркентский район",
+        "Пискентский район",
+        "Уртасарчинский район",
+        "Чиназский район",
+        "Город Чирчик",
+        "Юкоричирчикский район",
+        "Янгиюльский район",
+        "Город Ахангаран",
+        "Город Янгиюль"
+    ],
+    "Сурхандарьинская область" => [
+        "Город Термез",
+        "Термезский район",
+        "Ангорский район",
+        "Байсунский район",
+        "Денауский район",
+        "Джаркурганский район",
+        "Кызарыкский район",
+        "Кумкурганский район",
+        "Музрабадский район",
+        "Алтынсайский район",
+        "Сариасийский район",
+        "Узунский район",
+        "Шерабадский район",
+        "Шурчинский район",
+        "Бандиханский район"
+    ],
+    "Наманганская область" => [
+        "Город Наманган",
+        "Наманганский район",
+        "Касансайский район",
+        "Мингбулакский район",
+        "Нарынский район",
+        "Папский район",
+        "Туракурганский район",
+        "Уйчинский район",
+        "Учкурганский район",
+        "Чартакский район",
+        "Чустский район",
+        "Янгикурганский район"
+    ],
+    "Кашкадарьинская область" => [
+        "Город Карши",
+        "Каршинский район",
+        "Гузарский район",
+        "Дехканабадский район",
+        "Камашинский район",
+        "Касбинский район",
+        "Китабский район",
+        "Касанский район",
+        "Миришкорский район",
+        "Мубарекский район",
+        "Нишанский район",
+        "Чиракчинский район",
+        "Шахрисабзский район",
+        "Яккабагский район"
+    ],
+    "Бухарская область" => [
+        "Город Бухара",
+        "Бухарский район",
+        "Вабкентский район",
+        "Гиждуванский район",
+        "Жондорский район",
+        "Каганский район",
+        "Город Каган",
+        "Каракульский район",
+        "Караулбазарский район",
+        "Алатский район",
+        "Пешкунский район",
+        "Ромитанский район",
+        "Шафирканский район"
+    ],
+    "Каракалпакстан" => [
+        "Город Нукус",
+        "Нукусский район",
+        "Амударьинский район",
+        "Берунийский район",
+        "Кегейлийский район",
+        "Канлыкульский район",
+        "Караузякский район",
+        "Кунградский район",
+        "Муйнакский район",
+        "Тахтакупырский район",
+        "Турткульский район",
+        "Ходжейлийский район",
+        "Чимбайский район",
+        "Шуманайский район",
+        "Элликкалинский район",
+        "Город Тахиаташ"
+    ]
+];
 $pdo->query("SET FOREIGN_KEY_CHECKS = 0");
-// $pdo->query("TRUNCATE TABLE category");
-// $pdo->query("TRUNCATE TABLE unit");
-$tables = $pdo->prepare('SHOW TABLES');
-$tables->execute();
-
-foreach ($tables->fetchAll(\PDO::FETCH_COLUMN) as $table) {
-    if ($table == 'doctrine_migration_versions') continue;
-    $pdo->query('TRUNCATE TABLE `' . $table . '`')->execute();
-}
+$pdo->query("TRUNCATE TABLE region");
 $pdo->query("SET FOREIGN_KEY_CHECKS = 1");
-
-$date = date("Y-m-d H:i:s");
-$stmt = $pdo->prepare("INSERT INTO category(parent_id,name,created_at,updated_at) VALUES (?,?,?,?)");
-
-$categories = array_filter($base, fn($category) => null === $category[1]);
-foreach ($categories as $item) {
-    $stmt->execute([$item[1], json_encode($item[2], JSON_UNESCAPED_UNICODE), $date, $date]);
-}
-
-foreach ($categories as $parent) {
-    $childrens = array_filter($base, fn($category) => $category[1] === $parent[0] && is_array($category[2]) && is_int($category[0]));
-    foreach ($childrens as $child) {
-        $stmt->execute([$child[1], json_encode($child[2], JSON_UNESCAPED_UNICODE), $date, $date]);
+$stmt = $pdo->prepare("INSERT INTO region(name) VALUES (?)");
+$uzKeys = array_keys($uz);
+$uzcKeys = array_keys($uzc);
+$ruKeys = array_keys($ru);
+foreach ($uzKeys as $j => $value) {
+    $stmt->execute([json_encode(['uz' => $uzKeys[$j], 'uzc' => $uzcKeys[$j], 'ru' => $ruKeys[$j]], JSON_UNESCAPED_UNICODE)]);
+    $parentId = $pdo->lastInsertId();
+    $uzd = $uz[$uzKeys[$j]];
+    $uzcd = $uzc[$uzcKeys[$j]];
+    $rud = $ru[$ruKeys[$j]];
+    $stmt2 = $pdo->prepare("INSERT INTO region(name,parent_id) VALUES (?,?)");
+    foreach ($uzd as $k => $item) {
+        $stmt2->execute([json_encode(['uz' => $uzd[$k], 'uzc' => $uzcd[$k], 'ru' => $rud[$k]], JSON_UNESCAPED_UNICODE), $parentId]);
     }
-}
-
-$parents = array_filter($base, fn($category) => is_int($category[0]) && is_int($category[1]) && is_array($category[2]));
-foreach ($parents as $parent) {
-    $childrens = array_filter($base, fn($category) => $category[0] === $parent[0] && is_array($category[1]) && count($category) === 2);
-    foreach ($childrens as $child) {
-        $stmt->execute([$child[0], json_encode($child[1], JSON_UNESCAPED_UNICODE), $date, $date]);
-    }
-}
-
-$stmt = $pdo->prepare("INSERT INTO unit(name,code,created_at,updated_at) VALUES (?,?,?,?)");
-foreach ($units as $unit) {
-    $stmt->execute([json_encode(['uz' => $unit['uz'], 'uzc' => $unit['uzc'], 'ru' => $unit['ru']], JSON_UNESCAPED_UNICODE), $unit['code'], $date, $date]);
-}
-
-$stmt = $pdo->prepare("INSERT INTO payment_type(type,name,created_at,updated_at) VALUES (?,?,?,?)");
-foreach ($paymentTypes as $type) {
-    $stmt->execute([$type['type'], json_encode($type['name'], JSON_UNESCAPED_UNICODE), $date, $date]);
 }
