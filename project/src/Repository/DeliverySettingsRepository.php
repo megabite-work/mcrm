@@ -27,8 +27,9 @@ class DeliverySettingsRepository extends ServiceEntityRepository
         $region = $entityManager->find(Region::class, $dto->getRegionId());
 
         $query = $entityManager->createQuery(
-            'SELECT ds
+            'SELECT ds, r
             FROM App\Entity\DeliverySettings ds
+            JOIN ds.region r
             WHERE ds.store = :store AND ds.region = :region'
         )->setParameters(['store' => $store, 'region' => $region]);
 
@@ -41,8 +42,9 @@ class DeliverySettingsRepository extends ServiceEntityRepository
         $store = $entityManager->find(Store::class, $dto->getStoreId());
 
         $query = $entityManager->createQuery(
-            'SELECT ds
+            'SELECT ds, r
             FROM App\Entity\DeliverySettings ds
+            JOIN ds.region r
             WHERE ds.store = :store'
         )->setParameters(['store' => $store]);
 
@@ -55,8 +57,9 @@ class DeliverySettingsRepository extends ServiceEntityRepository
         $region = $entityManager->find(Region::class, $dto->getRegionId());
 
         $query = $entityManager->createQuery(
-            'SELECT ds
+            'SELECT ds, r
             FROM App\Entity\DeliverySettings ds
+            JOIN ds.region r
             WHERE ds.region = :region'
         )->setParameters(['region' => $region]);
 

@@ -55,6 +55,12 @@ class Region
         return $this->parent;
     }
 
+    #[Groups(['region:index', 'region:show', 'delivery_settings:show'])]
+    public function getParentId(): ?int
+    {
+        return $this->parent->getId();
+    }
+
     public function setParent(?self $parent): static
     {
         $this->parent = $parent;
