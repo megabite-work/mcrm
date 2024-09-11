@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RegionRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
 class Region
@@ -15,11 +15,11 @@ class Region
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['region:index', 'region:show'])]
+    #[Groups(['region:index', 'region:show', 'delivery_settings:show'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'text')]
-    #[Groups(['region:index', 'region:show'])]
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['region:index', 'region:show', 'delivery_settings:show'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'regions')]

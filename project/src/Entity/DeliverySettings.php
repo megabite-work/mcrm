@@ -45,10 +45,12 @@ class DeliverySettings
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['delivery_settings:show'])]
     private ?Store $store = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['delivery_settings:show'])]
     private ?Region $region = null;
 
     public function getId(): ?int
