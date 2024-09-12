@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: DeliverySettingsRepository::class)]
 #[Gedmo\SoftDeleteable]
@@ -51,6 +52,7 @@ class DeliverySettings
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['delivery_settings:index', 'delivery_settings:show'])]
+    #[SerializedName('district')]
     private ?Region $region = null;
 
     public function getId(): ?int
@@ -140,5 +142,12 @@ class DeliverySettings
         $this->region = $region;
 
         return $this;
+    }
+
+    #[SerializedName('region')]
+    #[Groups(['delivery_settings:index', 'delivery_settings:show'])]
+    public function getParent(): ?Region
+    {
+        return $this->getRegion()->getParent();
     }
 }
