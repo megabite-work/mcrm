@@ -15,11 +15,11 @@ class Region
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['region:index', 'region:show', 'delivery_settings:show'])]
+    #[Groups(['region:index', 'region:show', 'delivery_settings:show', 'delivery_settings:index'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['region:index', 'region:show', 'delivery_settings:show'])]
+    #[Groups(['region:index', 'region:show', 'delivery_settings:show', 'delivery_settings:index'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'regions')]

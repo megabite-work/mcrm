@@ -19,7 +19,7 @@ class IndexAction
             $dto->getStoreId() && $dto->getRegionId() => $this->repo->findAllDeliverySettingsByStoreAndRegion($dto),
             !is_null($dto->getStoreId()) => $this->repo->findAllDeliverySettingsByStore($dto),
             !is_null($dto->getRegionId()) => $this->repo->findAllDeliverySettingsByRegion($dto),
-            default => throw new NotFoundHttpException("must be one of regionid or storeId")            
+            default => $this->repo->findAllDeliverySettingsByMultiStore($dto)            
         };
     }
 }
