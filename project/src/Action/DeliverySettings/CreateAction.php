@@ -2,8 +2,6 @@
 
 namespace App\Action\DeliverySettings;
 
-use App\Entity\Store;
-use App\Entity\Region;
 use App\Entity\DeliverySettings;
 use App\Dto\DeliverySettings\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,18 +16,13 @@ class CreateAction
         private RegionRepository $regionRepository
     ) {}
 
-    public function __invoke(RequestDto $dto): array
+    public function __invoke(array $dtos): array
     {
-        $stores = $this->storeRepository->findBy(['id' => $dto->getStores()]);
-        $regions = $this->regionRepository->findBy(['id' => $dto->getRegions()]);
-
         $entities = [];
-        foreach ($stores as $store) {
-            foreach ($regions as $region) {
-                $entity = $this->create($dto, $store, $region);
-                $this->em->persist($entity);
-                $entities[] = $entity;
-            }
+        foreach ($dtos as $dto) {
+            $entity = $this->create($dto);
+
+            $entities[] = $entity;
         }
 
         $this->em->flush();
@@ -37,8 +30,11 @@ class CreateAction
         return $entities;
     }
 
-    private function create(RequestDto $dto, Store $store, Region $region): DeliverySettings
+    private function create(RequestDto $dto): DeliverySettings
     {
+        $store = $this->storeRepository->find(['id' => $dto->getStoreId()]);
+        $region = $this->regionRepository->find(['id' => $dto->getRegionid()]);
+
         $entity = (new DeliverySettings())
             ->setDeliveryType($dto->getDeliveryType())
             ->setMinSum($dto->getMinSum())
@@ -47,6 +43,8 @@ class CreateAction
             ->setNextKmSum($dto->getNextKmSum())
             ->setStore($store)
             ->setRegion($region);
+
+        $this->em->persist($entity);
 
         return $entity;
     }

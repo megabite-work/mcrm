@@ -2,19 +2,23 @@
 
 namespace App\Controller;
 
+use OpenApi\Attributes as OA;
+use App\Dto\DeliverySettings\RequestDto;
+use App\Action\DeliverySettings\ShowAction;
+use App\Action\DeliverySettings\IndexAction;
 use App\Action\DeliverySettings\CreateAction;
 use App\Action\DeliverySettings\DeleteAction;
-use App\Action\DeliverySettings\IndexAction;
-use App\Action\DeliverySettings\ShowAction;
 use App\Action\DeliverySettings\UpdateAction;
-use App\Dto\DeliverySettings\RequestDto;
 use App\Dto\DeliverySettings\RequestQueryDto;
-use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Route(path: '/api/delivery-settings', format: 'json')]
 #[OA\Tag(name: 'DeliverySettings')]
@@ -33,9 +37,9 @@ class DeliverySettingsController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['delivery_settings:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['delivery_settings:create']]);
+        return $this->json($action($dtos), context: ['groups' => ['delivery_settings:create']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

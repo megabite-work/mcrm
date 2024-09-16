@@ -5,7 +5,6 @@ namespace App\Action\DeliverySettings;
 use App\Component\Paginator;
 use App\Dto\DeliverySettings\RequestQueryDto;
 use App\Repository\DeliverySettingsRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class IndexAction
 {

@@ -10,10 +10,10 @@ final class RequestDto
     public function __construct(
         #[Groups(['delivery_settings:create'])]
         #[Assert\NotBlank(groups: ['delivery_settings:create'])]
-        private array $stores,
+        private int $storeId,
         #[Groups(['delivery_settings:create'])]
         #[Assert\NotBlank(groups: ['delivery_settings:create'])]
-        private array $regions,
+        private int $regionId,
         #[Groups(['delivery_settings:create', 'delivery_settings:update'])]
         #[Assert\NotBlank(groups: ['delivery_settings:create'])]
         #[Assert\Choice(choices: ['fixed', 'flexable'], groups: ['delivery_settings:create'])]
@@ -36,14 +36,14 @@ final class RequestDto
         private ?float $nextKmSum = 0,
     ) {}
 
-    public function getStores(): array
+    public function getStoreId(): int
     {
-        return $this->stores ?? [];
+        return $this->storeId ?? [];
     }
 
-    public function getRegions(): array
+    public function getRegionId(): int
     {
-        return $this->regions ?? [];
+        return $this->regionId ?? [];
     }
 
     public function getDeliveryType(): ?string
