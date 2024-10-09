@@ -16,7 +16,21 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(RequestDto $dto): Nomenclature
+    public function __invoke(array $dtos): array
+    {
+        $entities = [];
+        foreach ($dtos as $dto) {
+            $entity = $this->create($dto);
+
+            $entities[] = $entity;
+        }
+
+        $this->em->flush();
+
+        return $entities;
+    }
+    
+    private function create(RequestDto $dto): Nomenclature
     {
         $category = $this->em->find(Category::class, $dto->getCategoryId());
         $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
@@ -24,18 +38,8 @@ class CreateAction
         if (null === $category || null === $multiStore) {
             throw new EntityNotFoundException('category or multiStore not found');
         }
-
-        $nomenclature = $this->create($dto, $category, $multiStore);
-
-        $this->em->persist($nomenclature);
-        $this->em->flush();
-
-        return $nomenclature;
-    }
-
-    private function create(RequestDto $dto, Category $category, MultiStore $multiStore): Nomenclature
-    {
-        $nomenclature = (new Nomenclature())
+        
+        $entity = (new Nomenclature())
             ->setName($dto->getName())
             ->setMxik($dto->getMxik())
             ->setBrand($dto->getBrand())
@@ -48,9 +52,11 @@ class CreateAction
             ->setMultiStore($multiStore)
             ->setCategory($category);
 
-        $this->barcode($multiStore, $nomenclature, $dto->getBarcode());
+        $this->barcode($multiStore, $entity, $dto->getBarcode());
 
-        return $nomenclature;
+        $this->em->persist($entity);
+
+        return $entity;
     }
 
     private function barcode(MultiStore $multiStore, Nomenclature $nomenclature, ?int $barcode): void

@@ -23,7 +23,7 @@ final class MultiStoreFactory extends PersistentProxyObjectFactory
     {
         return [
             'name' => self::faker()->company(),
-            'profit' => '{"default": 15, "1": 5, "2": 10, "3": 15, "4": 20, "5": 25}',
+            'profit' => ["default" => 15, "1" => 5, "2" => 10, "3" => 15, "4" => 20, "5" => 25],
             'barcodeTtn' => self::faker()->isbn13(),
             'nds' => self::faker()->randomElement([5, 10, 15, 20, 25]),
             'owner' => UserFactory::new(),
