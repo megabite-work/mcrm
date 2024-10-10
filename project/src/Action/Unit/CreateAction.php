@@ -12,24 +12,21 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private UnitRepository $unitRepository
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestDto $dto): Unit
     {
         $unit = $this->unitRepository->findOneBy(['code' => $dto->getCode()]);
 
-        if ($unit !== null) {
-            return $unit;
-        }
-        
-        $unit = (new Unit())
-            ->setName($dto->getName())
-            ->setCode($dto->getCode())
-            ->setIcon($dto->getIcon());
+        if (!$unit) {
+            $unit = (new Unit())
+                ->setName($dto->getName())
+                ->setCode($dto->getCode())
+                ->setIcon($dto->getIcon());
 
-        $this->em->persist($unit);
-        $this->em->flush();
+            $this->em->persist($unit);
+            $this->em->flush();
+        }
 
         return $unit;
     }

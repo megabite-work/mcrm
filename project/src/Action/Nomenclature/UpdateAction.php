@@ -6,6 +6,7 @@ use App\Component\EntityNotFoundException;
 use App\Dto\Nomenclature\RequestDto;
 use App\Entity\Category;
 use App\Entity\Nomenclature;
+use App\Entity\Unit;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
@@ -23,17 +24,18 @@ class UpdateAction
             throw new EntityNotFoundException('not found');
         }
 
-        $nomenclature = $this->updateNomenclature($dto, $nomenclature);
+        $nomenclature = $this->update($dto, $nomenclature);
 
         $this->em->flush();
 
         return $nomenclature;
     }
 
-    private function updateNomenclature(RequestDto $dto, Nomenclature $nomenclature): Nomenclature
+    private function update(RequestDto $dto, Nomenclature $nomenclature): Nomenclature
     {
         $this->updateCategory($nomenclature, $dto);
         $this->updateName($nomenclature, $dto);
+        $this->updateUnit($nomenclature, $dto);
 
         if (null !== $dto->getQrCode()) {
             $nomenclature->setQrCode($dto->getQrCode());
@@ -93,6 +95,19 @@ class UpdateAction
             }
 
             $nomenclature->setCategory($category);
+        }
+    }
+
+    private function updateUnit(Nomenclature $nomenclature, RequestDto $dto): void
+    {
+        if ($dto->getUnitCode()) {
+            $unit = $this->em->getRepository(Unit::class)->findOneBy(['code' => $dto->getUnitCode()]);
+
+            if (null === $unit) {
+                throw new EntityNotFoundException('unit not found');
+            }
+
+            $nomenclature->setUnit($unit);
         }
     }
 }

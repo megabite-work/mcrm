@@ -7,38 +7,47 @@ use App\Dto\Nomenclature\RequestDto;
 use App\Entity\Category;
 use App\Entity\MultiStore;
 use App\Entity\Nomenclature;
+use App\Entity\Unit;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     public function __invoke(array $dtos): array
     {
+        $this->em->beginTransaction();
         $entities = [];
-        foreach ($dtos as $dto) {
-            $entity = $this->create($dto);
+        
+        try {
+            foreach ($dtos as $dto) {
+                $entity = $this->create($dto);
 
-            $entities[] = $entity;
+                $entities[] = $entity;
+            }
+
+            $this->em->flush();
+            $this->em->commit();
+        } catch (\Throwable $th) {
+            $this->em->rollback();
+            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
         }
-
-        $this->em->flush();
 
         return $entities;
     }
-    
+
     private function create(RequestDto $dto): Nomenclature
     {
         $category = $this->em->find(Category::class, $dto->getCategoryId());
         $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
+        $unit = $this->em->getRepository(Unit::class)->findOneBy(['code' => $dto->getUnitCode()]);
 
-        if (null === $category || null === $multiStore) {
-            throw new EntityNotFoundException('category or multiStore not found');
+        if (null === $category || null === $multiStore || null === $unit) {
+            throw new EntityNotFoundException('category or multiStore or unit not found');
         }
-        
+
         $entity = (new Nomenclature())
             ->setName($dto->getName())
             ->setMxik($dto->getMxik())
@@ -50,6 +59,7 @@ class CreateAction
             ->setNds($dto->getNds() ?? 0)
             ->setDiscount($dto->getDiscount() ?? 0)
             ->setMultiStore($multiStore)
+            ->setUnit($unit)
             ->setCategory($category);
 
         $this->barcode($multiStore, $entity, $dto->getBarcode());
