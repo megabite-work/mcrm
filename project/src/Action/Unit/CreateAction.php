@@ -2,6 +2,7 @@
 
 namespace App\Action\Unit;
 
+use App\Component\EntityNotFoundException;
 use App\Dto\Unit\RequestDto;
 use App\Entity\Unit;
 use App\Repository\UnitRepository;
@@ -14,7 +15,28 @@ class CreateAction
         private UnitRepository $unitRepository
     ) {}
 
-    public function __invoke(RequestDto $dto): Unit
+    public function __invoke(array $dtos): array
+    {
+        $this->em->beginTransaction();
+        $entities = [];
+
+        try {
+            foreach ($dtos as $dto) {
+                $entity = $this->create($dto);
+                $entities[] = $entity;
+            }
+
+            $this->em->flush();
+            $this->em->commit();
+        } catch (\Throwable $th) {
+            $this->em->rollback();
+            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
+        }
+
+        return $entities;
+    }
+
+    private function create(RequestDto $dto): Unit
     {
         $unit = $this->unitRepository->findOneBy(['code' => $dto->getCode()]);
 
@@ -25,7 +47,6 @@ class CreateAction
                 ->setIcon($dto->getIcon());
 
             $this->em->persist($unit);
-            $this->em->flush();
         }
 
         return $unit;

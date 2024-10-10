@@ -2,38 +2,44 @@
 
 namespace App\Action\DeliverySettings;
 
+use App\Component\EntityNotFoundException;
 use App\Entity\DeliverySettings;
 use App\Dto\DeliverySettings\RequestDto;
+use App\Entity\Region;
+use App\Entity\Store;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\RegionRepository;
-use App\Repository\StoreRepository;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private StoreRepository $storeRepository,
-        private RegionRepository $regionRepository
     ) {}
 
     public function __invoke(array $dtos): array
     {
+        $this->em->beginTransaction();
         $entities = [];
-        foreach ($dtos as $dto) {
-            $entity = $this->create($dto);
 
-            $entities[] = $entity;
+        try {
+            foreach ($dtos as $dto) {
+                $entity = $this->create($dto);
+                $entities[] = $entity;
+            }
+
+            $this->em->flush();
+            $this->em->commit();
+        } catch (\Throwable $th) {
+            $this->em->rollback();
+            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
         }
-
-        $this->em->flush();
 
         return $entities;
     }
 
     private function create(RequestDto $dto): DeliverySettings
     {
-        $store = $this->storeRepository->find(['id' => $dto->getStoreId()]);
-        $region = $this->regionRepository->find(['id' => $dto->getRegionid()]);
+        $store = $this->em->find(Store::class, $dto->getStoreId());
+        $region = $this->em->find(Region::class, $dto->getRegionid());
 
         $entity = (new DeliverySettings())
             ->setDeliveryType($dto->getDeliveryType())

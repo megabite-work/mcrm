@@ -35,9 +35,9 @@ class UnitController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['unit:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['unit:create']], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['unit:create']]);
+        return $this->json($action($dtos), context: ['groups' => ['unit:create']]);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

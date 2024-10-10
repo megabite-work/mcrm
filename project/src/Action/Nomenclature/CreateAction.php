@@ -20,11 +20,10 @@ class CreateAction
     {
         $this->em->beginTransaction();
         $entities = [];
-        
+
         try {
             foreach ($dtos as $dto) {
                 $entity = $this->create($dto);
-
                 $entities[] = $entity;
             }
 

@@ -37,7 +37,7 @@ class DeliverySettingsController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['delivery_settings:create']], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
         return $this->json($action($dtos), context: ['groups' => ['delivery_settings:create']]);
     }
