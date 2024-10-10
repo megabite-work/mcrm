@@ -68,6 +68,12 @@ class Category
         return $this->parent?->getId();
     }
 
+    #[Groups(['category:index', 'category:show'])]
+    public function getHasChild(): bool
+    {
+        return $this->getChildrens()->count() ? true : false;
+    }
+
     public function getParent(): ?Category
     {
         return $this->parent;
