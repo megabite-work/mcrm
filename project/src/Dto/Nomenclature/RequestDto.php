@@ -27,6 +27,10 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_name'])]
         private ?string $nameRu,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
+        #[Assert\NotBlank(groups: ['nomenclature:create'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:update'])]
+        private ?int $unitCode,
+        #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:create', 'nomenclature:update'])]
         private ?string $mxik = null,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
@@ -53,8 +57,7 @@ final class RequestDto
         #[Groups(['nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['nomenclature:update'])]
         private ?bool $qrCode = false
-    ) {
-    }
+    ) {}
 
     public function getNameUz(): ?string
     {
@@ -134,5 +137,10 @@ final class RequestDto
     public function getMultiStoreId(): ?int
     {
         return $this->multiStoreId;
+    }
+
+    public function getUnitCode(): ?int
+    {
+        return $this->unitCode;
     }
 }

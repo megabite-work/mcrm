@@ -20,8 +20,8 @@ final class RequestDto
         #[Groups(['unit:create', 'unit:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['unit:create', 'unit:update'])]
         private ?string $icon,
-        #[Groups(['unit:create', 'unit:update'])]
-        #[Assert\Type(['int', 'null'], groups: ['unit:create', 'unit:update'])]
+        #[Groups(['unit:create'])]
+        #[Assert\NotBlank(groups: ['unit:create'])]
         private ?int $code
     ) {
     }

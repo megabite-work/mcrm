@@ -16,14 +16,14 @@ class UpdateAction
 
     public function __invoke(int $id, RequestDto $dto): Unit
     {
-        $unit = $this->updateUnit($id, $dto);
+        $unit = $this->update($id, $dto);
 
         $this->em->flush();
 
         return $unit;
     }
 
-    private function updateUnit(int $id, RequestDto $dto): Unit
+    private function update(int $id, RequestDto $dto): Unit
     {
         $unit = $this->em->find(Unit::class, $id);
 
@@ -43,9 +43,9 @@ class UpdateAction
         if ($dto->getIcon()) {
             $unit->setIcon($dto->getIcon());
         }
-        if ($dto->getCode()) {
-            $unit->setCode($dto->getCode());
-        }
+        // if ($dto->getCode()) {
+        //     $unit->setCode($dto->getCode());
+        // }
 
         return $unit;
     }

@@ -86,7 +86,7 @@ class Nomenclature
 
     #[ORM\ManyToOne(targetEntity: Unit::class, inversedBy: 'nomenclatures')]
     #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id', nullable: true)]
-    #[Groups(['nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
+    #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?Unit $unit = null;
 
     #[ORM\OneToMany(targetEntity: NomenclatureHistory::class, mappedBy: 'nomenclature')]
