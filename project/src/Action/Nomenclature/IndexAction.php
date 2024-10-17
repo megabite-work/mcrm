@@ -10,17 +10,17 @@ class IndexAction
 {
     public function __construct(
         private NomenclatureRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {
-        if ($dto->getCategoryId()) {
-            $nomenclatures = $this->repo->findAllNomenclaturesByCategory($dto);
-        } else {
-            $nomenclatures = $this->repo->findAllNomenclatures($dto);
-        }
+        // if ($dto->getCategoryId()) {
+        //     $nomenclatures = $this->repo->findAllNomenclaturesByCategory($dto);
+        // } else {
+        //     $nomenclatures = $this->repo->findAllNomenclatures($dto);
+        // }
 
-        return $nomenclatures;
+
+        return $dto->getCategoryId() ? $this->repo->findAllNomenclaturesByCategory($dto) : $this->repo->findAllNomenclatures($dto);
     }
 }

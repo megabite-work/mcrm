@@ -36,7 +36,7 @@ class NomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('n, sn, wn, u')
+            ->select('n, sn, wn, u, c')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->leftJoin('n.webNomenclature', 'wn')
             ->leftJoin('n.unit', 'u')
@@ -66,10 +66,11 @@ class NomenclatureRepository extends ServiceEntityRepository
         ]);
 
         $query = $qb
-            ->select('n, sn, u')
+            ->select('n, sn, u, c')
             ->leftJoin('n.storeNomenclatures', 'sn')
             ->leftJoin('n.unit', 'u')
             ->join('n.multiStore', 'm')
+            ->join('n.category', 'c')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('m.id', ':mid'),
                 $qb->expr()->orX(
