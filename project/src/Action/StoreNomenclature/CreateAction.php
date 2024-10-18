@@ -16,7 +16,28 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(int $storeId, RequestDto $dto): Nomenclature
+    public function __invoke(int $storeId, array $dtos): array
+    {
+        $this->em->beginTransaction();
+        $entities = [];
+
+        try {
+            foreach ($dtos as $dto) {
+                $entity = $this->create($storeId, $dto);
+                $entities[] = $entity;
+            }
+
+            $this->em->flush();
+            $this->em->commit();
+        } catch (\Throwable $th) {
+            $this->em->rollback();
+            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
+        }
+
+        return $entities;
+    }
+
+    private function create(int $storeId, RequestDto $dto): StoreNomenclature
     {
         $store = $this->em->find(Store::class, $storeId);
         $nomenclature = $this->em->find(Nomenclature::class, $dto->getNomenclatureId());
@@ -31,8 +52,7 @@ class CreateAction
             ->setQty($dto->getQty());
 
         $this->em->persist($storeNomenclature);
-        $this->em->flush();
 
-        return $nomenclature;
+        return $storeNomenclature;
     }
 }

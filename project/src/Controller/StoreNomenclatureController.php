@@ -34,9 +34,9 @@ class StoreNomenclatureController extends AbstractController
     }
 
     #[Route(path: '/{storeId<\d+>}/nomenclatures', methods: ['POST'])]
-    public function create(int $storeId, #[MapRequestPayload(serializationContext: ['groups' => ['store_nomenclature:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(int $storeId, #[MapRequestPayload(serializationContext: ['groups' => ['store_nomenclature:create']], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
-        return $this->json($action($storeId, $dto), context: ['groups' => ['store_nomenclature:show']]);
+        return $this->json($action($storeId, $dtos), context: ['groups' => ['store_nomenclature:show']]);
     }
 
     #[Route('/{storeId<\d+>}/nomeclatures/{nomenclatureId<\d+>}', methods: ['PATCH'])]
