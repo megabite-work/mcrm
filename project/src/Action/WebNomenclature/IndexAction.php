@@ -10,13 +10,10 @@ class IndexAction
 {
     public function __construct(
         private WebNomenclatureRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {
-        $webNomenclatures = $this->repo->findAllWebNomenclaturesByMultiStore($dto);
-
-        return $webNomenclatures;
+        return $this->repo->findAllWebNomenclaturesByMultiStore($dto);
     }
 }

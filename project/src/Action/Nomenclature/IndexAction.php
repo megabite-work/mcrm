@@ -14,13 +14,6 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {
-        // if ($dto->getCategoryId()) {
-        //     $nomenclatures = $this->repo->findAllNomenclaturesByCategory($dto);
-        // } else {
-        //     $nomenclatures = $this->repo->findAllNomenclatures($dto);
-        // }
-
-
         return $dto->getCategoryId() ? $this->repo->findAllNomenclaturesByCategory($dto) : $this->repo->findAllNomenclatures($dto);
     }
 }
