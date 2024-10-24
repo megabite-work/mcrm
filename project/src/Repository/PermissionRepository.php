@@ -29,4 +29,18 @@ class PermissionRepository extends ServiceEntityRepository
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
+
+    public function findAllPermissionsByUser(int $userId, string $resource, string $action): bool
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Permission p
+            JOIN p.users u
+            WHERE u.id = :id AND p.resource = :resource  AND p.action = :action'
+        )->setParameters(['id' => $userId, 'resource' => $resource, 'action' => $action]);
+
+        return $query->getOneOrNullResult() !== null;
+    }
 }
