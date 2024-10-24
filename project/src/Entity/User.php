@@ -87,6 +87,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CashboxDetail::class, mappedBy: 'user')]
     private Collection $cashboxDetails;
 
+    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'user_permissions')]
+    #[Groups(['user:me'])]
+    private Collection $permissions;
+
     public function __construct()
     {
         $this->phones = new ArrayCollection();
@@ -98,6 +103,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->cashboxShifts = new ArrayCollection();
         $this->cashboxDetails = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -417,6 +423,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeFavorite(WebNomenclature $favorite): static
     {
         $this->favorites->removeElement($favorite);
+
+        return $this;
+    }
+
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): static
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): static
+    {
+        $this->permissions->removeElement($permission);
 
         return $this;
     }

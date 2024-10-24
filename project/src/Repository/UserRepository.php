@@ -53,13 +53,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT u, a, p, m, s, uc
+            'SELECT u, a, p, m, s, uc, p
             FROM App\Entity\User u
             LEFT JOIN u.address a
             LEFT JOIN u.phones p
             LEFT JOIN u.multiStores m
             LEFT JOIN u.stores s
             LEFT JOIN u.userCredentials uc
+            LEFT JOIN u.permissions p
             WHERE u.id = :id'
         )->setParameter('id', $id);
 
