@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
+use App\Component\Paginator;
+use App\Dto\Permission\RequestQueryDto;
 use App\Entity\Permission;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Dto\Permission\RequestQueryDto;
-use App\Component\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Permission>
@@ -30,7 +30,7 @@ class PermissionRepository extends ServiceEntityRepository
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
 
-    public function findAllPermissionsByUser(int $userId, string $resource, string $action): bool
+    public function hasPermissionsByUser(int $userId, string $resource, string $action): bool
     {
         $entityManager = $this->getEntityManager();
 

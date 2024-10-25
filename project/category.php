@@ -4010,3 +4010,7 @@ foreach ($uzKeys as $j => $value) {
         $stmt2->execute([json_encode(['uz' => $uzd[$k], 'uzc' => $uzcd[$k], 'ru' => $rud[$k]], JSON_UNESCAPED_UNICODE), $parentId]);
     }
 }
+
+$permissions = [
+    ['name', 'multi_store', 'create'],
+];

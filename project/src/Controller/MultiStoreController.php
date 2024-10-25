@@ -35,7 +35,7 @@ class MultiStoreController extends AbstractController
         return $this->json($action($id), context: ['groups' => ['multi_store:show']]);
     }
 
-    #[Route(path: '', methods: ['POST'], condition: "request.server.get('HTTP_ORIGIN') in ['https://mcrm.uz', 'http://localhost:777', 'https://api.mcrm.uz']")]
+    #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['multi_store:create']])] RequestDto $dto, CreateAction $action, Request $request): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['multi_store:create']]);

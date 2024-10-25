@@ -34,7 +34,7 @@ class AssignAction
                 $entities[] = $entity;
             }
             foreach ($oldPermissions as $permission) {
-                $permission->removeUser($user);
+                $user->removePermission($permission);
             }
 
             $this->em->flush();
