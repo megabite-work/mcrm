@@ -1,6 +1,6 @@
 <?php
 
-/* namespace App\Security\Voter;
+namespace App\Security\Voter;
 
 use App\Entity\User;
 use App\Repository\PermissionRepository;
@@ -26,4 +26,4 @@ class PermissionVoter extends Voter
 
         return $this->permissionRepository->hasPermissionsByUser($user->getId(),$subject,$attribute);
     }
-} */
+}
