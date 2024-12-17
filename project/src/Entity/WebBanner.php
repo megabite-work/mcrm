@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\WebBannerRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -87,6 +89,14 @@ class WebBanner
     #[ORM\Column(nullable: true)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $end_at = null;
+
+    #[ORM\OneToMany(targetEntity: WebBanerMetrika::class, mappedBy: 'webBanner')]
+    private Collection $webBanerMetrikas;
+
+    public function __construct()
+    {
+        $this->webBanerMetrikas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -283,5 +293,10 @@ class WebBanner
         $this->end_at = $end_at;
 
         return $this;
+    }
+
+    public function getWebBanerMetrikas(): Collection
+    {
+        return $this->webBanerMetrikas;
     }
 }
