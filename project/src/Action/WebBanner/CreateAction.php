@@ -34,9 +34,10 @@ class CreateAction
 
     private function create(MultiStore $multiStore, RequestDto $dto): WebBanner
     {
+        $typeId = is_numeric($dto->getTypeId()) ? intval($dto->getTypeId()) : $dto->getTypeId();
         $entity = (new WebBanner())
             ->setType($dto->getType())
-            ->setTypeId($dto->getTypeId())
+            ->setTypeId($typeId)
             ->setImage($dto->getImage())
             ->setTitle($dto->getTitle())
             ->setDescription($dto->getDescription())

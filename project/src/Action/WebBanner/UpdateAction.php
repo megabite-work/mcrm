@@ -31,8 +31,9 @@ class UpdateAction
 
     private function update(WebBanner $entity, RequestDto $dto)
     {
+        $typeId = is_numeric($dto->getTypeId()) ? intval($dto->getTypeId()) : $dto->getTypeId();
         $entity->setType($dto->getType())
-            ->setTypeId($dto->getTypeId())
+            ->setTypeId($typeId)
             ->setImage($dto->getImage())
             ->setTitle($dto->getTitle())
             ->setDescription($dto->getDescription())

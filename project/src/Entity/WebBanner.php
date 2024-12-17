@@ -182,9 +182,9 @@ class WebBanner
         return $this->begin_at;
     }
 
-    public function setBeginAt(?DateTime $begin_at): static
+    public function setBeginAt(?string $begin_at): static
     {
-        $this->begin_at = $begin_at;
+        $this->begin_at = date_create_from_format('Y-m-d H:i:s',$begin_at);
 
         return $this;
     }
@@ -278,9 +278,9 @@ class WebBanner
         return $this->end_at;
     }
 
-    public function setEndAt(?DateTime $end_at): static
+    public function setEndAt(?string $end_at): static
     {
-        $this->end_at = $end_at;
+        $this->end_at = date_create_from_format('Y-m-d H:i:s',$end_at);
 
         return $this;
     }
