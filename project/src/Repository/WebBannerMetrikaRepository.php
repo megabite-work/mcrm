@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\WebBanerMetrika;
+use App\Entity\WebBannerMetrika;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<WebBanerMetrika>
+ * @extends ServiceEntityRepository<WebBannerMetrika>
  */
-class WebBanerMetrikaRepository extends ServiceEntityRepository
+class WebBannerMetrikaRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, WebBanerMetrika::class);
+        parent::__construct($registry, WebBannerMetrika::class);
     }
 
 //    /**

@@ -20,6 +20,16 @@ class WebBanner
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
+    const CLICK = 'click';
+    const VIEW = 'view';
+    const UNIQUE = 'unique';
+    const ALL = 'all';
+    const OFF = 'off';
+    const PC = 'pc';
+    const MOBILE = 'mobile';
+    const LAPTOP = 'laptop';
+    const TABLET = 'tablet';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -60,37 +70,37 @@ class WebBanner
 
     #[ORM\Column(length: 255)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?string $click_type = null;
+    private ?string $clickType = null;
 
     #[ORM\Column]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private int $click_max = 0;
+    private int $clickMax = 0;
 
     #[ORM\Column]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private int $click_current = 0;
+    private int $clickCurrent = 0;
 
     #[ORM\Column(length: 255)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?string $view_type = null;
+    private ?string $viewType = null;
 
     #[ORM\Column]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private int $view_max = 0;
+    private int $viewMax = 0;
 
     #[ORM\Column]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private int $view_current = 0;
+    private int $viewCurrent = 0;
 
     #[ORM\Column]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?string $begin_at = null;
+    private ?string $beginAt = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?string $end_at = null;
+    private ?string $endAt = null;
 
-    #[ORM\OneToMany(targetEntity: WebBanerMetrika::class, mappedBy: 'webBanner')]
+    #[ORM\OneToMany(targetEntity: WebBannerMetrika::class, mappedBy: 'webBanner')]
     private Collection $webBanerMetrikas;
 
     public function __construct()
@@ -189,12 +199,12 @@ class WebBanner
 
     public function getBeginAt(): ?string
     {
-        return $this->begin_at;
+        return $this->beginAt;
     }
 
-    public function setBeginAt(?string $begin_at): static
+    public function setBeginAt(?string $beginAt): static
     {
-        $this->begin_at = $begin_at;
+        $this->beginAt = $beginAt;
 
         return $this;
     }
@@ -213,84 +223,84 @@ class WebBanner
 
     public function getClickType(): ?string
     {
-        return $this->click_type;
+        return $this->clickType;
     }
 
-    public function setClickType(?string $click_type): static
+    public function setClickType(?string $clickType): static
     {
-        $this->click_type = $click_type;
+        $this->clickType = $clickType;
 
         return $this;
     }
 
     public function getClickMax(): ?int
     {
-        return $this->click_max;
+        return $this->clickMax;
     }
 
-    public function setClickMax(?int $click_max): static
+    public function setClickMax(?int $clickMax): static
     {
-        $this->click_max = $click_max;
+        $this->clickMax = $clickMax;
 
         return $this;
     }
 
     public function getClickCurrent(): ?int
     {
-        return $this->click_current;
+        return $this->clickCurrent;
     }
 
-    public function setClickCurrent(?int $click_current): static
+    public function setClickCurrent(?int $clickCurrent): static
     {
-        $this->click_current = $click_current;
+        $this->clickCurrent = $clickCurrent;
 
         return $this;
     }
 
     public function getViewType(): ?string
     {
-        return $this->view_type;
+        return $this->viewType;
     }
 
-    public function setViewType(?string $view_type): static
+    public function setViewType(?string $viewType): static
     {
-        $this->view_type = $view_type;
+        $this->viewType = $viewType;
 
         return $this;
     }
 
     public function getViewMax(): ?int
     {
-        return $this->view_max;
+        return $this->viewMax;
     }
 
-    public function setViewMax(?int $view_max): static
+    public function setViewMax(?int $viewMax): static
     {
-        $this->view_max = $view_max;
+        $this->viewMax = $viewMax;
 
         return $this;
     }
 
     public function getViewCurrent(): ?int
     {
-        return $this->view_current;
+        return $this->viewCurrent;
     }
 
-    public function setViewCurrent(?int $view_current): static
+    public function setViewCurrent(?int $viewCurrent): static
     {
-        $this->view_current = $view_current;
+        $this->viewCurrent = $viewCurrent;
 
         return $this;
     }
 
     public function getEndAt(): ?string
     {
-        return $this->end_at;
+        return $this->endAt;
     }
 
-    public function setEndAt(?string $end_at): static
+    public function setEndAt(?string $endAt): static
     {
-        $this->end_at = $end_at;
+        $this->endAt = $endAt;
 
         return $this;
     }

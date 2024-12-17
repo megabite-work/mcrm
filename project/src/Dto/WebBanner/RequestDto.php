@@ -2,6 +2,7 @@
 
 namespace App\Dto\WebBanner;
 
+use App\Entity\WebBanner;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,16 +30,16 @@ final class RequestDto
         private string $description,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        #[Assert\Choice(choices: ['off', 'unique', 'all'], groups: ['web_banner:create', 'web_banner:update'])]
+        #[Assert\Choice(choices: [WebBanner::OFF, WebBanner::UNIQUE, WebBanner::ALL], groups: ['web_banner:create', 'web_banner:update'])]
         private string $clickType,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        #[Assert\Choice(choices: ['off', 'unique', 'all'], groups: ['web_banner:create', 'web_banner:update'])]
+        #[Assert\Choice(choices: [WebBanner::OFF, WebBanner::UNIQUE, WebBanner::ALL], groups: ['web_banner:create', 'web_banner:update'])]
         private string $viewType,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\Count(min: 1, max: 3, groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\All(
-            constraints: [new Assert\Choice(choices: ['pc', 'mobile', 'notebook'])],
+            constraints: [new Assert\Choice(choices: [WebBanner::PC, WebBanner::MOBILE, WebBanner::TABLET, WebBanner::LAPTOP])],
             groups: ['web_banner:create', 'web_banner:update']
         )]
         private array $devices,

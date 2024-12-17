@@ -7,8 +7,10 @@ use App\Action\WebBanner\DeleteAction;
 use App\Action\WebBanner\IndexAction;
 use App\Action\WebBanner\ShowAction;
 use App\Action\WebBanner\UpdateAction;
+use App\Action\WebBanner\WebBannerMetrikaUpsertAction;
 use App\Dto\WebBanner\RequestDto;
 use App\Dto\WebBanner\RequestQueryDto;
+use App\Dto\WebBanner\WebBannerMetrikaUpsertDto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,5 +50,11 @@ class WebBannerController extends AbstractController
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
         return $this->json(['success' => $action($id)]);
+    }
+
+    #[Route('/{id<\d+>}/metrics', methods: ['POST'])]
+    public function metrics(int $id, #[MapRequestPayload] WebBannerMetrikaUpsertDto $dto, WebBannerMetrikaUpsertAction $action): JsonResponse
+    {
+        return $this->json($action($id, $dto));
     }
 }

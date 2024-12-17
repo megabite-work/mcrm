@@ -4,32 +4,56 @@ namespace App\Action\WebBanner;
 
 use App\Component\EntityNotFoundException;
 use App\Dto\WebBanner\WebBannerMetrikaUpsertDto;
-use App\Entity\WebBanerMetrika;
 use App\Entity\WebBanner;
+use App\Entity\WebBannerMetrika;
 use Doctrine\ORM\EntityManagerInterface;
 
 class WebBannerMetrikaUpsertAction
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    public function __invoke(WebBannerMetrikaUpsertDto $dto): void
+    public function __invoke(int $id, WebBannerMetrikaUpsertDto $dto): array
     {
-        $webBanner = $this->em->find(WebBanner::class, $dto->getWebBannerId())
+        $webBanner = $this->em->getRepository(WebBanner::class)->findOneBy(['id' => $id, 'isActive' => true])
             ?? throw new EntityNotFoundException('multi store not found', 404);
 
         $this->upsert($webBanner, $dto);
         $this->em->flush();
+
+        return [];
     }
 
     private function upsert(WebBanner $webBanner, WebBannerMetrikaUpsertDto $dto): void
     {
-        $entity = $this->em
-            ->getRepository(WebBanerMetrika::class)
-            ->findOneBy(['webBanner' => $webBanner, 'ip' => $dto->getIp(), 'type' => $dto->getType()])
-            ?? new WebBanerMetrika();
+        $methodType = 'get' . ucfirst($dto->getType()) . 'Type';
+        $methodMax = 'get' . ucfirst($dto->getType()) . 'Max';
+        $methodCurrent = 'get' . ucfirst($dto->getType()) . 'Current';
+        $webBannerMetrika = $this->em->getRepository(WebBannerMetrika::class)->findOneBy(['webBanner' => $webBanner, 'ip' => $dto->getIp(), 'type' => $dto->getType()]);
+        
+        match (true) {
+            $webBanner->$methodType() === WebBanner::UNIQUE && $webBannerMetrika === null => $this->handle($webBanner, new WebBannerMetrika(), $dto, $methodMax, $methodCurrent),
+            $webBanner->$methodType() === WebBanner::ALL => $this->handle($webBanner, $webBannerMetrika ?? new WebBannerMetrika(), $dto, $methodMax, $methodCurrent),
+            default => null,
+        };
+    }
 
-        $entity->setIp($dto->getIp())
+    private function handle(WebBanner $webBanner, WebBannerMetrika $webBannerMetrika, WebBannerMetrikaUpsertDto $dto, string $methodMax, string $methodCurrent)
+    {
+        $webBannerMetrika->setIp($dto->getIp())
             ->setType($dto->getType())
             ->setWebBanner($webBanner);
+
+        $this->em->persist($webBannerMetrika);
+
+        $max = $webBanner->$methodMax();
+        $current = $webBanner->$methodCurrent() + 1;
+        $setMethodCurrent = 'set' . ucfirst($dto->getType()) . 'Current';
+
+        if ($current < $max) {
+            $webBanner->$setMethodCurrent($current);
+        } else {
+            $webBanner->$setMethodCurrent($current);
+            $webBanner->setIsActive(false);
+        }
     }
 }

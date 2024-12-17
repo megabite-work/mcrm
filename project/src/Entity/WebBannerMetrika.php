@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\WebBanerMetrikaRepository;
+use App\Repository\WebBannerMetrikaRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: WebBanerMetrikaRepository::class)]
-class WebBanerMetrika
+#[ORM\Entity(repositoryClass: WebBannerMetrikaRepository::class)]
+class WebBannerMetrika
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
