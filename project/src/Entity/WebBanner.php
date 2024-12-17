@@ -32,9 +32,9 @@ class WebBanner
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $type = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?int $type_id = null;
+    private ?string $type_id = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
@@ -117,12 +117,12 @@ class WebBanner
         return $this;
     }
 
-    public function getTypeId(): ?int
+    public function getTypeId(): ?string
     {
         return $this->type_id;
     }
 
-    public function setTypeId(int $type_id): static
+    public function setTypeId(string $type_id): static
     {
         $this->type_id = $type_id;
 

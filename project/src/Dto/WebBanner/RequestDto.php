@@ -2,6 +2,8 @@
 
 namespace App\Dto\WebBanner;
 
+use DateTime;
+use DateTimeInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,10 +46,10 @@ final class RequestDto
         private array $devices,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        private string $beginAt,
+        private DateTime $beginAt,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'], allowNull: true)]
-        private ?string $endAt,
+        private ?DateTime $endAt,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
         private int $clickMax = 0,
@@ -115,7 +117,7 @@ final class RequestDto
         return $this->viewType;
     }
 
-    public function getBeginAt(): string
+    public function getBeginAt(): DateTimeInterface
     {
         return $this->beginAt;
     }
@@ -140,7 +142,7 @@ final class RequestDto
         return $this->viewCurrent;
     }
 
-    public function getEndAt(): ?string
+    public function getEndAt(): ?DateTimeInterface
     {
         return $this->endAt;
     }
