@@ -11,7 +11,7 @@ final class WebBannerMetrikaUpsertDto
         #[Assert\NotBlank]
         #[Assert\Choice(choices: [WebBanner::CLICK, WebBanner::VIEW])]
         private string $type,
-        #[Assert\Ip(Assert\Ip::ALL)]
+        #[Assert\Ip(version: Assert\Ip::ALL)]
         private string $ip,
     ) {}
 
