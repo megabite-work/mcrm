@@ -23,7 +23,7 @@ final class RequestDto
         private ?string $image,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        private ?string $title = null,
+        private ?string $title,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         private ?string $description,
