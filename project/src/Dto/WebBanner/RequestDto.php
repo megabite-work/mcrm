@@ -115,7 +115,7 @@ final class RequestDto
         return $this->viewType;
     }
 
-    public function getBeginAt(): \DateTime
+    public function getBeginAt(): string
     {
         return $this->beginAt;
     }
@@ -140,7 +140,7 @@ final class RequestDto
         return $this->viewCurrent;
     }
 
-    public function getEndAt(): ?\DateTime
+    public function getEndAt(): ?string
     {
         return $this->endAt;
     }
