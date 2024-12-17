@@ -36,30 +36,30 @@ final class RequestDto
         #[Assert\Choice(choices: ['off', 'unique', 'all'], groups: ['web_banner:create', 'web_banner:update'])]
         private string $view_type,
         #[Groups(['web_banner:create', 'web_banner:update'])]
-        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-        private int $click_max = 0,
-        #[Groups(['web_banner:create', 'web_banner:update'])]
-        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-        private int $click_current = 0,
-        #[Groups(['web_banner:create', 'web_banner:update'])]
-        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-        private int $view_max = 0,
-        #[Groups(['web_banner:create', 'web_banner:update'])]
-        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-        private int $view_current = 0,
-        #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\Count(min: 1, max: 3, groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\All(
             constraints: [new Assert\Choice(choices: ['pc', 'mobile', 'notebook'])],
             groups: ['web_banner:create', 'web_banner:update']
-        )]
-        private array $devices,
-        #[Groups(['web_banner:create', 'web_banner:update'])]
-        #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        private \DateTime $begin_at,
-        #[Groups(['web_banner:create', 'web_banner:update'])]
-        #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'], allowNull: true)]
-        private ?\DateTime $end_at,
+            )]
+            private array $devices,
+            #[Groups(['web_banner:create', 'web_banner:update'])]
+            #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
+            private \DateTime $begin_at,
+            #[Groups(['web_banner:create', 'web_banner:update'])]
+            #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'], allowNull: true)]
+            private ?\DateTime $end_at,
+            #[Groups(['web_banner:create', 'web_banner:update'])]
+            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+            private int $click_max = 0,
+            #[Groups(['web_banner:create', 'web_banner:update'])]
+            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+            private int $click_current = 0,
+            #[Groups(['web_banner:create', 'web_banner:update'])]
+            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+            private int $view_max = 0,
+            #[Groups(['web_banner:create', 'web_banner:update'])]
+            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+            private int $view_current = 0,
         #[Groups(['web_banner:update'])]
         #[Assert\Type('bool', groups: ['web_banner:update'])]
         private bool $isActive = true,
