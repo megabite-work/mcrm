@@ -30,36 +30,36 @@ final class RequestDto
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\Choice(choices: ['off', 'unique', 'all'], groups: ['web_banner:create', 'web_banner:update'])]
-        private string $click_type,
+        private string $clickType,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\Choice(choices: ['off', 'unique', 'all'], groups: ['web_banner:create', 'web_banner:update'])]
-        private string $view_type,
+        private string $viewType,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\Count(min: 1, max: 3, groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\All(
             constraints: [new Assert\Choice(choices: ['pc', 'mobile', 'notebook'])],
             groups: ['web_banner:create', 'web_banner:update']
-            )]
-            private array $devices,
-            #[Groups(['web_banner:create', 'web_banner:update'])]
-            #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-            private \DateTime $begin_at,
-            #[Groups(['web_banner:create', 'web_banner:update'])]
-            #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'], allowNull: true)]
-            private ?\DateTime $end_at,
-            #[Groups(['web_banner:create', 'web_banner:update'])]
-            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-            private int $click_max = 0,
-            #[Groups(['web_banner:create', 'web_banner:update'])]
-            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-            private int $click_current = 0,
-            #[Groups(['web_banner:create', 'web_banner:update'])]
-            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-            private int $view_max = 0,
-            #[Groups(['web_banner:create', 'web_banner:update'])]
-            #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
-            private int $view_current = 0,
+        )]
+        private array $devices,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
+        private \DateTime $beginAt,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'], allowNull: true)]
+        private ?\DateTime $endAt,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+        private int $clickMax = 0,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+        private int $clickCurrent = 0,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+        private int $viewMax = 0,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
+        private int $viewCurrent = 0,
         #[Groups(['web_banner:update'])]
         #[Assert\Type('bool', groups: ['web_banner:update'])]
         private bool $isActive = true,
@@ -107,41 +107,41 @@ final class RequestDto
 
     public function getClickType(): string
     {
-        return $this->click_type;
+        return $this->clickType;
     }
 
     public function getViewType(): string
     {
-        return $this->view_type;
+        return $this->viewType;
     }
 
     public function getBeginAt(): \DateTime
     {
-        return $this->begin_at;
+        return $this->beginAt;
     }
 
     public function getClickMax(): int
     {
-        return $this->click_max;
+        return $this->clickMax;
     }
 
     public function getClickCurrent(): int
     {
-        return $this->click_current;
+        return $this->clickCurrent;
     }
 
     public function getViewMax(): int
     {
-        return $this->view_max;
+        return $this->viewMax;
     }
 
     public function getViewCurrent(): int
     {
-        return $this->view_current;
+        return $this->viewCurrent;
     }
 
     public function getEndAt(): ?\DateTime
     {
-        return $this->end_at;
+        return $this->endAt;
     }
 }
