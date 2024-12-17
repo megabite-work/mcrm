@@ -13,7 +13,7 @@ class PermissionVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return true;
+        return false;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -23,10 +23,6 @@ class PermissionVoter extends Voter
         if (!$user instanceof User) {
             return false;
         }
-        if (!$subject) {
-            return true;
-        }
-        
 
         return $this->permissionRepository->hasPermissionsByUser($user->getId(),$subject,$attribute);
     }
