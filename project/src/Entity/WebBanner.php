@@ -82,11 +82,11 @@ class WebBanner
 
     #[ORM\Column]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?DateTime $begin_at = null;
+    private ?string $begin_at = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
-    private ?DateTime $end_at = null;
+    private ?string $end_at = null;
 
     public function getId(): ?int
     {
@@ -177,14 +177,14 @@ class WebBanner
         return $this;
     }
 
-    public function getBeginAt(): ?DateTime
+    public function getBeginAt(): ?string
     {
         return $this->begin_at;
     }
 
     public function setBeginAt(?string $begin_at): static
     {
-        $this->begin_at = date_create($begin_at);
+        $this->begin_at = $begin_at;
 
         return $this;
     }
@@ -273,14 +273,14 @@ class WebBanner
         return $this;
     }
 
-    public function getEndAt(): ?DateTime
+    public function getEndAt(): ?string
     {
         return $this->end_at;
     }
 
     public function setEndAt(?string $end_at): static
     {
-        $this->end_at = $end_at ? date_create($end_at) : null;
+        $this->end_at = $end_at;
 
         return $this;
     }
