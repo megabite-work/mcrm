@@ -44,10 +44,10 @@ final class RequestDto
         private array $devices,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        private \DateTime $beginAt,
+        private string $beginAt,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'], allowNull: true)]
-        private ?\DateTime $endAt,
+        private ?string $endAt,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])]
         private int $clickMax = 0,
