@@ -2,11 +2,11 @@
 
 namespace App\Action\WebBanner;
 
+use App\Component\Paginator;
+use App\Dto\WebBanner\RequestQueryDto;
 use App\Entity\Category;
 use App\Entity\WebBanner;
-use App\Component\Paginator;
 use App\Entity\WebNomenclature;
-use App\Dto\WebBanner\RequestQueryDto;
 use App\Repository\WebBannerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,9 +19,7 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {
-        $entities = $this->repo->findAllWebBannersByMultiStore($dto);
-
-        return $this->setTitle($entities);
+        return $this->repo->findAllWebBannersByMultiStore($dto);
     }
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): void

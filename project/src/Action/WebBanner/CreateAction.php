@@ -5,8 +5,8 @@ namespace App\Action\WebBanner;
 use App\Component\EntityNotFoundException;
 use App\Dto\WebBanner\RequestDto;
 use App\Entity\Category;
-use App\Entity\WebBanner;
 use App\Entity\MultiStore;
+use App\Entity\WebBanner;
 use App\Entity\WebNomenclature;
 use App\Repository\WebBannerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,10 +27,9 @@ class CreateAction
         }
 
         $entity = $this->create($multiStore, $dto);
-
         $this->em->flush();
 
-        return $this->getWebBannerByType($entity, $dto->getType(), $dto->getTypeId());
+        return $entity;
     }
 
     private function create(MultiStore $multiStore, RequestDto $dto): WebBanner
@@ -38,7 +37,18 @@ class CreateAction
         $entity = (new WebBanner())
             ->setType($dto->getType())
             ->setTypeId($dto->getTypeId())
-            ->setimage($dto->getimage())
+            ->setImage($dto->getImage())
+            ->setTitle($dto->getTitle())
+            ->setDescription($dto->getDescription())
+            ->setDevices($dto->getDevices())
+            ->setClickType($dto->getClickType())
+            ->setClickMax($dto->getClickMax())
+            ->setClickCurrent($dto->getClickCurrent())
+            ->setViewType($dto->getViewType())
+            ->setViewMax($dto->getViewMax())
+            ->setViewCurrent($dto->getViewCurrent())
+            ->setBeginAt($dto->getBeginAt())
+            ->setEndAt($dto->getEndAt())
             ->setMultiStore($multiStore);
 
         $this->em->persist($entity);

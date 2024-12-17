@@ -2,12 +2,12 @@
 
 namespace App\Action\WebBanner;
 
+use App\Component\EntityNotFoundException;
+use App\Dto\WebBanner\RequestDto;
 use App\Entity\Category;
 use App\Entity\WebBanner;
 use App\Entity\WebNomenclature;
-use App\Dto\WebBanner\RequestDto;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
@@ -24,26 +24,27 @@ class UpdateAction
         }
 
         $entity = $this->update($entity, $dto);
-
         $this->em->flush();
 
-        return $this->getWebBannerByType($entity, $entity->getType(), $entity->getTypeId());
+        return $entity;
     }
 
     private function update(WebBanner $entity, RequestDto $dto)
     {
-        if (null !== $dto->getIsActive()) {
-            $entity->setIsActive($dto->getIsActive());
-        }
-        if ($dto->getType()) {
-            $entity->setType($dto->getType());
-        }
-        if ($dto->getTypeId()) {
-            $entity->setTypeId($dto->getTypeId());
-        }
-        if ($dto->getImage()) {
-            $entity->setImage($dto->getImage());
-        }
+        $entity->setType($dto->getType())
+            ->setTypeId($dto->getTypeId())
+            ->setImage($dto->getImage())
+            ->setTitle($dto->getTitle())
+            ->setDescription($dto->getDescription())
+            ->setDevices($dto->getDevices())
+            ->setClickType($dto->getClickType())
+            ->setClickMax($dto->getClickMax())
+            ->setClickCurrent($dto->getClickCurrent())
+            ->setViewType($dto->getViewType())
+            ->setViewMax($dto->getViewMax())
+            ->setViewCurrent($dto->getViewCurrent())
+            ->setBeginAt($dto->getBeginAt())
+            ->setEndAt($dto->getEndAt());
 
         return $entity;
     }
@@ -55,7 +56,7 @@ class UpdateAction
         } else if ($type === 'category') {
             $title = $this->em->find(Category::class, $id)?->getName()['ru'];
         }
-        
+
         $webBanner->setTitle($title);
 
         return $webBanner;
