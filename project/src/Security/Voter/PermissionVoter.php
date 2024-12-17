@@ -23,6 +23,10 @@ class PermissionVoter extends Voter
         if (!$user instanceof User) {
             return false;
         }
+        if (!$subject) {
+            return true;
+        }
+        
 
         return $this->permissionRepository->hasPermissionsByUser($user->getId(),$subject,$attribute);
     }
