@@ -13,7 +13,7 @@ class PermissionVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return false;
+        return $subject ? true : false;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
