@@ -65,4 +65,10 @@ class WebBannerController extends AbstractController
     {
         return $this->json($action($dto));
     }
+
+    #[Route('/settings', methods: ['GET'])]
+    public function getSettings(#[MapQueryString] ?int $id, WebBannerSettingIndexAction $action): JsonResponse
+    {
+        return $this->json($action($id));
+    }
 }
