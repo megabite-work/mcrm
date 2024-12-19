@@ -17,6 +17,7 @@ use App\Dto\WebBanner\WebBannerSettingUpsertDto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -68,12 +69,7 @@ class WebBannerController extends AbstractController
     }
 
     #[Route('/settings', methods: ['GET'])]
-    #[OA\Parameter(
-        name: 'id',
-        description: 'Some additional parameter description',
-        in: 'query',
-    )]
-    public function getSettings(WebBannerSettingIndexAction $action, #[MapQueryString] ?int $id = null): JsonResponse
+    public function getSettings(WebBannerSettingIndexAction $action, #[MapQueryParameter] ?int $id = null): JsonResponse
     {
         return $this->json($action($id));
     }
