@@ -8,6 +8,7 @@ use App\Action\WebBanner\IndexAction;
 use App\Action\WebBanner\ShowAction;
 use App\Action\WebBanner\UpdateAction;
 use App\Action\WebBanner\WebBannerMetrikaUpsertAction;
+use App\Action\WebBanner\WebBannerSettingIndexAction;
 use App\Action\WebBanner\WebBannerSettingUpsertAction;
 use App\Dto\WebBanner\RequestDto;
 use App\Dto\WebBanner\RequestQueryDto;
