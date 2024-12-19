@@ -68,6 +68,11 @@ class WebBannerController extends AbstractController
     }
 
     #[Route('/settings', methods: ['GET'])]
+    #[OA\Parameter(
+        name: 'id',
+        description: 'Some additional parameter description',
+        in: 'query',
+    )]
     public function getSettings(WebBannerSettingIndexAction $action, #[MapQueryString] ?int $id = null): JsonResponse
     {
         return $this->json($action($id));
