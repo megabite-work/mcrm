@@ -44,6 +44,8 @@ security:
         methods: [GET],
       }
     - { path: ^/api/units/\d+$, roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-banners$, roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-events$, roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/.+, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
