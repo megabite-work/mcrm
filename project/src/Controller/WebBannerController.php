@@ -14,6 +14,7 @@ use App\Dto\WebBanner\RequestDto;
 use App\Dto\WebBanner\RequestQueryDto;
 use App\Dto\WebBanner\WebBannerMetrikaUpsertDto;
 use App\Dto\WebBanner\WebBannerSettingUpsertDto;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +28,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class WebBannerController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
+    #[Security(name: null)]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['web_banner:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['web_banner:index']]);
