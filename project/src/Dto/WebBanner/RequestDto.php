@@ -39,7 +39,7 @@ final class RequestDto
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\Count(min: 1, max: 3, groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\All(
-            constraints: [new Assert\Choice(choices: [WebBanner::PC, WebBanner::MOBILE, WebBanner::TABLET, WebBanner::LAPTOP])],
+            constraints: [new Assert\Choice(choices: [WebBanner::PC, WebBanner::MOBILE, WebBanner::TABLET])],
             groups: ['web_banner:create', 'web_banner:update']
         )]
         private array $devices,

@@ -25,9 +25,8 @@ class WebBanner
     const UNIQUE = 'unique';
     const ALL = 'all';
     const OFF = 'off';
-    const PC = 'pc';
+    const PC = 'desktop';
     const MOBILE = 'mobile';
-    const LAPTOP = 'laptop';
     const TABLET = 'tablet';
 
     #[ORM\Id]
