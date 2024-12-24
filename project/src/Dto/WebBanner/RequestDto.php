@@ -11,7 +11,7 @@ final class RequestDto
     public function __construct(
         #[Groups(['web_banner:create'])]
         #[Assert\NotBlank(groups: ['web_banner:create'])]
-        private int $multiStoreId,
+        private ?int $multiStoreId,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\Choice(choices: ['product', 'category', 'page', 'link'], groups: ['web_banner:create', 'web_banner:update'])]
