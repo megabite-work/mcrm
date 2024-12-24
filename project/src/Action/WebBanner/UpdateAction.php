@@ -45,6 +45,7 @@ class UpdateAction
             ->setViewMax($dto->getViewMax())
             ->setViewCurrent($dto->getViewCurrent())
             ->setBeginAt($dto->getBeginAt())
+            ->setIsActive($dto->getIsActive())
             ->setEndAt($dto->getEndAt());
 
         return $entity;
