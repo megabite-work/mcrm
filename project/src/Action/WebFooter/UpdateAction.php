@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Action\WebEvent;
+namespace App\Action\WebFooter;
 
 use App\Component\EntityNotFoundException;
-use App\Dto\WebEvent\RequestDto;
-use App\Entity\WebEvent;
+use App\Dto\WebFooter\RequestDto;
+use App\Entity\WebFooter;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    public function __invoke(int $id, RequestDto $dto): WebEvent
+    public function __invoke(int $id, RequestDto $dto): WebFooter
     {
-        $entity = $this->em->find(WebEvent::class, $id)
+        $entity = $this->em->find(WebFooter::class, $id)
             ?? throw new EntityNotFoundException('not found');
 
         $entity = $this->update($entity, $dto);
@@ -22,14 +22,12 @@ class UpdateAction
         return $entity;
     }
 
-    private function update(WebEvent $entity, RequestDto $dto)
+    private function update(WebFooter $entity, RequestDto $dto)
     {
         $entity->setType($dto->getType())
-            ->setTypeIds($dto->getTypeIds())
             ->setTitle($dto->getTitle())
-            ->setDelay($dto->getDelay())
-            ->setMove($dto->getMove())
-            ->setAnimation($dto->getAnimation());
+            ->setOrder($dto->getOrder())
+            ->setisActive($dto->getisActive());
 
         return $entity;
     }

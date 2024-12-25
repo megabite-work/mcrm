@@ -11,7 +11,7 @@ final class RequestDto
     public function __construct(
         #[Groups(['web_event:create'])]
         #[Assert\NotBlank(groups: ['web_event:create'])]
-        private int $multiStoreId,
+        private ?int $multiStoreId,
         #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         #[Assert\Choice(choices: [WebEvent::TYPE_CATEGORY, WebEvent::TYPE_PRODUCT], groups: ['web_event:create', 'web_event:update'])]
@@ -22,11 +22,14 @@ final class RequestDto
         #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         private string $title,
+        #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         private string $animation,
+        #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         #[Assert\Choice(choices: ['up', 'right', 'left', 'down'])]
         private string $move,
+        #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         #[Assert\PositiveOrZero]
         private int $delay = 0,

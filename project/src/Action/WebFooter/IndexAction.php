@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Action\WebEvent;
+namespace App\Action\WebFooter;
 
 use App\Component\Paginator;
-use App\Dto\WebEvent\RequestQueryDto;
+use App\Dto\WebFooter\RequestQueryDto;
 use App\Repository\WebEventRepository;
 
 class IndexAction
@@ -12,6 +12,6 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {
-        return $this->repo->findAllWebEventsByMultiStore($dto);
+        return $this->repo->findAllWebFootersByMultiStore($dto);
     }
 }
