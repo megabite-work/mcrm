@@ -4,11 +4,11 @@ namespace App\Action\WebFooterBody;
 
 use App\Component\EntityNotFoundException;
 use App\Entity\WebFooterBody;
-use App\Repository\WebEventRepository;
+use App\Repository\WebFooterBodyRepository;
 
 class ShowAction
 {
-    public function __construct(private WebEventRepository $repo) {}
+    public function __construct(private WebFooterBodyRepository $repo) {}
 
     public function __invoke(int $id): WebFooterBody
     {

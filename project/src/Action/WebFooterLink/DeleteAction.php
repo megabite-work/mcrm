@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Action\WebFooter;
+namespace App\Action\WebFooterLink;
 
 use App\Component\EntityNotFoundException;
-use App\Entity\WebFooter;
+use App\Entity\WebFooterLink;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DeleteAction
@@ -12,7 +12,7 @@ class DeleteAction
 
     public function __invoke(int $id): bool
     {
-        $entity = $this->em->find(WebFooter::class, $id);
+        $entity = $this->em->find(WebFooterLink::class, $id);
 
         if (null === $entity) {
             throw new EntityNotFoundException('not found');

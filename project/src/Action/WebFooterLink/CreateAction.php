@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Action\WebFooter;
+namespace App\Action\WebFooterLink;
 
 use App\Component\EntityNotFoundException;
-use App\Dto\WebFooter\RequestDto;
-use App\Entity\MultiStore;
-use App\Entity\WebFooter;
+use App\Dto\WebFooterLink\RequestDto;
+use App\Entity\WebFooterBody;
+use App\Entity\WebFooterLink;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    public function __invoke(RequestDto $dto): WebFooter
+    public function __invoke(RequestDto $dto): WebFooterLink
     {
-        $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId())
+        $webFooterBody = $this->em->find(WebFooterBody::class, $dto->getWebFooterBodyId())
             ?? throw new EntityNotFoundException('multi store not found', 404);
 
         $entity = $this->create($dto);
@@ -23,13 +23,13 @@ class CreateAction
         return $entity;
     }
 
-    private function create(RequestDto $dto): WebFooter
+    private function create(RequestDto $dto): WebFooterLink
     {
-        $entity = (new WebFooter())
-            ->setMultiStoreId($dto->getMultiStoreId())
+        $entity = (new WebFooterLink())
+            ->setWebFooterBodyId($dto->getWebFooterBodyId())
             ->setType($dto->getType())
             ->setTitle($dto->getTitle())
-            ->setOrder($dto->getOrder())
+            ->setLink($dto->getLink())
             ->setIsActive($dto->getIsActive());
 
         $this->em->persist($entity);
