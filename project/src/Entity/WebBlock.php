@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: WebBlockRepository::class)]
 class WebBlock
 {
-    const TYPE_BANNER = 'banner';
-    const TYPE_EVENT = 'event';
+    public const TYPE_BANNER = 'banner';
+    public const TYPE_EVENT = 'event';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

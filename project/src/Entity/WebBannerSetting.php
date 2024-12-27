@@ -13,22 +13,22 @@ class WebBannerSetting
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $webBannerIds = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $animation = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $move = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $delay = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $speed = null;
 
     public function getId(): ?int

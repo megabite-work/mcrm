@@ -5,7 +5,9 @@ namespace App\Action\WebBlock;
 use App\Component\EntityNotFoundException;
 use App\Dto\WebBlock\RequestDto;
 use App\Entity\MultiStore;
+use App\Entity\WebBannerSetting;
 use App\Entity\WebBlock;
+use App\Entity\WebEvent;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
@@ -25,15 +27,29 @@ class CreateAction
 
     private function create(RequestDto $dto): WebBlock
     {
+        $typeId = $dto->getTypeId() ?? $this->checkTypeAndCreate($dto->getType(), $dto->getMultiStoreId());
         $entity = (new WebBlock())
             ->setMultiStoreId($dto->getMultiStoreId())
             ->setType($dto->getType())
-            ->setTypeId($dto->getTypeId())
+            ->setTypeId($typeId)
             ->setIsActive($dto->getIsActive())
             ->setOrder($dto->getOrder());
 
         $this->em->persist($entity);
 
         return $entity;
+    }
+
+    private function checkTypeAndCreate(string $type, int $multiStoreId): int
+    {
+        if ($type === WebBlock::TYPE_BANNER) {
+            $entity = new WebBannerSetting();
+        } else if ($type === WebBlock::TYPE_EVENT) {
+            $entity = (new WebEvent())->setMultiStoreId($multiStoreId);
+        }
+
+        $this->em->persist($entity);
+
+        return $entity->getId();
     }
 }

@@ -23,28 +23,28 @@ class WebEvent
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?int $multiStoreId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\Choice(choices: [WebEvent::TYPE_CATEGORY, WebEvent::TYPE_PRODUCT])]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Choice(choices: [WebEvent::TYPE_CATEGORY, WebEvent::TYPE_PRODUCT, null])]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?string $type = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?string $typeIds = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?string $animation = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?string $move = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?int $delay = null;
 
