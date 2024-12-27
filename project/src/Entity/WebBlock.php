@@ -30,7 +30,7 @@ class WebBlock
 
     #[ORM\Column]
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
-    private bool $isActive = true;
+    private bool $isActive = false;
 
     #[ORM\Column]
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
