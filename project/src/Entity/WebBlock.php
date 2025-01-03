@@ -38,7 +38,7 @@ class WebBlock
 
     #[ORM\Column]
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
-    private ?int $order = null;
+    private int $order = 0;
 
     public function getId(): ?int
     {
