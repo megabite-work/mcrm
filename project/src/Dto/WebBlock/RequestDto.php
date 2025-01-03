@@ -21,7 +21,7 @@ final class RequestDto
         private ?int $typeId = null,
         #[Groups(['web_block:create', 'web_block:update'])]
         #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'])]
-        private bool $isActive = true,
+        private bool $isActive = false,
         #[Groups(['web_block:create', 'web_block:update'])]
         #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'], allowNull: true)]
         #[Assert\PositiveOrZero]
