@@ -38,7 +38,7 @@ final class RequestDto
         return $this->type;
     }
 
-    public function getTypeId(): int
+    public function getTypeId(): ?int
     {
         return $this->typeId;
     }
