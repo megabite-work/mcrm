@@ -32,9 +32,13 @@ class WebBlockRepository extends ServiceEntityRepository
 
     public function getLatestId(): mixed
     {
-        return $this->getEntityManager()
-            ->createQuery('SELECT wb.id FROM App\Entity\WebBlock wb ORDER BY wb.id DESC')
-            ->setMaxResults(1)
-            ->getSingleScalarResult();
+        try {
+            return $this->getEntityManager()
+                ->createQuery('SELECT wb.id FROM App\Entity\WebBlock wb ORDER BY wb.id DESC')
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return 0;
+        }
     }
 }
