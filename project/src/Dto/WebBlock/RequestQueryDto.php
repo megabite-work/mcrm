@@ -9,14 +9,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class RequestQueryDto
 {
     public function __construct(
-        #[Groups(['web_event:index'])]
+        #[Groups(['web_block:index'])]
         #[Assert\NotBlank]
         #[Assert\Positive]
         private int $multiStoreId,
-        #[Groups(['web_event:index'])]
+        #[Groups(['web_block:index'])]
         #[Assert\Positive]
         private int $page = 1,
-        #[Groups(['web_event:index'])]
+        #[Groups(['web_block:index'])]
         #[Assert\Positive]
         private int $perPage = Paginator::ITEMS_PER_PAGE
     ) {}
