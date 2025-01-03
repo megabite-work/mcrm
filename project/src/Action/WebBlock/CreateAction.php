@@ -42,13 +42,14 @@ class CreateAction
 
     private function checkTypeAndCreate(string $type, int $multiStoreId): int
     {
-        if ($type === WebBlock::TYPE_BANNER) {
-            $entity = new WebBannerSetting();
-        } else if ($type === WebBlock::TYPE_EVENT) {
-            $entity = (new WebEvent())->setMultiStoreId($multiStoreId);
-        }
+        $entity = match ($type) {
+            WebBlock::TYPE_BANNER => new WebBannerSetting(),
+            WebBlock::TYPE_EVENT => (new WebEvent())->setMultiStoreId($multiStoreId),
+            default => throw new EntityNotFoundException('type not found', 404),
+        };
 
         $this->em->persist($entity);
+        $this->em->flush();
 
         return $entity->getId();
     }
