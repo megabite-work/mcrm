@@ -25,7 +25,7 @@ final class RequestDto
         #[Groups(['web_block:create', 'web_block:update'])]
         #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'], allowNull: true)]
         #[Assert\PositiveOrZero]
-        private ?int $order = null,
+        private ?int $order = 0,
     ) {}
 
     public function getMultiStoreId(): int
