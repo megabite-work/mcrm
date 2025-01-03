@@ -64,10 +64,10 @@ class WebBannerController extends AbstractController
         return $this->json($action($id, $dto));
     }
 
-    #[Route('/settings', methods: ['POST'])]
-    public function settings(#[MapRequestPayload] WebBannerSettingUpsertDto $dto, WebBannerSettingUpsertAction $action): JsonResponse
+    #[Route('/{id<\d+>}/settings', methods: ['PATCH'])]
+    public function settings(int $id, #[MapRequestPayload] WebBannerSettingUpsertDto $dto, WebBannerSettingUpsertAction $action): JsonResponse
     {
-        return $this->json($action($dto));
+        return $this->json($action($id, $dto));
     }
 
     #[Route('/settings', methods: ['GET'])]

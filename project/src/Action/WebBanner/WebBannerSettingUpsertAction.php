@@ -10,37 +10,28 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class WebBannerSettingUpsertAction
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(
+        private EntityManagerInterface $em
+    ) {}
 
-    public function __invoke(WebBannerSettingUpsertDto $dto): array
+    public function __invoke(int $id, WebBannerSettingUpsertDto $dto): array
     {
-        if ($dto->getId()) {
-            $webBannerSetting = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $dto->getId()])
+        $webBannerSetting = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $id])
             ?? throw new EntityNotFoundException('web banner setting not found', 404);
-        } else {
-            $webBannerSetting = new WebBannerSetting();
-        }
-        
-        $this->handle($dto, $webBannerSetting);
+
+        $webBannerIds = array_map(function (int $id) {
+            return $this->em->getReference(WebBanner::class, $id)->getId();
+        }, $dto->webBannerIds) ?: throw new EntityNotFoundException('web banner not found', 404);
+
+        $webBannerSetting->setTitle($dto->title)
+            ->setAnimation($dto->animation)
+            ->setWebBannerIds($webBannerIds)
+            ->setMove($dto->move)
+            ->setDelay($dto->delay)
+            ->setSpeed($dto->speed);
+        $this->em->persist($webBannerSetting);
         $this->em->flush();
 
         return [];
-    }
-
-    public function handle(WebBannerSettingUpsertDto $dto, WebBannerSetting $webBannerSetting)
-    {
-        $webBanners = $this->em->getRepository(WebBanner::class)->findBy(['id' => $dto->getWebBannerIds()]);
-        $webBannerIds = array_map(function (WebBanner $webBanner) {
-            return $webBanner->getId();
-        }, $webBanners) ?: throw new EntityNotFoundException('web banner not found', 404);
-
-        $webBannerSetting->setTitle($dto->getTitle())
-            ->setAnimation($dto->getAnimation())
-            ->setWebBannerIds($webBannerIds)
-            ->setMove($dto->getMove())
-            ->setDelay($dto->getDelay())
-            ->setSpeed($dto->getSpeed());
-
-        $this->em->persist($webBannerSetting);
     }
 }
