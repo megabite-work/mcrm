@@ -36,7 +36,7 @@ class WebBlock
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
     private ?int $typeId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "`order`")]
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
     private int $order = 0;
 
