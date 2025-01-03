@@ -16,7 +16,7 @@ final readonly class WebBannerSettingUpsertDto
         public ?string $animation = null,
         #[Assert\NotBlank]
         #[Assert\Choice(choices: ['up', 'right', 'left', 'down'])]
-        public string $move,
+        public ?string $move = null,
         #[Assert\NotBlank]
         #[Assert\PositiveOrZero]
         public int $delay = 0,
