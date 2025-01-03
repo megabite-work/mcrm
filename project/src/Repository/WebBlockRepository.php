@@ -29,4 +29,12 @@ class WebBlockRepository extends ServiceEntityRepository
 
         return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
     }
+
+    public function getLatestId(): mixed
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT wb.id FROM App\Entity\WebBlock wb ORDER BY wb.id DESC')
+            ->setMaxResults(1)
+            ->getSingleScalarResult();
+    }
 }

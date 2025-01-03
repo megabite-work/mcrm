@@ -8,11 +8,15 @@ use App\Entity\MultiStore;
 use App\Entity\WebBannerSetting;
 use App\Entity\WebBlock;
 use App\Entity\WebEvent;
+use App\Repository\WebBlockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(
+        private EntityManagerInterface $em,
+        private WebBlockRepository $repo
+    ) {}
 
     public function __invoke(RequestDto $dto): WebBlock
     {
@@ -33,8 +37,7 @@ class CreateAction
             ->setType($dto->getType())
             ->setTypeId($typeId)
             ->setIsActive($dto->getIsActive())
-            ->setOrder($dto->getOrder());
-
+            ->setOrder($this->repo->getLatestId() + 1);
         $this->em->persist($entity);
 
         return $entity;

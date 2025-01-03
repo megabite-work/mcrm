@@ -24,7 +24,7 @@ final class RequestDto
         private bool $isActive = true,
         #[Groups(['web_block:create', 'web_block:update'])]
         #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'])]
-        #[Assert\PositiveOrZero]
+        #[Assert\Positive]
         private int $order = 0,
     ) {}
 
