@@ -15,17 +15,17 @@ class UpdateAction
     {
         $entity = $this->em->find(WebBlock::class, $id)
             ?? throw new EntityNotFoundException('not found');
-
         $entity = $this->update($entity, $dto);
         $this->em->flush();
 
         return $entity;
     }
 
-    private function update(WebBlock $entity, RequestDto $dto)
+    private function update(WebBlock $entity, RequestDto $dto): WebBlock
     {
         $entity->setType($dto->getType())
             ->setTypeId($dto->getTypeId())
+            ->setTitle($dto->getTitle())
             ->setIsActive($dto->getIsActive())
             ->setOrder($dto->getOrder());
 
