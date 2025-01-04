@@ -35,7 +35,6 @@ class CreateAction
         $entity = (new WebBlock())
             ->setMultiStoreId($dto->getMultiStoreId())
             ->setType($dto->getType())
-            ->setTitle($dto->getTitle())
             ->setTypeId($typeId)
             ->setIsActive($dto->getIsActive())
             ->setOrder($this->repo->getLatestOrder() + 1);
