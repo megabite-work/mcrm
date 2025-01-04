@@ -38,7 +38,7 @@ class CreateAction
             ->setTitle($dto->getTitle())
             ->setTypeId($typeId)
             ->setIsActive($dto->getIsActive())
-            ->setOrder($this->repo->getLatestId() + 1);
+            ->setOrder($this->repo->getLatestOrder() + 1);
         $this->em->persist($entity);
 
         return $entity;
