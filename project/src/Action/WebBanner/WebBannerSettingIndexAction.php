@@ -2,10 +2,7 @@
 
 namespace App\Action\WebBanner;
 
-use App\Component\EntityNotFoundException;
-use App\Dto\WebBanner\WebBannerSettingUpsertDto;
 use App\Entity\WebBanner;
-use App\Entity\WebBannerSetting;
 use App\Repository\WebBannerSettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,7 +16,6 @@ class WebBannerSettingIndexAction
             $webBannerSetting = $this->repo->find($id);
             return [
                 'id' => $webBannerSetting->getId(),
-                'title' => $webBannerSetting->getTitle(),
                 'webBannerIds' => $webBannerSetting->getWebBannerIds(),
                 'webBanners' => $this->em->getRepository(WebBanner::class)->findBy(['id' => $webBannerSetting->getWebBannerIds()]),
                 'animation' => $webBannerSetting->getAnimation(),

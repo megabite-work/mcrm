@@ -23,8 +23,7 @@ class WebBannerSettingUpsertAction
             return $this->em->getReference(WebBanner::class, $id)->getId();
         }, $dto->webBannerIds) ?: throw new EntityNotFoundException('web banner not found', 404);
 
-        $webBannerSetting->setTitle($dto->title)
-            ->setAnimation($dto->animation)
+        $webBannerSetting->setAnimation($dto->animation)
             ->setWebBannerIds($webBannerIds)
             ->setMove($dto->move)
             ->setDelay($dto->delay)

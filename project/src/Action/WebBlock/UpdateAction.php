@@ -26,6 +26,7 @@ class UpdateAction
         $entity->setType($dto->getType())
             ->setTypeId($dto->getTypeId())
             ->setIsActive($dto->getIsActive())
+            ->setTitle($dto->getTitle())
             ->setOrder($dto->getOrder());
 
         return $entity;

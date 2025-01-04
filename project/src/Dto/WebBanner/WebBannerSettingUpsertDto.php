@@ -8,8 +8,6 @@ final readonly class WebBannerSettingUpsertDto
 {
     public function __construct(
         #[Assert\NotBlank]
-        public string $title,
-        #[Assert\NotBlank]
         #[Assert\All(constraints: [new Assert\Positive])]
         public array $webBannerIds,
         #[Assert\NotBlank]
