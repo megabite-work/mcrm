@@ -17,7 +17,7 @@ class HomeController extends AbstractController
         return new RedirectResponse('https://mcrm.uz');
     }
 
-    #[Route(path: '/dd', methods: ['POST'])]
+    // #[Route(path: '/dd', methods: ['POST'])]
     public function dd(Request $request): Response
     {
         dd(
