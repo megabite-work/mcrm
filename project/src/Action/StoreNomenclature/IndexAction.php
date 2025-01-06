@@ -2,21 +2,27 @@
 
 namespace App\Action\StoreNomenclature;
 
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\StoreNomenclature\IndexDto;
 use App\Dto\StoreNomenclature\RequestQueryDto;
-use App\Repository\NomenclatureRepository;
+use App\Repository\StoreNomenclatureRepository;
 
 class IndexAction
 {
     public function __construct(
-        private NomenclatureRepository $repo
-    ) {
-    }
+        private StoreNomenclatureRepository $repo
+    ) {}
 
-    public function __invoke(int $storeId, RequestQueryDto $dto): Paginator
+    public function __invoke(int $storeId, RequestQueryDto $dto): ListResponseDtoInterface
     {
-        $nomenclatures = $this->repo->findAllNomenclaturesWithStoreAndCategory($storeId, $dto);
+        $paginator = $this->repo->findAllNomenclaturesWithStoreAndCategory($storeId, $dto);
+        $data = $paginator->getData();
 
-        return $nomenclatures;
+        array_walk($data, function (&$entity) {
+            $entity = IndexDto::fromStore($entity);
+        });
+
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

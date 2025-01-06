@@ -3,6 +3,7 @@
 namespace App\Action\StoreNomenclature;
 
 use App\Component\EntityNotFoundException;
+use App\Dto\StoreNomenclature\IndexDto;
 use App\Dto\StoreNomenclature\RequestDto;
 use App\Entity\Nomenclature;
 use App\Entity\Store;
@@ -13,20 +14,13 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $storeId, array $dtos): array
     {
-        $this->em->beginTransaction();
-        $entities = [];
-
         try {
-            foreach ($dtos as $dto) {
-                $entity = $this->create($storeId, $dto);
-                $entities[] = $entity;
-            }
-
+            $this->em->beginTransaction();
+            $data = array_map(fn($dto): IndexDto => $this->create($storeId, $dto), $dtos);
             $this->em->flush();
             $this->em->commit();
         } catch (\Throwable $th) {
@@ -34,25 +28,19 @@ class CreateAction
             throw new EntityNotFoundException($th->getMessage(), $th->getCode());
         }
 
-        return $entities;
+        return $data;
     }
 
-    private function create(int $storeId, RequestDto $dto): StoreNomenclature
+    private function create(int $storeId, RequestDto $dto): IndexDto
     {
-        $store = $this->em->find(Store::class, $storeId);
-        $nomenclature = $this->em->find(Nomenclature::class, $dto->getNomenclatureId());
-
-        if (null === $store && null === $nomenclature) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        $storeNomenclature = (new StoreNomenclature())
+        $store = $this->em->getReference(Store::class, $storeId);
+        $nomenclature = $this->em->find(Nomenclature::class, $dto->nomenclatureId);
+        $entity = (new StoreNomenclature())
             ->setStore($store)
             ->setNomenclature($nomenclature)
-            ->setQty($dto->getQty());
+            ->setQty($dto->qty);
+        $this->em->persist($entity);
 
-        $this->em->persist($storeNomenclature);
-
-        return $storeNomenclature;
+        return IndexDto::fromStore($entity);
     }
 }

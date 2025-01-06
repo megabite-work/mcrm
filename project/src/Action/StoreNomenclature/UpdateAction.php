@@ -2,43 +2,28 @@
 
 namespace App\Action\StoreNomenclature;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\StoreNomenclature\IndexDto;
 use App\Dto\StoreNomenclature\RequestDto;
 use App\Entity\Nomenclature;
 use App\Entity\Store;
-use App\Entity\StoreNomenclature;
+use App\Repository\StoreNomenclatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
-    ) {
-    }
+        private EntityManagerInterface $em,
+        private StoreNomenclatureRepository $repo
+    ) {}
 
-    public function __invoke(int $storeId, int $nomenclatureId, RequestDto $dto): Nomenclature
+    public function __invoke(int $storeId, int $nomenclatureId, RequestDto $dto): IndexDto
     {
-        $store = $this->em->find(Store::class, $storeId);
+        $store = $this->em->getReference(Store::class, $storeId);
         $nomenclature = $this->em->find(Nomenclature::class, $nomenclatureId);
-        $storeNomenclature = $this->em->getRepository(StoreNomenclature::class)->findOneBy(['store' => $store, 'nomenclature' => $nomenclature]);
-
-        if (null === $storeNomenclature) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        $storeNomenclature = $this->updateStoreNomenclature($storeNomenclature, $dto);
-
+        $entity = $this->repo->findOneBy(['store' => $store, 'nomenclature' => $nomenclature]);
+        $entity->setQty($dto->qty);
         $this->em->flush();
 
-        return $nomenclature;
-    }
-
-    private function updateStoreNomenclature(StoreNomenclature $storeNomenclature, RequestDto $dto)
-    {
-        if ($dto->getQty()) {
-            $storeNomenclature->setQty($dto->getQty());
-        }
-
-        return $storeNomenclature;
+        return IndexDto::fromStore($nomenclature);
     }
 }
