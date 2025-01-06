@@ -2,10 +2,7 @@
 
 namespace App\Dto\User;
 
-<<<<<<< HEAD
 use App\Validator\Exists;
-=======
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,8 +13,7 @@ final class RequestDto
         #[Groups(['user:create', 'user:update', 'unique:email', 'user:create_worker', 'user:create_user'])]
         #[Assert\Email(groups: ['user:create', 'unique:email', 'user:create_worker', 'user:create_user'])]
         #[Assert\NotBlank(groups: ['user:create', 'unique:email', 'user:create_worker', 'user:create_user'])]
-<<<<<<< HEAD
-        public ?string $email,
+        private ?string $email,
         #[Groups(['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
         #[Assert\NotBlank(groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
         #[Assert\Length(min: 3, groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
@@ -29,29 +25,13 @@ final class RequestDto
         #[Groups(['change:password'])]
         #[SerializedName('old_password')]
         #[Assert\NotBlank(groups: ['change:password'])]
-        public ?string $oldPassword,
-=======
-        private ?string $email,
-        #[Groups(['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
-        #[Assert\NotBlank(groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
-        #[Assert\Length(min: 3, groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
-        private ?string $username,
-        #[Groups(['user:create', 'change:password', 'user:create_worker', 'user:create_user'])]
-        #[Assert\NotBlank(groups: ['user:create', 'change:password', 'user:create_worker', 'user:create_user'])]
-        #[Assert\Length(min: 6, groups: ['user:create', 'change:password', 'user:create_worker', 'user:create_user'])]
-        private ?string $password,
-        #[Groups(['change:password'])]
-        #[SerializedName('old_password')]
-        #[Assert\NotBlank(groups: ['change:password'])]
         private ?string $oldPassword,
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
         #[Groups(['change:password'])]
         #[SerializedName('confirm_password')]
         #[Assert\NotBlank(groups: ['change:password'])]
         #[Assert\Length(min: 6, groups: ['change:password'])]
         #[Assert\IdenticalTo(propertyPath: 'password', groups: ['change:password'])]
-<<<<<<< HEAD
-        public ?string $confirmPassword,
+        private ?string $confirmPassword,
         #[Groups(['user:update'])]
         public ?string $region,
         #[Groups(['user:update'])]
@@ -69,30 +49,6 @@ final class RequestDto
         #[Groups(['user:create_worker'])]
         #[Assert\NotBlank(groups: ['user:create_worker'])]
         public ?int $role,
-        #[Groups(['user:create_worker'])]
-        #[Assert\NotBlank(groups: ['user:create_worker'])]
-        #[Exists(MultiStore::class)]
-        public ?int $multiStoreId,
-    ) {}
-=======
-        private ?string $confirmPassword,
-        #[Groups(['user:update'])]
-        private ?string $region,
-        #[Groups(['user:update'])]
-        private ?string $district,
-        #[Groups(['user:update'])]
-        private ?string $street,
-        #[Groups(['user:update'])]
-        private ?string $house,
-        #[Groups(['user:update'])]
-        private ?string $latitude,
-        #[Groups(['user:update'])]
-        private ?string $longitude,
-        #[Groups(['user:update'])]
-        private ?array $phones,
-        #[Groups(['user:create_worker'])]
-        #[Assert\NotBlank(groups: ['user:create_worker'])]
-        private ?int $role,
         #[Groups(['user:create_worker'])]
         #[Assert\NotBlank(groups: ['user:create_worker'])]
         private ?int $multiStoreId,
@@ -168,5 +124,4 @@ final class RequestDto
     {
         return $this->multiStoreId;
     }
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
 }
