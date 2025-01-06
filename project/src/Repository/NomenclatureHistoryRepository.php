@@ -21,10 +21,9 @@ class NomenclatureHistoryRepository extends ServiceEntityRepository
 
     public function findAllNomenclatureHistoriesWithAllJoines(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $store = $entityManager->find(Store::class, $dto->getStoreId());
-
-        $query = $entityManager->createQuery(
+        $em = $this->getEntityManager();
+        $store = $em->getReference(Store::class, $dto->storeId);
+        $query = $em->createQuery(
             'SELECT nh, s, n, c, u, f, o
             FROM App\Entity\NomenclatureHistory nh
             JOIN nh.store s
@@ -37,14 +36,13 @@ class NomenclatureHistoryRepository extends ServiceEntityRepository
             WHERE nh.store = :store'
         )->setParameter('store', $store);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findNomenclatureHistoryById(int $id): ?NomenclatureHistory
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
             'SELECT nh, s, n, c, u, f, o
             FROM App\Entity\NomenclatureHistory nh
             JOIN nh.store s

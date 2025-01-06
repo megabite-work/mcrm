@@ -3,7 +3,7 @@
 namespace App\Action\NomenclatureHistory;
 
 use App\Action\StoreNomenclature\CreateOrUpdateAction;
-use App\Component\EntityNotFoundException;
+use App\Dto\NomenclatureHistory\IndexDto;
 use App\Dto\NomenclatureHistory\RequestDto;
 use App\Entity\ForgiveType;
 use App\Entity\Nomenclature;
@@ -17,46 +17,39 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private CreateOrUpdateAction $createOrUpdateAction
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto, User $user): NomenclatureHistory
+    public function __invoke(RequestDto $dto, User $user): IndexDto
     {
-        $store = $this->em->find(Store::class, $dto->getStoreId());
-        $nomenclature = $this->em->find(Nomenclature::class, $dto->getNomenclatureId());
-
-        if (null === $store || null === $nomenclature) {
-            throw new EntityNotFoundException('store or nomenclature not found');
-        }
-
-        $nomenclatureHistory = $this->create($user, $nomenclature, $store, $dto);
-        $this->createOrUpdateAction->__invoke($store, $nomenclature, $dto->getQty());
-
+        $store = $this->em->getReference(Store::class, $dto->storeId);
+        $nomenclature = $this->em->getReference(Nomenclature::class, $dto->nomenclatureId);
+        $entity = $this->create($user, $nomenclature, $store, $dto);
+        $this->createOrUpdateAction->__invoke($store, $nomenclature, $dto->qty);
         $this->em->flush();
 
-        return $nomenclatureHistory;
+        return IndexDto::fromCreateAction($entity);
     }
 
     private function create(User $user, Nomenclature $nomenclature, Store $store, RequestDto $dto): NomenclatureHistory
     {
-        $nomenclatureHistory = (new NomenclatureHistory())
+        $entity = (new NomenclatureHistory())
             ->setOwner($user)
             ->setNomenclature($nomenclature)
             ->setStore($store)
-            ->setQty($dto->getQty())
-            ->setOldPrice($dto->getOldPrice() ?? 0)
-            ->setPrice($dto->getPrice() ?? 0)
-            ->setOldPriceCourse($dto->getOldPriceCourse() ?? 0)
-            ->setPriceCourse($dto->getPriceCourse() ?? 0)
-            ->setComment($dto->getComment());
+            ->setQty($dto->qty)
+            ->setOldPrice($dto->oldPrice ?? 0)
+            ->setPrice($dto->price ?? 0)
+            ->setOldPriceCourse($dto->oldPriceCourse ?? 0)
+            ->setPriceCourse($dto->priceCourse ?? 0)
+            ->setComment($dto->comment);
 
-        if ($dto->getForgiveTypeId()) {
-            $forgiveType = $this->em->find(ForgiveType::class, $dto->getForgiveTypeId());
-            $nomenclatureHistory->setForgiveType($forgiveType);
+        if ($dto->forgiveTypeId) {
+            $forgiveType = $this->em->getReference(ForgiveType::class, $dto->forgiveTypeId);
+            $entity->setForgiveType($forgiveType);
         }
 
-        $this->em->persist($nomenclatureHistory);
+        $this->em->persist($entity);
 
-        return $nomenclatureHistory;
+        return $entity;
     }
 }

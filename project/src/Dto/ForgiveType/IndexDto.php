@@ -14,13 +14,11 @@ final readonly class IndexDto
 
     public static function fromEntity(?ForgiveType $entity): static
     {
-        if ($entity === null) {
-            return new static();
-        }
-        
-        return new static(
-            id: $entity->getId(),
-            name: $entity->getName(),
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName(),
+            )
+            : null;
     }
 }

@@ -27,7 +27,7 @@ class CreateOrUpdateAction
         }
     }
 
-    private function create(Store $store, Nomenclature $nomenclature, float $qty)
+    private function create(Store $store, Nomenclature $nomenclature, float $qty): void
     {
         $storeNomenclature = (new StoreNomenclature())
             ->setStore($store)
@@ -37,7 +37,7 @@ class CreateOrUpdateAction
         $this->em->persist($storeNomenclature);
     }
 
-    private function update(StoreNomenclature $storeNomenclature, float $qty)
+    private function update(StoreNomenclature $storeNomenclature, float $qty): void
     {
         $updatedQty = $storeNomenclature->getQty() + $qty;
         $storeNomenclature->setQty($updatedQty);
