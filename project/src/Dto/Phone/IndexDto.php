@@ -13,12 +13,14 @@ final readonly class IndexDto
         public ?string $number = null,
     ) {}
 
-    public static function fromEntity(?Phone $entity): static
+    public static function fromEntity(?Phone $entity): ?static
     {
-        return new static(
-            id: $entity->getId(),
-            number: $entity->getPhone()
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                number: $entity->getPhone()
+            )
+            : null;
     }
 
     public static function fromEntityArray(array $entities = []): array

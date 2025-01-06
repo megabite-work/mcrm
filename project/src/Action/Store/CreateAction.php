@@ -2,6 +2,7 @@
 
 namespace App\Action\Store;
 
+use App\Dto\Store\IndexDto;
 use App\Dto\Store\RequestDto;
 use App\Entity\MultiStore;
 use App\Entity\Store;
@@ -11,20 +12,18 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): Store
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
+        $multiStore = $this->em->getReference(MultiStore::class, $dto->multiStoreId);
 
-        $store = (new Store())
-            ->setName($dto->getName())
+        $entity = (new Store())
+            ->setName($dto->name)
             ->setMultiStore($multiStore);
-
-        $this->em->persist($store);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $store;
+        return IndexDto::fromEntity($entity);
     }
 }

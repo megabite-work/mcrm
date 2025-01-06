@@ -2,25 +2,27 @@
 
 namespace App\Action\Store;
 
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\Store\IndexDto;
 use App\Dto\Store\RequestQueryDto;
-use App\Repository\MultiStoreRepository;
 use App\Repository\StoreRepository;
 
 class IndexAction
 {
     public function __construct(
         private StoreRepository $storeRepo,
-        private MultiStoreRepository $multiStoreRepo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestQueryDto $dto): Paginator
+    public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        $multiStore = $this->multiStoreRepo->find($dto->getMultiStoreId());
+        $paginator = $this->storeRepo->findAllStoresByMultiStore($dto);
+        $data = $paginator->getData();
 
-        $stores = $this->storeRepo->findAllStoresByMultiStore($multiStore, $dto);
+        array_walk($data, function (&$entity) {
+            $entity = IndexDto::fromEntity($entity);
+        });
 
-        return $stores;
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

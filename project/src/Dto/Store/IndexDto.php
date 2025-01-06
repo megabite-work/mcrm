@@ -21,10 +21,10 @@ final readonly class IndexDto
         public ?array $phones = null,
     ) {}
 
-    public static function fromEntity(?Store $entity, bool $withRelations = false): static
+    public static function fromEntity(?Store $entity, bool $withRelations = false): ?static
     {
         if ($entity === null) {
-            return new static();
+            return null;
         }
 
         if ($withRelations) {

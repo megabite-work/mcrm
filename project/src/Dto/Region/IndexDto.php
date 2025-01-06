@@ -13,11 +13,13 @@ final readonly class IndexDto
         public ?string $name = null,
     ) {}
 
-    public static function fromEntity(?Region $entity): static
+    public static function fromEntity(?Region $entity): ?static
     {
-        return new static(
-            id: $entity->getId(),
-            name: $entity->getName()
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName()
+            )
+            : null;
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Action\Store;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Store\IndexDto;
 use App\Dto\Store\RequestDto;
-use App\Entity\Store;
 use App\Repository\AddressRepository;
 use App\Repository\PhoneRepository;
 use App\Repository\StoreRepository;
@@ -17,35 +16,18 @@ class UpdateAction
         private PhoneRepository $phoneRepository,
         private AddressRepository $addressRepository,
         private StoreRepository $storeRepository,
-    ) {
-    }
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): Store
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $store = $this->updateStore($id, $dto);
+        $entity = $this->storeRepository->findStoreByIdWithAddressAndPhones($id);
+        $entity->setName($dto->name)
+            ->setIsActive($dto->isActive);
 
-        $this->phoneRepository->checkPhoneExistsAndCreate($store, $dto->getPhones());
-        $this->addressRepository->checkAddressExistsAndUpdateOrCreate($store, $dto);
+        $this->phoneRepository->checkPhoneExistsAndCreate($entity, $dto->phones);
+        $this->addressRepository->checkAddressExistsAndUpdateOrCreate($entity, $dto);
         $this->em->flush();
 
-        return $store;
-    }
-
-    private function updateStore(int $id, RequestDto $dto)
-    {
-        $store = $this->storeRepository->findStoreByIdWithAddressAndPhones($id);
-
-        if (null === $store) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        if ($dto->getName()) {
-            $store->setName($dto->getName());
-        }
-        if (null !== $dto->getIsActive()) {
-            $store->setIsActive($dto->getIsActive());
-        }
-
-        return $store;
+        return IndexDto::fromEntity($entity);
     }
 }

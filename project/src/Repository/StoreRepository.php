@@ -19,24 +19,25 @@ class StoreRepository extends ServiceEntityRepository
         parent::__construct($registry, Store::class);
     }
 
-    public function findAllStoresByMultiStore(MultiStore $multiStore, RequestQueryDto $dto): Paginator
+    public function findAllStoresByMultiStore(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
+        $multiStore = $this->em->getReference(MultiStore::class, $dto->multiStoreId);
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT s
             FROM App\Entity\Store s
             WHERE s.multiStore = :multiStore'
         )->setParameter('multiStore', $multiStore);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 
     public function findStoreByIdWithAddressAndPhonesAndWorkers(int $id): ?Store
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT s, a, p, w
             FROM App\Entity\Store s
             LEFT JOIN s.workers w
@@ -50,9 +51,9 @@ class StoreRepository extends ServiceEntityRepository
 
     public function findStoreByIdWithAddressAndPhones(int $id): ?Store
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT s, a, p
             FROM App\Entity\Store s
             LEFT JOIN s.address a
