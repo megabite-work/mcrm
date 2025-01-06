@@ -8,23 +8,15 @@ use App\Dto\Base\ListResponseDtoInterface;
 use App\Validator\Exists;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
-    private SerializerInterface $serializer;
-
-    public function __construct(private ValidatorInterface $validator)
-    {
-        $this->serializer = new Serializer([new ObjectNormalizer(nameConverter: new CamelCaseToSnakeCaseNameConverter())], [new JsonEncoder()]);
-    }
+    public function __construct(
+        private ValidatorInterface $validator
+    ) {}
 
     public function successResponse(object|array|null $content, int $status = Response::HTTP_OK): JsonResponse
     {
@@ -32,17 +24,17 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
             'data' => $content ?? [],
         ];
 
-        return $this->serializeAndSend($data, $status);
+        return $this->json($data, $status);
     }
 
     public function emptyResponse(int $status = Response::HTTP_NO_CONTENT): JsonResponse
     {
-        return new JsonResponse(data: '{}', status: $status, json: true);
+        return $this->json(data: [], status: $status);
     }
 
     public function indexResponse(ListResponseDtoInterface $data, int $status = Response::HTTP_OK): JsonResponse
     {
-        return $this->serializeAndSend($data, $status);
+        return $this->json($data, $status);
     }
 
     public function errorResponse(array $errors = [], int $status = Response::HTTP_BAD_REQUEST): JsonResponse
@@ -51,12 +43,7 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
             'error' => $errors,
         ];
 
-        return $this->serializeAndSend($data, $status);
-    }
-
-    private function serializeAndSend(mixed $data, int $status): JsonResponse
-    {
-        return new JsonResponse(data: $this->serializer->serialize($data, 'json'), status: $status, json: true);
+        return $this->json($data, $status);
     }
 
     public function validate(mixed $payload, Constraint|array|null $constraints = null): void
@@ -66,7 +53,7 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
 
         foreach ($fields as $key => $field) {
             $violations = $this->validator->validate($field, $constraints[$key] ?? null);
-            
+
             if ($violations->count()) {
                 throw new ValidationFailedException($field, $violations);
             }
@@ -80,7 +67,7 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
 
         foreach ($fields as $key => $field) {
             $violations = $this->validator->validate($field, new Exists($entities[$key]));
-            
+
             if ($violations->count()) {
                 throw new ValidationFailedException($field, $violations);
             }

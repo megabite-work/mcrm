@@ -18,7 +18,6 @@ final readonly class IndexDto
      * @param CategoryDto $category
      * @param UnitDto $unit
      * @param StoreNomenclatureDto[] $storeNomenclatures
-     * @param WebNomenclatureDto $webNomenclature
      */
     public function __construct(
         public ?int $id = null,
@@ -93,6 +92,7 @@ final readonly class IndexDto
                 category: CategoryDto::fromEntity($entity->getCategory()),
                 unit: UnitDto::fromEntity($entity->getUnit()),
                 storeNomenclatures: StoreNomenclatureDto::fromNomenclatureArray($entity->getStoreNomenclatures()->toArray()),
+                // webNomenclature: WebNomenclatureDto::fromEntityForNomenclature($entity->getWebNomenclature()),
             )
             : null;
     }
