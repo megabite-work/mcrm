@@ -20,21 +20,21 @@ class PermissionRepository extends ServiceEntityRepository
 
     public function findAllPermissions(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT p
             FROM App\Entity\Permission p'
         );
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 
     public function hasPermissionsByUser(int $userId, string $resource, string $action): bool
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT p
             FROM App\Entity\Permission p
             JOIN p.users u

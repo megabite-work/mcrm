@@ -2,18 +2,17 @@
 
 namespace App\Action\Permission;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\Permission;
+use App\Dto\Permission\IndexDto;
 use App\Repository\PermissionRepository;
 
 class ShowAction
 {
-    public function __construct(private PermissionRepository $repo)
-    {
-    }
+    public function __construct(
+        private PermissionRepository $repo
+    ) {}
 
-    public function __invoke(int $id): Permission
+    public function __invoke(int $id): IndexDto
     {
-        return $this->repo->find($id) ?? throw new EntityNotFoundException('not found');
+        return IndexDto::fromEntity($this->repo->find($id));
     }
 }

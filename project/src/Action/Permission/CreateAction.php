@@ -2,6 +2,7 @@
 
 namespace App\Action\Permission;
 
+use App\Dto\Permission\IndexDto;
 use App\Dto\Permission\RequestDto;
 use App\Entity\Permission;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,23 +11,22 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): Permission
+    public function __invoke(RequestDto $dto): IndexDto
     {
         $entity = $this->create($dto);
         $this->em->flush();
 
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 
     private function create(RequestDto $dto): Permission
     {
         $entity = $this->em->getRepository(Permission::class)->findOneBy(
             [
-                'resource' => $dto->getResource(),
-                'action' => $dto->getAction(),
+                'resource' => $dto->resource,
+                'action' => $dto->action,
             ]
         );
 
@@ -36,9 +36,9 @@ class CreateAction
 
         $entity = (new Permission())
             ->setName($dto->getName())
-            ->setResource($dto->getResource())
-            ->setAction($dto->getAction())
-            ->setIcon($dto->getIcon());
+            ->setResource($dto->resource)
+            ->setAction($dto->action)
+            ->setIcon($dto->icon);
 
         $this->em->persist($entity);
 

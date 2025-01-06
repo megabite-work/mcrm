@@ -2,37 +2,31 @@
 
 namespace App\Action\Permission;
 
-use App\Component\EntityNotFoundException;
 use App\Dto\Permission\AssignDto;
 use App\Entity\Permission;
 use App\Entity\User;
+use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class AssignAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(array $dtos): array
+    public function __invoke(array $dtos): void
     {
         $user = $this->em->find(User::class, $dtos[0]->getUserId());
-        if (null === $user) {
-            throw new EntityNotFoundException('user not found');
-        }
-        $oldPermissions = array_map(fn ($id) => $this->em->find(Permission::class, $id), array_diff(
-            array_map(fn ($dto) => $dto->getPermissionId(), $dtos),
-            array_map(fn ($permission) => $permission->getId(), $user->getPermissions()->toArray())
+        $oldPermissions = array_map(fn($id) => $this->em->find(Permission::class, $id), array_diff(
+            array_map(fn($dto) => $dto->permissionId, $dtos),
+            array_map(fn($permission) => $permission->getId(), $user->getPermissions()->toArray())
         ));
 
-        $this->em->beginTransaction();
-        $entities = [];
-
         try {
+            $this->em->beginTransaction();
             foreach ($dtos as $dto) {
-                $entity = $this->assign($dto, $user);
-                $entities[] = $entity;
+                $this->assign($dto, $user);
             }
             foreach ($oldPermissions as $permission) {
                 $user->removePermission($permission);
@@ -42,22 +36,13 @@ class AssignAction
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
+            throw new ErrorException('Permission', $th->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        return $entities;
     }
 
-    private function assign(AssignDto $dto, User $user): Permission
+    private function assign(AssignDto $dto, User $user): void
     {
-        $permission = $this->em->find(Permission::class, $dto->getPermissionId());
-
-        if (null === $permission) {
-            throw new EntityNotFoundException('permission not found');
-        }
-
+        $permission = $this->em->getReference(Permission::class, $dto->permissionId);
         $user->addPermission($permission);
-
-        return $permission;
     }
 }

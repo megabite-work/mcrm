@@ -2,25 +2,19 @@
 
 namespace App\Dto\Permission;
 
+use App\Entity\Permission;
+use App\Entity\User;
+use App\Validator\Exists;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class AssignDto
 {
     public function __construct(
         #[Assert\NotBlank]
-        private ?int $userId,
+        #[Exists(User::class)]
+        public ?int $userId,
         #[Assert\NotBlank]
-        private ?int $permissionId,
-    ) {
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function getPermissionId(): ?int
-    {
-        return $this->permissionId;
-    }
+        #[Exists(Permission::class)]
+        public ?int $permissionId,
+    ) {}
 }

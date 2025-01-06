@@ -2,7 +2,7 @@
 
 namespace App\Action\Permission;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Permission\IndexDto;
 use App\Dto\Permission\RequestDto;
 use App\Entity\Permission;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,46 +11,23 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): Permission
-    {
-        $entity = $this->update($dto, $id);
-
-        $this->em->flush();
-
-        return $entity;
-    }
-
-    private function update(RequestDto $dto, int $id): Permission
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->em->find(Permission::class, $id);
+        $entity->setName(
+            [
+                'ru' => $dto->nameRu ?? $entity->getName()['ru'],
+                'uz' => $dto->nameUz ?? $entity->getName()['uz'],
+                'uzc' => $dto->nameUzc ?? $entity->getName()['uzc'],
+            ]
+        )
+            ->setIcon($dto->icon ?? $entity->getIcon())
+            ->setResource($dto->resource ?? $entity->getResource())
+            ->setAction($dto->action ?? $entity->getAction());
+        $this->em->flush();
 
-        if (null === $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
-            $permissionName = $entity->getName();
-            $name = [
-                'ru' => $dto->getNameRu() ?? $permissionName['ru'],
-                'uz' => $dto->getNameUz() ?? $permissionName['uz'],
-                'uzc' => $dto->getNameUzc() ?? $permissionName['uzc'],
-            ];
-
-            $entity->setName($name);
-        }
-        if ($dto->getIcon()) {
-            $entity->setIcon($dto->getIcon());
-        }
-        if ($dto->getResource()) {
-            $entity->setResource($dto->getResource());
-        }
-        if ($dto->getAction()) {
-            $entity->setAction($dto->getAction());
-        }
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }
