@@ -17,11 +17,6 @@ class ExceptionListener
     public function __invoke(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-<<<<<<< HEAD
-=======
-
-        dd($exception);
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
         $response = new JsonResponse();
 
         if ($exception instanceof ValidationFailedException || $exception->getPrevious() instanceof ValidationFailedException) {
