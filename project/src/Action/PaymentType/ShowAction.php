@@ -2,24 +2,17 @@
 
 namespace App\Action\PaymentType;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\PaymentType;
+use App\Dto\PaymentType\IndexDto;
 use App\Repository\PaymentTypeRepository;
 
 class ShowAction
 {
-    public function __construct(private PaymentTypeRepository $repo)
+    public function __construct(
+        private PaymentTypeRepository $repo
+    ) {}
+
+    public function __invoke(int $id): IndexDto
     {
-    }
-
-    public function __invoke(int $id): PaymentType
-    {
-        $entity = $this->repo->find($id);
-
-        if (null === $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        return $entity;
+        return IndexDto::fromEntity($this->repo->find($id));
     }
 }

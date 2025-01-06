@@ -2,41 +2,31 @@
 
 namespace App\Action\PaymentType;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\PaymentType\IndexDto;
 use App\Dto\PaymentType\RequestDto;
 use App\Entity\PaymentType;
+use App\Exception\ErrorException;
 use App\Repository\PaymentTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private PaymentTypeRepository $repo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): PaymentType
+    public function __invoke(RequestDto $dto): IndexDto
     {
         if ($this->repo->findPaymentTypeOrNull($dto)) {
-            throw new EntityNotFoundException('this name already exists', 400);
+            throw new ErrorException('PaymentType', 'name already exists', Response::HTTP_BAD_REQUEST);
         }
 
-        $entity = $this->create($dto);
-
+        $entity = (new PaymentType())->setName($dto->getName())->setType($dto->type);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function create(RequestDto $dto): PaymentType
-    {
-        $entity = (new PaymentType())
-            ->setName($dto->getName())
-            ->setType($dto->getType());
-
-        $this->em->persist($entity);
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

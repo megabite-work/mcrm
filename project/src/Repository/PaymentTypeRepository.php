@@ -25,10 +25,10 @@ class PaymentTypeRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('p');
 
         $params = new ArrayCollection([
-            new Parameter('nameEn', '%'.$dto->getNameEn().'%', Types::STRING),
-            new Parameter('nameRu', '%'.$dto->getNameRu().'%', Types::STRING),
-            new Parameter('nameUz', '%'.$dto->getNameUz().'%', Types::STRING),
-            new Parameter('nameUzc', '%'.$dto->getNameUzc().'%', Types::STRING),
+            new Parameter('nameEn', '%'.$dto->nameEn.'%', Types::STRING),
+            new Parameter('nameRu', '%'.$dto->nameRu.'%', Types::STRING),
+            new Parameter('nameUz', '%'.$dto->nameUz.'%', Types::STRING),
+            new Parameter('nameUzc', '%'.$dto->nameUzc.'%', Types::STRING),
         ]);
 
         $query = $qb
