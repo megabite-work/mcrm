@@ -35,11 +35,10 @@ final readonly class IndexDto
         public ?bool $qrCode = false,
         public ?int $totalQty = 0,
         public ?int $categoryId = null,
-        private ?ProviderListDto $provider = null,
-        private ?CategoryDto $category = null,
-        private ?UnitDto $unit = null,
-        private ?array $storeNomenclatures = null,
-        private ?WebNomenclatureDto $webNomenclature = null,
+        public ?ProviderListDto $provider = null,
+        public ?CategoryDto $category = null,
+        public ?UnitDto $unit = null,
+        public ?array $storeNomenclatures = null,
         public ?bool $hasWebNomenclature = false,
     ) {}
 
@@ -94,7 +93,6 @@ final readonly class IndexDto
                 category: CategoryDto::fromEntity($entity->getCategory()),
                 unit: UnitDto::fromEntity($entity->getUnit()),
                 storeNomenclatures: StoreNomenclatureDto::fromNomenclatureArray($entity->getStoreNomenclatures()->toArray()),
-                webNomenclature: WebNomenclatureDto::fromEntityForNomenclature($entity->getWebNomenclature()),
             )
             : null;
     }
