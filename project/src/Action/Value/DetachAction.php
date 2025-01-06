@@ -13,7 +13,8 @@ class DetachAction
     public function __construct(
         private EntityManagerInterface $em,
         private AttributeValueRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $valueId, int $attributeId): bool
     {

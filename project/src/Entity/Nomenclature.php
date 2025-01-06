@@ -353,20 +353,20 @@ class Nomenclature
     {
         return $this->webNomenclature;
     }
-    
+
     public function setWebNomenclature(): static
     {
         $this->webNomenclature->setNomenclature($this);
-        
+
         return $this;
     }
-    
-    #[Groups(['nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
+
+    #[Groups(['nomenclature:index', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show'])]
     public function getCategoryId(): ?int
     {
         return $this->category->getId();
     }
-    
+
     #[Groups(['nomenclature:index'])]
     public function getHasWebNomenclature(): bool
     {

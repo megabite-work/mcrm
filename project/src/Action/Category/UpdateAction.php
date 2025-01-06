@@ -2,72 +2,54 @@
 
 namespace App\Action\Category;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Category\IndexDto;
 use App\Dto\Category\RequestDto;
 use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
-    ) {
-    }
+        private EntityManagerInterface $em,
+        private CategoryRepository $repo
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): Category
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $category = $this->updateCategory($id, $dto);
-
+        $entity = $this->repo->findCategoryByIdWithParentAndChildrens($id);
+        $entity = $this->update($entity, $dto);
         $this->em->flush();
 
-        return $category;
+        return IndexDto::fromEntity($entity);
     }
 
-    private function updateCategory(int $id, RequestDto $dto): Category
+    private function update(Category $entity, RequestDto $dto): Category
     {
-        $category = $this->em->find(Category::class, $id);
+        $this->updateName($entity, $dto);
+        $this->updateParent($entity, $dto);
+        $entity->setImage($dto->image ?? $entity->getImage());
+        $entity->setIsActive($dto->isActive ?? $entity->getIsActive());
 
-        if (null === $category) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        $this->updateName($category, $dto);
-        $this->updateParent($category, $dto);
-
-        if ($dto->getImage()) {
-            $category->setImage($dto->getImage());
-        }
-        if (null !== $dto->getIsActive()) {
-            $category->setIsActive($dto->getIsActive());
-        }
-
-        return $category;
+        return $entity;
     }
 
-    private function updateName(Category $category, RequestDto $dto): void
+    private function updateName(Category $entity, RequestDto $dto): void
     {
-        if ($dto->getNameUz() || $dto->getNameUzc() || $dto->getNameRu()) {
-            $categoryName = $category->getName();
-            $name = [
-                'ru' => $dto->getNameRu() ?? $categoryName['ru'],
-                'uz' => $dto->getNameUz() ?? $categoryName['uz'],
-                'uzc' => $dto->getNameUzc() ?? $categoryName['uzc'],
-            ];
+        $entityName = $entity->getName();
+        $name = [
+            'ru' => $dto->nameRu ?? $entityName['ru'],
+            'uz' => $dto->nameUz ?? $entityName['uz'],
+            'uzc' => $dto->nameUzc ?? $entityName['uzc'],
+        ];
 
-            $category->setName($name);
-        }
+        $entity->setName($name);
     }
 
-    private function updateParent(Category $category, RequestDto $dto): void
+    private function updateParent(Category $entity, RequestDto $dto): void
     {
-        if ($dto->getParentId()) {
-            $parent = $this->em->find(Category::class, $dto->getParentId());
-
-            if (null === $parent) {
-                throw new EntityNotFoundException('parent not found');
-            }
-
-            $category->setParent($parent);
+        if ($dto->parentId && $dto->parentId !== $entity->getParentId()) {
+            $entity->setParent($this->em->getReference(Category::class, $dto->parentId));
         }
     }
 }

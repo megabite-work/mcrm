@@ -2,7 +2,7 @@
 
 namespace App\Action\Category;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Category\IndexDto;
 use App\Dto\Category\RequestDto;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,28 +11,19 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): Category
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $category = (new Category())
+        $parent = $dto->parentId ? $this->em->getReference(Category::class, $dto->parentId) : null;
+        $entity = (new Category())
             ->setName($dto->getName())
-            ->setImage($dto->getImage());
+            ->setImage($dto->image)
+            ->setParent($parent);
 
-        if ($dto->getParentId()) {
-            $parent = $this->em->find(Category::class, $dto->getParentId());
-
-            if (null === $parent) {
-                throw new EntityNotFoundException('parent not found');
-            }
-
-            $category->setParent($parent);
-        }
-
-        $this->em->persist($category);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $category;
+        return IndexDto::fromEntity($entity);
     }
 }

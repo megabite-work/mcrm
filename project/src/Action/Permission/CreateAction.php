@@ -10,7 +10,8 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): Permission
     {
@@ -25,7 +26,7 @@ class CreateAction
         $entity = $this->em->getRepository(Permission::class)->findOneBy(
             [
                 'resource' => $dto->getResource(),
-                'action' => $dto->getAction()
+                'action' => $dto->getAction(),
             ]
         );
 

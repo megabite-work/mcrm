@@ -64,7 +64,8 @@ final class RequestDto
         #[Groups(['web_banner:update'])]
         #[Assert\Type('bool', groups: ['web_banner:update'])]
         private bool $isActive = true,
-    ) {}
+    ) {
+    }
 
     public function getIsActive(): bool
     {

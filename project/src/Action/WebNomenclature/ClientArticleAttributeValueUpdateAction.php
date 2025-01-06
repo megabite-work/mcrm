@@ -2,19 +2,20 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Entity\WebNomenclature;
-use App\Entity\ClientArticleAttributeValue;
-use App\Dto\WebNomenclature\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Dto\WebNomenclature\RequestDto;
+use App\Entity\ClientArticleAttributeValue;
+use App\Entity\WebNomenclature;
 use App\Repository\ClientArticleAttributeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ClientArticleAttributeValueUpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private ClientArticleAttributeRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, int $valueId, RequestDto $dto): ClientArticleAttributeValue
     {
@@ -27,7 +28,7 @@ class ClientArticleAttributeValueUpdateAction
 
         $this->update($entity, $dto);
         $this->em->flush();
-        
+
         return $entity;
     }
 

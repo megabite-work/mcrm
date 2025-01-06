@@ -2,17 +2,18 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Entity\WebNomenclature;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Entity\WebNomenclature;
 use App\Repository\ClientArticleAttributeValueRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ClientArticleAttributeValueIndexAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private ClientArticleAttributeValueRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id): array
     {

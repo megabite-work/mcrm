@@ -10,75 +10,24 @@ final class RequestDto
     public function __construct(
         #[Groups(['multi_store:create', 'multi_store:update'])]
         #[Assert\NotBlank(groups: ['multi_store:create'])]
-        private ?string $name,
+        public ?string $name,
         #[Groups(['multi_store:create', 'multi_store:update'])]
-        private ?array $profit,
+        public ?array $profit,
         #[Groups(['multi_store:create', 'multi_store:update'])]
-        private ?int $nds,
+        public ?int $nds,
         #[Groups(['multi_store:update'])]
-        private ?string $region,
+        public ?string $region,
         #[Groups(['multi_store:update'])]
-        private ?string $district,
+        public ?string $district,
         #[Groups(['multi_store:update'])]
-        private ?string $street,
+        public ?string $street,
         #[Groups(['multi_store:update'])]
-        private ?string $house,
+        public ?string $house,
         #[Groups(['multi_store:update'])]
-        private ?string $latitude,
+        public ?string $latitude,
         #[Groups(['multi_store:update'])]
-        private ?string $longitude,
+        public ?string $longitude,
         #[Groups(['multi_store:update'])]
-        private ?array $phones
-    ) {
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function getProfit(): ?array
-    {
-        return $this->profit;
-    }
-
-    public function getNds(): ?int
-    {
-        return $this->nds;
-    }
-
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function getDistrict(): ?string
-    {
-        return $this->district;
-    }
-
-    public function getStreet(): ?string
-    {
-        return $this->street;
-    }
-
-    public function getHouse(): ?string
-    {
-        return $this->house;
-    }
-
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    public function getPhones(): array
-    {
-        return $this->phones ?? [];
-    }
+        public ?array $phones
+    ) {}
 }

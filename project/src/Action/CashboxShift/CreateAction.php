@@ -2,7 +2,7 @@
 
 namespace App\Action\CashboxShift;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\CashboxShift\IndexDto;
 use App\Dto\CashboxShift\RequestDto;
 use App\Entity\Cashbox;
 use App\Entity\CashboxShift;
@@ -16,49 +16,19 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(RequestDto $dto): CashboxShift
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $cashboxShift = $this->create($dto);
+        $cashbox = $this->em->getReference(Cashbox::class, $dto->cashboxId);
+        $user = $this->em->getReference(User::class, $dto->userId);
 
-        $this->em->flush();
-
-        return $cashboxShift;
-    }
-
-    private function create(RequestDto $dto): CashboxShift
-    {
-        $cashbox = $this->getCashbox($dto);
-        $user = $this->getUser($dto);
-
-        $cashboxShift = (new CashboxShift())
-            ->setShiftNumber($dto->getShiftNumber())
+        $entity = (new CashboxShift())
+            ->setShiftNumber($dto->shiftNumber)
             ->setUser($user)
             ->setCashbox($cashbox);
 
-        $this->em->persist($cashboxShift);
+        $this->em->persist($entity);
+        $this->em->flush();
 
-        return $cashboxShift;
-    }
-
-    private function getCashbox(RequestDto $dto): Cashbox
-    {
-        $cashbox = $this->em->find(Cashbox::class, $dto->getCashboxId());
-
-        if (null === $cashbox) {
-            throw new EntityNotFoundException('not found', 404);
-        }
-
-        return $cashbox;
-    }
-
-    private function getUser(RequestDto $dto): User
-    {
-        $user = $this->em->find(User::class, $dto->getUserId());
-
-        if (null === $user) {
-            throw new EntityNotFoundException('not found', 404);
-        }
-
-        return $user;
+        return IndexDto::fromEntity($entity);
     }
 }

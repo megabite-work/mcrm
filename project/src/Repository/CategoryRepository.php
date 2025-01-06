@@ -21,30 +21,31 @@ class CategoryRepository extends ServiceEntityRepository
     public function findAllCategoriesByParent(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
-        $parent = $this->find($dto->getParentId());
+        $parent = $this->find($dto->parentId);
 
         $query = $entityManager->createQuery(
-            'SELECT c
+            'SELECT c, p, ch
             FROM App\Entity\Category c
-            -- LEFT JOIN c.childrens ch
-            -- LEFT JOIN ch.nomenclatures n
+            LEFT JOIN c.parent p
+            LEFT JOIN c.childrens ch
             WHERE c.parent = :parent'
         )->setParameter('parent', $parent);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
-    public function findAllCategoriesByParentIsNull(RequestQueryDto $dto): Paginator
+    public function findAllCategoriesParentIsNull(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
-
         $query = $entityManager->createQuery(
-            'SELECT c
+            'SELECT c, p, ch
             FROM App\Entity\Category c
+            LEFT JOIN c.parent p
+            LEFT JOIN c.childrens ch
             WHERE c.parent IS NULL'
         );
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findCategoryByIdWithParentAndChildrens(int $id): ?Category

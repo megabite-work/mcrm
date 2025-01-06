@@ -2,11 +2,12 @@
 
 namespace App\Action\DeliverySettings;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\DeliverySettings;
+use App\Dto\DeliverySettings\IndexDto;
 use App\Dto\DeliverySettings\RequestDto;
+use App\Entity\DeliverySettings;
 use App\Entity\Region;
 use App\Entity\Store;
+use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
@@ -21,16 +22,12 @@ class CreateAction
         $entities = [];
 
         try {
-            foreach ($dtos as $dto) {
-                $entity = $this->create($dto);
-                $entities[] = $entity;
-            }
-
+            $entities = array_map(fn($dto) => IndexDto::fromEntity($this->create($dto)), $dtos);
             $this->em->flush();
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
+            throw new ErrorException('DeliverySettings', $th->getMessage());
         }
 
         return $entities;
@@ -38,15 +35,15 @@ class CreateAction
 
     private function create(RequestDto $dto): DeliverySettings
     {
-        $store = $this->em->find(Store::class, $dto->getStoreId());
-        $region = $this->em->find(Region::class, $dto->getRegionid());
+        $store = $this->em->getReference(Store::class, $dto->storeId);
+        $region = $this->em->getReference(Region::class, $dto->regionId);
 
         $entity = (new DeliverySettings())
-            ->setDeliveryType($dto->getDeliveryType())
-            ->setMinSum($dto->getMinSum())
-            ->setFirstKm($dto->getFirstKm())
-            ->setDeliverySum($dto->getDeliverySum())
-            ->setNextKmSum($dto->getNextKmSum())
+            ->setDeliveryType($dto->deliveryType)
+            ->setMinSum($dto->minSum)
+            ->setFirstKm($dto->firstKm)
+            ->setDeliverySum($dto->deliverySum)
+            ->setNextKmSum($dto->nextKmSum)
             ->setStore($store)
             ->setRegion($region);
 

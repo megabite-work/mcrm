@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: WebEventRepository::class)]
 class WebEvent
 {
-    const TYPE_CATEGORY = 'category';
-    const TYPE_PRODUCT = 'product';
-    
+    public const TYPE_CATEGORY = 'category';
+    public const TYPE_PRODUCT = 'product';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

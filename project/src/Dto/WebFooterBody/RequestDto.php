@@ -20,7 +20,8 @@ final class RequestDto
         #[Groups(['web_footer_body:create', 'web_footer_body:update'])]
         #[Assert\NotBlank(groups: ['web_footer_body:create', 'web_footer_body:update'])]
         private bool $isActive = true,
-    ) {}
+    ) {
+    }
 
     public function getWebFooterId(): int
     {

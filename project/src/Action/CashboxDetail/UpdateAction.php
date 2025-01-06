@@ -2,68 +2,31 @@
 
 namespace App\Action\CashboxDetail;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\CashboxDetail\IndexDto;
 use App\Dto\CashboxDetail\RequestDto;
 use App\Entity\CashboxDetail;
-use App\Repository\CashboxDetailRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private CashboxDetailRepository $repo
-    ) {
-    }
+        private EntityManagerInterface $em
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): CashboxDetail
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $entity = $this->repo->findCashboxDetailById($id);
-
-        if (null === $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        $entity = $this->updateCashboxDetail($entity, $dto);
-
+        $entity = $this->em->find(CashboxDetail::class, $id);
+        $entity->setReturnStatus($dto->returnStatus)
+            ->setCreditStatus($dto->creditStatus)
+            ->setSurrender($dto->surrender ?? $entity->getSurrender())
+            ->setSale($dto->sale ?? $entity->getSale())
+            ->setDiscount($dto->discount ?? $entity->getDiscount())
+            ->setNds($dto->nds ?? $entity->getNds())
+            ->setAdvance($dto->advance ?? $entity->getAdvance())
+            ->setCredit($dto->credit ?? $entity->getCredit())
+            ->setRemain($dto->remain ?? $entity->getRemain());
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function updateCashboxDetail(CashboxDetail $entity, RequestDto $dto)
-    {
-        if (null !== $dto->getReturnStatus()) {
-            $entity->setReturnStatus($dto->getReturnStatus());
-        }
-        if (null !== $dto->getCreditStatus()) {
-            $entity->setCreditStatus($dto->getCreditStatus());
-        }
-        if ($dto->getSurrender()) {
-            $entity->setSurrender($dto->getSurrender());
-        }
-        if ($dto->getSale()) {
-            $entity->setSale($dto->getSale());
-        }
-        if ($dto->getDiscount()) {
-            $entity->setDiscount($dto->getDiscount());
-        }
-        if ($dto->getNds()) {
-            $entity->setNds($dto->getNds());
-        }
-        if ($dto->getAdvance()) {
-            $entity->setAdvance($dto->getAdvance());
-        }
-        if ($dto->getCredit()) {
-            $entity->setCredit($dto->getCredit());
-        }
-        if ($dto->getRemain()) {
-            $entity->setRemain($dto->getRemain());
-        }
-        if ($dto->getRemain()) {
-            $entity->setRemain($dto->getRemain());
-        }
-
-        return $entity;
+        return IndexDto::fromEntityUpdate($entity);
     }
 }

@@ -13,7 +13,8 @@ final class WebBannerMetrikaUpsertDto
         private string $type,
         #[Assert\Ip(version: Assert\Ip::ALL)]
         private string $ip,
-    ) {}
+    ) {
+    }
 
     public function getType(): string
     {

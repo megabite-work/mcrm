@@ -10,33 +10,17 @@ final class RequestDto
     public function __construct(
         #[Groups(['forgive_type:create', 'forgive_type:update'])]
         #[Assert\NotBlank(groups: ['forgive_type:create'])]
-        private ?string $nameUz,
+        public ?string $nameUz,
         #[Groups(['forgive_type:create', 'forgive_type:update'])]
         #[Assert\NotBlank(groups: ['forgive_type:create'])]
-        private ?string $nameUzc,
+        public ?string $nameUzc,
         #[Groups(['forgive_type:create', 'forgive_type:update'])]
         #[Assert\NotBlank(groups: ['forgive_type:create'])]
-        private ?string $nameRu,
-    ) {
-    }
+        public ?string $nameRu,
+    ) {}
 
-    public function getNameUz(): ?string
+    public function getName(): array
     {
-        return $this->nameUz;
-    }
-
-    public function getNameUzc(): ?string
-    {
-        return $this->nameUzc;
-    }
-
-    public function getNameRu(): ?string
-    {
-        return $this->nameRu;
-    }
-
-    public function getName(): ?array
-    {
-        return ['ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
+        return ['ru' => $this->nameRu, 'uz' => $this->nameUz, 'uzc' => $this->nameUzc];
     }
 }

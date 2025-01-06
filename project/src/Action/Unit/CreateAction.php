@@ -13,7 +13,8 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private UnitRepository $unitRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(array $dtos): array
     {

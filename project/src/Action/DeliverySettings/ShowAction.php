@@ -2,24 +2,17 @@
 
 namespace App\Action\DeliverySettings;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\DeliverySettings;
+use App\Dto\DeliverySettings\IndexDto;
 use App\Repository\DeliverySettingsRepository;
 
 class ShowAction
 {
-    public function __construct(private DeliverySettingsRepository $repo)
+    public function __construct(
+        private DeliverySettingsRepository $repo
+    ) {}
+
+    public function __invoke(int $id): IndexDto
     {
-    }
-
-    public function __invoke(int $id): DeliverySettings
-    {
-        $entity = $this->repo->findDeliverySettingsByIdWithStoreAndRegion($id);
-
-        if (null == $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        return $entity;
+        return IndexDto::fromEntity($this->repo->findDeliverySettingsByIdWithStoreAndRegion($id), true);
     }
 }

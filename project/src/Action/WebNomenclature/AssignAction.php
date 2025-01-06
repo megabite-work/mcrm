@@ -18,7 +18,8 @@ class AssignAction
         private EntityManagerInterface $em,
         private AttributeValueRepository $attributeValueRepository,
         private ArticleAttributeRepository $articleAttributeRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): bool
     {

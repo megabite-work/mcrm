@@ -3,6 +3,8 @@
 namespace App\Dto\CashboxGlobal;
 
 use App\Component\Paginator;
+use App\Entity\CashboxDetail;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,28 +14,14 @@ final class RequestQueryDto
         #[Groups(['cashbox_global:index'])]
         #[Assert\NotBlank]
         #[Assert\Positive]
-        private int $cashboxDetailId,
+        #[Exists(entity: CashboxDetail::class)]
+        public int $cashboxDetailId,
         #[Groups(['cashbox_global:index'])]
         #[Assert\Positive]
-        private int $page = 1,
+        public int $page = 1,
         #[Groups(['cashbox_global:index'])]
         #[Assert\Positive]
-        private int $perPage = Paginator::ITEMS_PER_PAGE
+        public int $perPage = Paginator::ITEMS_PER_PAGE
     ) {
-    }
-
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function getPerPage(): int
-    {
-        return $this->perPage;
-    }
-
-    public function getCashboxDetailId(): int
-    {
-        return $this->cashboxDetailId;
     }
 }

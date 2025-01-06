@@ -15,10 +15,10 @@ class WebBannerMetrika
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
-    
+
     #[ORM\Column(length: 255)]
     private ?string $ip = null;
-    
+
     #[ORM\ManyToOne(inversedBy: 'webBanerMetrikas')]
     #[ORM\JoinColumn(nullable: false)]
     private ?WebBanner $webBanner = null;

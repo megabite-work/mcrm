@@ -12,7 +12,8 @@ class AssignAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(array $dtos): array
     {
@@ -20,9 +21,9 @@ class AssignAction
         if (null === $user) {
             throw new EntityNotFoundException('user not found');
         }
-        $oldPermissions = array_map(fn($id) => $this->em->find(Permission::class, $id), array_diff(
-            array_map(fn($dto) => $dto->getPermissionId(), $dtos),
-            array_map(fn($permission) => $permission->getId(), $user->getPermissions()->toArray())
+        $oldPermissions = array_map(fn ($id) => $this->em->find(Permission::class, $id), array_diff(
+            array_map(fn ($dto) => $dto->getPermissionId(), $dtos),
+            array_map(fn ($permission) => $permission->getId(), $user->getPermissions()->toArray())
         ));
 
         $this->em->beginTransaction();

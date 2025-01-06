@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Repository\ClientArticleAttributeValueRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use App\Repository\ClientArticleAttributeValueRepository;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: ClientArticleAttributeValueRepository::class)]

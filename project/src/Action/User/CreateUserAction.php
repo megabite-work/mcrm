@@ -2,13 +2,13 @@
 
 namespace App\Action\User;
 
-use App\Entity\User;
+use App\Component\EntityNotFoundException;
 use App\Dto\User\RequestDto;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateUserAction
 {

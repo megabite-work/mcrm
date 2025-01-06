@@ -21,9 +21,9 @@ class MultiStoreRepository extends ServiceEntityRepository
 
     public function findAllMultiStoresByOwnerWithPagination(UserInterface $user, RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT m, s, w
             FROM App\Entity\MultiStore m
             LEFT JOIN m.stores s
@@ -31,14 +31,14 @@ class MultiStoreRepository extends ServiceEntityRepository
             WHERE m.owner = :user'
         )->setParameter('user', $user);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findMultiStoreByIdWithAddressAndPhoneAndStore(int $id): ?MultiStore
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT m, a, p, s
             FROM App\Entity\MultiStore m
             LEFT JOIN m.stores s
@@ -52,9 +52,9 @@ class MultiStoreRepository extends ServiceEntityRepository
 
     public function findMultiStoreByIdWithAddressAndPhones(int $id): ?MultiStore
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT m, a, p
             FROM App\Entity\MultiStore m
             LEFT JOIN m.address a
@@ -67,9 +67,9 @@ class MultiStoreRepository extends ServiceEntityRepository
 
     public function findMultiStoreByIdWithWebCredential(int $id): ?MultiStore
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT m, wc
             FROM App\Entity\MultiStore m
             LEFT JOIN m.webCredential wc

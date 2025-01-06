@@ -6,16 +6,13 @@ use App\Action\WebBlock\CreateAction;
 use App\Action\WebBlock\DeleteAction;
 use App\Action\WebBlock\IndexAction;
 use App\Action\WebBlock\ShowAction;
-use App\Action\WebBlock\SortAction;
 use App\Action\WebBlock\UpdateAction;
 use App\Dto\WebBlock\RequestDto;
 use App\Dto\WebBlock\RequestQueryDto;
-use App\Dto\WebBlock\SortDto;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -47,12 +44,6 @@ class WebBlockController extends AbstractController
     public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_block:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         return $this->json($action($id, $dto), context: ['groups' => ['web_block:update']]);
-    }
-
-    #[Route('/sort', methods: ['PATCH'])]
-    public function sort(#[MapRequestPayload(type: SortDto::class)] array $dtos, SortAction $action): JsonResponse
-    {
-        return $this->json($action($dtos), Response::HTTP_NO_CONTENT);
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]

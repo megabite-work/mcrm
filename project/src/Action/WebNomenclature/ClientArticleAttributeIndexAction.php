@@ -2,17 +2,18 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Entity\MultiStore;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Entity\MultiStore;
 use App\Repository\ClientArticleAttributeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ClientArticleAttributeIndexAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private ClientArticleAttributeRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $multiStoreId, string $article): array
     {

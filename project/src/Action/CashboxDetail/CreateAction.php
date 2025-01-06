@@ -3,7 +3,7 @@
 namespace App\Action\CashboxDetail;
 
 use App\Component\CurrentUser;
-use App\Component\EntityNotFoundException;
+use App\Dto\CashboxDetail\IndexDto;
 use App\Dto\CashboxDetail\RequestDto;
 use App\Entity\Cashbox;
 use App\Entity\CashboxDetail;
@@ -20,64 +20,38 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(RequestDto $dto): CashboxDetail
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $cashbox = $this->em->find(Cashbox::class, $dto->getCashboxId());
-
-        if (null === $cashbox) {
-            throw new EntityNotFoundException('not found');
-        }
-
+        $cashbox = $this->em->getReference(Cashbox::class, $dto->cashboxId);
         $chequeNumber = $this->repo->getLastChequeNumberByCashbox($cashbox);
-        $dto->setChequeNumber($chequeNumber);
-        $entity = $this->create($cashbox, $dto);
-
+        $entity = $this->create($cashbox, $dto, $chequeNumber);
         $this->em->flush();
 
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 
-    private function create(Cashbox $cashbox, RequestDto $dto): CashboxDetail
+    private function create(Cashbox $cashbox, RequestDto $dto, int $chequeNumber): CashboxDetail
     {
+        $counterPart = $dto->counterPartId ? $this->em->getReference(CounterPart::class, $dto->counterPartId) : null;
+        $detail = $dto->detailId ? $this->em->getReference(CashboxDetail::class, $dto->detailId) : null;
         $entity = (new CashboxDetail())
-            ->setChequeNumber($dto->getChequeNumber())
-            ->setType($dto->getType())
-            ->setReturnStatus($dto->getReturnStatus())
-            ->setCreditStatus($dto->getCreditStatus())
-            ->setCreditType($dto->getCreditType())
-            ->setSale($dto->getSale())
-            ->setDiscount($dto->getDiscount())
-            ->setAdvance($dto->getAdvance())
-            ->setRemain($dto->getRemain())
-            ->setNds($dto->getNds())
-            ->setSurrender($dto->getSurrender())
-            ->setCredit($dto->getCredit())
-            ->setCounterPart($this->getCounterPartOrNull($dto))
+            ->setChequeNumber($chequeNumber)
+            ->setType($dto->type)
+            ->setReturnStatus($dto->returnStatus)
+            ->setCreditStatus($dto->creditStatus)
+            ->setCreditType($dto->creditType)
+            ->setSale($dto->sale)
+            ->setDiscount($dto->discount)
+            ->setAdvance($dto->advance)
+            ->setRemain($dto->remain)
+            ->setNds($dto->nds)
+            ->setSurrender($dto->surrender)
+            ->setCredit($dto->credit)
+            ->setCounterPart($counterPart)
+            ->setDetail($detail)
             ->setUser($this->user->getUser())
             ->setCashbox($cashbox);
-
-        $entity = $this->setDetail($entity, $dto);
-
         $this->em->persist($entity);
-
-        return $entity;
-    }
-
-    private function getCounterPartOrNull(RequestDto $dto): ?CounterPart
-    {
-        if ($dto->getCounterPartId()) {
-            return $this->em->find(CounterPart::class, $dto->getCounterPartId());
-        }
-
-        return null;
-    }
-
-    private function setDetail(CashboxDetail $entity, RequestDto $dto): CashboxDetail
-    {
-        if ($dto->getDetailId()) {
-            $detail = $this->repo->findCashboxDetailById($dto->getDetailId());
-            $entity->setDetail($detail);
-        }
 
         return $entity;
     }

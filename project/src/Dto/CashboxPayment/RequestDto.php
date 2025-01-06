@@ -2,6 +2,9 @@
 
 namespace App\Dto\CashboxPayment;
 
+use App\Entity\CashboxDetail;
+use App\Entity\PaymentType;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,28 +13,14 @@ final class RequestDto
     public function __construct(
         #[Groups(['cashbox_payment:create'])]
         #[Assert\NotBlank(groups: ['cashbox_payment:create'])]
-        private ?int $cashboxDetailId,
+        #[Exists(CashboxDetail::class)]
+        public ?int $cashboxDetailId,
         #[Groups(['cashbox_payment:create'])]
         #[Assert\NotBlank(groups: ['cashbox_payment:create'])]
-        private ?int $paymentTypeId,
+        #[Exists(PaymentType::class)]
+        public ?int $paymentTypeId,
         #[Groups(['cashbox_payment:create'])]
         #[Assert\NotBlank(groups: ['cashbox_payment:create'])]
-        private ?float $amount
-    ) {
-    }
-
-    public function getCashboxDetailId(): ?int
-    {
-        return $this->cashboxDetailId;
-    }
-
-    public function getPaymentTypeId(): ?int
-    {
-        return $this->paymentTypeId;
-    }
-
-    public function getAmount(): ?float
-    {
-        return $this->amount;
-    }
+        public ?float $amount
+    ) {}
 }

@@ -3,10 +3,10 @@
 namespace App\Repository;
 
 use App\Component\Paginator;
-use App\Entity\AttributeEntity;
 use App\Dto\Attribute\RequestQueryDto;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\AttributeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<AttributeEntity>
@@ -27,8 +27,8 @@ class AttributeEntityRepository extends ServiceEntityRepository
             FROM App\Entity\AttributeEntity a
             JOIN a.categories c
             WHERE c.id = :cid'
-        )->setParameter('cid', $dto->getCategoryId());
+        )->setParameter('cid', $dto->categoryId);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }

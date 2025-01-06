@@ -22,15 +22,17 @@ class CounterPartRepository extends ServiceEntityRepository
     public function findAllCounterPartsByMultiStore(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
-        $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
+        $multiStore = $entityManager->getReference(MultiStore::class, $dto->multiStoreId);
 
         $query = $entityManager->createQuery(
-            'SELECT c
+            'SELECT c, a, p
             FROM App\Entity\CounterPart c
+            LEFT JOIN c.address a
+            LEFT JOIN c.phones p
             WHERE c.multiStore = :multiStore'
         )->setParameter('multiStore', $multiStore);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findCounterPartWithAddressAndPhonesById(int $id): ?CounterPart

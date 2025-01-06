@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Repository\ArticleAttributeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleAttributeRepository::class)]

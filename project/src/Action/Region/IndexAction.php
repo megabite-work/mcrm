@@ -8,7 +8,8 @@ class IndexAction
 {
     public function __construct(
         private RegionRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(?int $parentId): array
     {

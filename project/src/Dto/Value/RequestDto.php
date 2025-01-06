@@ -20,7 +20,8 @@ final class RequestDto
         #[Groups(['value:create', 'value:update'])]
         #[Assert\NotBlank(groups: ['value:create'])]
         private ?string $nameRu,
-    ) {}
+    ) {
+    }
 
     public function getNameUz(): ?string
     {

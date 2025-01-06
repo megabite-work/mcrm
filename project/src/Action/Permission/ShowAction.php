@@ -8,7 +8,9 @@ use App\Repository\PermissionRepository;
 
 class ShowAction
 {
-    public function __construct(private PermissionRepository $repo) {}
+    public function __construct(private PermissionRepository $repo)
+    {
+    }
 
     public function __invoke(int $id): Permission
     {

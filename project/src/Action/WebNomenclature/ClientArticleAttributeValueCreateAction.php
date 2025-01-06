@@ -2,18 +2,19 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Entity\WebNomenclature;
-use App\Entity\ClientArticleAttribute;
-use App\Dto\WebNomenclature\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Dto\WebNomenclature\RequestDto;
+use App\Entity\ClientArticleAttribute;
 use App\Entity\ClientArticleAttributeValue;
+use App\Entity\WebNomenclature;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ClientArticleAttributeValueCreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): ClientArticleAttributeValue
     {

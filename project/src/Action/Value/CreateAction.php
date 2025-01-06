@@ -2,18 +2,19 @@
 
 namespace App\Action\Value;
 
-use App\Entity\ValueEntity;
-use App\Dto\Value\RequestDto;
-use App\Entity\AttributeValue;
-use App\Entity\AttributeEntity;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Dto\Value\RequestDto;
+use App\Entity\AttributeEntity;
+use App\Entity\AttributeValue;
+use App\Entity\ValueEntity;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): ValueEntity
     {
@@ -24,7 +25,6 @@ class CreateAction
         }
 
         $entity = $this->create($dto, $attribute);
-
 
         $this->em->flush();
 
@@ -38,7 +38,7 @@ class CreateAction
 
         $this->em->persist($entity);
         $this->assign($attribute, $entity);
-        
+
         return $entity;
     }
 

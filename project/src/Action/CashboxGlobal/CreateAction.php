@@ -2,7 +2,7 @@
 
 namespace App\Action\CashboxGlobal;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\CashboxGlobal\IndexDto;
 use App\Dto\CashboxGlobal\RequestDto;
 use App\Entity\CashboxDetail;
 use App\Entity\CashboxGlobal;
@@ -13,13 +13,11 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestDto $dto): array
     {
         $entities = $this->create($dto);
-
         $this->em->flush();
 
         return $entities;
@@ -27,42 +25,27 @@ class CreateAction
 
     private function create(RequestDto $dto): array
     {
-        $cashboxDetail = $this->em->find(CashboxDetail::class, $dto->getCashboxDetailId());
-
-        if (!$cashboxDetail) {
-            throw new EntityNotFoundException('cashboxDetail not found');
-        }
-
+        $cashboxDetail = $this->em->getReference(CashboxDetail::class, $dto->cashboxDetailId);
         $entities = [];
+        /** @var \App\Dto\CashboxGlobal\UpdateRequestDto $item */
         foreach ($dto->getItems() as $item) {
             $entity = (new CashboxGlobal())
                 ->setCashboxDetail($cashboxDetail)
-                ->setNomenclature($this->getNomenclature($item->getNomenclatureId()))
-                ->setQty($item->getQty())
-                ->setOldPrice($item->getOldPrice())
-                ->setPrice($item->getPrice())
-                ->setOldPriceCourse($item->getOldPriceCourse())
-                ->setPriceCourse($item->getPriceCourse())
-                ->setNds($item->getNds())
-                ->setNdsSum($item->getNdsSum())
-                ->setDiscount($item->getDiscount())
-                ->setDiscountSum($item->getDiscountSum());
+                ->setNomenclature($this->em->getReference(Nomenclature::class, $item->nomenclatureId))
+                ->setQty($item->qty)
+                ->setOldPrice($item->oldPrice)
+                ->setPrice($item->price)
+                ->setOldPriceCourse($item->oldPriceCourse)
+                ->setPriceCourse($item->priceCourse)
+                ->setNds($item->nds)
+                ->setNdsSum($item->ndsSum)
+                ->setDiscount($item->discount)
+                ->setDiscountSum($item->discountSum);
 
             $this->em->persist($entity);
-            $entities[] = $entity;
+            $entities[] = IndexDto::fromEntity($entity);
         }
 
         return $entities;
-    }
-
-    private function getNomenclature(int $id): Nomenclature
-    {
-        $nomenclature = $this->em->find(Nomenclature::class, $id);
-
-        if (!$nomenclature) {
-            throw new EntityNotFoundException('cashboxDetail not found');
-        }
-
-        return $nomenclature;
     }
 }

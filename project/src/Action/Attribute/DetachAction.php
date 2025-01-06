@@ -2,9 +2,8 @@
 
 namespace App\Action\Attribute;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\Category;
 use App\Entity\AttributeEntity;
+use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DetachAction
@@ -13,19 +12,11 @@ class DetachAction
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(int $attributeId, int $categoryId): bool
+    public function __invoke(int $id, int $categoryId): void
     {
-        $category = $this->em->find(Category::class, $categoryId);
-        $attribute = $this->em->find(AttributeEntity::class, $attributeId);
-
-        if (null === $category || null === $attribute) {
-            throw new EntityNotFoundException('category or attribute not found');
-        }
-
+        $category = $this->em->getReference(Category::class, $categoryId);
+        $attribute = $this->em->find(AttributeEntity::class, $id);
         $attribute->removeCategory($category);
-
         $this->em->flush();
-
-        return !$attribute->getCategories()->contains($category);
     }
 }

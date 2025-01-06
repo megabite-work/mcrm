@@ -5,7 +5,6 @@ namespace App\Action\Favorite;
 use App\Entity\User;
 use App\Entity\WebNomenclature;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class DetachAction
 {
@@ -13,20 +12,10 @@ class DetachAction
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(int $webNomenclatureId, User $user): bool
+    public function __invoke(int $webNomenclatureId, User $user): void
     {
-        $webNomenclature = $this->em->find(WebNomenclature::class, $webNomenclatureId);
-
-        if (null === $webNomenclature) {
-            throw new EntityNotFoundException('webNomenclature not found');
-        }
-        try {
-            $user->removeFavorite($webNomenclature);
-            $this->em->flush();
-
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
+        $webNomenclature = $this->em->getReference(WebNomenclature::class, $webNomenclatureId);
+        $user->removeFavorite($webNomenclature);
+        $this->em->flush();
     }
 }

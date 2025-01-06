@@ -66,7 +66,8 @@ final class RequestDto
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
         private ?bool $remember = false,
-    ) {}
+    ) {
+    }
 
     public function getNomenclatureId(): ?int
     {

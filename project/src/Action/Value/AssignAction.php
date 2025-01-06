@@ -2,19 +2,20 @@
 
 namespace App\Action\Value;
 
-use App\Entity\ValueEntity;
-use App\Entity\AttributeEntity;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Entity\AttributeEntity;
 use App\Entity\AttributeValue;
+use App\Entity\ValueEntity;
 use App\Repository\AttributeValueRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AssignAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private AttributeValueRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $valueId, int $attributeId): bool
     {
@@ -30,7 +31,7 @@ class AssignAction
             $entity = (new AttributeValue())
                 ->setAttribute($attribute)
                 ->setValue($value);
-                
+
             $this->em->persist($entity);
             $this->em->flush();
 

@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Action\MediaObject\UploadAction;
 use App\Action\MediaObject\UploadsAction;
+use App\Dto\MediaObject\IndexDto;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,15 +43,7 @@ class MediaObjectController extends AbstractController
             new OA\Response(
                 response: 200,
                 description: 'File successfully uploaded.',
-                content: new OA\JsonContent(
-                    type: 'object',
-                    properties: [
-                        new OA\Property(
-                            property: 'filePath',
-                            type: 'string',
-                        ),
-                    ]
-                )
+                content: new Model(type: IndexDto::class)
             ),
             new OA\Response(
                 response: 400,
@@ -71,7 +65,7 @@ class MediaObjectController extends AbstractController
         ])] UploadedFile $file,
         UploadAction $action
     ): JsonResponse {
-        return $this->json($action($file));
+        return $this->successResponse($action($file), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/uploads', methods: ['POST'])]
@@ -104,9 +98,7 @@ class MediaObjectController extends AbstractController
                 description: 'File successfully uploaded.',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(
-                        schema: 'string'
-                    )
+                    items: new OA\Items(ref: new Model(type: IndexDto::class))
                 )
             ),
             new OA\Response(
@@ -121,8 +113,6 @@ class MediaObjectController extends AbstractController
     )]
     public function uploads(Request $request, UploadsAction $action): JsonResponse
     {
-        $files = $request->files->get('files', []);
-
-        return $this->json($action($files));
+        return $this->successResponse($action($request->files->get('files', [])), Response::HTTP_CREATED);
     }
 }

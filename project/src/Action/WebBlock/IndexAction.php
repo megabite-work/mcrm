@@ -8,7 +8,9 @@ use App\Repository\WebBlockRepository;
 
 class IndexAction
 {
-    public function __construct(private WebBlockRepository $repo) {}
+    public function __construct(private WebBlockRepository $repo)
+    {
+    }
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {

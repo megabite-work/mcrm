@@ -2,48 +2,32 @@
 
 namespace App\Dto\Attribute;
 
+use App\Entity\Category;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class RequestDto
+final readonly class RequestDto
 {
     public function __construct(
         #[Groups(['attribute:create'])]
         #[Assert\NotBlank(groups: ['attribute:create'])]
-        private ?int $categoryId,
+        #[Exists(entity: Category::class)]
+        public ?int $categoryId,
         #[Groups(['attribute:create', 'attribute:update'])]
         #[Assert\NotBlank(groups: ['attribute:create'])]
-        private ?string $nameUz,
+        public ?string $nameUz,
         #[Groups(['attribute:create', 'attribute:update'])]
         #[Assert\NotBlank(groups: ['attribute:create'])]
-        private ?string $nameUzc,
+        public ?string $nameUzc,
         #[Groups(['attribute:create', 'attribute:update'])]
         #[Assert\NotBlank(groups: ['attribute:create'])]
-        private ?string $nameRu,
-    ) {}
-
-    public function getNameUz(): ?string
-    {
-        return $this->nameUz;
-    }
-
-    public function getNameUzc(): ?string
-    {
-        return $this->nameUzc;
-    }
-
-    public function getNameRu(): ?string
-    {
-        return $this->nameRu;
+        public ?string $nameRu,
+    ) {
     }
 
     public function getName(): ?array
     {
-        return ['ru' => $this->getNameRu(), 'uz' => $this->getNameUz(), 'uzc' => $this->getNameUzc()];
-    }
-
-    public function getCategoryId(): ?int
-    {
-        return $this->categoryId;
+        return ['ru' => $this->nameRu, 'uz' => $this->nameUz, 'uzc' => $this->nameUzc];
     }
 }

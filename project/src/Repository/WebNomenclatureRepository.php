@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Component\Paginator;
 use App\Dto\WebNomenclature\RequestQueryDto;
 use App\Entity\MultiStore;
-use App\Entity\User;
 use App\Entity\WebNomenclature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,8 +21,8 @@ class WebNomenclatureRepository extends ServiceEntityRepository
 
     public function findAllWebNomenclaturesByMultiStore(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
+        $em = $this->getEntityManager();
+        $multiStore = $em->getReference(MultiStore::class, $dto->getMultiStoreId());
         $qb = $this->createQueryBuilder('wn');
 
         $query = $qb
@@ -42,7 +41,7 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             $query->andWhere('c.id = :cid')->setParameter('cid', $dto->getCategoryId());
         }
         if ($dto->getTitle()) {
-            $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%' . $dto->getTitle() . '%');
+            $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%'.$dto->getTitle().'%');
         }
         if (null !== $dto->getIsActive()) {
             $query->andWhere('wn.isActive = :isActive')->setParameter('isActive', $dto->getIsActive());
@@ -53,9 +52,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
 
     public function findWebNomenclatureByIdWithCategoryUnitStoreNomenclature(int $id): ?WebNomenclature
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT wn, n, c, u, sn, s, a, p
             FROM App\Entity\WebNomenclature wn
             JOIN wn.nomenclature n
@@ -73,9 +72,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
 
     public function findWebNomenclatureWithWebAttributeValues(int $id): ?WebNomenclature
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT wn, wav
             FROM App\Entity\WebNomenclature wn
             LEFT JOIN wn.webAttributeValues wav
@@ -87,9 +86,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
 
     public function findAllUserFavoritesByIds(array $ids): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT wn, n, un, sn, c
             FROM App\Entity\WebNomenclature wn
             JOIN wn.nomenclature n

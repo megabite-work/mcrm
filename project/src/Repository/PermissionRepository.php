@@ -41,6 +41,6 @@ class PermissionRepository extends ServiceEntityRepository
             WHERE u.id = :id AND p.resource = :resource  AND p.action = :action'
         )->setParameters(['id' => $userId, 'resource' => $resource, 'action' => $action]);
 
-        return $query->getOneOrNullResult() !== null;
+        return null !== $query->getOneOrNullResult();
     }
 }

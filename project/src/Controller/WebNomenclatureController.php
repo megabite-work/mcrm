@@ -2,30 +2,30 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\WebNomenclature\RequestDto;
-use App\Action\WebNomenclature\ShowAction;
-use App\Action\WebNomenclature\IndexAction;
-use App\Action\WebNomenclature\AssignAction;
-use App\Action\WebNomenclature\CreateAction;
-use App\Action\WebNomenclature\DeleteAction;
-use App\Action\WebNomenclature\UpdateAction;
-use App\Dto\WebNomenclature\RequestQueryDto;
-use Nelmio\ApiDocBundle\Annotation\Security;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Action\WebNomenclature\ArticleAttributeAction;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use App\Action\WebNomenclature\ClientArticleAttributeIndexAction;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Action\WebNomenclature\AssignAction;
 use App\Action\WebNomenclature\ClientArticleAttributeCreateAction;
 use App\Action\WebNomenclature\ClientArticleAttributeDeleteAction;
+use App\Action\WebNomenclature\ClientArticleAttributeIndexAction;
 use App\Action\WebNomenclature\ClientArticleAttributeUpdateAction;
-use App\Action\WebNomenclature\ClientArticleAttributeValueIndexAction;
 use App\Action\WebNomenclature\ClientArticleAttributeValueCreateAction;
 use App\Action\WebNomenclature\ClientArticleAttributeValueDeleteAction;
+use App\Action\WebNomenclature\ClientArticleAttributeValueIndexAction;
 use App\Action\WebNomenclature\ClientArticleAttributeValueUpdateAction;
+use App\Action\WebNomenclature\CreateAction;
+use App\Action\WebNomenclature\DeleteAction;
+use App\Action\WebNomenclature\IndexAction;
+use App\Action\WebNomenclature\ShowAction;
+use App\Action\WebNomenclature\UpdateAction;
+use App\Dto\WebNomenclature\RequestDto;
+use App\Dto\WebNomenclature\RequestQueryDto;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/web-nomenclatures', format: 'json')]
 #[OA\Tag(name: 'WebNomenclature')]

@@ -2,7 +2,7 @@
 
 namespace App\Action\DeliverySettings;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\DeliverySettings\IndexDto;
 use App\Dto\DeliverySettings\RequestDto;
 use App\Entity\DeliverySettings;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,39 +13,16 @@ class UpdateAction
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(int $id, RequestDto $dto): DeliverySettings
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->em->find(DeliverySettings::class, $id);
-
-        if (null === $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        $entity = $this->update($dto, $entity);
-
+        $entity->setDeliveryType($dto->deliveryType ?? $entity->getDeliveryType())
+            ->setMinSum($dto->minSum ?? $entity->getMinSum())
+            ->setFirstKm($dto->firstKm ?? $entity->getFirstKm())
+            ->setDeliverySum($dto->deliverySum ?? $entity->getDeliverySum())
+            ->setNextKmSum($dto->nextKmSum ?? $entity->getNextKmSum());
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function update(RequestDto $dto, DeliverySettings $entity): DeliverySettings
-    {
-        if ($dto->getDeliveryType()) {
-            $entity->setDeliveryType($dto->getDeliveryType());
-        }
-        if ($dto->getMinSum()) {
-            $entity->setMinSum($dto->getMinSum());
-        }
-        if ($dto->getFirstKm()) {
-            $entity->setFirstKm($dto->getFirstKm());
-        }
-        if ($dto->getDeliverySum()) {
-            $entity->setDeliverySum($dto->getDeliverySum());
-        }
-        if ($dto->getNextKmSum()) {
-            $entity->setNextKmSum($dto->getNextKmSum());
-        }
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

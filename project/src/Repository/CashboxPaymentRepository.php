@@ -24,8 +24,8 @@ class CashboxPaymentRepository extends ServiceEntityRepository
     public function findAllCashboxPaymentsWithJoined(RequestQueryDto $dto): Paginator
     {
         $qb = $this->getEntityManager();
-        $cashboxDetail = $qb->find(CashboxDetail::class, $dto->getCashboxDetailId());
-        $paymentType = $qb->find(PaymentType::class, $dto->getPaymentTypeId());
+        $cashboxDetail = $qb->find(CashboxDetail::class, $dto->cashboxDetailId);
+        $paymentType = $qb->find(PaymentType::class, $dto->paymentTypeId);
 
         $query = $qb->createQuery(
             'SELECT cp, cd, pt
@@ -35,13 +35,13 @@ class CashboxPaymentRepository extends ServiceEntityRepository
             WHERE cp.cashboxDetail = :cashboxDetail AND cp.paymentType = :paymentType'
         )->setParameters(['cashboxDetail' => $cashboxDetail, 'paymentType' => $paymentType]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findAllCashboxPaymentsByCashboxDetail(RequestQueryDto $dto): Paginator
     {
         $qb = $this->getEntityManager();
-        $cashboxDetail = $qb->find(CashboxDetail::class, $dto->getCashboxDetailId());
+        $cashboxDetail = $qb->find(CashboxDetail::class, $dto->cashboxDetailId);
 
         $query = $qb->createQuery(
             'SELECT cp, cd, pt
@@ -51,14 +51,14 @@ class CashboxPaymentRepository extends ServiceEntityRepository
             WHERE cp.cashboxDetail = :cashboxDetail'
         )->setParameters(['cashboxDetail' => $cashboxDetail]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findAllCashboxPaymentsByPaymentType(RequestQueryDto $dto): Paginator
     {
         $qb = $this->getEntityManager();
-        $paymentType = $qb->find(PaymentType::class, $dto->getPaymentTypeId());
-        $cashbox = $qb->find(Cashbox::class, $dto->getCashboxId());
+        $paymentType = $qb->find(PaymentType::class, $dto->paymentTypeId);
+        $cashbox = $qb->find(Cashbox::class, $dto->cashboxId);
 
         $query = $qb->createQuery(
             'SELECT cp, cd, pt
@@ -68,7 +68,7 @@ class CashboxPaymentRepository extends ServiceEntityRepository
             WHERE cp.paymentType = :paymentType AND cd.cashbox = :cashbox'
         )->setParameters(['paymentType' => $paymentType, 'cashbox' => $cashbox]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findCashboxPaymentById(int $id): ?CashboxPayment

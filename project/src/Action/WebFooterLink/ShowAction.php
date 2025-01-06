@@ -8,7 +8,9 @@ use App\Repository\WebFooterLinkRepository;
 
 class ShowAction
 {
-    public function __construct(private WebFooterLinkRepository $repo) {}
+    public function __construct(private WebFooterLinkRepository $repo)
+    {
+    }
 
     public function __invoke(int $id): WebFooterLink
     {

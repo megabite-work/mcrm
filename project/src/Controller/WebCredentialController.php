@@ -2,16 +2,16 @@
 
 namespace App\Controller;
 
-use OpenApi\Attributes as OA;
-use App\Dto\WebCredential\RequestDto;
-use App\Action\WebCredential\ShowAction;
-use App\Action\WebCredential\CreateAction;
-use App\Action\WebCredential\UpdateAction;
 use App\Action\WebCredential\ArticleAction;
-use Symfony\Component\Routing\Attribute\Route;
+use App\Action\WebCredential\CreateAction;
+use App\Action\WebCredential\ShowAction;
+use App\Action\WebCredential\UpdateAction;
+use App\Dto\WebCredential\RequestDto;
+use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/web-credentials', format: 'json')]
 #[OA\Tag(name: 'WebCredential')]

@@ -20,21 +20,21 @@ class ForgiveTypeRepository extends ServiceEntityRepository
 
     public function findAllForgiveTypes(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT f
             FROM App\Entity\ForgiveType f'
         );
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 
     public function findForgiveTypeById(int $id): ?ForgiveType
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT f
             FROM App\Entity\ForgiveType f
             WHERE f.id = :id'

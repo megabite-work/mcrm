@@ -2,7 +2,9 @@
 
 namespace App\Action\DeliverySettings;
 
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\DeliverySettings\IndexDto;
 use App\Dto\DeliverySettings\RequestQueryDto;
 use App\Repository\DeliverySettingsRepository;
 
@@ -12,13 +14,20 @@ class IndexAction
         private DeliverySettingsRepository $repo
     ) {}
 
-    public function __invoke(RequestQueryDto $dto): Paginator
+    public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        return match (true) {
-            $dto->getStoreId() && $dto->getRegionId() => $this->repo->findAllDeliverySettingsByStoreAndRegion($dto),
-            !is_null($dto->getStoreId()) => $this->repo->findAllDeliverySettingsByStore($dto),
-            !is_null($dto->getRegionId()) => $this->repo->findAllDeliverySettingsByRegion($dto),
-            default => $this->repo->findAllDeliverySettingsByMultiStore($dto)            
+        $paginator = match (true) {
+            $dto->storeId && $dto->regionId => $this->repo->findAllDeliverySettingsByStoreAndRegion($dto),
+            $dto->storeId !== null => $this->repo->findAllDeliverySettingsByStore($dto),
+            $dto->regionId !== null => $this->repo->findAllDeliverySettingsByRegion($dto),
+            default => $this->repo->findAllDeliverySettingsByMultiStore($dto)
         };
+        $data = $paginator->getData();
+
+        array_walk($data, function (&$entity) {
+            $entity = IndexDto::fromEntity($entity, true);
+        });
+
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

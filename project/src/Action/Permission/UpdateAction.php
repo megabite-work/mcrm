@@ -11,7 +11,8 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): Permission
     {
@@ -49,7 +50,6 @@ class UpdateAction
         if ($dto->getAction()) {
             $entity->setAction($dto->getAction());
         }
-
 
         return $entity;
     }

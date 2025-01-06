@@ -2,13 +2,13 @@
 
 namespace App\Action\User;
 
+use App\Component\EntityNotFoundException;
+use App\Dto\User\RequestDto;
+use App\Entity\MultiStore;
 use App\Entity\Role;
 use App\Entity\User;
-use App\Entity\MultiStore;
-use App\Dto\User\RequestDto;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateWorkerAction

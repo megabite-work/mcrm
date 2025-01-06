@@ -26,7 +26,8 @@ final class RequestDto
         #[Groups(['web_footer:create', 'web_footer:update'])]
         #[Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update'])]
         private bool $isActive = true,
-    ) {}
+    ) {
+    }
 
     public function getMultiStoreId(): int
     {

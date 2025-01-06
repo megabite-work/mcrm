@@ -6,8 +6,8 @@ use App\Action\Favorite\AssignAction;
 use App\Action\Favorite\DetachAction;
 use App\Action\Favorite\IndexAction;
 use App\Component\CurrentUser;
+use App\Entity\WebNomenclature;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -18,18 +18,24 @@ class FavoriteController extends AbstractController
     #[Route(path: '', methods: ['GET'])]
     public function index(IndexAction $action, CurrentUser $user): JsonResponse
     {
-        return $this->json($action($user->getId()), context: ['groups' => ['web_nomenclature:index']]);
+        return $this->indexResponse($action($user->getId()));
     }
 
-    #[Route('/{webNomenclatureId<\d+>}/assign', methods: ['POST'])]
+    #[Route('/{web_nomenclature_id<\d+>}/assign', methods: ['POST'])]
     public function assign(int $webNomenclatureId, CurrentUser $user, AssignAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($webNomenclatureId, $user->getUser())]);
+        $this->existsValidate($webNomenclatureId, WebNomenclature::class);
+        $action($webNomenclatureId, $user->getUser());
+        
+        return $this->emptyResponse();
     }
 
-    #[Route('/{webNomenclatureId<\d+>}/detach', methods: ['POST'])]
+    #[Route('/{web_nomenclature_id<\d+>}/detach', methods: ['POST'])]
     public function detach(int $webNomenclatureId, CurrentUser $user, DetachAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($webNomenclatureId, $user->getUser())]);
+        $this->existsValidate($webNomenclatureId, WebNomenclature::class);
+        $action($webNomenclatureId, $user->getUser());
+        
+        return $this->emptyResponse();
     }
 }

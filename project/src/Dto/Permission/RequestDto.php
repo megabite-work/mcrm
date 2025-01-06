@@ -26,7 +26,8 @@ final class RequestDto
         #[Groups(['permission:create', 'permission:update'])]
         #[Assert\NotBlank(groups: ['permission:create'])]
         private ?string $action,
-    ) {}
+    ) {
+    }
 
     public function getNameUz(): ?string
     {

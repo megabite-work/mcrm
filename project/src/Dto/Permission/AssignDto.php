@@ -11,7 +11,8 @@ final class AssignDto
         private ?int $userId,
         #[Assert\NotBlank]
         private ?int $permissionId,
-    ) {}
+    ) {
+    }
 
     public function getUserId(): ?int
     {

@@ -2,7 +2,8 @@
 
 namespace App\Action\Favorite;
 
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
 use App\Repository\UserRepository;
 use App\Repository\WebNomenclatureRepository;
 
@@ -13,11 +14,11 @@ class IndexAction
         private UserRepository $userRepository
     ) {}
 
-    public function __invoke(int $id): Paginator
+    public function __invoke(int $id): ListResponseDtoInterface
     {
         $favoriteIds = $this->userRepository->findAllUserFavoriteIds($id);
-        $favorites = $this->webNomenclatureRepository->findAllUserFavoritesByIds($favoriteIds);
+        $paginator = $this->webNomenclatureRepository->findAllUserFavoritesByIds($favoriteIds);
 
-        return $favorites;
+        return new ListResponseDto($paginator->getData(), $paginator->getPagination());
     }
 }

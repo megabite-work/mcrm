@@ -9,9 +9,10 @@ use App\Action\CashboxShift\ShowAction;
 use App\Action\CashboxShift\UpdateAction;
 use App\Dto\CashboxShift\RequestDto;
 use App\Dto\CashboxShift\RequestQueryDto;
+use App\Entity\CashboxShift;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,30 +24,37 @@ class CashboxShiftController extends AbstractController
     #[Route(path: '', methods: ['GET'])]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['cashbox_shift:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['cashbox_shift:index']]);
+        return $this->indexResponse($action($dto));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['cashbox_shift:show']]);
+        $this->existsValidate($id, CashboxShift::class);
+
+        return $this->successResponse($action($id));
     }
 
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['cashbox_shift:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['cashbox_shift:create']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}/closed', methods: ['PATCH'])]
     public function update(int $id, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['cashbox_shift:update']]);
+        $this->existsValidate($id, CashboxShift::class);
+
+        return $this->successResponse($action($id));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($id)]);
+        $this->existsValidate($id, CashboxShift::class);
+        $action($id);
+
+        return $this->emptyResponse();
     }
 }

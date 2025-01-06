@@ -2,135 +2,50 @@
 
 namespace App\Dto\CashboxDetail;
 
+use App\Entity\Cashbox;
+use App\Entity\CashboxDetail;
+use App\Entity\CounterPart;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class RequestDto
+final readonly class RequestDto
 {
     public function __construct(
         #[Groups(['cashbox_detail:create'])]
         #[Assert\NotBlank(groups: ['cashbox_detail:create'])]
-        private int $cashboxId,
+        #[Exists(entity: Cashbox::class)]
+        public int $cashboxId,
         #[Groups(['cashbox_detail:create'])]
-        #[Assert\Choice(choices: ['sale', 'return'])]
-        private ?string $type,
+        #[Assert\Choice(choices: [CashboxDetail::TYPE_SALE, CashboxDetail::TYPE_RETURN])]
+        public ?string $type,
         #[Groups(['cashbox_detail:create'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create'])]
-        private ?int $counterPartId,
+        #[Exists(entity: CounterPart::class)]
+        public ?int $counterPartId,
         #[Groups(['cashbox_detail:create'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:update'])]
-        private ?int $detailId,
+        #[Exists(entity: CashboxDetail::class)]
+        public ?int $detailId,
         #[Groups(['cashbox_detail:create'])]
-        #[Assert\Choice(choices: ['credit', 'advance', 'credit_pay', null])]
-        private ?string $creditType = null,
+        #[Assert\Choice(choices: [CashboxDetail::CREDIT_TYPE_CREDIT, CashboxDetail::CREDIT_TYPE_ADVANCE, CashboxDetail::CREDIT_TYPE_PAY, null])]
+        public ?string $creditType = null,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\Choice(choices: [true, false])]
-        private ?bool $returnStatus = false,
+        public bool $returnStatus = false,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\Choice(choices: [true, false, null])]
-        private ?bool $creditStatus = null,
+        public ?bool $creditStatus = null,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $surrender = 0,
+        public float $surrender = 0,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $sale = 0,
+        public float $sale = 0,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $discount = 0,
+        public float $discount = 0,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $nds = 0,
+        public float $nds = 0,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $advance = 0,
+        public float $advance = 0,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $credit = 0,
+        public float $credit = 0,
         #[Groups(['cashbox_detail:create', 'cashbox_detail:update'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['cashbox_detail:create', 'cashbox_detail:update'])]
-        private ?float $remain = 0,
-        private ?int $chequeNumber = null,
+        public float $remain = 0,
     ) {
-    }
-
-    public function getCashboxId(): int
-    {
-        return $this->cashboxId;
-    }
-
-    public function getChequeNumber(): ?int
-    {
-        return $this->chequeNumber;
-    }
-
-    public function setChequeNumber(?int $chequeNumber): ?int
-    {
-        return $this->chequeNumber = $chequeNumber;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function getReturnStatus(): ?bool
-    {
-        return $this->returnStatus;
-    }
-
-    public function getCreditStatus(): ?bool
-    {
-        return $this->creditStatus;
-    }
-
-    public function getCreditType(): ?string
-    {
-        return $this->creditType;
-    }
-
-    public function getSale(): ?float
-    {
-        return $this->sale;
-    }
-
-    public function getDiscount(): ?float
-    {
-        return $this->discount;
-    }
-
-    public function getAdvance(): ?float
-    {
-        return $this->advance;
-    }
-
-    public function getRemain(): ?float
-    {
-        return $this->remain;
-    }
-
-    public function getCounterPartId(): ?int
-    {
-        return $this->counterPartId;
-    }
-
-    public function getNds(): ?float
-    {
-        return $this->nds;
-    }
-
-    public function getSurrender(): ?float
-    {
-        return $this->surrender;
-    }
-
-    public function getCredit(): ?float
-    {
-        return $this->credit;
-    }
-
-    public function getDetailId(): ?int
-    {
-        return $this->detailId;
     }
 }

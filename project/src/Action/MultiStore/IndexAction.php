@@ -2,8 +2,9 @@
 
 namespace App\Action\MultiStore;
 
-use App\Component\CurrentUser;
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\MultiStore\IndexDto;
 use App\Dto\MultiStore\RequestQueryDto;
 use App\Repository\MultiStoreRepository;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -13,18 +14,19 @@ class IndexAction
     public function __construct(
         private MultiStoreRepository $repo,
         private Security $security,
-        private CurrentUser $user
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestQueryDto $dto): Paginator
+    public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            $multiStores = $this->repo->findAll();
-        } else {
-            $multiStores = $this->repo->findAllMultiStoresByOwnerWithPagination($this->user->getUser(), $dto);
-        }
+        $paginator = $this->security->isGranted('ROLE_ADMIN')
+            ? $this->repo->findAll()
+            : $this->repo->findAllMultiStoresByOwnerWithPagination($this->security->getUser(), $dto);
+        $data = $paginator->getData();
 
-        return $multiStores;
+        array_walk($data, function (&$entity) {
+            $entity = IndexDto::fromIndexAction($entity);
+        });
+
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

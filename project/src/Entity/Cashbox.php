@@ -82,6 +82,11 @@ class Cashbox
         return $this->store;
     }
 
+    public function getStoreId(): ?int
+    {
+        return $this->store?->getId();
+    }
+
     public function setStore(?Store $store): static
     {
         $this->store = $store;

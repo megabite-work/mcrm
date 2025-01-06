@@ -17,8 +17,6 @@ use App\Action\User\UpdateAction;
 use App\Dto\User\RequestDto;
 use App\Dto\User\RequestQueryDto;
 use App\Entity\User;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

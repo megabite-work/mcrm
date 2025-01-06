@@ -17,19 +17,17 @@ final class RequestDto
         #[Assert\Choice(choices: [WebBlock::TYPE_BANNER, WebBlock::TYPE_EVENT], groups: ['web_block:create', 'web_block:update'])]
         private string $type,
         #[Groups(['web_block:create', 'web_block:update'])]
-        #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'])]
-        private string $title,
-        #[Groups(['web_block:create', 'web_block:update'])]
         #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'], allowNull: true)]
         private ?int $typeId = null,
         #[Groups(['web_block:create', 'web_block:update'])]
         #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'])]
-        private bool $isActive = false,
+        private bool $isActive = true,
         #[Groups(['web_block:create', 'web_block:update'])]
-        #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'], allowNull: true)]
+        #[Assert\NotBlank(groups: ['web_block:create', 'web_block:update'])]
         #[Assert\PositiveOrZero]
-        private ?int $order = 0,
-    ) {}
+        private int $order = 0,
+    ) {
+    }
 
     public function getMultiStoreId(): int
     {
@@ -41,7 +39,7 @@ final class RequestDto
         return $this->type;
     }
 
-    public function getTypeId(): ?int
+    public function getTypeId(): int
     {
         return $this->typeId;
     }
@@ -54,10 +52,5 @@ final class RequestDto
     public function getOrder(): int
     {
         return $this->order;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
     }
 }

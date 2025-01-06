@@ -8,15 +8,13 @@ use App\Entity\MultiStore;
 use App\Entity\WebBannerSetting;
 use App\Entity\WebBlock;
 use App\Entity\WebEvent;
-use App\Repository\WebBlockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
-    public function __construct(
-        private EntityManagerInterface $em,
-        private WebBlockRepository $repo
-    ) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function __invoke(RequestDto $dto): WebBlock
     {
@@ -35,10 +33,10 @@ class CreateAction
         $entity = (new WebBlock())
             ->setMultiStoreId($dto->getMultiStoreId())
             ->setType($dto->getType())
-            ->setTitle($dto->getTitle())
             ->setTypeId($typeId)
             ->setIsActive($dto->getIsActive())
-            ->setOrder($this->repo->getLatestOrder() + 1);
+            ->setOrder($dto->getOrder());
+
         $this->em->persist($entity);
 
         return $entity;
@@ -46,14 +44,13 @@ class CreateAction
 
     private function checkTypeAndCreate(string $type, int $multiStoreId): int
     {
-        $entity = match ($type) {
-            WebBlock::TYPE_BANNER => new WebBannerSetting(),
-            WebBlock::TYPE_EVENT => (new WebEvent())->setMultiStoreId($multiStoreId),
-            default => throw new EntityNotFoundException('type not found', 404),
-        };
+        if (WebBlock::TYPE_BANNER === $type) {
+            $entity = new WebBannerSetting();
+        } elseif (WebBlock::TYPE_EVENT === $type) {
+            $entity = (new WebEvent())->setMultiStoreId($multiStoreId);
+        }
 
         $this->em->persist($entity);
-        $this->em->flush();
 
         return $entity->getId();
     }

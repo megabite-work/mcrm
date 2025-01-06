@@ -20,6 +20,13 @@ class CashboxDetail
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
+    public const CREDIT_TYPE_CREDIT = 'credit';
+    public const CREDIT_TYPE_ADVANCE = 'advance';
+    public const CREDIT_TYPE_PAY = 'credit_pay';
+    public const TYPE_SALE = 'sale';
+    public const TYPE_RETURN = 'return';
+    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -77,7 +84,6 @@ class CashboxDetail
     private float|string|null $remain = 0;
 
     #[ORM\ManyToOne(inversedBy: 'cashboxDetails')]
-    #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?CashboxDetail $detail = null;
 
     #[ORM\ManyToOne(inversedBy: 'cashboxDetails')]
@@ -95,7 +101,7 @@ class CashboxDetail
     private ?CounterPart $counterPart = null;
 
     #[ORM\OneToMany(targetEntity: CashboxDetail::class, mappedBy: 'detail')]
-    #[Groups(['cashbox_detail:index', 'cashbox_detail:show'])]
+    #[Groups(['cashbox_detail:index', 'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private Collection $cashboxDetails;
 
     #[ORM\OneToMany(targetEntity: CashboxPayment::class, mappedBy: 'cashboxDetail')]

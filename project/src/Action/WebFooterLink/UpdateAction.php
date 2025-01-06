@@ -9,7 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function __invoke(int $id, RequestDto $dto): WebFooterLink
     {

@@ -13,9 +13,8 @@ when@dev:
                 type: rotating_file
                 path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: debug
-                formatter: monolog.formatter.json
+                channels: ["!deprecation", "!nelmio_api_doc", "!event", "!security"]
                 max_files: 10
-                channels: ["!event", "!deprecation", "!security"]
             console:
                 type: console
                 process_psr_3_messages: false
@@ -47,7 +46,7 @@ when@prod:
             nested:
                 type: rotating_file
                 path: '%kernel.logs_dir%/%kernel.environment%.log'
-                level: debug
+                level: notice
                 formatter: monolog.formatter.json
                 max_files: 10
             console:

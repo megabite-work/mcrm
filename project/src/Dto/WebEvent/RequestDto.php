@@ -33,7 +33,8 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         #[Assert\PositiveOrZero]
         private int $delay = 0,
-    ) {}
+    ) {
+    }
 
     public function getMultiStoreId(): int
     {

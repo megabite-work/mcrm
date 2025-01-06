@@ -2,40 +2,28 @@
 
 namespace App\Action\Attribute;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Attribute\IndexDto;
 use App\Dto\Attribute\RequestDto;
-use App\Entity\Category;
 use App\Entity\AttributeEntity;
+use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
-
-    public function __invoke(RequestDto $dto): AttributeEntity
-    {
-        $category = $this->em->find(Category::class, $dto->getCategoryId());
-
-        if (null === $category) {
-            throw new EntityNotFoundException('category not found');
-        }
-
-        $entity = $this->create($dto, $category);
-
-        $this->em->persist($entity);
-        $this->em->flush();
-
-        return $entity;
+    ) {
     }
 
-    private function create(RequestDto $dto, Category $category): AttributeEntity
+    public function __invoke(RequestDto $dto): IndexDto
     {
+        $category = $this->em->getReference(Category::class, $dto->categoryId);
         $entity = (new AttributeEntity())
             ->setName($dto->getName())
             ->addCategory($category);
+        $this->em->persist($entity);
+        $this->em->flush();
 
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

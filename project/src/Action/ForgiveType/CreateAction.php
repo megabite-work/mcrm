@@ -2,6 +2,7 @@
 
 namespace App\Action\ForgiveType;
 
+use App\Dto\ForgiveType\IndexDto;
 use App\Dto\ForgiveType\RequestDto;
 use App\Entity\ForgiveType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,17 +11,15 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): ForgiveType
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $forgiveType = (new ForgiveType())
+        $entity = (new ForgiveType())
             ->setName($dto->getName());
-
-        $this->em->persist($forgiveType);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $forgiveType;
+        return IndexDto::fromEntity($entity);
     }
 }

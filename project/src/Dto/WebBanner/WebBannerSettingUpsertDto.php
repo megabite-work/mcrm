@@ -4,22 +4,62 @@ namespace App\Dto\WebBanner;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class WebBannerSettingUpsertDto
+final class WebBannerSettingUpsertDto
 {
     public function __construct(
         #[Assert\NotBlank]
-        #[Assert\All(constraints: [new Assert\Positive])]
-        public array $webBannerIds,
+        private string $title,
         #[Assert\NotBlank]
-        public ?string $animation = null,
+        #[Assert\All(constraints: [new Assert\Positive()])]
+        private array $webBannerIds,
+        #[Assert\NotBlank]
+        private string $animation,
         #[Assert\NotBlank]
         #[Assert\Choice(choices: ['up', 'right', 'left', 'down'])]
-        public ?string $move = null,
+        private string $move,
         #[Assert\NotBlank]
         #[Assert\PositiveOrZero]
-        public int $delay = 0,
+        private int $delay = 0,
         #[Assert\NotBlank]
         #[Assert\PositiveOrZero]
-        public int $speed = 0,
-    ) {}
+        private int $speed = 0,
+        #[Assert\NotBlank(allowNull: true)]
+        private ?int $id = null,
+    ) {
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getWebBannerIds(): array
+    {
+        return $this->webBannerIds;
+    }
+
+    public function getAnimation(): string
+    {
+        return $this->animation;
+    }
+
+    public function getMove(): string
+    {
+        return $this->move;
+    }
+
+    public function getDelay(): int
+    {
+        return $this->delay;
+    }
+
+    public function getSpeed(): int
+    {
+        return $this->speed;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }

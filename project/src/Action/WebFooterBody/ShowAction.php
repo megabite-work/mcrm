@@ -8,7 +8,9 @@ use App\Repository\WebFooterBodyRepository;
 
 class ShowAction
 {
-    public function __construct(private WebFooterBodyRepository $repo) {}
+    public function __construct(private WebFooterBodyRepository $repo)
+    {
+    }
 
     public function __invoke(int $id): WebFooterBody
     {

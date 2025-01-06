@@ -14,7 +14,7 @@ class HomeController extends AbstractController
     #[Route(path: '', methods: ['GET'])]
     public function index(): RedirectResponse
     {
-        return new RedirectResponse('https://mcrm.uz');
+        return new RedirectResponse('https://mcrm.uz', Response::HTTP_MOVED_PERMANENTLY);
     }
 
     // #[Route(path: '/dd', methods: ['POST'])]

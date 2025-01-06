@@ -2,7 +2,7 @@
 
 namespace App\Action\CashboxPayment;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\CashboxPayment\IndexDto;
 use App\Dto\CashboxPayment\RequestDto;
 use App\Entity\CashboxDetail;
 use App\Entity\CashboxPayment;
@@ -13,34 +13,19 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): CashboxPayment
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $entity = $this->create($dto);
-
-        $this->em->flush();
-
-        return $entity;
-    }
-
-    private function create(RequestDto $dto): CashboxPayment
-    {
-        $cashboxDetail = $this->em->find(CashboxDetail::class, $dto->getCashboxDetailId());
-        $paymentType = $this->em->find(PaymentType::class, $dto->getPaymentTypeId());
-
-        if (!$cashboxDetail || !$paymentType) {
-            throw new EntityNotFoundException('cashboxDetail or paymentType not found');
-        }
-
+        $cashboxDetail = $this->em->getReference(CashboxDetail::class, $dto->cashboxDetailId);
+        $paymentType = $this->em->getReference(PaymentType::class, $dto->paymentTypeId);
         $entity = (new CashboxPayment())
             ->setCashboxDetail($cashboxDetail)
             ->setPaymentType($paymentType)
-            ->setAmount($dto->getAmount());
-
+            ->setAmount($dto->amount);
         $this->em->persist($entity);
+        $this->em->flush();
 
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

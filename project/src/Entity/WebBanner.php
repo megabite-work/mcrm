@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\WebBannerRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -20,14 +19,14 @@ class WebBanner
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
-    const CLICK = 'click';
-    const VIEW = 'view';
-    const UNIQUE = 'unique';
-    const ALL = 'all';
-    const OFF = 'off';
-    const PC = 'desktop';
-    const MOBILE = 'mobile';
-    const TABLET = 'tablet';
+    public const CLICK = 'click';
+    public const VIEW = 'view';
+    public const UNIQUE = 'unique';
+    public const ALL = 'all';
+    public const OFF = 'off';
+    public const PC = 'desktop';
+    public const MOBILE = 'mobile';
+    public const TABLET = 'tablet';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

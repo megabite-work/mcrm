@@ -23,23 +23,23 @@ class MultiStore
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?string $profit = null;
 
     #[ORM\Column(name: 'barcode_TTN', nullable: true, type: Types::BIGINT, options: ['default' => 5752022000000])]
-    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $barcodeTtn = 5752022000000;
 
     #[ORM\Column(name: 'nds', nullable: true)]
-    #[Groups(['multi_stores:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $nds = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -154,7 +154,7 @@ class MultiStore
         return $this->stores;
     }
 
-    #[Groups(['multi_stores:index'])]
+    #[Groups(['multi_store:index'])]
     public function getStoresCount(): ?int
     {
         return $this->getStores()->count();
@@ -250,7 +250,7 @@ class MultiStore
         return $this->workers;
     }
 
-    #[Groups(['multi_stores:index'])]
+    #[Groups(['multi_store:index'])]
     public function getWorkersCount(): ?int
     {
         return count($this->getWorkers());

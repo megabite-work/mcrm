@@ -2,25 +2,20 @@
 
 namespace App\Action\MediaObject;
 
-use App\Component\EntityNotFoundException;
+use App\Exception\ErrorException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UploadsAction
 {
     public function __construct(
         private UploadAction $action
-    ) {
-    }
+    ) {}
 
     public function __invoke(array $files): array
     {
         $files = $this->validate($files);
-        $filePaths = [];
 
-        foreach ($files as $file) {
-            $filePaths[] = $this->action->upload($file);
-        }
-
-        return $filePaths;
+        return array_map(fn($file) => $this->action->upload($file), $files);
     }
 
     private function validate(array $files): array
@@ -33,10 +28,10 @@ class UploadsAction
             $fileSize = $file->getSize();
 
             if (!in_array($ext, $this->action::EXTENSIONS)) {
-                throw new EntityNotFoundException("Failed file extension on: $fileName", 400);
+                throw new ErrorException('Media Object', "Failed file extension on: $fileName", Response::HTTP_BAD_REQUEST);
             }
             if ($fileSize > $this->action::SIZE) {
-                throw new EntityNotFoundException("Failed file size on: $fileName", 400);
+                throw new ErrorException('Media Object', "Failed file size on: $fileName", Response::HTTP_BAD_REQUEST);
             }
         }
 

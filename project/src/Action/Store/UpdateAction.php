@@ -2,13 +2,13 @@
 
 namespace App\Action\Store;
 
-use App\Entity\Store;
+use App\Component\EntityNotFoundException;
 use App\Dto\Store\RequestDto;
+use App\Entity\Store;
+use App\Repository\AddressRepository;
 use App\Repository\PhoneRepository;
 use App\Repository\StoreRepository;
-use App\Repository\AddressRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Component\EntityNotFoundException;
 
 class UpdateAction
 {
@@ -17,7 +17,8 @@ class UpdateAction
         private PhoneRepository $phoneRepository,
         private AddressRepository $addressRepository,
         private StoreRepository $storeRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id, RequestDto $dto): Store
     {

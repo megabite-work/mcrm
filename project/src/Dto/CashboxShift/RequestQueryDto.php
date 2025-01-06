@@ -12,28 +12,12 @@ final class RequestQueryDto
         #[Groups(['cashbox_shift:index'])]
         #[Assert\NotBlank]
         #[Assert\Positive]
-        private int $cashboxId,
+        public int $cashboxId,
         #[Groups(['cashbox_shift:index'])]
         #[Assert\Positive]
-        private int $page = 1,
+        public int $page = 1,
         #[Groups(['cashbox_shift:index'])]
         #[Assert\Positive]
-        private int $perPage = Paginator::ITEMS_PER_PAGE
-    ) {
-    }
-
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function getPerPage(): int
-    {
-        return $this->perPage;
-    }
-
-    public function getCashboxId(): int
-    {
-        return $this->cashboxId;
-    }
+        public int $perPage = Paginator::ITEMS_PER_PAGE
+    ) {}
 }

@@ -21,28 +21,22 @@ class CashboxRepository extends ServiceEntityRepository
 
     public function findAllCashboxesByStore(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $store = $entityManager->find(Store::class, $dto->getStoreId());
+        $em = $this->getEntityManager();
+        $store = $em->getReference(Store::class, $dto->storeId);
 
-        $query = $entityManager->createQuery(
-            'SELECT c
+        $query = $em->createQuery(
+            'SELECT c, s
             FROM App\Entity\Cashbox c
+            JOIN c.store s
             WHERE c.store = :store'
         )->setParameter('store', $store);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
-    }
-
-    public function findCashboxById(int $id): ?Cashbox
-    {
-        return $this->find($id);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 
     public function findCashboxByIdWithStore(int $id): ?Cashbox
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
+        $query = $this->getEntityManager()->createQuery(
             'SELECT c, s
             FROM App\Entity\Cashbox c
             JOIN c.store s
@@ -54,6 +48,6 @@ class CashboxRepository extends ServiceEntityRepository
 
     public function hasCashboxByNameAndStore(Store $store, string $name): bool
     {
-        return null === $this->findOneBy(['name' => $name, 'store' => $store]);
+        return null !== $this->findOneBy(['name' => $name, 'store' => $store]);
     }
 }

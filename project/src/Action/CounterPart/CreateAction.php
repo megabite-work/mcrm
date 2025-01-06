@@ -2,10 +2,11 @@
 
 namespace App\Action\CounterPart;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\CounterPart\IndexDto;
 use App\Dto\CounterPart\RequestDto;
 use App\Entity\CounterPart;
 use App\Entity\MultiStore;
+use App\Exception\ErrorException;
 use App\Repository\CounterPartRepository;
 use App\Repository\PhoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,39 +17,22 @@ class CreateAction
         private EntityManagerInterface $em,
         private CounterPartRepository $repo,
         private PhoneRepository $phoneRepository,
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): CounterPart
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
-        $counterPart = $this->repo->findOneBy(['name' => $dto->getName(), 'inn' => $dto->getInn()]);
-
-        if (null == $multiStore) {
-            throw new EntityNotFoundException('not found');
-        }
-        if (null !== $counterPart) {
-            throw new EntityNotFoundException('already exists');
-        }
-
-        $cashbox = $this->create($multiStore, $dto);
-        $this->phoneRepository->checkPhoneExistsAndCreate($counterPart, $dto->getPhones());
-
+        $multiStore = $this->em->getReference(MultiStore::class, $dto->multiStoreId);
+        $entity = $this->repo->findOneBy(['name' => $dto->name, 'inn' => $dto->inn])
+            ? throw new ErrorException('CounterPart', 'already exists')
+            : new CounterPart();
+        $entity->setName($dto->name)
+            ->setInn($dto->inn)
+            ->setDiscount($dto->discount)
+            ->setMultiStore($multiStore);
+        $this->em->persist($entity);
+        $this->phoneRepository->checkPhoneExistsAndCreate($entity, $dto->phones);
         $this->em->flush();
 
-        return $cashbox;
-    }
-
-    private function create(MultiStore $multiStore, RequestDto $dto): CounterPart
-    {
-        $cashbox = (new CounterPart())
-            ->setName($dto->getName())
-            ->setInn($dto->getInn())
-            ->setDiscount($dto->getDiscount())
-            ->setMultiStore($multiStore);
-
-        $this->em->persist($cashbox);
-
-        return $cashbox;
+        return IndexDto::fromEntity($entity);
     }
 }

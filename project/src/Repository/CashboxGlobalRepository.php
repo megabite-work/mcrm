@@ -22,7 +22,7 @@ class CashboxGlobalRepository extends ServiceEntityRepository
     public function findAllCashboxGlobalsByCashboxDetail(RequestQueryDto $dto): Paginator
     {
         $qb = $this->getEntityManager();
-        $cashboxDetail = $qb->find(CashboxDetail::class, $dto->getCashboxDetailId());
+        $cashboxDetail = $qb->find(CashboxDetail::class, $dto->cashboxDetailId);
 
         $query = $qb->createQuery(
             'SELECT cg, n
@@ -31,7 +31,7 @@ class CashboxGlobalRepository extends ServiceEntityRepository
             WHERE cg.cashboxDetail = :cashboxDetail'
         )->setParameters(['cashboxDetail' => $cashboxDetail]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findCashboxGlobalById(int $id): ?CashboxGlobal

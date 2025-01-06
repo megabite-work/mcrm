@@ -22,7 +22,6 @@ class ShowAction
 
         $webCredential = $entity->getWebCredential();
 
-
         return $webCredential;
     }
 }

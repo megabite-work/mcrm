@@ -7,8 +7,8 @@ use App\Dto\CashboxDetail\RequestQueryDto;
 use App\Entity\Cashbox;
 use App\Entity\CashboxDetail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,9 +24,8 @@ class CashboxDetailRepository extends ServiceEntityRepository
 
     public function findAllCashboxDetailsByCashbox(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $cashbox = $entityManager->find(Cashbox::class, $dto->getCashboxId());
-
+        $em = $this->getEntityManager();
+        $cashbox = $em->getReference(Cashbox::class, $dto->cashboxId);
         $qb = $this->createQueryBuilder('cd');
 
         $query = $qb
@@ -41,22 +40,22 @@ class CashboxDetailRepository extends ServiceEntityRepository
 
         $query = $this->indexFilters($query, $dto);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     private function indexFilters(QueryBuilder $query, RequestQueryDto $dto): QueryBuilder
     {
-        if ($dto->getType()) {
-            $query->andWhere('cd.type = :type')->setParameter('type', $dto->getType());
+        if ($dto->type) {
+            $query->andWhere('cd.type = :type')->setParameter('type', $dto->type);
         }
-        if ($dto->getCreditType()) {
-            $query->andWhere('cd.creditType = :creditType')->setParameter('creditType', $dto->getCreditType());
+        if ($dto->creditType) {
+            $query->andWhere('cd.creditType = :creditType')->setParameter('creditType', $dto->creditType);
         }
-        if (null !== $dto->getReturnStatus()) {
-            $query->andWhere('cd.returnStatus = :returnStatus')->setParameter('returnStatus', $dto->getReturnStatus());
+        if (null !== $dto->returnStatus) {
+            $query->andWhere('cd.returnStatus = :returnStatus')->setParameter('returnStatus', $dto->returnStatus);
         }
-        if (null !== $dto->getCreditStatus()) {
-            $query->andWhere('cd.creditStatus = :creditStatus')->setParameter('creditStatus', $dto->getCreditStatus());
+        if (null !== $dto->creditStatus) {
+            $query->andWhere('cd.creditStatus = :creditStatus')->setParameter('creditStatus', $dto->creditStatus);
         }
 
         return $query;
@@ -98,19 +97,5 @@ class CashboxDetailRepository extends ServiceEntityRepository
         } catch (NoResultException|NonUniqueResultException $e) {
             return 1;
         }
-    }
-
-    public function findCashboxDetailById(int $id): ?CashboxDetail
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT cd
-            FROM App\Entity\CashboxDetail cd
-            JOIN cd.cashbox c
-            WHERE cd.id = :id'
-        )->setParameter('id', $id);
-
-        return $query->getOneOrNullResult();
     }
 }

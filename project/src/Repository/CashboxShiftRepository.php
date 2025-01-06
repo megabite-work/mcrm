@@ -22,7 +22,7 @@ class CashboxShiftRepository extends ServiceEntityRepository
     public function findAllCashboxShiftsByCashbox(RequestQueryDto $dto): Paginator
     {
         $em = $this->getEntityManager();
-        $cashbox = $em->find(Cashbox::class, $dto->getCashboxId());
+        $cashbox = $em->getReference(Cashbox::class, $dto->cashboxId);
 
         $query = $em->createQuery(
             'SELECT csh, u
@@ -31,7 +31,7 @@ class CashboxShiftRepository extends ServiceEntityRepository
             WHERE csh.cashbox = :cashbox'
         )->setParameter('cashbox', $cashbox);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findCashboxShiftById(int $id): ?CashboxShift

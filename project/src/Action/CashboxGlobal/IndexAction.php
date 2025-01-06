@@ -2,7 +2,9 @@
 
 namespace App\Action\CashboxGlobal;
 
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\CashboxGlobal\IndexDto;
 use App\Dto\CashboxGlobal\RequestQueryDto;
 use App\Repository\CashboxGlobalRepository;
 
@@ -13,8 +15,15 @@ class IndexAction
     ) {
     }
 
-    public function __invoke(RequestQueryDto $dto): Paginator
+    public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        return $this->repo->findAllCashboxGlobalsByCashboxDetail($dto);
+        $paginator = $this->repo->findAllCashboxGlobalsByCashboxDetail($dto);
+        $data = $paginator->getData();
+
+        array_walk_recursive($data, function (&$entity) {
+            $entity = IndexDto::fromEntity($entity);
+        });
+
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

@@ -14,7 +14,8 @@ class ShowAction
     public function __construct(
         private WebBannerRepository $repo,
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $id): WebBanner
     {
@@ -23,9 +24,9 @@ class ShowAction
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): WebBanner
     {
-        if ($type === 'product') {
+        if ('product' === $type) {
             $title = $this->em->find(WebNomenclature::class, $id)?->getTitle();
-        } else if ($type === 'category') {
+        } elseif ('category' === $type) {
             $title = $this->em->find(Category::class, $id)?->getName()['ru'];
         }
 

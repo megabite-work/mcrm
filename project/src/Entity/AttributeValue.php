@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AttributeValueRepository;
-use Symfony\Component\Serializer\Attribute\Groups;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: AttributeValueRepository::class)]

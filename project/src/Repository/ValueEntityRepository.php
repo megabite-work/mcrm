@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\ValueEntity;
 use App\Component\Paginator;
 use App\Dto\Value\RequestQueryDto;
 use App\Entity\AttributeEntity;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\ValueEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<ValueEntity>

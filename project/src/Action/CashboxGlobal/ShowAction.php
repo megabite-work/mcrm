@@ -2,24 +2,17 @@
 
 namespace App\Action\CashboxGlobal;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\CashboxGlobal;
+use App\Dto\CashboxGlobal\IndexDto;
 use App\Repository\CashboxGlobalRepository;
 
 class ShowAction
 {
-    public function __construct(private CashboxGlobalRepository $repo)
+    public function __construct(
+        private CashboxGlobalRepository $repo
+    ) {}
+
+    public function __invoke(int $id): IndexDto
     {
-    }
-
-    public function __invoke(int $id): CashboxGlobal
-    {
-        $entity = $this->repo->findCashboxGlobalById($id);
-
-        if (null === $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        return $entity;
+        return IndexDto::fromEntity($this->repo->findCashboxGlobalById($id));
     }
 }

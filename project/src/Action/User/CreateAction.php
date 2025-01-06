@@ -17,7 +17,8 @@ class CreateAction
         private EntityManagerInterface $em,
         private AuthenticationSuccessHandler $handler,
         private UserRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): array
     {

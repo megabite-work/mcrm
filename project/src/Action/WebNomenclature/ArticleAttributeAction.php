@@ -13,7 +13,8 @@ class ArticleAttributeAction
     public function __construct(
         private EntityManagerInterface $em,
         private ArticleAttributeRepository $articleAttributeRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): ArticleAttribute
     {

@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\WebBanner;
 use App\Component\Paginator;
 use App\Dto\WebBanner\RequestQueryDto;
 use App\Entity\MultiStore;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\WebBanner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<WebBanner>

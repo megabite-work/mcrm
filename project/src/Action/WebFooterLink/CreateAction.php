@@ -10,7 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     public function __invoke(RequestDto $dto): WebFooterLink
     {

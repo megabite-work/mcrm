@@ -2,19 +2,20 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Entity\MultiStore;
-use App\Entity\ClientArticleAttribute;
-use App\Dto\WebNomenclature\RequestDto;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\EntityNotFoundException;
+use App\Dto\WebNomenclature\RequestDto;
+use App\Entity\ClientArticleAttribute;
+use App\Entity\MultiStore;
 use App\Repository\ClientArticleAttributeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ClientArticleAttributeUpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
         private ClientArticleAttributeRepository $repo
-    ) {}
+    ) {
+    }
 
     public function __invoke(int $multiStoreId, string $article, int $id, RequestDto $dto): ClientArticleAttribute
     {
@@ -27,7 +28,7 @@ class ClientArticleAttributeUpdateAction
 
         $this->update($entity, $dto);
         $this->em->flush();
-        
+
         return $entity;
     }
 

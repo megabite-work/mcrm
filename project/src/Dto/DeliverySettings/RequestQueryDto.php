@@ -3,6 +3,10 @@
 namespace App\Dto\DeliverySettings;
 
 use App\Component\Paginator;
+use App\Entity\MultiStore;
+use App\Entity\Region;
+use App\Entity\Store;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,43 +15,21 @@ final class RequestQueryDto
     public function __construct(
         #[Groups(['delivery_settings:index'])]
         #[Assert\NotBlank]
-        private int $multiStoreId,
+        #[Exists(MultiStore::class)]
+        public int $multiStoreId,
         #[Groups(['delivery_settings:index'])]
         #[Assert\NotBlank(allowNull: true)]
-        private ?int $storeId,
+        #[Exists(Store::class)]
+        public ?int $storeId,
         #[Groups(['delivery_settings:index'])]
         #[Assert\NotBlank(allowNull: true)]
-        private ?int $regionId,
+        #[Exists(Region::class)]
+        public ?int $regionId,
         #[Groups(['delivery_settings:index'])]
         #[Assert\Positive]
-        private int $page = 1,
+        public int $page = 1,
         #[Groups(['delivery_settings:index'])]
         #[Assert\Positive]
-        private int $perPage = Paginator::ITEMS_PER_PAGE
+        public int $perPage = Paginator::ITEMS_PER_PAGE
     ) {}
-
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function getPerPage(): int
-    {
-        return $this->perPage;
-    }
-
-    public function getStoreId(): ?int
-    {
-        return $this->storeId;
-    }
-
-    public function getRegionId(): ?int
-    {
-        return $this->regionId;
-    }
-
-    public function getMultiStoreId(): int
-    {
-        return $this->multiStoreId;
-    }
 }

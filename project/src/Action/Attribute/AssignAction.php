@@ -2,30 +2,22 @@
 
 namespace App\Action\Attribute;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\Category;
 use App\Entity\AttributeEntity;
+use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AssignAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
-    public function __invoke(int $attributeId, int $categoryId): bool
+    public function __invoke(int $attributeId, int $categoryId): void
     {
-        $category = $this->em->find(Category::class, $categoryId);
+        $category = $this->em->getReference(Category::class, $categoryId);
         $attribute = $this->em->find(AttributeEntity::class, $attributeId);
-
-        if (null === $category || null === $attribute) {
-            throw new EntityNotFoundException('category or attribute not found');
-        }
-
         $attribute->addCategory($category);
-
         $this->em->flush();
-
-        return $attribute->getCategories()->contains($category);
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RegionRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Attribute\Groups;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
 class Region

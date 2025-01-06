@@ -8,7 +8,9 @@ use App\Repository\WebFooterRepository;
 
 class IndexAction
 {
-    public function __construct(private WebFooterRepository $repo) {}
+    public function __construct(private WebFooterRepository $repo)
+    {
+    }
 
     public function __invoke(RequestQueryDto $dto): Paginator
     {

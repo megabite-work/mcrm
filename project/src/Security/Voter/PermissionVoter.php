@@ -9,7 +9,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class PermissionVoter extends Voter
 {
-    public function __construct(private PermissionRepository $permissionRepository) {}
+    public function __construct(private PermissionRepository $permissionRepository)
+    {
+    }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -24,6 +26,6 @@ class PermissionVoter extends Voter
             return false;
         }
 
-        return $this->permissionRepository->hasPermissionsByUser($user->getId(),$subject,$attribute);
+        return $this->permissionRepository->hasPermissionsByUser($user->getId(), $subject, $attribute);
     }
 }
