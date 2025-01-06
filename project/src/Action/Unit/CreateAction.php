@@ -3,6 +3,7 @@
 namespace App\Action\Unit;
 
 use App\Component\EntityNotFoundException;
+use App\Dto\Unit\IndexDto;
 use App\Dto\Unit\RequestDto;
 use App\Entity\Unit;
 use App\Repository\UnitRepository;
@@ -18,15 +19,9 @@ class CreateAction
 
     public function __invoke(array $dtos): array
     {
-        $this->em->beginTransaction();
-        $entities = [];
-
         try {
-            foreach ($dtos as $dto) {
-                $entity = $this->create($dto);
-                $entities[] = $entity;
-            }
-
+            $this->em->beginTransaction();
+            $data = array_map(fn(RequestDto $dto): IndexDto => $this->create($dto), $dtos);
             $this->em->flush();
             $this->em->commit();
         } catch (\Throwable $th) {
@@ -34,22 +29,21 @@ class CreateAction
             throw new EntityNotFoundException($th->getMessage(), $th->getCode());
         }
 
-        return $entities;
+        return $data;
     }
 
-    private function create(RequestDto $dto): Unit
+    private function create(RequestDto $dto): IndexDto
     {
-        $unit = $this->unitRepository->findOneBy(['code' => $dto->getCode()]);
+        $entity = $this->unitRepository->findOneBy(['code' => $dto->code]);
 
-        if (!$unit) {
-            $unit = (new Unit())
+        if (!$entity) {
+            $entity = (new Unit())
                 ->setName($dto->getName())
-                ->setCode($dto->getCode())
-                ->setIcon($dto->getIcon());
-
-            $this->em->persist($unit);
+                ->setCode($dto->code)
+                ->setIcon($dto->icon);
+            $this->em->persist($entity);
         }
 
-        return $unit;
+        return IndexDto::fromEntity($entity);
     }
 }

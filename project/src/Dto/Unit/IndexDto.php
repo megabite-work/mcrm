@@ -15,7 +15,7 @@ final readonly class IndexDto
         public ?string $icon = null,
     ) {}
 
-    public static function fromEntity(?Unit $entity): static
+    public static function fromEntity(?Unit $entity): ?static
     {
         return $entity
             ? new static(
