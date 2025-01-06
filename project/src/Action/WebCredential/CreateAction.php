@@ -14,7 +14,8 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private MultiStoreRepository $multiStoreRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestDto $dto): WebCredential
     {
@@ -24,19 +25,17 @@ class CreateAction
             throw new EntityNotFoundException('already exists', 400);
         }
 
-        $entity = $this->create($multiStore, $dto);
+        $entity = $this->create($multiStore);
 
         $this->em->flush();
 
         return $entity;
     }
 
-    private function create(MultiStore $multiStore, RequestDto $dto): WebCredential
+    private function create(MultiStore $multiStore): WebCredential
     {
         $entity = (new WebCredential())
-            ->setMultiStore($multiStore)
-            ->setLogo($dto->getLogo())
-            ->setAbout($dto->getAbout());
+            ->setMultiStore($multiStore);
 
         $this->em->persist($entity);
 

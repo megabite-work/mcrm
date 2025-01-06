@@ -53,7 +53,6 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
 
         foreach ($fields as $key => $field) {
             $violations = $this->validator->validate($field, $constraints[$key] ?? null);
-
             if ($violations->count()) {
                 throw new ValidationFailedException($field, $violations);
             }

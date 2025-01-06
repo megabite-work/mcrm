@@ -20,20 +20,36 @@ class UnitRepository extends ServiceEntityRepository
 
     public function findAllUnits(RequestQueryDto $dto): Paginator
     {
+<<<<<<< HEAD
         $em = $this->getEntityManager();
 
         $query = $em->createQuery(
+=======
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+>>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
             'SELECT u
             FROM App\Entity\Unit u'
         );
 
+<<<<<<< HEAD
         return new Paginator($query, $dto->page, $dto->perPage, false);
+=======
+        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+>>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
     }
 
     public function findUnitById(int $id): ?Unit
     {
+<<<<<<< HEAD
         $em = $this->getEntityManager();
         $query = $em->createQuery(
+=======
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+>>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
             'SELECT u
             FROM App\Entity\Unit u
             WHERE u.id = :id'

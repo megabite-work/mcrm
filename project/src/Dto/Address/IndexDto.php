@@ -18,6 +18,7 @@ class IndexDto
         public ?string $longitude = null,
     ) {}
 
+<<<<<<< HEAD
     public static function fromEntity(?Address $entity): ?static
     {
         return $entity
@@ -31,5 +32,18 @@ class IndexDto
                 longitude: $entity->getLongitude(),
             )
             : null;
+=======
+    public static function fromEntity(?Address $entity): static
+    {
+        return new static(
+            id: $entity->getId(),
+            region: $entity->getRegion(),
+            district: $entity->getDistrict(),
+            street: $entity->getStreet(),
+            house: $entity->getHouse(),
+            latitude: $entity->getLatitude(),
+            longitude: $entity->getLongitude(),
+        );
+>>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
     }
 }
