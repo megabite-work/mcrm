@@ -23,21 +23,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findUsersWithPagination(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
             'SELECT u
             FROM App\Entity\User u'
         );
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 
     public function getUserWithAddressAndPhonesByUserId(int $id): ?User
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT u, a, p
             FROM App\Entity\User u
             LEFT JOIN u.address a
@@ -50,9 +49,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function getUserByIdWithAllJoinedEntities(int $id): ?User
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT u, a, p, m, s, uc
             FROM App\Entity\User u
             LEFT JOIN u.address a
@@ -97,9 +96,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findAllUserFavoriteIds(int $id): array
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT wn.id
             FROM App\Entity\User u
             LEFT JOIN u.favorites wn

@@ -2,12 +2,13 @@
 
 namespace App\Action\User;
 
-use App\Component\EntityNotFoundException;
 use App\Dto\User\RequestDto;
 use App\Entity\User;
+use App\Exception\ErrorException;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateUserAction
@@ -17,42 +18,33 @@ class CreateUserAction
         private EntityManagerInterface $em,
         private AuthenticationSuccessHandler $handler,
         private UserRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestDto $dto): array
     {
-        $isUniqueEmail = $this->repo->isUniqueEmail($dto->getEmail());
-        $isUniqueUsername = $this->repo->isUniqueUsername($dto->getUsername());
+        $isUniqueEmail = $this->repo->isUniqueEmail($dto->email);
+        $isUniqueUsername = $this->repo->isUniqueUsername($dto->username);
 
         if (!$isUniqueEmail || !$isUniqueUsername) {
-            throw new EntityNotFoundException('this email or username already exists', 400);
+            throw new ErrorException('User', 'this email or username already exists', Response::HTTP_BAD_REQUEST);
         }
 
-        $user = (new User())
-            ->setEmail($dto->getEmail())
-            ->setUsername($dto->getUsername());
-
-        $this->hashPassword($user, $dto->getPassword());
-        $this->setQrCode($user, $dto->getEmail());
-
-        $this->em->persist($user);
+        $entity = (new User())
+            ->setEmail($dto->email)
+            ->setUsername($dto->username)
+            ->setQrCode(base64_encode($dto->email));
+        $this->hashPassword($entity, $dto->password);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        $tokens = json_decode($this->handler->handleAuthenticationSuccess($user)->getContent(), true);
+        $tokens = json_decode($this->handler->handleAuthenticationSuccess($entity)->getContent(), true);
 
-        return compact('user', 'tokens');
+        return compact('entity', 'tokens');
     }
 
-    private function hashPassword(User $user, string $password): void
+    private function hashPassword(User $entity, string $password): void
     {
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $password);
-        $user->setPassword($hashedPassword);
-    }
-
-    private function setQrCode(User $user, string $data): void
-    {
-        $qrCode = base64_encode($data);
-        $user->setQrCode($qrCode);
+        $hashedPassword = $this->passwordHasher->hashPassword($entity, $password);
+        $entity->setPassword($hashedPassword);
     }
 }

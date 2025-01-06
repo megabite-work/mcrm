@@ -8,8 +8,7 @@ class IsUniqueEmailAction
 {
     public function __construct(
         private UserRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(string $email): bool
     {

@@ -8,8 +8,7 @@ class IsUniqueUsernameAction
 {
     public function __construct(
         private UserRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(string $username): bool
     {

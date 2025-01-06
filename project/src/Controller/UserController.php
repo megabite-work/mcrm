@@ -14,13 +14,14 @@ use App\Action\User\ShowAction;
 use App\Action\User\ShowMeAction;
 use App\Action\User\ShowRoleAction;
 use App\Action\User\UpdateAction;
+use App\Dto\User\IndexDto;
 use App\Dto\User\RequestDto;
 use App\Dto\User\RequestQueryDto;
 use App\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,76 +34,85 @@ class UserController extends AbstractController
     #[Route(path: '', methods: ['GET'])]
     public function index(IndexAction $action, #[MapQueryString(serializationContext: ['groups' => ['user:index']])] RequestQueryDto $dto): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['user:index']]);
+        return $this->indexResponse($action($dto));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['user:show']]);
+        $this->existsValidate($id, User::class);
+
+        return $this->successResponse($action($id));
     }
 
     #[Route(path: '/me', methods: ['GET'])]
     public function me(#[CurrentUser] User $user, ShowMeAction $action): JsonResponse
     {
-        return $this->json($action($user->getId()), context: ['groups' => ['user:me']]);
+        return $this->successResponse($action($user->getId()));
     }
 
     #[Route(path: '/roles', methods: ['GET'])]
     public function roles(ShowRoleAction $action): JsonResponse
     {
-        return $this->json($action());
+        return $this->successResponse($action());
     }
 
     #[Route(path: '', methods: ['POST'])]
     #[Security(name: null)]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['user:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['auth:read']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/create-user', methods: ['POST'])]
     #[Security(name: null)]
     public function createUser(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_user']])] RequestDto $dto, CreateUserAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['auth:read']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/create-worker', methods: ['POST'])]
     public function createWorker(#[MapRequestPayload(serializationContext: ['groups' => ['user:create_worker']])] RequestDto $dto, CreateWorkerAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['user:show']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['user:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['user:update']]);
+        $this->existsValidate($id, User::class);
+
+        return $this->successResponse($action($id, $dto));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($id)]);
+        $this->existsValidate($id, User::class);
+        $action($id);
+
+        return $this->emptyResponse();
     }
 
     #[Route(path: '/is-unique-email', methods: ['POST'])]
     #[Security(name: null)]
     public function isUniqueEmail(#[MapRequestPayload(serializationContext: ['groups' => ['unique:email']])] RequestDto $dto, IsUniqueEmailAction $action): JsonResponse
     {
-        return $this->json(['isUnique' => $action($dto->getEmail())]);
+        return $this->successResponse(['unique' => $action($dto->email)]);
     }
 
     #[Route(path: '/is-unique-username', methods: ['POST'])]
     #[Security(name: null)]
     public function IsUniqueUsername(#[MapRequestPayload(serializationContext: ['groups' => ['unique:username']])] RequestDto $dto, IsUniqueUsernameAction $action): JsonResponse
     {
-        return $this->json(['isUnique' => $action($dto->getUsername())]);
+        return $this->successResponse(['unique' => $action($dto->username)]);
     }
 
     #[Route('/change-password', methods: ['PATCH'])]
     public function changePassword(#[MapRequestPayload(serializationContext: ['groups' => ['change:password']])] RequestDto $dto, #[CurrentUser] User $user, ChangePasswordAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($user, $dto)]);
+        $action($user, $dto);
+        
+        return $this->emptyResponse();
     }
 }

@@ -7,9 +7,9 @@ use App\Repository\UserRepository;
 
 class ShowMeAction
 {
-    public function __construct(private UserRepository $repo)
-    {
-    }
+    public function __construct(
+        private UserRepository $repo,
+    ) {}
 
     public function __invoke(int $id): User
     {

@@ -16,15 +16,13 @@ class ChangePasswordAction
     ) {
     }
 
-    public function __invoke(User $user, RequestDto $dto): bool
+    public function __invoke(User $user, RequestDto $dto): void
     {
-        if (null == $user || !$this->passwordHasher->isPasswordValid($user, $dto->getOldPassword())) {
+        if (null == $user || !$this->passwordHasher->isPasswordValid($user, $dto->oldPassword)) {
             throw new UserNotFoundException();
         }
 
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->getPassword());
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->password);
         $this->repo->upgradePassword($user, $hashedPassword);
-
-        return true;
     }
 }

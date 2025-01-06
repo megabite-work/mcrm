@@ -2,13 +2,15 @@
 
 namespace App\Action\User;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\User\IndexDto;
 use App\Dto\User\RequestDto;
 use App\Entity\MultiStore;
 use App\Entity\Role;
 use App\Entity\User;
+use App\Exception\ErrorException;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateWorkerAction
@@ -17,58 +19,39 @@ class CreateWorkerAction
         private UserPasswordHasherInterface $passwordHasher,
         private EntityManagerInterface $em,
         private UserRepository $repo,
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): User
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $isUniqueEmail = $this->repo->isUniqueEmail($dto->getEmail());
-        $isUniqueUsername = $this->repo->isUniqueUsername($dto->getUsername());
-        $multiStore = $this->em->find(MultiStore::class, $dto->getMultiStoreId());
+        $isUniqueEmail = $this->repo->isUniqueEmail($dto->email);
+        $isUniqueUsername = $this->repo->isUniqueUsername($dto->username);
+        $multiStore = $this->em->getReference(MultiStore::class, $dto->multiStoreId);
 
         if (!$isUniqueEmail || !$isUniqueUsername || null === $multiStore) {
-            throw new EntityNotFoundException('this email or username already exists', 400);
-        }
-        if (null == $multiStore) {
-            throw new EntityNotFoundException('multi store not found', 404);
+            throw new ErrorException('User', 'this email or username already exists', Response::HTTP_BAD_REQUEST);
         }
 
-        $user = (new User())
-            ->setEmail($dto->getEmail())
-            ->setUsername($dto->getUsername())
-            ->addWorkPlace($multiStore);
-
-        $this->setRole($user, $dto->getRole());
-        $this->hashPassword($user, $dto->getPassword());
-        $this->setQrCode($user, $dto->getEmail());
-
-        $this->em->persist($user);
+        $entity = new User();
+        $entity->setEmail($dto->email)
+            ->setUsername($dto->username)
+            ->addWorkPlace($multiStore)
+            ->setQrCode(base64_encode($dto->email))
+            ->setPassword($this->passwordHasher->hashPassword($entity, $dto->password));
+        $this->setRole($entity, $dto->role);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $user;
+        return IndexDto::fromEntity($entity);
     }
 
-    private function hashPassword(User $user, string $password): void
-    {
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $password);
-        $user->setPassword($hashedPassword);
-    }
-
-    private function setQrCode(User $user, string $data): void
-    {
-        $qrCode = base64_encode($data);
-        $user->setQrCode($qrCode);
-    }
-
-    private function setRole(User $user, int $role): void
+    private function setRole(User $entity, int $role): void
     {
         $roles = array_column(Role::getRoles(), 'id');
 
         if (!in_array($role, $roles)) {
-            throw new EntityNotFoundException('role not found');
+            throw new ErrorException('Role', 'not found', Response::HTTP_NOT_FOUND);
         }
 
-        $roleName = Role::getRoleName($role);
-        $user->setRoles($roleName);
+        $entity->setRoles(Role::getRoleName($role));
     }
 }

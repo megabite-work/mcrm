@@ -2,19 +2,17 @@
 
 namespace App\Action\User;
 
-use App\Entity\User;
+use App\Dto\User\IndexDto;
 use App\Repository\UserRepository;
 
 class ShowAction
 {
-    public function __construct(private UserRepository $repo)
-    {
-    }
+    public function __construct(
+        private UserRepository $repo
+    ) {}
 
-    public function __invoke(int $id): User
+    public function __invoke(int $id): IndexDto
     {
-        $user = $this->repo->getUserWithAddressAndPhonesByUserId($id);
-
-        return $user;
+        return IndexDto::fromShowAction($this->repo->getUserWithAddressAndPhonesByUserId($id));
     }
 }
