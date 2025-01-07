@@ -22,16 +22,18 @@ class ForgotPasswordAction
         $user = $this->repo->findOneBy(['email' => $dto->email])
             ?? throw new UserNotFoundException();
 
-        $resetToken = bin2hex(random_bytes(32));
-        $user->setToken($resetToken);
-        $user->setExpiresAt(new \DateTime());
-        $this->em->flush();
+        if (!$user->getExpiresAt() || $user->isTokenExpired()) {
+            $resetToken = bin2hex(random_bytes(32));
+            $user->setToken($resetToken);
+            $user->setExpiresAt(new \DateTime());
+            $this->em->flush();
 
-        $email = (new Email())
-            ->to($user->getEmail())
-            ->subject('Password Reset Request')
-            ->html('<p>Чтобы сбросить пароль, нажмите ссылку: <a href="https://react.mcrm.uz/reset-password/' . $resetToken . '">Сбросить пароль</a></p>');
-        $this->mailer->send($email);
+            $email = (new Email())
+                ->to($user->getEmail())
+                ->subject('Password Reset Request')
+                ->html('<p>Чтобы сбросить пароль, нажмите ссылку: <a href="https://react.mcrm.uz/reset-password/' . $resetToken . '">Сбросить пароль</a></p>');
+            $this->mailer->send($email);
+        }
 
         return [];
     }
