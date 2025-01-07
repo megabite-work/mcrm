@@ -17,6 +17,10 @@ final class RequestDto
         private ?array $secrets,
         #[Groups(['web_credential:update'])]
         private ?array $social,
+        #[Groups(['web_credential:create', 'web_credential:update'])]
+        private ?string $logo,
+        #[Groups(['web_credential:create', 'web_credential:update'])]
+        private ?string $about,
     ) {}
 
     public function getMultiStoreId(): ?int
@@ -37,5 +41,15 @@ final class RequestDto
     public function getSocial(): ?array
     {
         return $this->social;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function getAbout(): ?string
+    {
+        return $this->about;
     }
 }

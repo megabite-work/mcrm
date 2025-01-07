@@ -25,9 +25,7 @@ class UpdateAction
         }
 
         $webCredential = $entity->getWebCredential();
-
         $webCredential = $this->update($webCredential, $dto);
-
         $this->em->flush();
 
         return $webCredential;
@@ -43,6 +41,12 @@ class UpdateAction
         }
         if ($dto->getSocial()) {
             $entity->setSocial($dto->getSocial());
+        }
+        if ($dto->getLogo()) {
+            $entity->setLogo($dto->getLogo());
+        }
+        if ($dto->getAbout()) {
+            $entity->setAbout($dto->getAbout());
         }
 
         return $entity;

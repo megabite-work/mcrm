@@ -24,17 +24,19 @@ class CreateAction
             throw new EntityNotFoundException('already exists', 400);
         }
 
-        $entity = $this->create($multiStore);
+        $entity = $this->create($multiStore, $dto);
 
         $this->em->flush();
 
         return $entity;
     }
 
-    private function create(MultiStore $multiStore): WebCredential
+    private function create(MultiStore $multiStore, RequestDto $dto): WebCredential
     {
         $entity = (new WebCredential())
-            ->setMultiStore($multiStore);
+            ->setMultiStore($multiStore)
+            ->setLogo($dto->getLogo())
+            ->setAbout($dto->getAbout());
 
         $this->em->persist($entity);
 
