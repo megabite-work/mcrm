@@ -5,15 +5,16 @@ namespace App\Controller;
 use App\Action\User\ForgotPasswordAction;
 use App\Action\User\ResetPasswordAction;
 use App\Dto\ForgotPassword\RequestDto;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[OA\Tag(name: 'ForgotPassword')]
 class ForgotPasswordController extends AbstractController
 {
-
     #[Route('/forgot-password', methods: ['POST'])]
     public function request(#[MapRequestPayload(serializationContext: ['groups' => 'forgot:password'])] RequestDto $dto, ForgotPasswordAction $action): JsonResponse
     {
