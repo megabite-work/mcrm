@@ -10,9 +10,11 @@ when@dev:
     monolog:
         handlers:
             main:
-                type: stream
-                path: php://stderr
+                type: rotating_file
+                path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: debug
+                formatter: monolog.formatter.json
+                max_files: 10
                 channels: ["!event", "!deprecation", "!security"]
             console:
                 type: console
