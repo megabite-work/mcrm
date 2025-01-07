@@ -33,15 +33,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class UserController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    #[Operation(['summary' => 'Get all users', 'description' => 'lorem ipsum dolor set amet'])]
-    #[OA\Response(
-        response: 200,
-        description: 'Returns the users',
-        content: new OA\JsonContent(
-            type: 'array',
-            items: new OA\Items(ref: new Model(type: User::class, groups: ['user:index']))
-        )
-    )]
     public function index(IndexAction $action, #[MapQueryString(serializationContext: ['groups' => ['user:index']])] RequestQueryDto $dto): JsonResponse
     {
         return $this->json($action($dto), context: ['groups' => ['user:index']]);
