@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Action\User\ForgotPasswordAction;
 use App\Action\User\ResetPasswordAction;
 use App\Dto\ForgotPassword\RequestDto;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/api/forgot', format: 'json')]
 #[OA\Tag(name: 'ForgotPassword')]
+#[Security(name: null)]
 class ForgotPasswordController extends AbstractController
 {
     #[Route('', methods: ['POST'])]
