@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -45,6 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'qr_code', nullable: true)]
     #[Groups(['user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private ?string $qrCode = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $token = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTime $expiresAt = null;
 
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
@@ -446,5 +453,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->permissions->removeElement($permission);
 
         return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): static
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getExpiresAt(): ?DateTime
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?DateTime $expiresAt): static
+    {
+        $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    public function isTokenExpired(): bool
+    {
+        if ($this->expiresAt === null) {
+            return true;
+        }
+
+        $expiresAt = (clone $this->getExpiresAt())->modify('+1 hour');
+        return new DateTime() > $expiresAt;
     }
 }
