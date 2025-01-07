@@ -30,7 +30,7 @@ class ForgotPasswordAction
         $email = (new Email())
             ->to($user->getEmail())
             ->subject('Password Reset Request')
-            ->html('<p>To reset your password, click the link: <a href="https://react.mcrm.uz/reset-password/' . $resetToken . '">Reset Password</a></p>');
+            ->html('<p>Чтобы сбросить пароль, нажмите ссылку: <a href="https://react.mcrm.uz/reset-password/' . $resetToken . '">Сбросить пароль</a></p>');
         $this->mailer->send($email);
 
         return [];
