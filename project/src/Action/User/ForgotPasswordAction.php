@@ -23,8 +23,8 @@ class ForgotPasswordAction
             ?? throw new UserNotFoundException();
 
         $resetToken = bin2hex(random_bytes(32));
-        $user->setResetPasswordToken($resetToken);
-        $user->setResetPasswordRequestedAt(new \DateTime());
+        $user->setToken($resetToken);
+        $user->setExpiresAt(new \DateTime());
         $this->em->flush();
 
         $email = (new Email())
