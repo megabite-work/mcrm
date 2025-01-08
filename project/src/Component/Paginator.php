@@ -40,6 +40,11 @@ class Paginator extends DoctrinePaginator
         return $this->data;
     }
 
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+
     public function getCount(): int
     {
         return $this->count;
@@ -81,22 +86,6 @@ class Paginator extends DoctrinePaginator
         }
 
         return false;
-    }
-
-    public function getPagination()
-    {
-        return [
-            'pagination' => [
-                'total' => $this->getTotal(),
-                'count' => $this->getCount(),
-                'offset' => $this->getOffset(),
-                'items_per_page' => $this->getItemsPerPage(),
-                'total_pages' => $this->getTotalPages(),
-                'current_page' => $this->getCurrentPage(),
-                'has_next_page' => $this->hasNextPage(),
-                'has_previous_page' => $this->hasPreviousPage(),
-            ],
-        ];
     }
 
     public function getIterator(): \ArrayIterator
