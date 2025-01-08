@@ -16,8 +16,7 @@ class CreateAction
     public function __construct(
         private EntityManagerInterface $em,
         private WebBannerRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestDto $dto): WebBanner
     {
@@ -60,12 +59,12 @@ class CreateAction
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): WebBanner
     {
-        if ('product' === $type) {
+        if ($type === 'product') {
             $title = $this->em->find(WebNomenclature::class, $id)?->getTitle();
-        } elseif ('category' === $type) {
+        } else if ($type === 'category') {
             $title = $this->em->find(Category::class, $id)?->getName()['ru'];
         }
-
+        
         $webBanner->setTitle($title);
 
         return $webBanner;

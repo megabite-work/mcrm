@@ -28,6 +28,10 @@ class WebBlock
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
     private ?string $type = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
+    private ?string $title = null;
+
     #[ORM\Column]
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
     private bool $isActive = false;
@@ -36,9 +40,9 @@ class WebBlock
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
     private ?int $typeId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "`order`")]
     #[Groups(['web_block:index', 'web_block:show', 'web_block:create', 'web_block:update'])]
-    private ?int $order = null;
+    private int $order = 0;
 
     public function getId(): ?int
     {
@@ -101,6 +105,18 @@ class WebBlock
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }

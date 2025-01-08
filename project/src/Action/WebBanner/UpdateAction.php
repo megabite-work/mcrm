@@ -13,8 +13,7 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $id, RequestDto $dto): WebBanner
     {
@@ -54,9 +53,9 @@ class UpdateAction
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): WebBanner
     {
-        if ('product' === $type) {
+        if ($type === 'product') {
             $title = $this->em->find(WebNomenclature::class, $id)?->getTitle();
-        } elseif ('category' === $type) {
+        } else if ($type === 'category') {
             $title = $this->em->find(Category::class, $id)?->getName()['ru'];
         }
 
