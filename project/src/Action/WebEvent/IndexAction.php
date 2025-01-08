@@ -24,7 +24,7 @@ class IndexAction
         $data = array_map(function ($entity) {
             if ($entity->getType() === 'product') {
                 $typeIds = array_map(function ($id) {
-                    $webNomenclature = $this->em->getRepository(WebNomenclature::class)->findWebNomenclatureByIdWithCategoryUnitStoreNomenclature($id);
+                    $webNomenclature = $this->em->getRepository(WebNomenclature::class)->find($id);
 
                     return [
                         'id' => $webNomenclature->getId(),
