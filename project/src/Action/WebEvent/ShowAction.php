@@ -21,11 +21,30 @@ class ShowAction
         $entity = $this->repo->find($id) ?? throw new EntityNotFoundException('not found');
         if ($entity->getType() === 'product') {
             $typeIds = array_map(function ($id) {
-                return $this->em->getRepository(WebNomenclature::class)->findWebNomenclatureByIdWithCategoryUnitStoreNomenclature($id);
+                $webNomenclature = $this->em->getRepository(WebNomenclature::class)->find($id);
+
+                return [
+                    'id' => $webNomenclature->getId(),
+                    'article' => $webNomenclature->getArticle(),
+                    'title' => $webNomenclature->getTitle(),
+                    'images' => $webNomenclature->getImages(),
+                    'description' => $webNomenclature->getDescription(),
+                    'document' => $webNomenclature->getDocument(),
+                    'isActive' => $webNomenclature->getIsActive(),
+                ];
             }, $entity->getTypeIds());
         } else if ($entity->getType() === 'category') {
             $typeIds = array_map(function ($id) {
-                return $this->em->getRepository(Category::class)->findCategoryByIdWithParentAndChildrens($id);
+                $category = $this->em->getRepository(Category::class)->findCategoryByIdWithParentAndChildrens($id);
+
+                return [
+                    'id' => $category->getId(),
+                    'name' => $category->getName(),
+                    'image' => $category->getImage(),
+                    'isActive' => $category->getIsActive(),
+                    'parentId' => $category->getParentId(),
+                    'hasChild' => $category->getHasChild(),
+                ];
             }, $entity->getTypeIds());
         }
 
