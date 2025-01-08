@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Action\WebBanner;
+namespace App\Action\WebBannerSetting;
 
 use App\Component\EntityNotFoundException;
-use App\Dto\WebBanner\WebBannerSettingUpsertDto;
+use App\Dto\WebBannerSetting\RequestDto;
 use App\Entity\WebBanner;
 use App\Entity\WebBannerSetting;
 use Doctrine\ORM\EntityManagerInterface;
 
-class WebBannerSettingUpsertAction
+class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(int $id, WebBannerSettingUpsertDto $dto): array
+    public function __invoke(int $id, RequestDto $dto): array
     {
-        $webBannerSetting = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $id])
+        $entity = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $id])
             ?? throw new EntityNotFoundException('web banner setting not found', 404);
 
         $webBannerIds = array_map(function (int $id) {
             return $this->em->getReference(WebBanner::class, $id)->getId();
         }, $dto->webBannerIds) ?: throw new EntityNotFoundException('web banner not found', 404);
 
-        $webBannerSetting->setAnimation($dto->animation)
-            ->setWebBannerIds($webBannerIds)
-            ->setMove($dto->move)
-            ->setDelay($dto->delay)
-            ->setSpeed($dto->speed);
-        $this->em->persist($webBannerSetting);
+        $entity->setAnimation($dto->animation ?? $entity->getAnimation())
+            ->setWebBannerIds($webBannerIds ?? $entity->getWebBannerIds())
+            ->setMove($dto->move ?? $entity->getMove())
+            ->setDelay($dto->delay ?? $entity->getDelay())
+            ->setSpeed($dto->speed ?? $entity->getSpeed());
+        $this->em->persist($entity);
         $this->em->flush();
 
         return [];

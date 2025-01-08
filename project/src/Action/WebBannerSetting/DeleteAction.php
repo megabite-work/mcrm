@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Action\WebBannerSetting;
+
+use App\Component\EntityNotFoundException;
+use App\Entity\WebBannerSetting;
+use Doctrine\ORM\EntityManagerInterface;
+
+class DeleteAction
+{
+    public function __construct(
+        private EntityManagerInterface $em
+    ) {}
+
+    public function __invoke(int $id): bool
+    {
+        $entity = $this->em->find(WebBannerSetting::class, $id);
+
+        if (null === $entity) {
+            throw new EntityNotFoundException('not found');
+        }
+
+        $this->em->remove($entity);
+        $this->em->flush();
+
+        return true;
+    }
+}

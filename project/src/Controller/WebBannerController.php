@@ -8,17 +8,13 @@ use App\Action\WebBanner\IndexAction;
 use App\Action\WebBanner\ShowAction;
 use App\Action\WebBanner\UpdateAction;
 use App\Action\WebBanner\WebBannerMetrikaUpsertAction;
-use App\Action\WebBanner\WebBannerSettingIndexAction;
-use App\Action\WebBanner\WebBannerSettingUpsertAction;
 use App\Dto\WebBanner\RequestDto;
 use App\Dto\WebBanner\RequestQueryDto;
 use App\Dto\WebBanner\WebBannerMetrikaUpsertDto;
-use App\Dto\WebBanner\WebBannerSettingUpsertDto;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -62,17 +58,5 @@ class WebBannerController extends AbstractController
     public function metrics(int $id, #[MapRequestPayload] WebBannerMetrikaUpsertDto $dto, WebBannerMetrikaUpsertAction $action): JsonResponse
     {
         return $this->json($action($id, $dto));
-    }
-
-    #[Route('/{id<\d+>}/settings', methods: ['PATCH'])]
-    public function settings(int $id, #[MapRequestPayload] WebBannerSettingUpsertDto $dto, WebBannerSettingUpsertAction $action): JsonResponse
-    {
-        return $this->json($action($id, $dto));
-    }
-
-    #[Route('/settings', methods: ['GET'])]
-    public function getSettings(WebBannerSettingIndexAction $action, #[MapQueryParameter] ?int $id = null): JsonResponse
-    {
-        return $this->json($action($id));
     }
 }

@@ -16,10 +16,5 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['reset:password'])]
         #[Assert\Length(min: 6, groups: ['reset:password'])]
         public ?string $password,
-        #[Groups(['reset:password'])]
-        #[Assert\NotBlank(groups: ['reset:password'])]
-        #[Assert\Length(min: 6, groups: ['reset:password'])]
-        #[Assert\IdenticalTo(propertyPath: 'password', groups: ['reset:password'])]
-        public ?string $passwordConfirmation,
     ) {}
 }

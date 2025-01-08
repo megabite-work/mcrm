@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Component\Paginator;
+use App\Dto\WebBannerSetting\RequestQueryDto;
 use App\Entity\WebBannerSetting;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +18,15 @@ class WebBannerSettingRepository extends ServiceEntityRepository
         parent::__construct($registry, WebBannerSetting::class);
     }
 
-//    /**
-//     * @return WebBanerMetrika[] Returns an array of WebBanerMetrika objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('w.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllWebBannerSettingsByMultiStore(RequestQueryDto $dto): Paginator
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT wbs
+            FROM App\Entity\WebBannerSetting wbs
+            WHERE wbs.multiStoreId = :multiStoreId'
+        )->setParameters(['multiStoreId' => $dto->multiStoreId]);
 
-//    public function findOneBySomeField($value): ?WebBanerMetrika
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return new Paginator($query, $dto->page, $dto->perPage, false);
+    }
 }

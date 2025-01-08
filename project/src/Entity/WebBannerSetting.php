@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\WebBannerSettingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: WebBannerSettingRepository::class)]
 class WebBannerSetting
@@ -11,21 +12,31 @@ class WebBannerSetting
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
     private ?string $webBannerIds = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
     private ?string $animation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
     private ?string $move = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
     private ?int $delay = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
+    private ?int $multiStoreId = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_banner_setting:index', 'web_banner_setting:show', 'web_banner_setting:create', 'web_banner_setting:update'])]
     private ?int $speed = null;
 
     public function getId(): ?int
@@ -89,6 +100,18 @@ class WebBannerSetting
     public function setSpeed(?int $speed): static
     {
         $this->speed = $speed;
+
+        return $this;
+    }
+
+    public function getMultiStoreId(): ?int
+    {
+        return $this->multiStoreId;
+    }
+
+    public function setMultiStoreId(?int $multiStoreId): static
+    {
+        $this->multiStoreId = $multiStoreId;
 
         return $this;
     }
