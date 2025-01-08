@@ -3,11 +3,7 @@
 namespace App\Action\NomenclatureHistory;
 
 use App\Action\StoreNomenclature\CreateOrUpdateAction;
-<<<<<<< HEAD
-use App\Component\EntityNotFoundException;
-=======
 use App\Dto\NomenclatureHistory\IndexDto;
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
 use App\Dto\NomenclatureHistory\RequestDto;
 use App\Entity\ForgiveType;
 use App\Entity\Nomenclature;

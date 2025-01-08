@@ -27,11 +27,7 @@ class CreateOrUpdateAction
         }
     }
 
-<<<<<<< HEAD
     private function create(Store $store, Nomenclature $nomenclature, float $qty): void
-=======
-    private function create(Store $store, Nomenclature $nomenclature, float $qty)
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
     {
         $storeNomenclature = (new StoreNomenclature())
             ->setStore($store)
@@ -41,11 +37,7 @@ class CreateOrUpdateAction
         $this->em->persist($storeNomenclature);
     }
 
-<<<<<<< HEAD
     private function update(StoreNomenclature $storeNomenclature, float $qty): void
-=======
-    private function update(StoreNomenclature $storeNomenclature, float $qty)
->>>>>>> b6d1ea7 (feat: add DTO classes for various entities and implement error handling)
     {
         $updatedQty = $storeNomenclature->getQty() + $qty;
         $storeNomenclature->setQty($updatedQty);

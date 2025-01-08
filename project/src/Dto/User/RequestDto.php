@@ -13,7 +13,7 @@ final class RequestDto
         #[Groups(['user:create', 'user:update', 'unique:email', 'user:create_worker', 'user:create_user'])]
         #[Assert\Email(groups: ['user:create', 'unique:email', 'user:create_worker', 'user:create_user'])]
         #[Assert\NotBlank(groups: ['user:create', 'unique:email', 'user:create_worker', 'user:create_user'])]
-        private ?string $email,
+        public ?string $email,
         #[Groups(['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
         #[Assert\NotBlank(groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
         #[Assert\Length(min: 3, groups: ['user:create', 'unique:username', 'user:create_worker', 'user:create_user'])]
@@ -25,7 +25,7 @@ final class RequestDto
         #[Groups(['change:password'])]
         #[SerializedName('old_password')]
         #[Assert\NotBlank(groups: ['change:password'])]
-        private ?string $oldPassword,
+        public ?string $oldPassword,
         #[Groups(['change:password'])]
         #[SerializedName('confirm_password')]
         #[Assert\NotBlank(groups: ['change:password'])]
@@ -51,7 +51,7 @@ final class RequestDto
         public ?int $role,
         #[Groups(['user:create_worker'])]
         #[Assert\NotBlank(groups: ['user:create_worker'])]
-        private ?int $multiStoreId,
+        public ?int $multiStoreId,
     ) {
     }
 
