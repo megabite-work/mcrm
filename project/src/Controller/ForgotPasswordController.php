@@ -13,12 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/forgot', format: 'json')]
-#[OA\Tag(name: 'ForgotPassword')]
+#[Route(path: '/api/auth', format: 'json')]
+#[OA\Tag(name: 'Authorization')]
 #[Security(name: null)]
 class ForgotPasswordController extends AbstractController
 {
-    #[Route('', methods: ['POST'])]
+    #[Route('/forgot', methods: ['POST'])]
     public function request(#[MapRequestPayload(serializationContext: ['groups' => ['forgot:password']])] RequestDto $dto, ForgotPasswordAction $action): JsonResponse
     {
         return $this->json($action($dto), Response::HTTP_OK);
