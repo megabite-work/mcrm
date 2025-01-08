@@ -22,9 +22,9 @@ class WebBannerSettingController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
     #[Security(name: null)]
-    public function index(#[MapQueryString(serializationContext: ['groups' => ['web_banner_setting_setting:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
+    public function index(#[MapQueryString(serializationContext: ['groups' => ['web_banner_setting:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_banner_setting_setting:index']]);
+        return $this->json($action($dto), context: ['groups' => ['web_banner_setting:index']]);
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
