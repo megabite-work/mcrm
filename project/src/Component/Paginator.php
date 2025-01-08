@@ -40,6 +40,11 @@ class Paginator extends DoctrinePaginator
         return $this->data;
     }
 
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+
     public function getCount(): int
     {
         return $this->count;

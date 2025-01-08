@@ -25,13 +25,13 @@ class WebEventController extends AbstractController
     #[Security(name: null)]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['web_event:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_event:index']]);
+        return $this->json($action($dto));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['web_event:show']]);
+        return $this->json($action($id));
     }
 
     #[Route(path: '', methods: ['POST'])]
