@@ -60,16 +60,17 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
         }
     }
 
-    public function existsValidate(mixed $payload, array|string $entities): void
+    public function existsValidate(mixed $payload, array|string $entities, array|string|null $field = null): void
     {
-        $fields = is_array($payload) ? $payload : [$payload];
+        $columns = is_array($payload) ? $payload : [$payload];
         $entities = is_array($entities) ? $entities : [$entities];
+        $fields = $field === null ? [null] : (is_array($field) ? $field : [$field]);
 
-        foreach ($fields as $key => $field) {
-            $violations = $this->validator->validate($field, new Exists($entities[$key]));
+        foreach ($columns as $key => $column) {
+            $violations = $this->validator->validate($column, new Exists($entities[$key], $fields[$key]));
 
             if ($violations->count()) {
-                throw new ValidationFailedException($field, $violations);
+                throw new ValidationFailedException($column, $violations);
             }
         }
     }

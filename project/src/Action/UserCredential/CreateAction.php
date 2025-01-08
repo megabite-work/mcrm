@@ -3,9 +3,10 @@
 namespace App\Action\UserCredential;
 
 use App\Component\CurrentUser;
-use App\Component\EntityNotFoundException;
+use App\Dto\UserCredential\IndexDto;
 use App\Dto\UserCredential\RequestDto;
 use App\Entity\UserCredential;
+use App\Exception\ErrorException;
 use App\Repository\UserCredentialRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,25 +16,24 @@ class CreateAction
         private EntityManagerInterface $em,
         private CurrentUser $user,
         private UserCredentialRepository $repo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): UserCredential
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $userCredential = $this->repo->findUserCredentialByType($this->user->getUser(), $dto->getType());
+        $entity = $this->repo->findUserCredentialByType($this->user->getUser(), $dto->getType());
 
-        if (null !== $userCredential) {
-            throw new EntityNotFoundException('credential already exists');
+        if (null !== $entity) {
+            throw new ErrorException('UserCredential', 'already exists');
         }
 
-        $userCredential = (new UserCredential())
+        $entity = (new UserCredential())
             ->setType($dto->getType())
             ->setOwner($this->user->getUser())
             ->setValue($dto->getValue());
 
-        $this->em->persist($userCredential);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $userCredential;
+        return IndexDto::fromEntity($entity);
     }
 }

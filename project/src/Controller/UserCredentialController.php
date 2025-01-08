@@ -9,13 +9,11 @@ use App\Action\UserCredential\ShowAction;
 use App\Action\UserCredential\ShowByTypeAction;
 use App\Action\UserCredential\UpdateAction;
 use App\Dto\UserCredential\RequestDto;
-use App\Dto\UserCredential\RequestQueryDto;
 use App\Entity\UserCredential;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -24,9 +22,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class UserCredentialController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[MapQueryString(serializationContext: ['groups' => ['user_credential:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
+    public function index(IndexAction $action): JsonResponse
     {
-        return $this->json($action($this->getUser(), $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->indexResponse($action($this->getUser()));
     }
 
     #[OA\Parameter(
@@ -46,16 +44,18 @@ class UserCredentialController extends AbstractController
             ref: new Model(type: UserCredential::class, groups: ['user_credential:index'])
         )
     )]
-    #[Route(path: '/{type<\w{4,7}>}', methods: ['GET'])]
+    #[Route(path: '/{type}', methods: ['GET'])]
     public function type(string $type, ShowByTypeAction $action): JsonResponse
     {
-        return $this->json($action($this->getUser(), $type), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($this->getUser(), $type));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($this->getUser(), $id), context: ['groups' => ['user_credential:index']]);
+        $this->existsValidate($id, UserCredential::class);
+
+        return $this->successResponse($action($this->getUser(), $id));
     }
 
     #[Route(path: '/company', methods: ['POST'])]
@@ -63,7 +63,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('company');
 
-        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/click', methods: ['POST'])]
@@ -71,7 +71,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('click');
 
-        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/payme', methods: ['POST'])]
@@ -79,7 +79,7 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('payme');
 
-        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/uzum', methods: ['POST'])]
@@ -87,44 +87,51 @@ class UserCredentialController extends AbstractController
     {
         $dto->setType('uzum');
 
-        return $this->json($action($dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}/company', methods: ['PATCH'])]
     public function updateCompany(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['user_credential:company_update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
+        $this->existsValidate($id, UserCredential::class);
         $dto->setType('company');
 
-        return $this->json($action($this->getUser(), $id, $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($this->getUser(), $id, $dto));
     }
 
     #[Route('/{id<\d+>}/click', methods: ['PATCH'])]
     public function updateClick(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['user_credential:click_update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
+        $this->existsValidate($id, UserCredential::class);
         $dto->setType('click');
 
-        return $this->json($action($this->getUser(), $id, $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($this->getUser(), $id, $dto));
     }
 
     #[Route('/{id<\d+>}/payme', methods: ['PATCH'])]
     public function updatePayme(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['user_credential:payme_update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
+        $this->existsValidate($id, UserCredential::class);
         $dto->setType('payme');
 
-        return $this->json($action($this->getUser(), $id, $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($this->getUser(), $id, $dto));
     }
 
     #[Route('/{id<\d+>}/uzum', methods: ['PATCH'])]
     public function updateUzum(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['user_credential:uzum_update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
+        $this->existsValidate($id, UserCredential::class);
         $dto->setType('uzum');
 
-        return $this->json($action($this->getUser(), $id, $dto), context: ['groups' => ['user_credential:index']]);
+        return $this->successResponse($action($this->getUser(), $id, $dto));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($this->getUser(), $id)]);
+        $this->existsValidate($id, UserCredential::class);
+        $action($this->getUser(), $id);
+
+        return $this->emptyResponse();
     }
 }

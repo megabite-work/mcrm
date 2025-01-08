@@ -19,7 +19,7 @@ class IndexAction
         $paginator = $this->repo->findUsersWithPagination($dto);
         $data = $paginator->getData();
 
-        array_walk($data, function (&$entity) {
+        array_walk_recursive($data, function (&$entity) {
             $entity = IndexDto::fromEntity($entity);
         });
 

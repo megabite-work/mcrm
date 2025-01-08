@@ -2,11 +2,13 @@
 
 namespace App\Action\UserCredential;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\UserCredential\IndexDto;
 use App\Dto\UserCredential\RequestDto;
 use App\Entity\UserCredential;
+use App\Exception\ErrorException;
 use App\Repository\UserCredentialRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UpdateAction
@@ -14,85 +16,71 @@ class UpdateAction
     public function __construct(
         private EntityManagerInterface $em,
         private UserCredentialRepository $repo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(UserInterface $user, int $id, RequestDto $dto): UserCredential
+    public function __invoke(UserInterface $user, int $id, RequestDto $dto): IndexDto
     {
-        $userCredential = $this->repo->findOneBy(['id' => $id, 'owner' => $user, 'type' => $dto->getType()]);
+        $entity = $this->repo->findOneBy(['id' => $id, 'owner' => $user, 'type' => $dto->getType()]);
 
-        if (null === $userCredential) {
-            throw new EntityNotFoundException('not found');
+        if (! $entity) {
+            throw new ErrorException('UserCredential', 'not found', Response::HTTP_NOT_FOUND);
         }
 
-        $userCredential = match ($dto->getType()) {
-            'company' => $this->updateCompany($userCredential, $dto),
-            'click' => $this->updateClick($userCredential, $dto),
-            'payme' => $this->updatePayme($userCredential, $dto),
-            'uzum' => $this->updateUzum($userCredential, $dto),
-            default => $userCredential
+        $entity = match ($dto->getType()) {
+            'company' => $this->updateCompany($entity, $dto),
+            'click' => $this->updateClick($entity, $dto),
+            'payme' => $this->updatePayme($entity, $dto),
+            'uzum' => $this->updateUzum($entity, $dto),
+            default => $entity
         };
-
         $this->em->flush();
 
-        return $userCredential;
+        return IndexDto::fromEntity($entity);
     }
 
-    private function updateCompany(UserCredential $userCredential, RequestDto $dto): UserCredential
+    private function updateCompany(UserCredential $entity, RequestDto $dto): UserCredential
     {
-        $company = $userCredential->getValue();
-        $company = [
-            'inn' => $dto->getInn() ?: $company['inn'],
-            'kindOf' => $dto->getKindOf() ?: $company['kindOf'],
-            'name' => $dto->getName() ?: $company['name'],
-            'director' => $dto->getDirector() ?: $company['director'],
-            'address' => $dto->getAddress() ?: $company['address'],
-            'phones' => $dto->getPhones() ?: $company['phones'],
-            'oferta' => $dto->getOferta(),
-        ];
+        $entity->setValue([
+            'inn' => $dto->inn ?: $entity->getValue()['inn'],
+            'kindOf' => $dto->kindOf ?: $entity->getValue()['kindOf'],
+            'name' => $dto->name ?: $entity->getValue()['name'],
+            'director' => $dto->director ?: $entity->getValue()['director'],
+            'address' => $dto->address ?: $entity->getValue()['address'],
+            'phones' => $dto->phones ?: $entity->getValue()['phones'],
+            'oferta' => $dto->oferta,
+        ]);
 
-        $userCredential->setValue($company);
-
-        return $userCredential;
+        return $entity;
     }
 
-    private function updateClick(UserCredential $userCredential, RequestDto $dto): UserCredential
+    private function updateClick(UserCredential $entity, RequestDto $dto): UserCredential
     {
-        $click = $userCredential->getValue();
-        $click = [
-            'serviceId' => $dto->getServiceId() ?: $click['serviceId'],
-            'merchantId' => $dto->getMerchantId() ?: $click['merchantId'],
-            'secretKey' => $dto->getSecretKey() ?: $click['secretKey'],
-            'merchantUserId' => $dto->getMerchantUserId() ?: $click['merchantUserId'],
-        ];
+        $entity->setValue([
+            'serviceId' => $dto->serviceId ?: $entity->getValue()['serviceId'],
+            'merchantId' => $dto->merchantId ?: $entity->getValue()['merchantId'],
+            'secretKey' => $dto->secretKey ?: $entity->getValue()['secretKey'],
+            'merchantUserId' => $dto->merchantUserId ?: $entity->getValue()['merchantUserId'],
+        ]);
 
-        $userCredential->setValue($click);
-
-        return $userCredential;
+        return $entity;
     }
 
-    private function updatePayme(UserCredential $userCredential, RequestDto $dto): UserCredential
+    private function updatePayme(UserCredential $entity, RequestDto $dto): UserCredential
     {
-        $payme = $userCredential->getValue();
-        $payme = [
-            'merchantId' => $dto->getMerchantId() ?: $payme['merchantId'],
-        ];
+        $entity->setValue([
+            'merchantId' => $dto->merchantId ?: $entity->getValue()['merchantId'],
+        ]);
 
-        $userCredential->setValue($payme);
-
-        return $userCredential;
+        return $entity;
     }
 
-    private function updateUzum(UserCredential $userCredential, RequestDto $dto): UserCredential
+    private function updateUzum(UserCredential $entity, RequestDto $dto): UserCredential
     {
-        $uzum = $userCredential->getValue();
-        $uzum = [
-            'xTerminalId' => $dto->getXTerminalId() ?: $uzum['xTerminalId'],
-            'xApiKey' => $dto->getXApiKey() ?: $uzum['xApiKey'],
-        ];
+        $entity->setValue([
+            'xTerminalId' => $dto->xTerminalId ?: $entity->getValue()['xTerminalId'],
+            'xApiKey' => $dto->xApiKey ?: $entity->getValue()['xApiKey'],
+        ]);
 
-        $userCredential->setValue($uzum);
-
-        return $userCredential;
+        return $entity;
     }
 }

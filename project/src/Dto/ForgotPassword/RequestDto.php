@@ -2,6 +2,8 @@
 
 namespace App\Dto\ForgotPassword;
 
+use App\Entity\User;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,6 +13,7 @@ final class RequestDto
         #[Groups(['forgot:password'])]
         #[Assert\NotBlank(groups: ['forgot:password'])]
         #[Assert\Email(groups: ['forgot:password'])]
+        #[Exists(User::class, field: 'email')]
         public ?string $email,
         #[Groups(['reset:password'])]
         #[Assert\NotBlank(groups: ['reset:password'])]

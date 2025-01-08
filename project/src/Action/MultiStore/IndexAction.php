@@ -23,7 +23,7 @@ class IndexAction
             : $this->repo->findAllMultiStoresByOwnerWithPagination($this->security->getUser(), $dto);
         $data = $paginator->getData();
 
-        array_walk($data, function (&$entity) {
+        array_walk_recursive($data, function (&$entity) {
             $entity = IndexDto::fromIndexAction($entity);
         });
 

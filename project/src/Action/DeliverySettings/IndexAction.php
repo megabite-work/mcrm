@@ -24,7 +24,7 @@ class IndexAction
         };
         $data = $paginator->getData();
 
-        array_walk($data, function (&$entity) {
+        array_walk_recursive($data, function (&$entity) {
             $entity = IndexDto::fromEntity($entity, true);
         });
 

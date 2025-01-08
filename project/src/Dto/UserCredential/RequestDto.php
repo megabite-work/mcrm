@@ -10,47 +10,46 @@ final class RequestDto
     public function __construct(
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        private ?string $inn,
+        public ?string $inn,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        private ?string $kindOf,
+        public ?string $kindOf,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        private ?string $name,
+        public ?string $name,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        private ?string $director,
+        public ?string $director,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        private ?string $address,
+        public ?string $address,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
-        private ?array $phones,
+        public ?array $phones,
         #[Groups(['user_credential:click_create', 'user_credential:click_update'])]
         #[Assert\NotBlank(groups: ['user_credential:click_create'])]
-        private ?string $serviceId,
+        public ?string $serviceId,
         #[Groups(['user_credential:click_create', 'user_credential:click_update', 'user_credential:payme_create', 'user_credential:payme_update'])]
         #[Assert\NotBlank(groups: ['user_credential:click_create', 'user_credential:payme_create'])]
-        private ?string $merchantId,
+        public ?string $merchantId,
         #[Groups(['user_credential:click_create', 'user_credential:click_update'])]
         #[Assert\NotBlank(groups: ['user_credential:click_create'])]
-        private ?string $secretKey,
+        public ?string $secretKey,
         #[Groups(['user_credential:click_create', 'user_credential:click_update'])]
         #[Assert\NotBlank(groups: ['user_credential:click_create'])]
-        private ?string $merchantUserId,
+        public ?string $merchantUserId,
         #[Groups(['user_credential:uzum_create', 'user_credential:uzum_update'])]
         #[Assert\NotBlank(groups: ['user_credential:uzum_create'])]
-        private ?string $xTerminalId,
+        public ?string $xTerminalId,
         #[Groups(['user_credential:uzum_create', 'user_credential:uzum_update'])]
         #[Assert\NotBlank(groups: ['user_credential:uzum_create'])]
-        private ?string $xApiKey,
+        public ?string $xApiKey,
         #[Groups(['user_credential:company_create', 'user_credential:company_update'])]
         #[Assert\NotBlank(groups: ['user_credential:company_create'])]
         #[Assert\Type(['bool'], groups: ['user_credential:company_create'])]
-        private bool $oferta = false,
-        private ?string $type = null
-    ) {
-    }
+        public bool $oferta = false,
+        public ?string $type = null
+    ) {}
 
     public function getType(): ?string
     {
@@ -136,70 +135,5 @@ final class RequestDto
     private function isUzum(): bool
     {
         return $this->xTerminalId && $this->xApiKey;
-    }
-
-    public function getInn(): ?string
-    {
-        return $this->inn;
-    }
-
-    public function getKindOf(): ?string
-    {
-        return $this->kindOf;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function getDirector(): ?string
-    {
-        return $this->director;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function getPhones(): ?array
-    {
-        return $this->phones;
-    }
-
-    public function getOferta(): bool
-    {
-        return $this->oferta;
-    }
-
-    public function getServiceId(): ?string
-    {
-        return $this->serviceId;
-    }
-
-    public function getMerchantId(): ?string
-    {
-        return $this->merchantId;
-    }
-
-    public function getSecretKey(): ?string
-    {
-        return $this->secretKey;
-    }
-
-    public function getMerchantUserId(): ?string
-    {
-        return $this->merchantUserId;
-    }
-
-    public function getXTerminalId(): ?string
-    {
-        return $this->xTerminalId;
-    }
-
-    public function getXApiKey(): ?string
-    {
-        return $this->xApiKey;
     }
 }

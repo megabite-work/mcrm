@@ -4,9 +4,10 @@ namespace App\Action\User;
 
 use App\Dto\ForgotPassword\RequestDto;
 use App\Entity\User;
+use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class ResetPasswordAction
 {
@@ -15,12 +16,12 @@ class ResetPasswordAction
         private EntityManagerInterface $em,
     ) {}
 
-    public function __invoke(string $token, RequestDto $dto): array
+    public function __invoke(string $token, RequestDto $dto): void
     {
         $user = $this->em->getRepository(User::class)->findOneBy(['token' => $token]);
 
-        if (!$user || $user->isTokenExpired()) {
-            return throw new UserNotFoundException();
+        if ($user->isTokenExpired()) {
+            return throw new ErrorException('User', 'token is expired', Response::HTTP_BAD_REQUEST);
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->password);
@@ -28,7 +29,5 @@ class ResetPasswordAction
         $user->setToken(null);
         $user->setExpiresAt(null);
         $this->em->flush();
-
-        return [];
     }
 }
