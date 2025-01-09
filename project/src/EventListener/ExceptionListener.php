@@ -43,7 +43,7 @@ class ExceptionListener
             $response->setData($errorException->getError());
             $response->setStatusCode($errorException->getCode());
         } else {
-            $error = $this->kernel->getEnvironment() === 'prod' ? 'An error occurred' : ($exception->getMessage() ?: $exception->getTrace());
+            $error = /* $this->kernel->getEnvironment() === 'prod' ? 'An error occurred' : ($exception->getMessage() ?:  */$exception->getTrace()/* ) */;
             $response->setData(["error" => [["path" => "Server", "error" => $error]]]);
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
