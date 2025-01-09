@@ -10,7 +10,6 @@ final readonly class IndexDto
 {
     public function __construct(
         public ?int $id = null,
-        public ?int $multiStoreId = null,
         public ?string $type = null,
         public ?string $title = null,
         public ?bool $isActive = null,
@@ -23,7 +22,6 @@ final readonly class IndexDto
         return $entity
             ? new static(
                 id: $entity->getId(),
-                multiStoreId: $entity->getMultiStoreId(),
                 type: $entity->getType(),
                 title: $entity->getTitle(),
                 isActive: $entity->getIsActive(),
