@@ -2,7 +2,7 @@
 
 namespace App\Action\WebBlock;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebBlock\IndexDto;
 use App\Dto\WebBlock\RequestDto;
 use App\Entity\WebBlock;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,24 +11,15 @@ class UpdateAction
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    public function __invoke(int $id, RequestDto $dto): WebBlock
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $entity = $this->em->find(WebBlock::class, $id)
-            ?? throw new EntityNotFoundException('not found');
-        $entity = $this->update($entity, $dto);
+        $entity = $this->em->find(WebBlock::class, $id);
+        $entity->setType($dto->type ?? $entity->getType())
+            ->setTypeId($dto->typeId ?? $entity->getTypeId())
+            ->setIsActive($dto->isActive ?? $entity->getIsActive())
+            ->setTitle($dto->title ?? $entity->getTitle());
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function update(WebBlock $entity, RequestDto $dto): WebBlock
-    {
-        $entity->setType($dto->getType())
-            ->setTypeId($dto->getTypeId())
-            ->setIsActive($dto->getIsActive())
-            ->setTitle($dto->getTitle())
-            ->setOrder($dto->getOrder());
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

@@ -13,7 +13,7 @@ class SortAction
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(array $dtos): array
+    public function __invoke(array $dtos): void
     {
         /** @var SortDto $dto */
         foreach ($dtos as $dto) {
@@ -25,7 +25,5 @@ class SortAction
         }
 
         $this->em->flush();
-
-        return [];
     }
 }
