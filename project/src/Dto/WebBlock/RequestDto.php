@@ -2,6 +2,7 @@
 
 namespace App\Dto\WebBlock;
 
+use App\Entity\MultiStore;
 use App\Entity\WebBlock;
 use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;

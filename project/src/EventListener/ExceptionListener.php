@@ -13,7 +13,11 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 #[AsEventListener(event: 'kernel.exception')]
 class ExceptionListener
 {
-    public function __construct(private KernelInterface $kernel) {}
+    public function __construct(
+        private KernelInterface $kernel
+    ) {}
+
+
     public function __invoke(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();

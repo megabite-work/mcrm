@@ -13,7 +13,7 @@ when@dev:
                 type: rotating_file
                 path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: debug
-                channels: ["!deprecation", "!nelmio_api_doc", "!event", "!security"]
+                channels: ["!deprecation"]
                 max_files: 10
             console:
                 type: console
@@ -48,6 +48,7 @@ when@prod:
                 path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: notice
                 formatter: monolog.formatter.json
+                channels: ["!deprecation"]
                 max_files: 10
             console:
                 type: console
