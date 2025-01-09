@@ -14,7 +14,7 @@ final class SortDto
         #[Exists(WebBlock::class)]
         public int $id,
         #[Assert\NotBlank]
-        #[Assert\PositiveOrZero]
+        #[Assert\Positive]
         public int $order,
     ) {}
 }

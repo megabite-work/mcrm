@@ -6,9 +6,11 @@ use App\Action\WebBlock\CreateAction;
 use App\Action\WebBlock\DeleteAction;
 use App\Action\WebBlock\IndexAction;
 use App\Action\WebBlock\ShowAction;
+use App\Action\WebBlock\SortAction;
 use App\Action\WebBlock\UpdateAction;
 use App\Dto\WebBlock\RequestDto;
 use App\Dto\WebBlock\RequestQueryDto;
+use App\Dto\WebBlock\SortDto;
 use App\Entity\WebBlock;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
@@ -49,6 +51,14 @@ class WebBlockController extends AbstractController
         $this->existsValidate($id, WebBlock::class);
 
         return $this->successResponse($action($id, $dto));
+    }
+
+    #[Route('/sort', methods: ['PATCH'])]
+    public function sort(#[MapRequestPayload(type: SortDto::class)] array $dtos, SortAction $action): JsonResponse
+    {
+        $action($dtos);
+
+        return $this->emptyResponse();
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
