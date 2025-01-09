@@ -21,7 +21,7 @@ class ResetPasswordAction
         $user = $this->em->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if ($user->isTokenExpired()) {
-            return throw new ErrorException('User', 'token is expired', Response::HTTP_BAD_REQUEST);
+            throw new ErrorException('User', 'token is expired', Response::HTTP_BAD_REQUEST);
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->password);
