@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 final readonly class RequestDto
 {
     public function __construct(
-        #[Assert\NotBlank]
         #[Assert\All(constraints: [new Exists(WebBanner::class)])]
         public ?array $webBannerIds = [],
         #[Assert\NotBlank]
