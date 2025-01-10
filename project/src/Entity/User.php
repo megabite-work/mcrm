@@ -18,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['username'])]
 #[Gedmo\SoftDeleteable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -32,13 +30,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(length: 180)]
     #[Assert\Email]
     #[Assert\NotBlank]
     #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me'])]
     private ?string $email = null;
 
-    #[ORM\Column(unique: true)]
+    #[ORM\Column]
     #[Groups(['auth:read', 'user:index', 'user:show', 'user:create', 'user:update', 'multi_store:show', 'user:me', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_shift:index', 'cashbox_shift:show', 'cashbox_shift:create', 'cashbox_shift:update', 'cashbox_detail:index',  'cashbox_detail:show', 'cashbox_detail:create', 'cashbox_detail:update'])]
     #[Assert\NotBlank]
     private ?string $username = null;
