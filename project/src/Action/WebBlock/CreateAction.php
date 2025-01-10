@@ -37,7 +37,12 @@ class CreateAction
     private function checkTypeAndCreate(string $type, int $multiStoreId): int
     {
         $entity = match ($type) {
-            WebBlock::TYPE_BANNER => new WebBannerSetting(),
+            WebBlock::TYPE_BANNER => (new WebBannerSetting())
+                ->setAnimation('slide')
+                ->setMultiStoreId($multiStoreId)
+                ->setMove('right')
+                ->setDelay(5000)
+                ->setSpeed(25),
             WebBlock::TYPE_EVENT => (new WebEvent())->setMultiStoreId($multiStoreId),
             default => throw new ErrorException('WebBlock', 'type not found'),
         };
