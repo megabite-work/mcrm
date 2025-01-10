@@ -6,7 +6,6 @@ use App\Dto\ForgotPassword\RequestDto;
 use App\Entity\User;
 use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ResetPasswordAction
@@ -21,7 +20,7 @@ class ResetPasswordAction
         $user = $this->em->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if ($user->isTokenExpired()) {
-            throw new ErrorException('User', 'token is expired', Response::HTTP_BAD_REQUEST);
+            throw new ErrorException('User', 'token is expired');
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $dto->password);
