@@ -16,7 +16,7 @@ final readonly class IndexDto
         public ?bool $isActive = false,
         public ?string $title = null,
         public ?string $description = null,
-        public ?string $devices = null,
+        public string|array|null $devices = null,
         public ?string $clickType = null,
         public ?int $clickMax = 0,
         public ?int $clickCurrent = 0,

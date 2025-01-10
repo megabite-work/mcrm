@@ -10,7 +10,7 @@ final readonly class IndexDto
 {
     public function __construct(
         public ?int $id = null,
-        public ?array $webBannerIds = null,
+        public string|array|null $webBannerIds = null,
         public ?string $animation = null,
         public ?string $move = null,
         public ?int $delay = null,
