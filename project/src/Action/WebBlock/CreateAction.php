@@ -39,11 +39,12 @@ class CreateAction
         $entity = match ($type) {
             WebBlock::TYPE_BANNER => (new WebBannerSetting())
                 ->setAnimation('slide')
+                ->setWebBannerIds([])
                 ->setMultiStoreId($multiStoreId)
                 ->setMove('right')
                 ->setDelay(5000)
                 ->setSpeed(25),
-            WebBlock::TYPE_EVENT => (new WebEvent())->setMultiStoreId($multiStoreId),
+            WebBlock::TYPE_EVENT => (new WebEvent())->setMultiStoreId($multiStoreId)->setTypeIds([]),
             default => throw new ErrorException('WebBlock', 'type not found'),
         };
 
