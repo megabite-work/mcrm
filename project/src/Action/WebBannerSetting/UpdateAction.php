@@ -19,7 +19,7 @@ class UpdateAction
         $entity = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $id]);
         $webBannerIds = array_map(function (int $id) {
             return $this->em->getReference(WebBanner::class, $id)->getId();
-        }, $dto->webBannerIds);
+        }, $dto->webBannerIds ?? []);
         $entity->setAnimation($dto->animation ?? $entity->getAnimation())
             ->setWebBannerIds($webBannerIds)
             ->setMove($dto->move ?? $entity->getMove())
