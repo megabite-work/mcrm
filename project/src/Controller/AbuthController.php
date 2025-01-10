@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/api/auth', format: 'json')]
 #[OA\Tag(name: 'Authorization')]
 #[Security(name: null)]
-class ForgotPasswordController extends AbstractController
+class AbuthController extends AbstractController
 {
     #[Route('/forgot', methods: ['POST'])]
     public function request(#[MapRequestPayload(serializationContext: ['groups' => ['forgot:password']])] RequestDto $dto, ForgotPasswordAction $action): JsonResponse
