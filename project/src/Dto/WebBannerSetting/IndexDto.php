@@ -17,12 +17,12 @@ final readonly class IndexDto
         public ?int $speed = null,
     ) {}
 
-    public static function fromEntity(?WebBannerSetting $entity): static
+    public static function fromEntity(?WebBannerSetting $entity, ?array $webBanners = null): static
     {
         return $entity
             ? new static(
                 id: $entity->getId(),
-                webBannerIds: $entity->getWebBannerIds(),
+                webBannerIds: $webBanners ??$entity->getWebBannerIds(),
                 animation: $entity->getAnimation(),
                 move: $entity->getMove(),
                 delay: $entity->getDelay(),
