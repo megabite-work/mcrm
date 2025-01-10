@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/api/auth', format: 'json')]
-#[OA\Tag(name: 'Authorization1')]
+#[OA\Tag(name: 'Authorization')]
 #[Security(name: null)]
 class ForgotPasswordController extends AbstractController
 {
