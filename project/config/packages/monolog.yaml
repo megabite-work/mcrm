@@ -47,7 +47,7 @@ when@prod:
                 type: rotating_file
                 path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: debug
-                channels: ["!deprecation", "!event", "!nelmio_api_doc", "!security"]
+                channels: ["!deprecation", "!event", "!nelmio_api_doc"]
                 max_files: 10
             console:
                 type: console
