@@ -14,7 +14,6 @@ use App\Action\User\ShowAction;
 use App\Action\User\ShowMeAction;
 use App\Action\User\ShowRoleAction;
 use App\Action\User\UpdateAction;
-use App\Dto\User\IndexDto;
 use App\Dto\User\RequestDto;
 use App\Dto\User\RequestQueryDto;
 use App\Entity\User;
