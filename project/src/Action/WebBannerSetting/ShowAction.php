@@ -2,8 +2,7 @@
 
 namespace App\Action\WebBannerSetting;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\WebBannerSetting;
+use App\Dto\WebBannerSetting\IndexDto;
 use App\Repository\WebBannerSettingRepository;
 
 class ShowAction
@@ -12,8 +11,8 @@ class ShowAction
         private WebBannerSettingRepository $repo
     ) {}
 
-    public function __invoke(int $id): WebBannerSetting
+    public function __invoke(int $id): IndexDto
     {
-        return $this->repo->find($id) ?? throw new EntityNotFoundException('not found');
+        return IndexDto::fromEntity($this->repo->find($id));
     }
 }

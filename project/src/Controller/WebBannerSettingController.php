@@ -8,9 +8,9 @@ use App\Action\WebBannerSetting\ShowAction;
 use App\Action\WebBannerSetting\UpdateAction;
 use App\Dto\WebBannerSetting\RequestDto;
 use App\Dto\WebBannerSetting\RequestQueryDto;
+use App\Entity\WebBannerSetting;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -21,27 +21,34 @@ use Symfony\Component\Routing\Attribute\Route;
 class WebBannerSettingController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    #[Security(name: null)]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['web_banner_setting:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_banner_setting:index']]);
+        return $this->indexResponse($action($dto));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
+    #[Security(name: null)]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['web_banner_setting:show']]);
+        $this->existsValidate($id, WebBannerSetting::class);
+
+        return $this->successResponse($action($id));
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['web_banner_setting:update']]);
+        $this->existsValidate($id, WebBannerSetting::class);
+
+        return $this->successResponse($action($id, $dto));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($id)]);
+        $this->existsValidate($id, WebBannerSetting::class);
+        $action($id);
+
+        return $this->emptyResponse();
     }
 }

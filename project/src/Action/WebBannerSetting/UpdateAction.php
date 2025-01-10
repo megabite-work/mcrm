@@ -2,7 +2,7 @@
 
 namespace App\Action\WebBannerSetting;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebBannerSetting\IndexDto;
 use App\Dto\WebBannerSetting\RequestDto;
 use App\Entity\WebBanner;
 use App\Entity\WebBannerSetting;
@@ -14,23 +14,20 @@ class UpdateAction
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(int $id, RequestDto $dto): array
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $entity = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $id])
-            ?? throw new EntityNotFoundException('web banner setting not found', 404);
-
+        $entity = $this->em->getRepository(WebBannerSetting::class)->findOneBy(['id' => $id]);
         $webBannerIds = array_map(function (int $id) {
             return $this->em->getReference(WebBanner::class, $id)->getId();
-        }, $dto->webBannerIds) ?: throw new EntityNotFoundException('web banner not found', 404);
-
+        }, $dto->webBannerIds);
         $entity->setAnimation($dto->animation ?? $entity->getAnimation())
-            ->setWebBannerIds($webBannerIds ?? $entity->getWebBannerIds())
+            ->setWebBannerIds($webBannerIds)
             ->setMove($dto->move ?? $entity->getMove())
             ->setDelay($dto->delay ?? $entity->getDelay())
             ->setSpeed($dto->speed ?? $entity->getSpeed());
         $this->em->persist($entity);
         $this->em->flush();
 
-        return [];
+        return IndexDto::fromEntity($entity);
     }
 }

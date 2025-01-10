@@ -2,14 +2,16 @@
 
 namespace App\Dto\WebBannerSetting;
 
+use App\Entity\WebBanner;
+use App\Validator\Exists;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class RequestDto
 {
     public function __construct(
         #[Assert\NotBlank]
-        #[Assert\All(constraints: [new Assert\Positive])]
-        public array $webBannerIds,
+        #[Assert\All(constraints: [new Exists(WebBanner::class)])]
+        public ?array $webBannerIds = [],
         #[Assert\NotBlank]
         public ?string $animation = null,
         #[Assert\NotBlank]
