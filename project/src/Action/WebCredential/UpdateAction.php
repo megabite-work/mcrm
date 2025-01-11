@@ -2,7 +2,7 @@
 
 namespace App\Action\WebCredential;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebCredential\IndexDto;
 use App\Dto\WebCredential\RequestDto;
 use App\Entity\WebCredential;
 use App\Repository\MultiStoreRepository;
@@ -13,42 +13,25 @@ class UpdateAction
     public function __construct(
         private EntityManagerInterface $em,
         private MultiStoreRepository $repo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(int $multiStoreId, RequestDto $dto): WebCredential
+    public function __invoke(int $multiStoreId, RequestDto $dto): IndexDto
     {
-        $entity = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
+        $multiStore = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
+        $entity = $multiStore->getWebCredential();
 
-        if (null === $entity || !$entity->getWebCredential()) {
-            throw new EntityNotFoundException('not found');
+        if (! $entity) {
+            $entity = (new WebCredential())->setMultiStore($multiStore);
         }
 
-        $webCredential = $entity->getWebCredential();
-        $webCredential = $this->update($webCredential, $dto);
+        $entity->setCategory($dto->category)
+            ->setSecrets($dto->secrets)
+            ->setSocial($dto->social)
+            ->setLogo($dto->logo)
+            ->setAbout($dto->about);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $webCredential;
-    }
-
-    private function update(WebCredential $entity, RequestDto $dto): WebCredential
-    {
-        if ($dto->getCategory()) {
-            $entity->setCategory($dto->getCategory());
-        }
-        if ($dto->getSecrets()) {
-            $entity->setSecrets($dto->getSecrets());
-        }
-        if ($dto->getSocial()) {
-            $entity->setSocial($dto->getSocial());
-        }
-        if ($dto->getLogo()) {
-            $entity->setLogo($dto->getLogo());
-        }
-        if ($dto->getAbout()) {
-            $entity->setAbout($dto->getAbout());
-        }
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

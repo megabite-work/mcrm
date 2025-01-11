@@ -2,7 +2,7 @@
 
 namespace App\Action\Value;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Value\IndexDto;
 use App\Dto\Value\RequestDto;
 use App\Entity\AttributeEntity;
 use App\Entity\AttributeValue;
@@ -13,33 +13,17 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): ValueEntity
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $attribute = $this->em->find(AttributeEntity::class, $dto->getAttributeId());
-
-        if (null === $attribute) {
-            throw new EntityNotFoundException('attribute not found');
-        }
-
-        $entity = $this->create($dto, $attribute);
-
-        $this->em->flush();
-
-        return $entity;
-    }
-
-    private function create(RequestDto $dto, AttributeEntity $attribute): ValueEntity
-    {
-        $entity = (new ValueEntity())
-            ->setName($dto->getName());
-
+        $attribute = $this->em->getReference(AttributeEntity::class, $dto->attributeId);
+        $entity = (new ValueEntity())->setName($dto->getName());
         $this->em->persist($entity);
         $this->assign($attribute, $entity);
+        $this->em->flush();
 
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 
     private function assign(AttributeEntity $attribute, ValueEntity $value): void
@@ -47,7 +31,6 @@ class CreateAction
         $entity = (new AttributeValue())
             ->setAttribute($attribute)
             ->setValue($value);
-
         $this->em->persist($entity);
     }
 }

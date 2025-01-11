@@ -7,9 +7,10 @@ use App\Action\WebCredential\CreateAction;
 use App\Action\WebCredential\ShowAction;
 use App\Action\WebCredential\UpdateAction;
 use App\Dto\WebCredential\RequestDto;
+use App\Entity\MultiStore;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -17,25 +18,29 @@ use Symfony\Component\Routing\Attribute\Route;
 #[OA\Tag(name: 'WebCredential')]
 class WebCredentialController extends AbstractController
 {
-    #[Route(path: '/{multiStoreId<\d+>}', methods: ['GET'])]
+    #[Route(path: '/{multi_store_id<\d+>}', methods: ['GET'])]
     public function show(int $multiStoreId, ShowAction $action): JsonResponse
     {
-        return $this->json($action($multiStoreId), context: ['groups' => ['web_credential:show']]);
+        $this->existsValidate($multiStoreId, MultiStore::class);
+
+        return $this->successResponse($action($multiStoreId));
     }
 
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_credential:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_credential:create']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
-    #[Route(path: '/{multiStoreId<\d+>}', methods: ['POST'])]
+    #[Route(path: '/{multi_store_id<\d+>}', methods: ['POST'])]
     public function increment(int $multiStoreId, ArticleAction $action): JsonResponse
     {
-        return $this->json($action($multiStoreId));
+        $this->existsValidate($multiStoreId, MultiStore::class);
+
+        return $this->successResponse($action($multiStoreId));
     }
 
-    #[Route('/{multiStoreId<\d+>}', methods: ['PATCH'])]
+    #[Route('/{multi_store_id<\d+>}', methods: ['PATCH'])]
     #[OA\RequestBody(
         description: 'Your request body description',
         content: new OA\JsonContent(
@@ -82,6 +87,8 @@ class WebCredentialController extends AbstractController
     )]
     public function update(int $multiStoreId, #[MapRequestPayload(serializationContext: ['groups' => ['web_credential:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($multiStoreId, $dto), context: ['groups' => ['web_credential:update']]);
+        $this->existsValidate($multiStoreId, MultiStore::class);
+
+        return $this->successResponse($action($multiStoreId, $dto));
     }
 }
