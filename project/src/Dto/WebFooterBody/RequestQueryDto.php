@@ -3,6 +3,8 @@
 namespace App\Dto\WebFooterBody;
 
 use App\Component\Paginator;
+use App\Entity\WebFooter;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,28 +14,13 @@ final class RequestQueryDto
         #[Groups(['web_event:index'])]
         #[Assert\NotBlank]
         #[Assert\Positive]
-        private int $webFooterId,
+        #[Exists(WebFooter::class)]
+        public int $webFooterId,
         #[Groups(['web_event:index'])]
         #[Assert\Positive]
-        private int $page = 1,
+        public int $page = 1,
         #[Groups(['web_event:index'])]
         #[Assert\Positive]
-        private int $perPage = Paginator::ITEMS_PER_PAGE
-    ) {
-    }
-
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function getPerPage(): int
-    {
-        return $this->perPage;
-    }
-
-    public function getWebFooterId(): int
-    {
-        return $this->webFooterId;
-    }
+        public int $perPage = Paginator::ITEMS_PER_PAGE
+    ) {}
 }

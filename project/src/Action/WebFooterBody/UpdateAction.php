@@ -2,35 +2,26 @@
 
 namespace App\Action\WebFooterBody;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebFooterBody\IndexDto;
 use App\Dto\WebFooterBody\RequestDto;
 use App\Entity\WebFooterBody;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
-    public function __construct(private EntityManagerInterface $em)
-    {
-    }
+    public function __construct(
+        private EntityManagerInterface $em
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): WebFooterBody
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $entity = $this->em->find(WebFooterBody::class, $id)
-            ?? throw new EntityNotFoundException('not found');
-
-        $entity = $this->update($entity, $dto);
+        $entity = $this->em->find(WebFooterBody::class, $id);
+        $entity->setWebFooterId($dto->webFooterId ?? $entity->getWebFooterId())
+            ->setLogo($dto->logo ?? $entity->getLogo())
+            ->setAbout($dto->about ?? $entity->getAbout())
+            ->setIsActive($dto->isActive);
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function update(WebFooterBody $entity, RequestDto $dto)
-    {
-        $entity->setWebFooterId($dto->getWebFooterId())
-            ->setLogo($dto->getLogo())
-            ->setAbout($dto->getAbout())
-            ->setIsActive($dto->getIsActive());
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }
