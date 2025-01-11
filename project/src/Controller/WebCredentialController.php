@@ -27,12 +27,14 @@ class WebCredentialController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
+    #[OA\Post(summary: 'Create web credential')]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_credential:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/{multi_store_id<\d+>}', methods: ['POST'])]
+    #[OA\Post(summary: 'Increment aticles count')]
     public function increment(int $multiStoreId, ArticleAction $action): JsonResponse
     {
         $this->existsValidate($multiStoreId, MultiStore::class);
