@@ -52,6 +52,10 @@ class WebCredential
     #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
     private ?string $social = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
+    private ?int $templateId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +141,18 @@ class WebCredential
     public function setAbout(?string $about): static
     {
         $this->about = $about;
+
+        return $this;
+    }
+
+    public function getTemplateId(): ?int
+    {
+        return $this->templateId;
+    }
+
+    public function setTemplateId(?int $templateId): static
+    {
+        $this->templateId = $templateId;
 
         return $this;
     }

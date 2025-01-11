@@ -28,6 +28,7 @@ class UpdateAction
             ->setSecrets($dto->secrets)
             ->setSocial($dto->social)
             ->setLogo($dto->logo)
+            ->setTemplateId($dto->templateId)
             ->setAbout($dto->about);
         $this->em->persist($entity);
         $this->em->flush();

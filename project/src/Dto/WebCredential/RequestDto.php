@@ -24,5 +24,7 @@ final class RequestDto
         public ?string $logo,
         #[Groups(['web_credential:create', 'web_credential:update'])]
         public ?string $about,
+        #[Groups(['web_credential:create', 'web_credential:update'])]
+        public ?int $templateId,
     ) {}
 }

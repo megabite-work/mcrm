@@ -13,7 +13,8 @@ final readonly class IndexDto
         public ?string $category = null,
         public ?int $article = null,
         public string|array|null $secrets = null,
-        public string|array|null $social = null
+        public string|array|null $social = null,
+        public ?int $templateId = null,
     ) {}
 
     public static function fromEntity(WebCredential $entity): static
@@ -24,6 +25,7 @@ final readonly class IndexDto
             article: $entity->getArticle(),
             secrets: $entity->getSecrets(),
             social: $entity->getSocial(),
+            templateId: $entity->getTemplateId(),
         );
     }
 }
