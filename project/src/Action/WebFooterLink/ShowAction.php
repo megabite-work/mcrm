@@ -2,19 +2,17 @@
 
 namespace App\Action\WebFooterLink;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\WebFooterLink;
+use App\Dto\WebFooterLink\IndexDto;
 use App\Repository\WebFooterLinkRepository;
 
 class ShowAction
 {
-    public function __construct(private WebFooterLinkRepository $repo)
-    {
-    }
+    public function __construct(
+        private WebFooterLinkRepository $repo
+    ) {}
 
-    public function __invoke(int $id): WebFooterLink
+    public function __invoke(int $id): IndexDto
     {
-        return $this->repo->find($id)
-            ?? throw new EntityNotFoundException('not found');
+        return IndexDto::fromEntity($this->repo->find($id));
     }
 }

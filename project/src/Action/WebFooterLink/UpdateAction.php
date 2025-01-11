@@ -2,36 +2,27 @@
 
 namespace App\Action\WebFooterLink;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebFooterLink\IndexDto;
 use App\Dto\WebFooterLink\RequestDto;
 use App\Entity\WebFooterLink;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
-    public function __construct(private EntityManagerInterface $em)
-    {
-    }
+    public function __construct(
+        private EntityManagerInterface $em
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): WebFooterLink
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $entity = $this->em->find(WebFooterLink::class, $id)
-            ?? throw new EntityNotFoundException('not found');
-
-        $entity = $this->update($entity, $dto);
+        $entity = $this->em->find(WebFooterLink::class, $id);
+        $entity->setWebFooterBodyId($dto->webFooterBodyId ?? $entity->getWebFooterBodyId())
+            ->setType($dto->type ?? $entity->getType())
+            ->setTitle($dto->title ?? $entity->getTitle())
+            ->setLink($dto->link ?? $entity->getLink())
+            ->setIsActive($dto->isActive ?? $entity->getIsActive());
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function update(WebFooterLink $entity, RequestDto $dto)
-    {
-        $entity->setType($dto->getType())
-            ->setWebFooterBodyId($dto->getWebFooterBodyId())
-            ->setTitle($dto->getTitle())
-            ->setLink($dto->getLink())
-            ->setisActive($dto->getisActive());
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

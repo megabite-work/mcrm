@@ -9,10 +9,11 @@ use App\Action\WebFooterLink\ShowAction;
 use App\Action\WebFooterLink\UpdateAction;
 use App\Dto\WebFooterLink\RequestDto;
 use App\Dto\WebFooterLink\RequestQueryDto;
+use App\Entity\WebFooterLink;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,30 +26,37 @@ class WebFooterLinkController extends AbstractController
     #[Security(name: null)]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['web_footer_link:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_footer_link:index']]);
+        return $this->indexResponse($action($dto));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['web_footer_link:show']]);
+        $this->existsValidate($id, WebFooterLink::class);
+
+        return $this->successResponse($action($id));
     }
 
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_footer_link:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_footer_link:create']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_footer_link:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['web_footer_link:update']]);
+        $this->existsValidate($id, WebFooterLink::class);
+
+        return $this->successResponse($action($id, $dto));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($id)]);
+        $this->existsValidate($id, WebFooterLink::class);
+        $action($id);
+
+        return $this->emptyResponse();
     }
 }
