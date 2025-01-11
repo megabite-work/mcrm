@@ -20,14 +20,14 @@ class ArticleAttributeRepository extends ServiceEntityRepository
 
     public function findByMultiStoreAndArticle(RequestDto $dto): ?ArticleAttribute
     {
-        $entityManager = $this->getEntityManager();
-        $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
+        $em = $this->getEntityManager();
+        $multiStore = $em->find(MultiStore::class, $dto->multiStoreId);
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT a
             FROM App\Entity\ArticleAttribute a
             WHERE a.multiStore = :multiStore AND a.article = :article'
-        )->setParameters(['multiStore' => $multiStore, 'article' => $dto->getArticle()]);
+        )->setParameters(['multiStore' => $multiStore, 'article' => $dto->article]);
 
         return $query->getOneOrNullResult();
     }

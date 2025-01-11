@@ -2,24 +2,17 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Component\EntityNotFoundException;
-use App\Entity\WebNomenclature;
+use App\Dto\WebNomenclature\IndexDto;
 use App\Repository\WebNomenclatureRepository;
 
 class ShowAction
 {
-    public function __construct(private WebNomenclatureRepository $repo)
+    public function __construct(
+        private WebNomenclatureRepository $repo
+    ) {}
+
+    public function __invoke(int $id): IndexDto
     {
-    }
-
-    public function __invoke(int $id): WebNomenclature
-    {
-        $webNomeclature = $this->repo->findWebNomenclatureByIdWithCategoryUnitStoreNomenclature($id);
-
-        if (null == $webNomeclature) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        return $webNomeclature;
+        return IndexDto::fromEntity($this->repo->findWebNomenclatureByIdWithCategoryUnitStoreNomenclature($id));
     }
 }

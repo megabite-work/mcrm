@@ -22,7 +22,7 @@ class WebNomenclatureRepository extends ServiceEntityRepository
     public function findAllWebNomenclaturesByMultiStore(RequestQueryDto $dto): Paginator
     {
         $em = $this->getEntityManager();
-        $multiStore = $em->getReference(MultiStore::class, $dto->getMultiStoreId());
+        $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
         $qb = $this->createQueryBuilder('wn');
 
         $query = $qb
@@ -34,20 +34,20 @@ class WebNomenclatureRepository extends ServiceEntityRepository
             ->where('n.multiStore = :multiStore')
             ->setParameter('multiStore', $multiStore);
 
-        if ($dto->getNomenclatureId()) {
-            $query->andWhere('n.id = :nid')->setParameter('nid', $dto->getNomenclatureId());
+        if ($dto->nomenclatureId) {
+            $query->andWhere('n.id = :nid')->setParameter('nid', $dto->nomenclatureId);
         }
-        if ($dto->getCategoryId()) {
-            $query->andWhere('c.id = :cid')->setParameter('cid', $dto->getCategoryId());
+        if ($dto->categoryId) {
+            $query->andWhere('c.id = :cid')->setParameter('cid', $dto->categoryId);
         }
-        if ($dto->getTitle()) {
-            $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%'.$dto->getTitle().'%');
+        if ($dto->title) {
+            $query->andWhere($qb->expr()->like('wn.title', ':title'))->setParameter('title', '%' . $dto->title . '%');
         }
-        if (null !== $dto->getIsActive()) {
-            $query->andWhere('wn.isActive = :isActive')->setParameter('isActive', $dto->getIsActive());
+        if (null !== $dto->isActive) {
+            $query->andWhere('wn.isActive = :isActive')->setParameter('isActive', $dto->isActive);
         }
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), true);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findWebNomenclatureByIdWithCategoryUnitStoreNomenclature(int $id): ?WebNomenclature

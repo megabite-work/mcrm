@@ -26,7 +26,7 @@ final readonly class IndexDto
                 webFooterBodyId: $entity->getWebFooterBodyId(),
                 title: $entity->getTitle(),
                 type: $entity->getType(),
-                isActive: $entity->isIsActive(),
+                isActive: $entity->getIsActive(),
                 link: $entity->getLink(),
             )
             : null;

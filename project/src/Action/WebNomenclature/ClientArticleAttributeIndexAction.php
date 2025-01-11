@@ -2,7 +2,9 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\ClientArticleAttribute\IndexDto;
 use App\Entity\MultiStore;
 use App\Repository\ClientArticleAttributeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,19 +14,14 @@ class ClientArticleAttributeIndexAction
     public function __construct(
         private EntityManagerInterface $em,
         private ClientArticleAttributeRepository $repo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(int $multiStoreId, string $article): array
+    public function __invoke(int $multiStoreId, string $article): ListResponseDtoInterface
     {
-        $multiStore = $this->em->find(MultiStore::class, $multiStoreId);
-
-        if (null === $multiStore) {
-            throw new EntityNotFoundException('multi store not found');
-        }
-
+        $multiStore = $this->em->getReference(MultiStore::class, $multiStoreId);
         $entities = $this->repo->findBy(['multiStore' => $multiStore, 'article' => $article]);
+        $data = array_map(fn($entity) => IndexDto::fromEntity($entity), $entities);
 
-        return $entities;
+        return new ListResponseDto($data);
     }
 }

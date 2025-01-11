@@ -2,7 +2,7 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebNomenclature\IndexDto;
 use App\Dto\WebNomenclature\RequestDto;
 use App\Entity\Nomenclature;
 use App\Entity\WebNomenclature;
@@ -12,28 +12,21 @@ class CreateAction
 {
     public function __construct(
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): WebNomenclature
+    public function __invoke(RequestDto $dto): IndexDto
     {
-        $nomenclature = $this->em->find(Nomenclature::class, $dto->getNomenclatureId());
-
-        if (null === $nomenclature) {
-            throw new EntityNotFoundException('nomenclature not found');
-        }
-
-        $webNomenclature = (new WebNomenclature())
-            ->setTitle($dto->getTitle())
+        $nomenclature = $this->em->getReference(Nomenclature::class, $dto->nomenclatureId);
+        $entity = (new WebNomenclature())
             ->setNomenclature($nomenclature)
-            ->setArticle($dto->getArticle())
-            ->setImages($dto->getImages())
-            ->setDescription($dto->getDescription())
-            ->setDocument($dto->getDocument());
-
-        $this->em->persist($webNomenclature);
+            ->setTitle($dto->title)
+            ->setArticle($dto->article)
+            ->setImages($dto->images)
+            ->setDescription($dto->description)
+            ->setDocument($dto->document);
+        $this->em->persist($entity);
         $this->em->flush();
 
-        return $webNomenclature;
+        return IndexDto::fromEntityForNomenclature($entity);
     }
 }

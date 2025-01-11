@@ -18,9 +18,7 @@ class AttributeValueRepository extends ServiceEntityRepository
 
     public function findAllByItem(array $ids): array
     {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
+        $query = $this->getEntityManager()->createQuery(
             'SELECT av
             FROM App\Entity\AttributeValue a
             WHERE a.id IN :ids'

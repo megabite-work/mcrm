@@ -2,7 +2,9 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\ClientArticleAttributeValue\IndexDto;
 use App\Entity\WebNomenclature;
 use App\Repository\ClientArticleAttributeValueRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,19 +14,14 @@ class ClientArticleAttributeValueIndexAction
     public function __construct(
         private EntityManagerInterface $em,
         private ClientArticleAttributeValueRepository $repo
-    ) {
-    }
+    ) {}
 
-    public function __invoke(int $id): array
+    public function __invoke(int $id): ListResponseDtoInterface
     {
-        $webNomenclature = $this->em->find(WebNomenclature::class, $id);
-
-        if (null === $webNomenclature) {
-            throw new EntityNotFoundException('web nomenclature not found');
-        }
-
+        $webNomenclature = $this->em->getReference(WebNomenclature::class, $id);
         $entities = $this->repo->findAllByWebNomenclatureWithAttribute($webNomenclature);
+        $data = array_map(fn($entity) => IndexDto::fromEntity($entity), $entities);
 
-        return $entities;
+        return new ListResponseDto($data);
     }
 }

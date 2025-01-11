@@ -19,10 +19,14 @@ use App\Action\WebNomenclature\ShowAction;
 use App\Action\WebNomenclature\UpdateAction;
 use App\Dto\WebNomenclature\RequestDto;
 use App\Dto\WebNomenclature\RequestQueryDto;
+use App\Entity\AttributeEntity;
+use App\Entity\ClientArticleAttributeValue;
+use App\Entity\MultiStore;
+use App\Entity\WebNomenclature;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -35,66 +39,79 @@ class WebNomenclatureController extends AbstractController
     #[Security(name: null)]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['web_nomenclature:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_nomenclature:index']]);
+        return $this->indexResponse($action($dto));
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     #[Security(name: null)]
     public function show(int $id, ShowAction $action): JsonResponse
     {
-        return $this->json($action($id), context: ['groups' => ['web_nomenclature:show']]);
+        $this->existsValidate($id, WebNomenclature::class);
+
+        return $this->successResponse($action($id));
     }
 
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_nomenclature:create']]);
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route(path: '/assign', methods: ['POST'])]
     public function assign(#[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:assign']])] RequestDto $dto, AssignAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($dto)]);
+        $action($dto);
+
+        return $this->emptyResponse();
     }
 
     #[Route(path: '/article-attributes', methods: ['GET'])]
     public function article(#[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:article_attributes']])] RequestDto $dto, ArticleAttributeAction $action): JsonResponse
     {
-        return $this->json($action($dto), context: ['groups' => ['web_nomenclature:article_attributes']]);
+        return $this->successResponse($action($dto));
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        return $this->json($action($id, $dto), context: ['groups' => ['web_nomenclature:update']]);
+        $this->existsValidate($id, WebNomenclature::class);
+
+        return $this->successResponse($action($id, $dto));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        return $this->json(['success' => $action($id)]);
+        $this->existsValidate($id, WebNomenclature::class);
+        $action($id);
+
+        return $this->emptyResponse();
     }
 
-    #[Route(path: '/{multiStoreId<\d+>}/client-article/{article}', methods: ['GET'])]
+    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}', methods: ['GET'])]
     public function clientArticleAttributeIndex(
         int $multiStoreId,
         string $article,
         ClientArticleAttributeIndexAction $action
     ): JsonResponse {
-        return $this->json($action($multiStoreId, $article), context: ['groups' => ['web_nomenclature:client_article']]);
+        $this->existsValidate($multiStoreId, MultiStore::class);
+
+        return $this->indexResponse($action($multiStoreId, $article));
     }
 
-    #[Route(path: '/{multiStoreId<\d+>}/client-article/{article}', methods: ['POST'])]
+    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}', methods: ['POST'])]
     public function clientArticleAttributeCreate(
         int $multiStoreId,
         string $article,
         #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article']])] RequestDto $dto,
         ClientArticleAttributeCreateAction $action
     ): JsonResponse {
-        return $this->json($action($multiStoreId, $article, $dto), context: ['groups' => ['web_nomenclature:client_article']]);
+        $this->existsValidate($multiStoreId, MultiStore::class);
+
+        return $this->successResponse($action($multiStoreId, $article, $dto), Response::HTTP_CREATED);
     }
 
-    #[Route(path: '/{multiStoreId<\d+>}/client-article/{article}/attribute/{attributeId<\d+>}', methods: ['PATCH'])]
+    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}/attribute/{attributeId<\d+>}', methods: ['PATCH'])]
     public function clientArticleAttributeUpdate(
         int $multiStoreId,
         string $article,
@@ -102,17 +119,22 @@ class WebNomenclatureController extends AbstractController
         #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article']])] RequestDto $dto,
         ClientArticleAttributeUpdateAction $action
     ): JsonResponse {
-        return $this->json($action($multiStoreId, $article, $attributeId, $dto), context: ['groups' => ['web_nomenclature:client_article']]);
+        $this->existsValidate([$multiStoreId, $attributeId], [MultiStore::class, AttributeEntity::class]);
+
+        return $this->successResponse($action($multiStoreId, $article, $attributeId, $dto));
     }
 
-    #[Route(path: '/{multiStoreId<\d+>}/client-article/{article}/attribute/{attributeId<\d+>}', methods: ['DELETE'])]
+    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}/attribute/{attributeId<\d+>}', methods: ['DELETE'])]
     public function clientArticleAttributeDelete(
         int $multiStoreId,
         string $article,
         int $attributeId,
         ClientArticleAttributeDeleteAction $action
     ): JsonResponse {
-        return $this->json(['success' => $action($multiStoreId, $article, $attributeId)]);
+        $this->existsValidate([$multiStoreId, $attributeId], [MultiStore::class, AttributeEntity::class]);
+        $action($multiStoreId, $article, $attributeId);
+
+        return $this->emptyResponse();
     }
 
     #[Route(path: '/{id<\d+>}/client-article-value', methods: ['GET'])]
@@ -120,7 +142,9 @@ class WebNomenclatureController extends AbstractController
         int $id,
         ClientArticleAttributeValueIndexAction $action
     ): JsonResponse {
-        return $this->json($action($id), context: ['groups' => ['web_nomenclature:client_article_value_index']]);
+        $this->existsValidate($id, WebNomenclature::class);
+
+        return $this->indexResponse($action($id));
     }
 
     #[Route(path: '/{id<\d+>}/client-article-value', methods: ['POST'])]
@@ -129,25 +153,32 @@ class WebNomenclatureController extends AbstractController
         #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article_value_create']])] RequestDto $dto,
         ClientArticleAttributeValueCreateAction $action
     ): JsonResponse {
-        return $this->json($action($id, $dto), context: ['groups' => ['web_nomenclature:client_article_value']]);
+        $this->existsValidate($id, WebNomenclature::class);
+
+        return $this->successResponse($action($id, $dto), Response::HTTP_CREATED);
     }
 
-    #[Route(path: '/{id<\d+>}/client-article-value/{valueId<\d+>}', methods: ['PATCH'])]
+    #[Route(path: '/{id<\d+>}/client-article-value/{value_id<\d+>}', methods: ['PATCH'])]
     public function clientArticleAttributeValueUpdate(
         int $id,
         int $valueId,
         #[MapRequestPayload(serializationContext: ['groups' => ['web_nomenclature:client_article_value_update']])] RequestDto $dto,
         ClientArticleAttributeValueUpdateAction $action
     ): JsonResponse {
-        return $this->json($action($id, $valueId, $dto), context: ['groups' => ['web_nomenclature:client_article_value']]);
+        $this->existsValidate([$id, $valueId], [WebNomenclature::class, ClientArticleAttributeValue::class]);
+
+        return $this->successResponse($action($id, $valueId, $dto));
     }
 
-    #[Route(path: '/{id<\d+>}/client-article-value/{valueId<\d+>}', methods: ['DELETE'])]
+    #[Route(path: '/{id<\d+>}/client-article-value/{value_id<\d+>}', methods: ['DELETE'])]
     public function clientArticleAttributeValueDelete(
         int $id,
         int $valueId,
         ClientArticleAttributeValueDeleteAction $action
     ): JsonResponse {
-        return $this->json(['success' => $action($id, $valueId)]);
+        $this->existsValidate([$id, $valueId], [WebNomenclature::class, ClientArticleAttributeValue::class]);
+        $action($id, $valueId);
+
+        return $this->emptyResponse();
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Component\EntityNotFoundException;
 use App\Dto\WebNomenclature\RequestDto;
 use App\Entity\ArticleAttribute;
 use App\Entity\MultiStore;
 use App\Entity\WebAttributeValue;
 use App\Entity\WebNomenclature;
+use App\Exception\ErrorException;
 use App\Repository\ArticleAttributeRepository;
 use App\Repository\AttributeValueRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,21 +18,20 @@ class AssignAction
         private EntityManagerInterface $em,
         private AttributeValueRepository $attributeValueRepository,
         private ArticleAttributeRepository $articleAttributeRepository
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestDto $dto): bool
+    public function __invoke(RequestDto $dto): void
     {
-        $webNomenclature = $this->em->find(WebNomenclature::class, $dto->getWebNomenclatureId());
-        $attributeValues = $this->attributeValueRepository->findAllByItem($dto->getAttributeValues());
+        $webNomenclature = $this->em->getReference(WebNomenclature::class, $dto->webNomenclatureId);
+        $attributeValues = $this->attributeValueRepository->findAllByItem($dto->attributeValues);
 
-        if (null === $webNomenclature || count($attributeValues) <= 0) {
-            throw new EntityNotFoundException('web nomenclature or attribute values not found');
+        if (count($attributeValues) <= 0) {
+            throw new ErrorException('WeNomenclature', 'attribute values not found');
         }
 
         $attributeIds = [];
         foreach ($attributeValues as $attributeValue) {
-            if ($dto->isRemember()) {
+            if ($dto->remember) {
                 $attributeIds[] = $attributeValue->getAttribute()->getId();
             }
 
@@ -45,8 +44,6 @@ class AssignAction
 
         $this->createOrUpdateArticleAttribute($webNomenclature, $attributeIds);
         $this->em->flush();
-
-        return true;
     }
 
     private function createOrUpdateArticleAttribute(WebNomenclature $webNomenclature, array $attributeIds): void

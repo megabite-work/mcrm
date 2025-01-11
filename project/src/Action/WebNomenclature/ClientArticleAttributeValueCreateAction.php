@@ -2,7 +2,7 @@
 
 namespace App\Action\WebNomenclature;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\ClientArticleAttributeValue\IndexDto;
 use App\Dto\WebNomenclature\RequestDto;
 use App\Entity\ClientArticleAttribute;
 use App\Entity\ClientArticleAttributeValue;
@@ -13,26 +13,19 @@ class ClientArticleAttributeValueCreateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-    ) {
-    }
+    ) {}
 
-    public function __invoke(int $id, RequestDto $dto): ClientArticleAttributeValue
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
-        $webNomenclature = $this->em->find(WebNomenclature::class, $id);
-        $attribute = $this->em->find(ClientArticleAttribute::class, $dto->getClientArticleAttributeId());
-
-        if (null === $webNomenclature || null === $attribute) {
-            throw new EntityNotFoundException('web nomenclature or attribute not found');
-        }
-
+        $webNomenclature = $this->em->getReference(WebNomenclature::class, $id);
+        $attribute = $this->em->getReference(ClientArticleAttribute::class, $dto->clientArticleAttributeId);
         $entity = (new ClientArticleAttributeValue())
             ->setWebNomenclature($webNomenclature)
             ->setAttribute($attribute)
             ->setValue($dto->getValue());
-
         $this->em->persist($entity);
         $this->em->flush();
 
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 }

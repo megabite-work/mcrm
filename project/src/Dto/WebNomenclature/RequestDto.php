@@ -2,6 +2,11 @@
 
 namespace App\Dto\WebNomenclature;
 
+use App\Entity\ClientArticleAttribute;
+use App\Entity\MultiStore;
+use App\Entity\Nomenclature;
+use App\Entity\WebNomenclature;
+use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,167 +15,75 @@ final class RequestDto
     public function __construct(
         #[Groups(['web_nomenclature:article_attributes'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:article_attribute'])]
-        private ?int $multiStoreId,
+        #[Exists(MultiStore::class)]
+        public ?int $multiStoreId,
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
-        private ?int $webNomenclatureId,
+        #[Exists(WebNomenclature::class)]
+        public ?int $webNomenclatureId,
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
         #[Assert\All(constraints: [new Assert\NotBlank(), new Assert\Positive()], groups: ['web_nomenclature:assign'])]
-        private ?array $attributeValues,
+        public ?array $attributeValues,
         #[Groups(['web_nomenclature:create'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:create'])]
-        private ?int $nomenclatureId,
+        #[Exists(Nomenclature::class)]
+        public ?int $nomenclatureId,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:create'])]
-        private ?string $title,
+        public ?string $title,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update', 'web_nomenclature:article_attributes'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:article_attributes'])]
-        private ?string $article,
+        public ?string $article,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create', 'web_nomenclature:update'])]
-        private ?array $images,
+        public ?array $images,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create'])]
-        private ?string $description,
+        public ?string $description,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create'])]
-        private ?string $document,
+        public ?string $document,
         #[Groups(['web_nomenclature:client_article'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
-        private ?string $attributeUz,
+        public ?string $attributeUz,
         #[Groups(['web_nomenclature:client_article'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
-        private ?string $attributeRu,
+        public ?string $attributeRu,
         #[Groups(['web_nomenclature:client_article'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article'])]
-        private ?string $attributeUzc,
+        public ?string $attributeUzc,
         #[Groups(['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
-        private ?string $valueUz,
+        public ?string $valueUz,
         #[Groups(['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
-        private ?string $valueRu,
+        public ?string $valueRu,
         #[Groups(['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_update', 'web_nomenclature:client_article_value_create'])]
-        private ?string $valueUzc,
+        public ?string $valueUzc,
         #[Groups(['web_nomenclature:client_article_value_create'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:client_article_value_create'])]
-        private ?int $clientArticleAttributeId,
+        #[Exists(ClientArticleAttribute::class)]
+        public ?int $clientArticleAttributeId,
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
-        private ?bool $isActive = true,
+        public ?bool $isActive = true,
         #[Groups(['web_nomenclature:update'])]
         #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:update'])]
-        private ?bool $showComment = true,
+        public ?bool $showComment = true,
         #[Groups(['web_nomenclature:assign'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:assign'])]
-        private ?bool $remember = false,
-    ) {
-    }
-
-    public function getNomenclatureId(): ?int
-    {
-        return $this->nomenclatureId;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function getArticle(): ?string
-    {
-        return $this->article;
-    }
-
-    public function getImages(): ?array
-    {
-        return $this->images;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function getDocument(): ?string
-    {
-        return $this->document;
-    }
-
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function getWebNomenclatureId(): ?int
-    {
-        return $this->webNomenclatureId;
-    }
-
-    public function getAttributeValues(): ?array
-    {
-        return $this->attributeValues;
-    }
-
-    public function getMultiStoreId(): ?int
-    {
-        return $this->multiStoreId;
-    }
-
-    public function isRemember(): bool
-    {
-        return $this->remember;
-    }
-
-    public function getAttributeUz(): ?string
-    {
-        return $this->attributeUz;
-    }
-
-    public function getAttributeRu(): ?string
-    {
-        return $this->attributeRu;
-    }
-
-    public function getAttributeUzc(): ?string
-    {
-        return $this->attributeUzc;
-    }
+        public ?bool $remember = false,
+    ) {}
 
     public function getAttribute(): ?array
     {
-        return ['uz' => $this->getAttributeUz(), 'uzc' => $this->getAttributeUzc(), 'ru' => $this->getAttributeRu()];
-    }
-
-    public function getValueUz(): ?string
-    {
-        return $this->valueUz;
-    }
-
-    public function getValueRu(): ?string
-    {
-        return $this->valueRu;
-    }
-
-    public function getValueUzc(): ?string
-    {
-        return $this->valueUzc;
+        return ['uz' => $this->attributeUz, 'uzc' => $this->attributeUzc, 'ru' => $this->attributeRu];
     }
 
     public function getValue(): ?array
     {
-        return ['uz' => $this->getValueUz(), 'uzc' => $this->getValueUzc(), 'ru' => $this->getValueRu()];
-    }
-
-    public function getClientArticleAttributeId(): ?int
-    {
-        return $this->clientArticleAttributeId;
-    }
-
-    public function getShowComment(): ?bool
-    {
-        return $this->showComment;
+        return ['uz' => $this->valueUz, 'uzc' => $this->valueUzc, 'ru' => $this->valueRu];
     }
 }
