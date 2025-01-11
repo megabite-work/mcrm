@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace App\Component;
 
 use App\Entity\User;
+use App\Exception\ErrorException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class CurrentUser
 {
-    public function __construct(private TokenStorageInterface $tokenStorage)
-    {
-    }
+    public function __construct(
+        private TokenStorageInterface $tokenStorage
+    ) {}
 
     public function getUser(): User
     {
         $user = $this->getToken()->getUser();
 
         if (!$user instanceof User) {
-            throw new AuthException('User is not found');
+            throw new ErrorException('User', 'not found');
         }
 
         return $user;
@@ -42,7 +43,7 @@ class CurrentUser
         $token = $this->tokenStorage->getToken();
 
         if (null === $token) {
-            throw new AuthException('You should be authorized');
+            throw new ErrorException('Authorization', 'You should be authorized');
         }
 
         return $token;

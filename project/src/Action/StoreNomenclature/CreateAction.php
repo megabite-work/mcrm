@@ -2,12 +2,12 @@
 
 namespace App\Action\StoreNomenclature;
 
-use App\Component\EntityNotFoundException;
 use App\Dto\StoreNomenclature\IndexDto;
 use App\Dto\StoreNomenclature\RequestDto;
 use App\Entity\Nomenclature;
 use App\Entity\Store;
 use App\Entity\StoreNomenclature;
+use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
@@ -25,7 +25,7 @@ class CreateAction
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
+            throw new ErrorException('StoreNomenclature', $th->getMessage());
         }
 
         return $data;

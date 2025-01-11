@@ -2,10 +2,10 @@
 
 namespace App\Action\Unit;
 
-use App\Component\EntityNotFoundException;
 use App\Dto\Unit\IndexDto;
 use App\Dto\Unit\RequestDto;
 use App\Entity\Unit;
+use App\Exception\ErrorException;
 use App\Repository\UnitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -26,7 +26,7 @@ class CreateAction
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new EntityNotFoundException($th->getMessage(), $th->getCode());
+            throw new ErrorException('Unit', $th->getMessage());
         }
 
         return $data;
