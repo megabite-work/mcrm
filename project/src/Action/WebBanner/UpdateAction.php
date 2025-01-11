@@ -2,7 +2,7 @@
 
 namespace App\Action\WebBanner;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebBanner\IndexDto;
 use App\Dto\WebBanner\RequestDto;
 use App\Entity\Category;
 use App\Entity\WebBanner;
@@ -15,40 +15,28 @@ class UpdateAction
         private EntityManagerInterface $em,
     ) {}
 
-    public function __invoke(int $id, RequestDto $dto): WebBanner
+    public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->em->find(WebBanner::class, $id);
-
-        if (null === $entity) {
-            throw new EntityNotFoundException('not found');
-        }
-
-        $entity = $this->update($entity, $dto);
+        $typeId = is_numeric($dto->typeId) ? intval($dto->typeId) : $dto->typeId;
+        $entity = (new WebBanner())
+            ->setType($dto->type ?? $entity->getType())
+            ->setTypeId($typeId ?? $entity->getTypeId())
+            ->setImage($dto->image ?? $entity->getImage())
+            ->setTitle($dto->title ?? $entity->getTitle())
+            ->setDescription($dto->description ?? $entity->getDescription())
+            ->setDevices($dto->devices ?? $entity->getDevices())
+            ->setClickType($dto->clickType ?? $entity->getClickType())
+            ->setClickMax($dto->clickMax ?? $entity->getClickMax())
+            ->setClickCurrent($dto->clickCurrent ?? $entity->getClickCurrent())
+            ->setViewType($dto->viewType ?? $entity->getViewType())
+            ->setViewMax($dto->viewMax ?? $entity->getViewMax())
+            ->setViewCurrent($dto->viewCurrent ?? $entity->getViewCurrent())
+            ->setBeginAt($dto->beginAt ?? $entity->getBeginAt())
+            ->setEndAt($dto->endAt ?? $entity->getEndAt());
         $this->em->flush();
 
-        return $entity;
-    }
-
-    private function update(WebBanner $entity, RequestDto $dto)
-    {
-        $typeId = is_numeric($dto->getTypeId()) ? intval($dto->getTypeId()) : $dto->getTypeId();
-        $entity->setType($dto->getType())
-            ->setTypeId($typeId)
-            ->setImage($dto->getImage())
-            ->setTitle($dto->getTitle())
-            ->setDescription($dto->getDescription())
-            ->setDevices($dto->getDevices())
-            ->setClickType($dto->getClickType())
-            ->setClickMax($dto->getClickMax())
-            ->setClickCurrent($dto->getClickCurrent())
-            ->setViewType($dto->getViewType())
-            ->setViewMax($dto->getViewMax())
-            ->setViewCurrent($dto->getViewCurrent())
-            ->setBeginAt($dto->getBeginAt())
-            ->setIsActive($dto->getIsActive())
-            ->setEndAt($dto->getEndAt());
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): WebBanner

@@ -2,7 +2,7 @@
 
 namespace App\Action\WebBanner;
 
-use App\Component\EntityNotFoundException;
+use App\Dto\WebBanner\IndexDto;
 use App\Entity\Category;
 use App\Entity\WebBanner;
 use App\Entity\WebNomenclature;
@@ -17,9 +17,9 @@ class ShowAction
     ) {
     }
 
-    public function __invoke(int $id): WebBanner
+    public function __invoke(int $id): IndexDto
     {
-        return $this->repo->find($id) ?? throw new EntityNotFoundException('not found');
+         return IndexDto::fromEntity($this->repo->find($id));
     }
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): WebBanner

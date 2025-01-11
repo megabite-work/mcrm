@@ -22,7 +22,7 @@ class WebBannerRepository extends ServiceEntityRepository
     public function findAllWebBannersByMultiStore(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
-        $multiStore = $entityManager->find(MultiStore::class, $dto->getMultiStoreId());
+        $multiStore = $entityManager->getReference(MultiStore::class, $dto->multiStoreId);
 
         $query = $entityManager->createQuery(
             'SELECT wb
@@ -30,6 +30,6 @@ class WebBannerRepository extends ServiceEntityRepository
             WHERE wb.multiStore = :multiStore'
         )->setParameters(['multiStore' => $multiStore]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }

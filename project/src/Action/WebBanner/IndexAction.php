@@ -3,6 +3,9 @@
 namespace App\Action\WebBanner;
 
 use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\WebBanner\IndexDto;
 use App\Dto\WebBanner\RequestQueryDto;
 use App\Entity\Category;
 use App\Entity\WebBanner;
@@ -15,12 +18,18 @@ class IndexAction
     public function __construct(
         private WebBannerRepository $repo,
         private EntityManagerInterface $em
-    ) {
-    }
+    ) {}
 
-    public function __invoke(RequestQueryDto $dto): Paginator
+    public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        return $this->repo->findAllWebBannersByMultiStore($dto);
+        $paginator = $this->repo->findAllWebBannersByMultiStore($dto);
+        $data = $paginator->getData();
+
+        array_walk_recursive($data, function (&$entity) {
+            $entity = IndexDto::fromEntity($entity);
+        });
+
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): void

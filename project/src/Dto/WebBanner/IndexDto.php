@@ -28,13 +28,13 @@ final readonly class IndexDto
 
     ) {}
 
-    public static function fromEntity(?WebBanner $entity): static
+    public static function fromEntity(?WebBanner $entity, ?object $type = null): static
     {
         return $entity
             ? new static(
                 id: $entity->getId(),
                 type: $entity->getType(),
-                typeId: $entity->getTypeId(),
+                typeId: $type ?? $entity->getTypeId(),
                 image: $entity->getImage(),
                 isActive: $entity->getIsActive(),
                 title: $entity->getTitle(),
