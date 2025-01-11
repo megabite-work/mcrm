@@ -25,8 +25,8 @@ class WebFooterRepository extends ServiceEntityRepository
             'SELECT wf
             FROM App\Entity\WebFooter wf
             WHERE wf.multiStoreId = :multiStoreId'
-        )->setParameters(['multiStoreId' => $dto->getMultiStoreId()]);
+        )->setParameters(['multiStoreId' => $dto->multiStoreId]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }
