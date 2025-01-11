@@ -111,7 +111,7 @@ class WebNomenclatureController extends AbstractController
         return $this->successResponse($action($multiStoreId, $article, $dto), Response::HTTP_CREATED);
     }
 
-    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}/attribute/{attributeId<\d+>}', methods: ['PATCH'])]
+    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}/attribute/{attribute_id<\d+>}', methods: ['PATCH'])]
     public function clientArticleAttributeUpdate(
         int $multiStoreId,
         string $article,
@@ -124,7 +124,7 @@ class WebNomenclatureController extends AbstractController
         return $this->successResponse($action($multiStoreId, $article, $attributeId, $dto));
     }
 
-    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}/attribute/{attributeId<\d+>}', methods: ['DELETE'])]
+    #[Route(path: '/{multi_store_id<\d+>}/client-article/{article}/attribute/{attribute_id<\d+>}', methods: ['DELETE'])]
     public function clientArticleAttributeDelete(
         int $multiStoreId,
         string $article,

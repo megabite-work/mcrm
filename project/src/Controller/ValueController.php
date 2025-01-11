@@ -52,7 +52,7 @@ class ValueController extends AbstractController
         return $this->successResponse($action($id, $dto));
     }
 
-    #[Route('/{id<\d+>}/assign/{attributeId<\d+>}', methods: ['POST'])]
+    #[Route('/{id<\d+>}/assign/{attribute_id<\d+>}', methods: ['POST'])]
     public function assign(int $id, int $attributeId, AssignAction $action): JsonResponse
     {
         $this->existsValidate([$id, $attributeId], [ValueEntity::class, AttributeEntity::class]);
@@ -61,7 +61,7 @@ class ValueController extends AbstractController
         return $this->emptyResponse();
     }
 
-    #[Route('/{id<\d+>}/detach/{attributeId<\d+>}', methods: ['POST'])]
+    #[Route('/{id<\d+>}/detach/{attribute_id<\d+>}', methods: ['POST'])]
     public function detach(int $id, int $attributeId, DetachAction $action): JsonResponse
     {
         $this->existsValidate([$id, $attributeId], [ValueEntity::class, AttributeEntity::class]);
