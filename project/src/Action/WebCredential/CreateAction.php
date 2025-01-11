@@ -21,6 +21,9 @@ class CreateAction
         $entity = $multiStore->getWebCredential();
         if (! $entity) {
             $entity = (new WebCredential())
+                ->setLogo($dto->logo)
+                ->setAbout($dto->about)
+                ->setTemplateId($dto->templateId)
                 ->setMultiStore($multiStore);
             $this->em->persist($entity);
             $this->em->flush();
