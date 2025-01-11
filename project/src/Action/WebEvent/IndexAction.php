@@ -2,9 +2,12 @@
 
 namespace App\Action\WebEvent;
 
-use App\Component\Paginator;
+use App\Dto\Base\ListResponseDto;
+use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\Category\IndexDto as CategoryDto;
 use App\Dto\WebEvent\IndexDto;
 use App\Dto\WebEvent\RequestQueryDto;
+use App\Dto\WebNomenclature\IndexDto as WebNomenclatureDto;
 use App\Entity\Category;
 use App\Entity\WebNomenclature;
 use App\Repository\WebEventRepository;
@@ -17,45 +20,25 @@ class IndexAction
         private WebEventRepository $repo
     ) {}
 
-    public function __invoke(RequestQueryDto $dto): Paginator
+    public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
         $paginator = $this->repo->findAllWebEventsByMultiStore($dto);
+        $data = $paginator->getData();
 
-        $data = array_map(function ($entity) {
+        array_walk_recursive($data, function (&$entity) {
             if ($entity->getType() === 'product') {
                 $typeIds = array_map(function ($id) {
-                    $webNomenclature = $this->em->getRepository(WebNomenclature::class)->find($id);
-
-                    return [
-                        'id' => $webNomenclature->getId(),
-                        'article' => $webNomenclature->getArticle(),
-                        'title' => $webNomenclature->getTitle(),
-                        'images' => $webNomenclature->getImages(),
-                        'description' => $webNomenclature->getDescription(),
-                        'document' => $webNomenclature->getDocument(),
-                        'isActive' => $webNomenclature->getIsActive(),
-                    ];
+                    return WebNomenclatureDto::fromEntityForNomenclature($this->em->getRepository(WebNomenclature::class)->find($id));
                 }, $entity->getTypeIds());
             } else if ($entity->getType() === 'category') {
                 $typeIds = array_map(function ($id) {
-                    $category = $this->em->getRepository(Category::class)->findCategoryByIdWithParentAndChildrens($id);
-
-                    return [
-                        'id' => $category->getId(),
-                        'name' => $category->getName(),
-                        'image' => $category->getImage(),
-                        'isActive' => $category->getIsActive(),
-                        'parentId' => $category->getParentId(),
-                        'hasChild' => $category->getHasChild(),
-                    ];
+                    return CategoryDto::fromEntity($this->em->getRepository(Category::class)->findCategoryByIdWithParentAndChildrens($id));
                 }, $entity->getTypeIds());
             }
 
-            return IndexDto::fromEntity($entity, $typeIds);
-        }, $paginator->getData());
+            $entity = IndexDto::fromEntity($entity, $typeIds);
+        });
 
-        $paginator->setData($data);
-
-        return $paginator;
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

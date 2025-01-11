@@ -15,15 +15,17 @@ final readonly class IndexDto
         public ?bool $hasChild = false,
     ) {}
 
-    public static function fromEntity(?Category $category): static
+    public static function fromEntity(?Category $entity): ?static
     {
-        return new static(
-            id: $category->getId(),
-            parentId: $category->getParentId(),
-            name: $category->getName(),
-            image: $category->getImage(),
-            isActive: $category->getIsActive(),
-            hasChild: $category->getHasChild(),
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                parentId: $entity->getParentId(),
+                name: $entity->getName(),
+                image: $entity->getImage(),
+                isActive: $entity->getIsActive(),
+                hasChild: $entity->getHasChild(),
+            )
+            : null;
     }
 }

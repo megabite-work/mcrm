@@ -25,8 +25,8 @@ class WebEventRepository extends ServiceEntityRepository
             'SELECT we
             FROM App\Entity\WebEvent we
             WHERE we.multiStoreId = :multiStoreId'
-        )->setParameters(['multiStoreId' => $dto->getMultiStoreId()]);
+        )->setParameters(['multiStoreId' => $dto->multiStoreId]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }
