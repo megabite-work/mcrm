@@ -20,7 +20,7 @@ class ShowAction
     public function __invoke(int $id): IndexDto
     {
         $entity = $this->repo->find($id);
-        
+        $typeIds = null;
         if ($entity->getType() === 'product') {
             $typeIds = array_map(function ($id) {
                 return WebNomenclatureDto::fromEntityForNomenclature($this->em->getRepository(WebNomenclature::class)->find($id));

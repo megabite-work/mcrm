@@ -26,6 +26,7 @@ class IndexAction
         $data = $paginator->getData();
 
         array_walk_recursive($data, function (&$entity) {
+            $typeIds = null;
             if ($entity->getType() === 'product') {
                 $typeIds = array_map(function ($id) {
                     return WebNomenclatureDto::fromEntityForNomenclature($this->em->getRepository(WebNomenclature::class)->find($id));
