@@ -1,0 +1,8 @@
+framework:
+    serializer:
+        name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+        default_context:
+            skip_null_values: true
+            datetime_format: 'Y-m-d H:i:s'
+            circular_reference_limit: 1
+            circular_reference_handler: 'App\Serializer\CircularReferenceHandler::handle'

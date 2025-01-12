@@ -2,7 +2,7 @@ name: Deploy
 on:
   push:
     branches:
-      - dev
+      - master
 jobs:
   deploy:
     name: Deploy
@@ -15,7 +15,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd projects/mcrm/dynamic/api.mcrm.uz
+            cd ${{ vars.PROJECT_PATH }}
             git reset --hard
             git pull
-            make php_refresh
+            cd ../
+            make app_refresh
