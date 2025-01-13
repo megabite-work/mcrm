@@ -45,11 +45,11 @@ class WebViewController extends AbstractController
     }
 
     #[Route('/{multi_store_id<\d+>}', methods: ['PATCH'])]
-    public function update(int $multiStoreid, #[MapRequestPayload(serializationContext: ['groups' => ['web_view:update']], type: RequestDto::class)] array $dtos, UpdateAction $action): JsonResponse
+    public function update(int $multiStoreId, #[MapRequestPayload(serializationContext: ['groups' => ['web_view:update']], type: RequestDto::class)] array $dtos, UpdateAction $action): JsonResponse
     {
-        $this->existsValidate($multiStoreid, MultiStore::class);
+        $this->existsValidate($multiStoreId, MultiStore::class);
 
-        return $this->successResponse($action($multiStoreid, $dtos));
+        return $this->successResponse($action($multiStoreId, $dtos));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
