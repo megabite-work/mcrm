@@ -7,6 +7,7 @@ use App\Entity\WebBanner;
 use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Choice;
 
 final class RequestDto
 {
