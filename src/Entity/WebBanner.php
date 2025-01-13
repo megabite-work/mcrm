@@ -50,7 +50,7 @@ class WebBanner
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $typeId = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $showType = null;
 
@@ -159,14 +159,14 @@ class WebBanner
         return $this;
     }
 
-    public function getShowType(): ?string
+    public function getShowType(): ?array
     {
-        return $this->showType;
+        return json_decode($this->showType, true);
     }
 
-    public function setShowType(string $showType): static
+    public function setShowType(?array $showType): static
     {
-        $this->showType = $showType;
+        $this->showType = json_encode($showType, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
