@@ -10,7 +10,10 @@ final readonly class IndexDto
 {
     public function __construct(
         public ?int $id = null,
-        public ?string $category = null,
+        public ?string $catalogType = null,
+        public string|array|null $catalogTypeId = null,
+        public ?string $buyType = null,
+        public ?string $buyValue = null,
         public ?int $article = null,
         public string|array|null $secrets = null,
         public string|array|null $social = null,
@@ -21,7 +24,10 @@ final readonly class IndexDto
     {
         return new static(
             id: $entity->getId(),
-            category: $entity->getCategory(),
+            catalogType: $entity->getCatalogType(),
+            catalogTypeId: $entity->getCatalogTypeId(),
+            buyType: $entity->getBuyType(),
+            buyValue: $entity->getBuyValue(),
             article: $entity->getArticle(),
             secrets: $entity->getSecrets(),
             social: $entity->getSocial(),

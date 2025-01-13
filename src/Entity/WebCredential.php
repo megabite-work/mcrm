@@ -18,6 +18,21 @@ class WebCredential
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
+    public const TYPE_CLASS = 'class';
+    public const TYPE_CATEGORY = 'category';
+    public const TYPE_SUBCATEGORY = 'subcategory';
+    public const BUY_TYPE_PHONE = 'phone';
+    public const BUY_TYPE_LINK = 'link';
+    public const TYPES = [
+        WebCredential::TYPE_CLASS,
+        WebCredential::TYPE_CATEGORY,
+        WebCredential::TYPE_SUBCATEGORY
+    ];
+    public const BUY_TYPES = [
+        WebCredential::BUY_TYPE_PHONE,
+        WebCredential::BUY_TYPE_LINK,
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -27,10 +42,6 @@ class WebCredential
     #[ORM\OneToOne(targetEntity: MultiStore::class, inversedBy: 'webCredential')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MultiStore $multiStore = null;
-
-    #[ORM\Column]
-    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
-    private ?string $category = 'supercategory';
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
@@ -56,6 +67,22 @@ class WebCredential
     #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
     private ?int $templateId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
+    private ?string $catalogType = WebCredential::TYPE_CLASS;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
+    private ?string $catalogTypeId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
+    private ?string $buyType = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
+    private ?string $buyValue = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,18 +96,6 @@ class WebCredential
     public function setMultiStore(?MultiStore $multiStore): static
     {
         $this->multiStore = $multiStore;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?string $category): static
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -153,6 +168,54 @@ class WebCredential
     public function setTemplateId(?int $templateId): static
     {
         $this->templateId = $templateId;
+
+        return $this;
+    }
+
+    public function getCatalogType(): ?string
+    {
+        return $this->catalogType;
+    }
+
+    public function setCatalogType(?string $catalogType): static
+    {
+        $this->catalogType = $catalogType;
+
+        return $this;
+    }
+
+    public function getCatalogTypeId(): ?array
+    {
+        return json_decode($this->catalogTypeId, true);
+    }
+
+    public function setCatalogTypeId(?array $catalogTypeId): static
+    {
+        $this->catalogTypeId = json_encode($catalogTypeId, JSON_UNESCAPED_UNICODE);
+
+        return $this;
+    }
+
+    public function getBuyType(): ?string
+    {
+        return $this->buyType;
+    }
+
+    public function setBuyType(?string $buyType): static
+    {
+        $this->buyType = $buyType;
+
+        return $this;
+    }
+
+    public function getBuyValue(): ?string
+    {
+        return $this->buyValue;
+    }
+
+    public function setBuyValue(?string $buyValue): static
+    {
+        $this->buyValue = $buyValue;
 
         return $this;
     }

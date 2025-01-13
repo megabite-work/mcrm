@@ -24,7 +24,10 @@ class UpdateAction
             $entity = (new WebCredential())->setMultiStore($multiStore);
         }
 
-        $entity->setCategory($dto->category)
+        $entity->setCatalogType($dto->catalogType)
+            ->setCatalogTypeId($dto->catalogTypeId)
+            ->setBuyType($dto->buyType)
+            ->setBuyValue($dto->buyValue)
             ->setSecrets($dto->secrets)
             ->setSocial($dto->social)
             ->setLogo($dto->logo)
