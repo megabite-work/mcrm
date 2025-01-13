@@ -41,6 +41,7 @@ security:
       }
     - { path: ^/api/(doc$|doc.json$), roles: PUBLIC_ACCESS }
     - { path: ^/api/categories($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-headers($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
     - {
         path: ^/api/web-nomenclatures($|/\d+$),
         roles: PUBLIC_ACCESS,

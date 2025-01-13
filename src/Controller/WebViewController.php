@@ -29,6 +29,7 @@ class WebViewController extends AbstractController
     }
 
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
+    #[Security(name: null)]
     public function show(int $id, ShowAction $action): JsonResponse
     {
         $this->existsValidate($id, WebView::class);
