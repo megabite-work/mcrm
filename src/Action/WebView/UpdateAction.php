@@ -25,7 +25,7 @@ class UpdateAction
             if (isset($dtoMap[$entity->getId()])) {
                 $dto = $dtoMap[$entity->getId()];
                 $entity->setType($dto->type)->setIsActive($dto->isActive);
-                IndexDto::fromEntity($entity);
+                return IndexDto::fromEntity($entity);
             }
         }, $entities);
         $this->em->flush();
