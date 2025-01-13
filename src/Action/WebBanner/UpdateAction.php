@@ -22,6 +22,8 @@ class UpdateAction
         $entity = (new WebBanner())
             ->setType($dto->type ?? $entity->getType())
             ->setTypeId($typeId ?? $entity->getTypeId())
+            ->setShowType($dto->showType ?? $entity->getShowType())
+            ->setShowTypeId($dto->showTypeId ?? $entity->getShowTypeId())
             ->setImage($dto->image ?? $entity->getImage())
             ->setTitle($dto->title ?? $entity->getTitle())
             ->setDescription($dto->description ?? $entity->getDescription())

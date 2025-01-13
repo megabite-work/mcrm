@@ -24,6 +24,13 @@ final class RequestDto
         public string $typeId,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
+        #[Assert\Choice(choices: ['product', 'category', 'page', 'all'], groups: ['web_banner:create', 'web_banner:update'])]
+        public string $showType,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
+        public ?array $showTypeId = null,
+        #[Groups(['web_banner:create', 'web_banner:update'])]
+        #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         public string $image,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]

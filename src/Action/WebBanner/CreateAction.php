@@ -25,6 +25,8 @@ class CreateAction
         $entity = (new WebBanner())
             ->setType($dto->type)
             ->setTypeId($typeId)
+            ->setShowType($dto->showType)
+            ->setShowTypeId($dto->showTypeId)
             ->setImage($dto->image)
             ->setTitle($dto->title)
             ->setDescription($dto->description)
