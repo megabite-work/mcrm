@@ -18,7 +18,6 @@ class CreateAction
         $entity = (new WebHeader())
             ->setMultiStoreId($dto->multiStoreId)
             ->setType($dto->type)
-            ->setOrder($dto->order)
             ->setIsActive($dto->isActive);
         $this->em->persist($entity);
         $this->em->flush();

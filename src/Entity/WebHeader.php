@@ -34,10 +34,6 @@ class WebHeader
     #[Groups(['web_header:index', 'web_header:show', 'web_header:create', 'web_header:update'])]
     private ?bool $isActive = false;
 
-    #[ORM\Column(name: "`order`")]
-    #[Groups(['web_header:index', 'web_header:show', 'web_header:create', 'web_header:update'])]
-    private ?int $order = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -63,18 +59,6 @@ class WebHeader
     public function setType(?string $type): static
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getOrder(): ?int
-    {
-        return $this->order;
-    }
-
-    public function setOrder(?int $order): static
-    {
-        $this->order = $order;
 
         return $this;
     }

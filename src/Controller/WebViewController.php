@@ -9,6 +9,7 @@ use App\Action\WebView\ShowAction;
 use App\Action\WebView\UpdateAction;
 use App\Dto\WebView\RequestDto;
 use App\Dto\WebView\RequestQueryDto;
+use App\Entity\MultiStore;
 use App\Entity\WebView;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
@@ -43,12 +44,12 @@ class WebViewController extends AbstractController
         return $this->successResponse($action($dto));
     }
 
-    #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_view:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    #[Route('/{multi_store_id<\d+>}', methods: ['PATCH'])]
+    public function update(int $multiStoreid, #[MapRequestPayload(serializationContext: ['groups' => ['web_view:update']], type: RequestDto::class)] array $dtos, UpdateAction $action): JsonResponse
     {
-        $this->existsValidate($id, WebView::class);
+        $this->existsValidate($multiStoreid, MultiStore::class);
 
-        return $this->successResponse($action($id, $dto));
+        return $this->successResponse($action($multiStoreid, $dtos));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]

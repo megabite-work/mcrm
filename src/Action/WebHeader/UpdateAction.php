@@ -17,7 +17,6 @@ class UpdateAction
     {
         $entity = $this->em->find(WebHeader::class, $id);
         $entity->setType($dto->type)
-            ->setOrder($dto->order)
             ->setIsActive($dto->isActive);
         $this->em->flush();
 

@@ -15,6 +15,10 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['web_view:create'])]
         #[Exists(MultiStore::class)]
         public ?int $multiStoreId,
+        #[Groups(['web_view:update'])]
+        #[Assert\NotBlank(groups: ['web_view:update'])]
+        #[Exists(WebView::class)]
+        public ?int $id,
         #[Groups(['web_view:create', 'web_view:update'])]
         #[Assert\NotBlank(groups: ['web_view:create', 'web_view:update'])]
         #[Assert\Choice(choices: WebView::TYPES)]

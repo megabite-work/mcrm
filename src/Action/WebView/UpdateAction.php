@@ -3,23 +3,33 @@
 namespace App\Action\WebView;
 
 use App\Dto\WebView\IndexDto;
-use App\Dto\WebView\RequestDto;
-use App\Entity\WebView;
+use App\Repository\WebViewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private WebViewRepository $repo
     ) {}
 
-    public function __invoke(int $id, RequestDto $dto): IndexDto
+    public function __invoke(int $multiStoreId, array $dtos): array
     {
-        $entity = $this->em->find(WebView::class, $id);
-        $entity->setType($dto->type)
-            ->setIsActive($dto->isActive);
+        $entities = $this->repo->findBy(['multiStoreId' => $multiStoreId]);
+        $dtoMap = [];
+        foreach ($dtos as $dto) {
+            $dtoMap[$dto->id] = $dto;
+        }
+        
+        $data = array_map(function ($entity) use ($dtoMap) {
+            if (isset($dtoMap[$entity->getId()])) {
+                $dto = $dtoMap[$entity->getId()];
+                $entity->setType($dto->type)->setIsActive($dto->isActive);
+                IndexDto::fromEntity($entity);
+            }
+        }, $entities);
         $this->em->flush();
 
-        return IndexDto::fromEntity($entity);
+        return $data;
     }
 }

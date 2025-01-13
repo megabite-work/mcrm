@@ -21,10 +21,6 @@ final class RequestDto
         public string $type,
         #[Groups(['web_header:create', 'web_header:update'])]
         #[Assert\NotBlank(groups: ['web_header:create', 'web_header:update'])]
-        #[Assert\PositiveOrZero]
-        public int $order = 0,
-        #[Groups(['web_header:create', 'web_header:update'])]
-        #[Assert\NotBlank(groups: ['web_header:create', 'web_header:update'])]
         public bool $isActive = false,
     ) {}
 }

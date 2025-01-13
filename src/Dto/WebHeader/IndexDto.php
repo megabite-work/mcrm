@@ -12,7 +12,6 @@ final readonly class IndexDto
         public ?int $id = null,
         public ?string $type = null,
         public ?bool $isActive = null,
-        public ?int $order = null,
     ) {}
 
     public static function fromEntity(?WebHeader $entity): ?static
@@ -22,7 +21,6 @@ final readonly class IndexDto
                 id: $entity->getId(),
                 type: $entity->getType(),
                 isActive: $entity->getIsActive(),
-                order: $entity->getOrder(),
             )
             : null;
     }
