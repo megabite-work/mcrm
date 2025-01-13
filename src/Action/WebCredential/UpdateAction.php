@@ -24,15 +24,15 @@ class UpdateAction
             $entity = (new WebCredential())->setMultiStore($multiStore);
         }
 
-        $entity->setCatalogType($dto->catalogType)
-            ->setCatalogTypeId($dto->catalogTypeId)
-            ->setBuyType($dto->buyType)
-            ->setBuyValue($dto->buyValue)
-            ->setSecrets($dto->secrets)
-            ->setSocial($dto->social)
-            ->setLogo($dto->logo)
-            ->setTemplateId($dto->templateId)
-            ->setAbout($dto->about);
+        $entity->setCatalogType($dto->catalogType ?? $entity->getCatalogType())
+            ->setCatalogTypeId($dto->catalogTypeId ?? $entity->getCatalogTypeId())
+            ->setBuyType($dto->buyType ?? $entity->getBuyType())
+            ->setBuyValue($dto->buyValue ?? $entity->getBuyValue())
+            ->setSecrets($dto->secrets ?? $entity->getSecrets())
+            ->setSocial($dto->social ?? $entity->getSocial())
+            ->setLogo($dto->logo ?? $entity->getLogo())
+            ->setTemplateId($dto->templateId ?? $entity->getTemplateId())
+            ->setAbout($dto->about ?? $entity->getAbout());
         $this->em->persist($entity);
         $this->em->flush();
 
