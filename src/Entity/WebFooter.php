@@ -38,7 +38,7 @@ class WebFooter
     #[Groups(['web_footer:index', 'web_footer:show', 'web_footer:create', 'web_footer:update'])]
     private ?bool $isActive = true;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "`order`")]
     #[Groups(['web_footer:index', 'web_footer:show', 'web_footer:create', 'web_footer:update'])]
     private ?int $order = null;
 

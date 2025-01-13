@@ -34,7 +34,7 @@ class WebHeader
     #[Groups(['web_header:index', 'web_header:show', 'web_header:create', 'web_header:update'])]
     private ?bool $isActive = false;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "`order`")]
     #[Groups(['web_header:index', 'web_header:show', 'web_header:create', 'web_header:update'])]
     private ?int $order = null;
 
