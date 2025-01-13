@@ -41,8 +41,7 @@ class CategoryRepository extends ServiceEntityRepository
             'SELECT c, p, ch
             FROM App\Entity\Category c
             LEFT JOIN c.parent p
-            LEFT JOIN c.childrens ch
-            WHERE c.parent IS NULL'
+            LEFT JOIN c.childrens ch'
         );
 
         return new Paginator($query, $dto->page, $dto->perPage);
