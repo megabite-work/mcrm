@@ -27,6 +27,10 @@ class WebBanner
     public const PC = 'desktop';
     public const MOBILE = 'mobile';
     public const TABLET = 'tablet';
+    public const SHOW_TYPE_ALL = 'all';
+    public const SHOW_TYPE_CATEGORY = 'category';
+    public const SHOW_TYPE_PRODUCT = 'product';
+    public const SHOW_TYPE_PAGE = 'page';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -45,6 +49,14 @@ class WebBanner
     #[ORM\Column(length: 255)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $typeId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
+    private ?string $showType = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
+    private ?string $showTypeId = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
@@ -143,6 +155,30 @@ class WebBanner
     public function setTypeId(string $typeId): static
     {
         $this->typeId = $typeId;
+
+        return $this;
+    }
+
+    public function getShowType(): ?string
+    {
+        return $this->showType;
+    }
+
+    public function setShowType(string $showType): static
+    {
+        $this->showType = $showType;
+
+        return $this;
+    }
+
+    public function getShowTypeId(): ?array
+    {
+        return json_decode($this->showTypeId, true);
+    }
+
+    public function setShowTypeId(?array $showTypeId): static
+    {
+        $this->showTypeId = json_encode($showTypeId, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
