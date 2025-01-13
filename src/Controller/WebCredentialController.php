@@ -43,50 +43,50 @@ class WebCredentialController extends AbstractController
     }
 
     #[Route('/{multi_store_id<\d+>}', methods: ['PATCH'])]
-    #[OA\RequestBody(
-        description: 'Your request body description',
-        content: new OA\JsonContent(
-            properties: [
-                new OA\Property(property: 'category', type: 'string', example: 'category'),
-                new OA\Property(
-                    property: 'secrets',
-                    type: 'object',
-                    properties: [
-                        new OA\Property(
-                            property: 'instagram',
-                            type: 'object',
-                            properties: [
-                                new OA\Property(property: 'login', type: 'string', example: 'login'),
-                                new OA\Property(property: 'password', type: 'string', example: 'secret'),
-                            ]
-                        ),
-                    ]
-                ),
-                new OA\Property(
-                    property: 'social',
-                    type: 'object',
-                    properties: [
-                        new OA\Property(
-                            property: 'telegram',
-                            type: 'object',
-                            properties: [
-                                new OA\Property(property: 'url', type: 'string', example: 't.me/url'),
-                                new OA\Property(property: 'isActive', type: 'boolean', example: true),
-                            ]
-                        ),
-                        new OA\Property(
-                            property: 'facebook',
-                            type: 'object',
-                            properties: [
-                                new OA\Property(property: 'url', type: 'string', example: 'facebook.com/url'),
-                                new OA\Property(property: 'isActive', type: 'boolean', example: true),
-                            ]
-                        ),
-                    ]
-                ),
-            ]
-        )
-    )]
+    // #[OA\RequestBody(
+    //     description: 'Your request body description',
+    //     content: new OA\JsonContent(
+    //         properties: [
+    //             new OA\Property(property: 'category', type: 'string', example: 'category'),
+    //             new OA\Property(
+    //                 property: 'secrets',
+    //                 type: 'object',
+    //                 properties: [
+    //                     new OA\Property(
+    //                         property: 'instagram',
+    //                         type: 'object',
+    //                         properties: [
+    //                             new OA\Property(property: 'login', type: 'string', example: 'login'),
+    //                             new OA\Property(property: 'password', type: 'string', example: 'secret'),
+    //                         ]
+    //                     ),
+    //                 ]
+    //             ),
+    //             new OA\Property(
+    //                 property: 'social',
+    //                 type: 'object',
+    //                 properties: [
+    //                     new OA\Property(
+    //                         property: 'telegram',
+    //                         type: 'object',
+    //                         properties: [
+    //                             new OA\Property(property: 'url', type: 'string', example: 't.me/url'),
+    //                             new OA\Property(property: 'isActive', type: 'boolean', example: true),
+    //                         ]
+    //                     ),
+    //                     new OA\Property(
+    //                         property: 'facebook',
+    //                         type: 'object',
+    //                         properties: [
+    //                             new OA\Property(property: 'url', type: 'string', example: 'facebook.com/url'),
+    //                             new OA\Property(property: 'isActive', type: 'boolean', example: true),
+    //                         ]
+    //                     ),
+    //                 ]
+    //             ),
+    //         ]
+    //     )
+    // )]
     public function update(int $multiStoreId, #[MapRequestPayload(serializationContext: ['groups' => ['web_credential:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         $this->existsValidate($multiStoreId, MultiStore::class);
