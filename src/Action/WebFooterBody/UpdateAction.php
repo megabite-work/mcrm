@@ -16,10 +16,7 @@ class UpdateAction
     public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->em->find(WebFooterBody::class, $id);
-        $entity->setWebFooterId($dto->webFooterId ?? $entity->getWebFooterId())
-            ->setLogo($dto->logo ?? $entity->getLogo())
-            ->setAbout($dto->about ?? $entity->getAbout())
-            ->setIsActive($dto->isActive);
+        $entity->setWebFooterId($dto->webFooterId ?? $entity->getWebFooterId());
         $this->em->flush();
 
         return IndexDto::fromEntity($entity);

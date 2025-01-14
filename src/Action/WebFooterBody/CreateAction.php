@@ -15,11 +15,7 @@ class CreateAction
 
     public function __invoke(RequestDto $dto): IndexDto
     {
-        $entity = (new WebFooterBody())
-            ->setWebFooterId($dto->webFooterId)
-            ->setLogo($dto->logo)
-            ->setAbout($dto->about)
-            ->setIsActive($dto->isActive);
+        $entity = (new WebFooterBody())->setWebFooterId($dto->webFooterId);
         $this->em->persist($entity);
         $this->em->flush();
 

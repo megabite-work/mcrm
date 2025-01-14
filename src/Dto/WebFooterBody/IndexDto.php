@@ -10,9 +10,7 @@ final readonly class IndexDto
 {
     public function __construct(
         public ?int $id = null,
-        public ?string $logo = null,
-        public ?string $about = null,
-        public ?bool $isActive = null,
+        public ?int $webFooterId = null,
     ) {}
 
     public static function fromEntity(?WebFooterBody $entity): ?static
@@ -20,9 +18,7 @@ final readonly class IndexDto
         return $entity
             ? new static(
                 id: $entity->getId(),
-                logo: $entity->getLogo(),
-                about: $entity->getAbout(),
-                isActive: $entity->getIsActive(),
+                webFooterId: $entity->getWebFooterId(),
             )
             : null;
     }
