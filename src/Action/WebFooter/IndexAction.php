@@ -18,8 +18,9 @@ class IndexAction
     {
         $paginator = $this->repo->findAllWebFootersByMultiStore($dto);
         $data = $paginator->getData();
-
+        
         array_walk_recursive($data, function (&$entity) {
+            dd($entity);
             $entity = IndexDto::fromEntity($entity);
         });
 

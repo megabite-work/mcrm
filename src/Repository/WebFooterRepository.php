@@ -22,11 +22,27 @@ class WebFooterRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery(
-            'SELECT wf
+            'SELECT wf, wfb, wfl
             FROM App\Entity\WebFooter wf
+            LEFT JOIN App\Entity\WebFooterBody wfb WITH wfb.webFooterId = wf.id
+            LEFT JOIN App\Entity\WebFooterLink wfl WITH wfb.webFooterId = wf.id
             WHERE wf.multiStoreId = :multiStoreId'
         )->setParameters(['multiStoreId' => $dto->multiStoreId]);
 
-        return new Paginator($query, $dto->page, $dto->perPage, false);
+        return new Paginator($query, $dto->page, $dto->perPage);
+    }
+
+    public function findWebFooterWithRelation(int $id): mixed
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT wf, wfb, wfl
+            FROM App\Entity\WebFooter wf
+            LEFT JOIN App\Entity\WebFooterBody wfb WITH wfb.webFooterId = wf.id
+            LEFT JOIN App\Entity\WebFooterLink wfl WITH wfb.webFooterId = wf.id
+            WHERE wf.id = :id'
+        )->setParameters(['id' => $id]);
+
+        return $query->getResult();
     }
 }

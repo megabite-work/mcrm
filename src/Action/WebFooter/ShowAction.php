@@ -13,6 +13,7 @@ class ShowAction
 
     public function __invoke(int $id): IndexDto
     {
-        return IndexDto::fromEntity($this->repo->find($id));
+        dd($this->repo->findWebFooterWithRelation($id));
+        return IndexDto::fromEntity($this->repo->findWebFooterWithRelation($id));
     }
 }
