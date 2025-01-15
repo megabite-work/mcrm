@@ -39,7 +39,7 @@ class WebFooterRepository extends ServiceEntityRepository
             'SELECT wf, wfb, wfl
             FROM App\Entity\WebFooter wf
             LEFT JOIN App\Entity\WebFooterBody wfb WITH wfb.webFooterId = wf.id
-            LEFT JOIN App\Entity\WebFooterLink wfl WITH wfb.webFooterId = wf.id
+            LEFT JOIN App\Entity\WebFooterLink wfl WITH wfl.webFooterBodyId = wfb.id
             WHERE wf.id = :id'
         )->setParameters(['id' => $id]);
 

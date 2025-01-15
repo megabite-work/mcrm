@@ -6,9 +6,11 @@ use App\Action\WebFooter\CreateAction;
 use App\Action\WebFooter\DeleteAction;
 use App\Action\WebFooter\IndexAction;
 use App\Action\WebFooter\ShowAction;
+use App\Action\WebFooter\SortAction;
 use App\Action\WebFooter\UpdateAction;
 use App\Dto\WebFooter\RequestDto;
 use App\Dto\WebFooter\RequestQueryDto;
+use App\Dto\WebFooter\SortDto;
 use App\Entity\WebFooter;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
@@ -42,6 +44,14 @@ class WebFooterController extends AbstractController
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_footer:create']], validationGroups: ['web_footer:create'])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
+    }
+
+    #[Route('/sort', methods: ['PATCH'])]
+    public function sort(#[MapRequestPayload(type: SortDto::class)] array $dtos, SortAction $action): JsonResponse
+    {
+        $action($dtos);
+
+        return $this->emptyResponse();
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
