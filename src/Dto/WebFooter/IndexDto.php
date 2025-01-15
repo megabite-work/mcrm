@@ -14,6 +14,8 @@ final readonly class IndexDto
         public ?string $type = null,
         public ?bool $isActive = null,
         public ?int $order = null,
+        public ?array $bodies = null,
+        public ?array $links = null,
     ) {}
 
     public static function fromEntity(?WebFooter $entity): ?static
@@ -25,6 +27,21 @@ final readonly class IndexDto
                 type: $entity->getType(),
                 isActive: $entity->getIsActive(),
                 order: $entity->getOrder(),
+            )
+            : null;
+    }
+
+    public static function fromEntityWithRelation(?WebFooter $entity, ?array $bodies = [], ?array $links = []): ?static
+    {
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                title: $entity->getTitle(),
+                type: $entity->getType(),
+                isActive: $entity->getIsActive(),
+                order: $entity->getOrder(),
+                bodies: $bodies,
+                links: $links,
             )
             : null;
     }
