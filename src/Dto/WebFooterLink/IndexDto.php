@@ -10,11 +10,11 @@ final readonly class IndexDto
 {
     public function __construct(
         public ?int $id = null,
-        private ?int $webFooterId = null,
-        private ?string $title = null,
-        private ?string $type = null,
-        private ?bool $isActive = true,
-        private ?string $link = null,
+        public ?int $webFooterId = null,
+        public ?string $title = null,
+        public ?string $type = null,
+        public ?bool $isActive = true,
+        public ?string $link = null,
 
     ) {}
 

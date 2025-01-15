@@ -16,9 +16,9 @@ class ShowAction
     public function __invoke(int $id): IndexDto
     {
         $result = $this->repo->findWebFooterWithRelation($id);
-        $links = array_map(function ($item) {
+        $links = array_filter(array_map(function ($item) {
             return $item instanceof WebFooterLink ? WebFooterLinkIndexDto::fromEntity($item) : null;
-        }, $result);
+        }, $result));
         
         return IndexDto::fromEntityWithRelation($result[0], $links);
     }
