@@ -43,6 +43,6 @@ class WebFooterRepository extends ServiceEntityRepository
             WHERE wf.id = :id'
         )->setParameters(['id' => $id]);
 
-        return $query->getArrayResult();
+        return $query->getResult();
     }
 }
