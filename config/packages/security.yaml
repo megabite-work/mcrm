@@ -43,6 +43,7 @@ security:
     - { path: ^/api/categories($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/web-views($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/web-headers($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-footers($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
     - {
         path: ^/api/web-nomenclatures($|/\d+$),
         roles: PUBLIC_ACCESS,
