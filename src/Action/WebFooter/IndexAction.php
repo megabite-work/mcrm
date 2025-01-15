@@ -31,11 +31,11 @@ class IndexAction
             }
         }
         
-        $res = array_map(function ($footer) use ($links) {
+        $res = array_values(array_map(function ($footer) use ($links) {
             return isset($links[$footer->getId()])
                 ? IndexDto::fromEntityWithRelation($footer, $links[$footer->getId()])
                 : IndexDto::fromEntityWithRelation($footer);
-        }, $footers);
+        }, $footers));
 
         return new ListResponseDto($res, $paginator->getPagination());
     }
