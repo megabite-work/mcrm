@@ -22,10 +22,9 @@ class WebFooterRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery(
-            'SELECT wf, wfb, wfl
+            'SELECT wf, wfl
             FROM App\Entity\WebFooter wf
-            LEFT JOIN App\Entity\WebFooterBody wfb WITH wfb.webFooterId = wf.id
-            LEFT JOIN App\Entity\WebFooterLink wfl WITH wfb.webFooterId = wf.id
+            LEFT JOIN App\Entity\WebFooterLink wfl WITH wfl.webFooterId = wf.id
             WHERE wf.multiStoreId = :multiStoreId'
         )->setParameters(['multiStoreId' => $dto->multiStoreId]);
 
@@ -36,7 +35,7 @@ class WebFooterRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery(
-            'SELECT wf, wfb, wfl
+            'SELECT wf, wfl
             FROM App\Entity\WebFooter wf
             LEFT JOIN App\Entity\WebFooterLink wfl WITH wfl.webFooterId = wf.id
             WHERE wf.id = :id'
