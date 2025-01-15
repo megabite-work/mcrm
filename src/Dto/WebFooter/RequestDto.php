@@ -17,7 +17,7 @@ final class RequestDto
         public ?int $multiStoreId,
         #[Groups(['web_footer:create', 'web_footer:update'])]
         #[Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update'])]
-        #[Assert\Choice(choices: [WebFooter::TYPE_ABOUT, WebFooter::TYPE_LINK, WebFooter::TYPE_CONTACT, WebFooter::TYPE_SOCIAL], groups: ['web_footer:create', 'web_footer:update'])]
+        #[Assert\Choice(choices: WebFooter::TYPES)]
         public string $type,
         #[Groups(['web_footer:create', 'web_footer:update'])]
         #[Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update'])]

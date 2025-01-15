@@ -22,7 +22,7 @@ class ValueEntityRepository extends ServiceEntityRepository
     public function findAllValuesByAttribute(RequestQueryDto $dto): Paginator
     {
         $entityManager = $this->getEntityManager();
-        $attribute = $entityManager->find(AttributeEntity::class, $dto->getAttributeId());
+        $attribute = $entityManager->find(AttributeEntity::class, $dto->attributeId);
 
         $query = $entityManager->createQuery(
             'SELECT av, v
@@ -31,6 +31,6 @@ class ValueEntityRepository extends ServiceEntityRepository
             WHERE av.attribute = :attribute'
         )->setParameter('attribute', $attribute);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }

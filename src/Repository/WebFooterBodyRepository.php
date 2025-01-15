@@ -25,8 +25,8 @@ class WebFooterBodyRepository extends ServiceEntityRepository
             'SELECT wfb
             FROM App\Entity\WebFooterBody wfb
             WHERE wfb.webFooterId = :webFooterId'
-        )->setParameters(['webFooterId' => $dto->getWebFooterId()]);
+        )->setParameters(['webFooterId' => $dto->webFooterId]);
 
-        return new Paginator($query, $dto->getPage(), $dto->getPerPage(), false);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }

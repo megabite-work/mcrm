@@ -14,6 +14,12 @@ class WebFooter
     public const TYPE_LINK = 'link';
     public const TYPE_CONTACT = 'contact';
     public const TYPE_SOCIAL = 'social';
+    public const TYPES = [
+        WebFooter::TYPE_ABOUT,
+        WebFooter::TYPE_LINK,
+        WebFooter::TYPE_CONTACT,
+        WebFooter::TYPE_SOCIAL,
+    ];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
