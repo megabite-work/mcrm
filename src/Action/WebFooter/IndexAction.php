@@ -22,25 +22,20 @@ class IndexAction
         $paginator = $this->repo->findAllWebFootersByMultiStore($dto);
         $data = $paginator->getData();
         $footers = [];
-        foreach ($data as $key => $item) {
+        $links = [];
+        foreach ($data as $item) {
             if ($item instanceof WebFooter) {
                 $footers[$item->getId()] = $item;
-                unset($data[$key]);
-            }
-        }
-        $links = [];
-        foreach ($data as $key => $item) {
-            if ($item instanceof WebFooterLink) {
+            } elseif ($item instanceof WebFooterLink) {
                 $links[$item->getWebFooterId()][] = WebFooterLinkIndexDto::fromEntity($item);
-                unset($data[$key]);
             }
         }
-        $res = [];
-        foreach ($footers as $key => $footer) {
-            $res[] = isset($links[$key])
-                ? IndexDto::fromEntityWithRelation($footer, $links[$key])
+        
+        $res = array_map(function ($footer) use ($links) {
+            return isset($links[$footer->getId()])
+                ? IndexDto::fromEntityWithRelation($footer, $links[$footer->getId()])
                 : IndexDto::fromEntityWithRelation($footer);
-        }
+        }, $footers);
 
         return new ListResponseDto($res, $paginator->getPagination());
     }
