@@ -42,9 +42,6 @@ class IndexAction
                 : IndexDto::fromEntityWithRelation($footer);
         }
 
-
-        dd($res);
-
         return new ListResponseDto($res, $paginator->getPagination());
     }
 }
