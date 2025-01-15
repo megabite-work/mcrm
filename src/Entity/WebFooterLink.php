@@ -17,7 +17,7 @@ class WebFooterLink
 
     #[ORM\Column]
     #[Groups(['web_footer_link:index', 'web_footer_link:show', 'web_footer_link:create', 'web_footer_link:update'])]
-    private ?int $webFooterBodyId = null;
+    private ?int $webFooterId = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['web_footer_link:index', 'web_footer_link:show', 'web_footer_link:create', 'web_footer_link:update'])]
@@ -40,14 +40,14 @@ class WebFooterLink
         return $this->id;
     }
 
-    public function getWebFooterBodyId(): ?int
+    public function getWebFooterId(): ?int
     {
-        return $this->webFooterBodyId;
+        return $this->webFooterId;
     }
 
-    public function setWebFooterBodyId(?int $webFooterBodyId): static
+    public function setWebFooterId(?int $webFooterId): static
     {
-        $this->webFooterBodyId = $webFooterBodyId;
+        $this->webFooterId = $webFooterId;
 
         return $this;
     }

@@ -2,10 +2,8 @@
 
 namespace App\Action\WebFooter;
 
-use App\Dto\WebFooterBody\IndexDto as WebFooterBodyIndexDto;
 use App\Dto\WebFooterLink\IndexDto as WebFooterLinkIndexDto;
 use App\Dto\WebFooter\IndexDto;
-use App\Entity\WebFooterBody;
 use App\Entity\WebFooterLink;
 use App\Repository\WebFooterRepository;
 
@@ -17,18 +15,11 @@ class ShowAction
 
     public function __invoke(int $id): IndexDto
     {
-        $bodies = [];
-        $links = [];
         $result = $this->repo->findWebFooterWithRelation($id);
-        $entity = $result[0];
-
-        foreach ($result as $item) {
-            if ($item instanceof WebFooterBody) {
-                $bodies[] = WebFooterBodyIndexDto::fromEntity($item);
-            } else if ($item instanceof WebFooterLink) {
-                $links[] = WebFooterLinkIndexDto::fromEntity($item);
-            }
-        }
-        return IndexDto::fromEntityWithRelation($entity, $bodies, $links);
+        $links = array_map(function ($item) {
+            return $item instanceof WebFooterLink ? WebFooterLinkIndexDto::fromEntity($item) : null;
+        }, $result);
+        
+        return IndexDto::fromEntityWithRelation($result[0], $links);
     }
 }

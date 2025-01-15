@@ -16,7 +16,7 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        $paginator = $this->repo->findAllWebFooterLinksByWebFooterBody($dto);
+        $paginator = $this->repo->findAllWebFooterLinksByWebFooter($dto);
         $data = $paginator->getData();
 
         array_walk_recursive($data, function (&$entity) {

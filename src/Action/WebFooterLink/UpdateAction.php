@@ -16,7 +16,7 @@ class UpdateAction
     public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->em->find(WebFooterLink::class, $id);
-        $entity->setWebFooterBodyId($dto->webFooterBodyId ?? $entity->getWebFooterBodyId())
+        $entity->setWebFooterId($dto->webFooterId ?? $entity->getWebFooterId())
             ->setType($dto->type ?? $entity->getType())
             ->setTitle($dto->title ?? $entity->getTitle())
             ->setLink($dto->link ?? $entity->getLink())

@@ -18,14 +18,14 @@ class WebFooterLinkRepository extends ServiceEntityRepository
         parent::__construct($registry, WebFooterLink::class);
     }
 
-    public function findAllWebFooterLinksByWebFooterBody(RequestQueryDto $dto): Paginator
+    public function findAllWebFooterLinksByWebFooter(RequestQueryDto $dto): Paginator
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery(
             'SELECT wfl
             FROM App\Entity\WebFooterLink wfl
-            WHERE wfl.webFooterBodyId = :webFooterBodyId'
-        )->setParameters(['webFooterBodyId' => $dto->webFooterBodyId]);
+            WHERE wfl.webFooterId = :webFooterId'
+        )->setParameters(['webFooterId' => $dto->webFooterId]);
 
         return new Paginator($query, $dto->page, $dto->perPage, false);
     }

@@ -16,7 +16,7 @@ class CreateAction
     public function __invoke(RequestDto $dto): IndexDto
     {
         $entity = (new WebFooterLink())
-            ->setWebFooterBodyId($dto->webFooterBodyId)
+            ->setWebFooterId($dto->webFooterId)
             ->setType($dto->type)
             ->setTitle($dto->title)
             ->setLink($dto->link)
