@@ -4,8 +4,11 @@ namespace App\Action\WebFooter;
 
 use App\Dto\Base\ListResponseDto;
 use App\Dto\Base\ListResponseDtoInterface;
+use App\Dto\WebFooterLink\IndexDto as WebFooterLinkIndexDto;
 use App\Dto\WebFooter\IndexDto;
 use App\Dto\WebFooter\RequestQueryDto;
+use App\Entity\WebFooter;
+use App\Entity\WebFooterLink;
 use App\Repository\WebFooterRepository;
 
 class IndexAction
@@ -18,13 +21,30 @@ class IndexAction
     {
         $paginator = $this->repo->findAllWebFootersByMultiStore($dto);
         $data = $paginator->getData();
-        dd($data);
-        
-        array_walk_recursive($data, function (&$entity) {
-            dd($entity);
-            $entity = IndexDto::fromEntity($entity);
-        });
+        $footers = [];
+        foreach ($data as $key => $item) {
+            if ($item instanceof WebFooter) {
+                $footers[$item->getId()] = $item;
+                unset($data[$key]);
+            }
+        }
+        $links = [];
+        foreach ($data as $key => $item) {
+            if ($item instanceof WebFooterLink) {
+                $links[$item->getWebFooterId()][] = WebFooterLinkIndexDto::fromEntity($item);
+                unset($data[$key]);
+            }
+        }
+        $res = [];
+        foreach ($footers as $key => $footer) {
+            $res[] = isset($links[$key])
+                ? IndexDto::fromEntityWithRelation($footer, $links[$key])
+                : IndexDto::fromEntityWithRelation($footer);
+        }
 
-        return new ListResponseDto($data, $paginator->getPagination());
+
+        dd($res);
+
+        return new ListResponseDto($res, $paginator->getPagination());
     }
 }
