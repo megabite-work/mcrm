@@ -36,13 +36,13 @@ class CashboxController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['cashbox:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['cashbox:create']], validationGroups: ['cashbox:create'])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['cashbox:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['cashbox:update']], validationGroups: ['cashbox:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         $this->existsValidate($id, Cashbox::class);
         

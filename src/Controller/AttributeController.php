@@ -37,13 +37,13 @@ class AttributeController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:create']], validationGroups: ['attribute:create'])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['attribute:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['attribute:update']], validationGroups: ['attribute:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         $this->existsValidate($id, AttributeEntity::class);
 

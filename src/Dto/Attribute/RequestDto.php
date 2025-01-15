@@ -12,7 +12,7 @@ final readonly class RequestDto
     public function __construct(
         #[Groups(['attribute:create'])]
         #[Assert\NotBlank(groups: ['attribute:create'])]
-        #[Exists(entity: Category::class)]
+        #[Exists(entity: Category::class, groups: ['attribute:create'])]
         public ?int $categoryId,
         #[Groups(['attribute:create', 'attribute:update'])]
         #[Assert\NotBlank(groups: ['attribute:create'])]

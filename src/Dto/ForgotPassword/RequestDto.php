@@ -13,7 +13,7 @@ final class RequestDto
         #[Groups(['forgot:password'])]
         #[Assert\NotBlank(groups: ['forgot:password'])]
         #[Assert\Email(groups: ['forgot:password'])]
-        #[Exists(User::class, field: 'email')]
+        #[Exists(User::class, field: 'email', groups: ['forgot:password'])]
         public ?string $email,
         #[Groups(['reset:password'])]
         #[Assert\NotBlank(groups: ['reset:password'])]

@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AbuthController extends AbstractController
 {
     #[Route('/forgot', methods: ['POST'])]
-    public function request(#[MapRequestPayload(serializationContext: ['groups' => ['forgot:password']])] RequestDto $dto, ForgotPasswordAction $action): JsonResponse
+    public function request(#[MapRequestPayload(serializationContext: ['groups' => ['forgot:password']], validationGroups: ['forgot:password'])] RequestDto $dto, ForgotPasswordAction $action): JsonResponse
     {
         $action($dto);
 
@@ -26,7 +26,7 @@ class AbuthController extends AbstractController
     }
 
     #[Route('/{token}/reset', methods: ['POST'])]
-    public function reset(string $token, #[MapRequestPayload(serializationContext: ['groups' => ['reset:password']])] RequestDto $dto, ResetPasswordAction $action): JsonResponse
+    public function reset(string $token, #[MapRequestPayload(serializationContext: ['groups' => ['reset:password']], validationGroups: ['reset:password'])] RequestDto $dto, ResetPasswordAction $action): JsonResponse
     {
         $this->existsValidate($token, User::class, 'token');
         $action($token, $dto);

@@ -15,7 +15,7 @@ final class RequestDto
         public ?string $name,
         #[Groups(['cashbox:create'])]
         #[Assert\NotBlank(groups: ['cashbox:create'])]
-        #[Exists(entity: Store::class)]
+        #[Exists(entity: Store::class, groups: ['cashbox:create'])]
         public ?int $storeId,
         #[Groups(['cashbox:update'])]
         public ?string $terminalId,
