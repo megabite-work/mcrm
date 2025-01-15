@@ -13,6 +13,7 @@ use App\Entity\WebFooter;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -40,7 +41,7 @@ class WebFooterController extends AbstractController
     #[Route(path: '', methods: ['POST'])]
     public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_footer:create']])] RequestDto $dto, CreateAction $action): JsonResponse
     {
-        return $this->successResponse($action($dto));
+        return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
