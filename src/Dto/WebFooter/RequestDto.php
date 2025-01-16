@@ -27,7 +27,7 @@ final class RequestDto
         #[Assert\PositiveOrZero]
         public int $order = 0,
         #[Groups(['web_footer:create', 'web_footer:update'])]
-        #[Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update'])]
+        #[Assert\Type('bool', groups: ['web_footer:create', 'web_footer:update'])]
         public bool $isActive = true,
     ) {}
 }
