@@ -31,6 +31,7 @@ final class RequestDto
                         'login' => [new Assert\NotBlank(), new Assert\Type('string')],
                         'password' => [new Assert\NotBlank(), new Assert\Type('string')],
                     ],
+                    'groups' => ['web_credential:update']
                 ])
             ],
             groups: ['web_credential:update']
@@ -46,6 +47,7 @@ final class RequestDto
                         'footer' => [new Assert\NotBlank(), new Assert\Type(['type' => 'bool'])],
                         'header' => [new Assert\NotBlank(), new Assert\Type(['type' => 'bool'])],
                     ],
+                    'groups' => ['web_credential:update']
                 ])
             ],
             groups: ['web_credential:update']
