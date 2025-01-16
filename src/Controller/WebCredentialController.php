@@ -53,7 +53,7 @@ class WebCredentialController extends AbstractController
                 new OA\Property(property: 'catalog_type_id', type: 'array', items: new OA\Items(type: 'integer'), example: [1, 2, 3]),
                 new OA\Property(
                     property: 'secrets',
-                    type: 'object',
+                    type: 'array',
                     items: new OA\Items(
                         type: 'object',
                         properties: [
@@ -65,7 +65,7 @@ class WebCredentialController extends AbstractController
                 ),
                 new OA\Property(
                     property: 'social',
-                    type: 'object',
+                    type: 'array',
                     items: new OA\Items(
                         type: 'object',
                         properties: [
