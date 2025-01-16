@@ -52,7 +52,7 @@ final readonly class IndexDto
                 return new WebFooterLinkIndexDto(
                     id: $link->getId(),
                     webFooterId: $link->getWebFooterId(),
-                    title: $link->getTitle(),
+                    type: $link->getType(),
                     isActive: $link->getIsActive(),
                 );
             }
