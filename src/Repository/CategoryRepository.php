@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Component\Paginator;
 use App\Dto\Category\RequestQueryDto;
 use App\Entity\Category;
+use App\Entity\MultiStore;
+use App\Entity\WebCredential;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,38 +22,67 @@ class CategoryRepository extends ServiceEntityRepository
 
     public function findAllCategoriesByParent(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $parent = $this->find($dto->parentId);
+        $em = $this->getEntityManager();
+        $parent = $em->getReference(Category::class, $dto->parentId);
+        $ids = null;
 
-        $query = $entityManager->createQuery(
-            'SELECT c, p, ch
+        if ($dto->multiStoreId) {
+            $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
+            $ids = $em->getRepository(WebCredential::class)->findOneBy(['multiStore' => $multiStore])?->getCatalogTypeId();
+        }
+
+        $dql = 'SELECT c, p, ch
             FROM App\Entity\Category c
             LEFT JOIN c.parent p
             LEFT JOIN c.childrens ch
-            WHERE c.parent = :parent'
-        )->setParameter('parent', $parent);
+            WHERE c.parent = :parent';
+
+        if ($ids) {
+            $dql .= ' AND c.id IN (:ids)';
+        }
+
+        $query = $em->createQuery($dql)->setParameter('parent', $parent);
+
+        if ($ids) {
+            $query->setParameter('ids', $ids);
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findAllCategoriesParentIsNull(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery(
-            'SELECT c, p, ch
-            FROM App\Entity\Category c
-            LEFT JOIN c.parent p
-            LEFT JOIN c.childrens ch'
-        );
+        $em = $this->getEntityManager();
+        $ids = null;
+
+        if ($dto->multiStoreId) {
+            $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
+            $ids = $em->getRepository(WebCredential::class)->findOneBy(['multiStore' => $multiStore])?->getCatalogTypeId();
+        }
+
+        $dql = 'SELECT c, p, ch
+        FROM App\Entity\Category c
+        LEFT JOIN c.parent p
+        LEFT JOIN c.childrens ch';
+
+        if ($ids) {
+            $dql .= ' AND c.id IN (:ids)';
+        }
+
+        $query = $em->createQuery($dql);
+
+        if ($ids) {
+            $query->setParameter('ids', $ids);
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage);
     }
 
     public function findCategoryByIdWithParentAndChildrens(int $id): ?Category
     {
-        $entityManager = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
-        $query = $entityManager->createQuery(
+        $query = $em->createQuery(
             'SELECT c, p, ch
             FROM App\Entity\Category c
             LEFT JOIN c.parent p
