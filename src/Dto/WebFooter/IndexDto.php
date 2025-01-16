@@ -50,10 +50,10 @@ final readonly class IndexDto
         return array_map(function ($link) use ($type) {
             if (in_array($type, [WebFooter::TYPE_CONTACT, WebFooter::TYPE_SOCIAL])) {
                 return new WebFooterLinkIndexDto(
-                    $link->getId(),
-                    $link->getWebFooterId(),
-                    $link->getType(),
-                    $link->getIsActive(),
+                    id: $link->getId(),
+                    webFooterId: $link->getWebFooterId(),
+                    title: $link->getType(),
+                    type: $link->getIsActive(),
                 );
             }
 
