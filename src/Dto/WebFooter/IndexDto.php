@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dto\WebFooter;
 
+use App\Dto\WebFooterLink\IndexDto as WebFooterLinkIndexDto;
 use App\Entity\WebFooter;
 
 final readonly class IndexDto
@@ -39,8 +40,24 @@ final readonly class IndexDto
                 type: $entity->getType(),
                 isActive: $entity->getIsActive(),
                 order: $entity->getOrder(),
-                links: $links,
+                links: static::prepareLinks($entity->getType(), $links),
             )
             : null;
+    }
+
+    private static function prepareLinks(string $type, ?array $links = []): array
+    {
+        return array_map(function ($link) use ($type) {
+            if (in_array($type, [WebFooter::TYPE_CONTACT, WebFooter::TYPE_SOCIAL])) {
+                return new WebFooterLinkIndexDto(
+                    $link->getId(),
+                    $link->getWebFooterId(),
+                    $link->getType(),
+                    $link->getIsActive(),
+                );
+            }
+
+            return WebFooterLinkIndexDto::fromEntity($link);
+        }, $links);
     }
 }

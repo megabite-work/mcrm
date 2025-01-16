@@ -4,7 +4,6 @@ namespace App\Action\WebFooter;
 
 use App\Dto\Base\ListResponseDto;
 use App\Dto\Base\ListResponseDtoInterface;
-use App\Dto\WebFooterLink\IndexDto as WebFooterLinkIndexDto;
 use App\Dto\WebFooter\IndexDto;
 use App\Dto\WebFooter\RequestQueryDto;
 use App\Entity\WebFooter;
@@ -27,10 +26,10 @@ class IndexAction
             if ($item instanceof WebFooter) {
                 $footers[$item->getId()] = $item;
             } elseif ($item instanceof WebFooterLink) {
-                $links[$item->getWebFooterId()][] = WebFooterLinkIndexDto::fromEntity($item);
+                $links[$item->getWebFooterId()][] = $item;
             }
         }
-        
+
         $res = array_values(array_map(function ($footer) use ($links) {
             return isset($links[$footer->getId()])
                 ? IndexDto::fromEntityWithRelation($footer, $links[$footer->getId()])
