@@ -66,7 +66,7 @@ class CategoryRepository extends ServiceEntityRepository
         LEFT JOIN c.childrens ch';
 
         if ($ids) {
-            $dql .= ' AND c.id IN (:ids)';
+            $dql .= ' WHERE c.id IN (:ids)';
         }
 
         $query = $em->createQuery($dql);
