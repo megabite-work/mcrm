@@ -23,27 +23,33 @@ final class RequestDto
         #[Assert\All([new Exists(Category::class)], groups: ['web_credential:update'])]
         public ?array $catalogTypeId,
         #[Groups(['web_credential:update'])]
-        #[Assert\All([
-            new Assert\Collection([
-                'fields' => [
-                    'type' => [new Assert\NotBlank(), new Assert\Choice(['choices' => WebCredential::SOCIAL_TYPES])],
-                    'login' => [new Assert\NotBlank(), new Assert\Type('string')],
-                    'password' => [new Assert\NotBlank(), new Assert\Type('string')],
-                ],
-            ], ['web_credential:update'])
-        ])]
+        #[Assert\All(
+            constraints: [
+                new Assert\Collection([
+                    'fields' => [
+                        'type' => [new Assert\NotBlank(), new Assert\Choice(['choices' => WebCredential::SOCIAL_TYPES])],
+                        'login' => [new Assert\NotBlank(), new Assert\Type('string')],
+                        'password' => [new Assert\NotBlank(), new Assert\Type('string')],
+                    ],
+                ])
+            ],
+            groups: ['web_credential:update']
+        )]
         public ?array $secrets,
         #[Groups(['web_credential:update'])]
-        #[Assert\All([
-            new Assert\Collection([
-                'fields' => [
-                    'type' => [new Assert\NotBlank(), new Assert\Choice(['choices' => WebCredential::SOCIAL_TYPES])],
-                    'url' => [new Assert\NotBlank(), new Assert\Url()],
-                    'footer' => [new Assert\NotBlank(), new Assert\Type(['type' => 'bool'])],
-                    'header' => [new Assert\NotBlank(), new Assert\Type(['type' => 'bool'])],
-                ],
-            ], ['web_credential:update'])
-        ])]
+        #[Assert\All(
+            constraints: [
+                new Assert\Collection([
+                    'fields' => [
+                        'type' => [new Assert\NotBlank(), new Assert\Choice(['choices' => WebCredential::SOCIAL_TYPES])],
+                        'url' => [new Assert\NotBlank(), new Assert\Url()],
+                        'footer' => [new Assert\NotBlank(), new Assert\Type(['type' => 'bool'])],
+                        'header' => [new Assert\NotBlank(), new Assert\Type(['type' => 'bool'])],
+                    ],
+                ])
+            ],
+            groups: ['web_credential:update']
+        )]
         public ?array $social,
         #[Groups(['web_credential:update'])]
         #[Assert\Choice(choices: WebCredential::BUY_TYPES, groups: ['web_credential:update'])]
