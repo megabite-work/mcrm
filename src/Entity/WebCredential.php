@@ -32,6 +32,7 @@ class WebCredential
         WebCredential::BUY_TYPE_PHONE,
         WebCredential::BUY_TYPE_LINK,
     ];
+    public const SOCIAL_TYPES = ['email', 'phone', 'add_phone', 'youtube', 'telegram', 'instagram', 'facebook', 'tiktok'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

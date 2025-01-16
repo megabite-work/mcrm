@@ -8,6 +8,7 @@ use App\Action\WebCredential\ShowAction;
 use App\Action\WebCredential\UpdateAction;
 use App\Dto\WebCredential\RequestDto;
 use App\Entity\MultiStore;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class WebCredentialController extends AbstractController
 {
     #[Route(path: '/{multi_store_id<\d+>}', methods: ['GET'])]
+    #[Security(name: null)]
     public function show(int $multiStoreId, ShowAction $action): JsonResponse
     {
         $this->existsValidate($multiStoreId, MultiStore::class);
@@ -28,7 +30,7 @@ class WebCredentialController extends AbstractController
 
     #[Route(path: '', methods: ['POST'])]
     #[OA\Post(summary: 'Create web credential')]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_credential:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_credential:create']], validationGroups: ['web_credential:create'])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
@@ -87,7 +89,7 @@ class WebCredentialController extends AbstractController
     //         ]
     //     )
     // )]
-    public function update(int $multiStoreId, #[MapRequestPayload(serializationContext: ['groups' => ['web_credential:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    public function update(int $multiStoreId, #[MapRequestPayload(serializationContext: ['groups' => ['web_credential:update']], validationGroups: ['web_credential:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         $this->existsValidate($multiStoreId, MultiStore::class);
 

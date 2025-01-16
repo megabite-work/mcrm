@@ -50,6 +50,7 @@ security:
         methods: [GET],
       }
     - { path: ^/api/units/\d+$, roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-credentials/\d+$, roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/web-banners$, roles: PUBLIC_ACCESS, methods: [GET] }
     - {
         path: ^/api/web-banner-settings/\d+$,
