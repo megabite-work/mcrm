@@ -35,6 +35,7 @@ class UpdateAction
             ->setViewMax($dto->viewMax ?? $entity->getViewMax())
             ->setViewCurrent($dto->viewCurrent ?? $entity->getViewCurrent())
             ->setBeginAt($dto->beginAt ?? $entity->getBeginAt())
+            ->setIsActive($dto->isActive ?? $entity->getIsActive())
             ->setEndAt($dto->endAt ?? $entity->getEndAt());
         $this->em->flush();
 
