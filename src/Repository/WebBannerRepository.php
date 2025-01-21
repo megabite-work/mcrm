@@ -23,12 +23,15 @@ class WebBannerRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $multiStore = $entityManager->getReference(MultiStore::class, $dto->multiStoreId);
-
-        $query = $entityManager->createQuery(
-            'SELECT wb
+        
+        $dql = sprintf('SELECT wb
             FROM App\Entity\WebBanner wb
-            WHERE wb.multiStore = :multiStore'
-        )->setParameters(['multiStore' => $multiStore]);
+            WHERE wb.multiStore = :multiStore%s', is_bool($dto->isActive) ? ' AND wb.isActive = :isActive' : '');
+        $query = $entityManager->createQuery($dql)->setParameter('multiStore', $multiStore);
+        
+        if (is_bool($dto->isActive)) {
+            $query->setParameter('isActive', $dto->isActive);
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage, false);
     }

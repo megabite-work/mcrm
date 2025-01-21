@@ -19,8 +19,7 @@ class UpdateAction
     {
         $entity = $this->em->find(WebBanner::class, $id);
         $typeId = is_numeric($dto->typeId) ? intval($dto->typeId) : $dto->typeId;
-        $entity = (new WebBanner())
-            ->setType($dto->type ?? $entity->getType())
+        $entity->setType($dto->type ?? $entity->getType())
             ->setTypeId($typeId ?? $entity->getTypeId())
             ->setShowType($dto->showType ?? $entity->getShowType())
             ->setShowTypeId($dto->showTypeId ?? $entity->getShowTypeId())

@@ -32,6 +32,15 @@ class IndexAction
         return new ListResponseDto($data, $paginator->getPagination());
     }
 
+    private function setTitle(Paginator $entities): Paginator
+    {
+        foreach ($entities->getData() as $webBanner) {
+            $this->getWebBannerByType($webBanner, $webBanner->getType(), $webBanner->getTypeId());
+        }
+        
+        return $entities;
+    }
+    
     private function getWebBannerByType(WebBanner $webBanner, string $type, int $id): void
     {
         if ('product' === $type) {
@@ -41,14 +50,5 @@ class IndexAction
         }
 
         $webBanner->setTitle($title);
-    }
-
-    private function setTitle(Paginator $entities): Paginator
-    {
-        foreach ($entities->getData() as $webBanner) {
-            $this->getWebBannerByType($webBanner, $webBanner->getType(), $webBanner->getTypeId());
-        }
-
-        return $entities;
     }
 }

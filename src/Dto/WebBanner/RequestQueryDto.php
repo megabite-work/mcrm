@@ -17,6 +17,9 @@ final class RequestQueryDto
         #[Exists(MultiStore::class)]
         public int $multiStoreId,
         #[Groups(['web_banner:index'])]
+        #[Assert\Type(type: ['bool', 'null'])]
+        public ?bool $isActive = null,
+        #[Groups(['web_banner:index'])]
         #[Assert\Positive]
         public int $page = 1,
         #[Groups(['web_banner:index'])]
