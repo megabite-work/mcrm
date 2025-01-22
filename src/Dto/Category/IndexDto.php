@@ -13,6 +13,7 @@ final readonly class IndexDto
         public ?string $image = null,
         public ?bool $isActive = null,
         public ?bool $hasChild = false,
+        public ?string $generation = null,
     ) {}
 
     public static function fromEntity(?Category $entity): ?static
@@ -25,6 +26,7 @@ final readonly class IndexDto
                 image: $entity->getImage(),
                 isActive: $entity->getIsActive(),
                 hasChild: $entity->getHasChild(),
+                generation: $entity->getGeneration(),
             )
             : null;
     }

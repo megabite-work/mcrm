@@ -21,6 +21,9 @@ final readonly class RequestQueryDto
         #[Exists(MultiStore::class)]
         public ?int $multiStoreId = null,
         #[Groups(['category:index'])]
+        #[Assert\Choice(choices: Category::GENERATIONS)]
+        public ?string $generation = null,
+        #[Groups(['category:index'])]
         #[Assert\Positive]
         public ?int $page = 1,
         #[Groups(['category:index'])]

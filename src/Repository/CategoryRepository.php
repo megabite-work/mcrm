@@ -31,6 +31,7 @@ class CategoryRepository extends ServiceEntityRepository
             $ids = $em->getRepository(WebCredential::class)->findOneBy(['multiStore' => $multiStore])?->getCatalogTypeId();
         }
 
+
         $dql = 'SELECT c, p, ch
             FROM App\Entity\Category c
             LEFT JOIN c.parent p
@@ -40,11 +41,17 @@ class CategoryRepository extends ServiceEntityRepository
         if ($ids) {
             $dql .= ' AND c.id IN (:ids)';
         }
+        if ($dto->generation) {
+            $dql .= ' AND c.generation = :generation';
+        }
 
         $query = $em->createQuery($dql)->setParameter('parent', $parent);
 
         if ($ids) {
             $query->setParameter('ids', $ids);
+        }
+        if ($dto->generation) {
+            $query->setParameter('generation', $dto->generation);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage);
@@ -68,11 +75,17 @@ class CategoryRepository extends ServiceEntityRepository
         if ($ids) {
             $dql .= ' WHERE c.id IN (:ids)';
         }
+        if ($dto->generation) {
+            $dql .= $ids ? ' AND c.generation = :generation' : ' WHERE c.generation = :generation';
+        }
 
         $query = $em->createQuery($dql);
 
         if ($ids) {
             $query->setParameter('ids', $ids);
+        }
+        if ($dto->generation) {
+            $query->setParameter('generation', $dto->generation);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage);

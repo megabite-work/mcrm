@@ -19,7 +19,7 @@ class Category
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
-    public const GENERATION_TYPES = [
+    public const GENERATIONS = [
         'class',
         'category',
         'subcategory'
