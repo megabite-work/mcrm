@@ -22,7 +22,7 @@ final readonly class IndexDto
         return $entity
             ? new static(
                 id: $entity->getId(),
-                webBannerIds: $webBanners ??$entity->getWebBannerIds(),
+                webBannerIds: $webBanners ?? $entity->getWebBannerIds(),
                 animation: $entity->getAnimation(),
                 move: $entity->getMove(),
                 delay: $entity->getDelay(),
