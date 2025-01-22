@@ -7,6 +7,8 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
@@ -42,6 +44,11 @@ class ExceptionListener
             $errorException = ($exception instanceof ErrorException) ? $exception : $exception->getPrevious();
             $response->setData($errorException->getError());
             $response->setStatusCode($errorException->getCode());
+        } else if ($exception instanceof HttpExceptionInterface) {
+            $errorException = ($exception instanceof ErrorException) ? $exception : $exception->getPrevious();
+            $response->setData(["error" => [["path" => "HTTP", "error" => $exception->getMessage()]]]);
+            $response->setStatusCode($exception->getStatusCode());
+            $response->headers->replace($exception->getHeaders());
         } else {
             $error = /* $this->kernel->getEnvironment() === 'prod' ? 'An error occurred' : (*/$exception->getMessage() ?: $exception->getTrace()/* ) */;
             $response->setData(["error" => [["path" => "Server", "error" => $error]]]);
