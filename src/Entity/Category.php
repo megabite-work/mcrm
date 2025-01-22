@@ -19,6 +19,12 @@ class Category
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
+    public const GENERATION_TYPES = [
+        'class',
+        'category',
+        'subcategory'
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -32,6 +38,10 @@ class Category
     #[ORM\Column]
     #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'web_nomenclature:index'])]
     private ?string $name = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:show', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'web_nomenclature:index'])]
+    private ?string $generation = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['category:index', 'category:show', 'category:create', 'category:update', 'nomenclature:index', 'nomenclature:show', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:show', 'web_nomenclature:index'])]
@@ -194,6 +204,18 @@ class Category
         if ($this->attributes->removeElement($attribute)) {
             $attribute->removeCategory($this);
         }
+
+        return $this;
+    }
+
+    public function getGeneration(): ?string
+    {
+        return $this->generation;
+    }
+
+    public function setGeneration(?string $generation): static
+    {
+        $this->generation = $generation;
 
         return $this;
     }
