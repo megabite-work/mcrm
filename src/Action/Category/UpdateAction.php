@@ -5,7 +5,6 @@ namespace App\Action\Category;
 use App\Dto\Category\IndexDto;
 use App\Dto\Category\RequestDto;
 use App\Entity\Category;
-use App\Exception\ErrorException;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,7 +12,8 @@ class UpdateAction
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private CategoryRepository $repo
+        private CategoryRepository $repo,
+        private CreateAction $action
     ) {}
 
     public function __invoke(int $id, RequestDto $dto): IndexDto
@@ -51,14 +51,7 @@ class UpdateAction
     {
         if ($dto->parentId && $dto->parentId !== $entity->getParentId()) {
             $parent = $this->repo->findCategoryByIdWithParentAndChildrens($dto->parentId);
-            if ($parent->getGeneration() === 'class') {
-                $entity->setGeneration('category');
-            } else if ($parent->getGeneration() === 'category') {
-                $entity->setGeneration('subcategory');
-            } else if ($parent->getGeneration() === 'subcategory') {
-                throw new ErrorException('Category', ' cannot be a subcategory of a subcategory.');
-            }
-            
+            $entity->setGeneration($this->action->getGenerationByParent($parent));            
             $entity->setParent($this->em->getReference(Category::class, $dto->parentId));
         }
     }

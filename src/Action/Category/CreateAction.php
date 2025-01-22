@@ -18,8 +18,23 @@ class CreateAction
 
     public function __invoke(RequestDto $dto): IndexDto
     {
-        $generation = 'class';
         $parent = $dto->parentId ? $this->repo->findCategoryByIdWithParentAndChildrens($dto->parentId) : null;
+
+        $entity = (new Category())
+            ->setName($dto->getName())
+            ->setImage($dto->image)
+            ->setGeneration($this->getGenerationByParent($parent))
+            ->setParent($parent);
+
+        $this->em->persist($entity);
+        $this->em->flush();
+
+        return IndexDto::fromEntity($entity);
+    }
+
+    public function getGenerationByParent(?Category $parent = null): string
+    {
+        $generation = 'class';
 
         if ($parent?->getGeneration() === 'class') {
             $generation = 'category';
@@ -29,15 +44,6 @@ class CreateAction
             return throw new ErrorException('Category', ' cannot be a subcategory of a subcategory.');
         }
 
-        $entity = (new Category())
-            ->setName($dto->getName())
-            ->setImage($dto->image)
-            ->setGeneration($generation)
-            ->setParent($parent);
-
-        $this->em->persist($entity);
-        $this->em->flush();
-
-        return IndexDto::fromEntity($entity);
+        return $generation;
     }
 }
