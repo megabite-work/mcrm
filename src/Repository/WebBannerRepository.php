@@ -38,6 +38,10 @@ class WebBannerRepository extends ServiceEntityRepository
 
     public function findByOrder(array $ids = []): array
     {
+        if (empty($ids)) {
+            return [];
+        }
+        
         $conn = $this->getEntityManager()->getConnection();
         $sql = sprintf('SELECT * 
             FROM web_banner 
