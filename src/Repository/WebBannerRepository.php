@@ -40,7 +40,7 @@ class WebBannerRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = 'SELECT * 
-            FROM your_entity 
+            FROM web_banner 
             WHERE id IN (:ids)
             ORDER BY FIELD(id, :ids)';
 
