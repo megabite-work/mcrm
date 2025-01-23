@@ -47,15 +47,5 @@ class WebBannerRepository extends ServiceEntityRepository
         $stmt = $conn->prepare($sql);
         $stmt->bindValue('ids', implode(',', $ids));
         return $stmt->executeQuery()->fetchAllAssociative();
-
-        // $results = $stmt->fetchAllAssociative();
-        // return $this->getEntityManager()
-        //     ->createQuery(
-        //         'SELECT wb
-        //         FROM App\Entity\WebBanner wb
-        //         WHERE wb.id IN (:ids)
-        //         ORDER BY FIELD(wb.id, :ids)'
-        //     )->setParameter('ids', $ids)
-        //     ->getResult();
     }
 }
