@@ -39,13 +39,11 @@ class WebBannerRepository extends ServiceEntityRepository
     public function findByOrder(array $ids = []): array
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = 'SELECT * 
+        $sql = sprintf('SELECT * 
             FROM web_banner 
-            WHERE id IN (:ids)
-            ORDER BY FIELD(id, :ids)';
+            WHERE id IN (%s)
+            ORDER BY FIELD(id, %s)', implode(',', $ids), implode(',', $ids));
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue('ids', implode(',', $ids));
-        return $stmt->executeQuery()->fetchAllAssociative();
+        return $conn->fetchAllAssociative($sql);
     }
 }
