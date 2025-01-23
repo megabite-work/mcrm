@@ -14,7 +14,7 @@ final readonly class IndexDto
         public ?string $typeId = null,
         public string|array|null $showType = null,
         public string|array|null $showTypeId = null,
-        public ?string $image = null,
+        public string|array|null $image = null,
         public ?bool $isActive = false,
         public ?string $title = null,
         public ?string $description = null,
@@ -52,6 +52,32 @@ final readonly class IndexDto
                 viewCurrent: $entity->getViewCurrent(),
                 beginAt: $entity->getBeginAt(),
                 endAt: $entity->getEndAt(),
+            )
+            : null;
+    }
+
+    public static function fromArray(?array $entity): static
+    {
+        return $entity
+            ? new static(
+                id: $entity['id'],
+                type: $entity['type'],
+                typeId: $entity['typeId'],
+                showType: $entity['showType'],
+                showTypeId: $entity['showTypeId'],
+                image: json_decode($entity['image'], true),
+                isActive: $entity['isActive'],
+                title: $entity['title'],
+                description: $entity['description'],
+                devices: json_decode($entity['devices'], true),
+                clickType: $entity['clickType'],
+                clickMax: $entity['clickMax'],
+                clickCurrent: $entity['clickCurrent'],
+                viewType: $entity['viewType'],
+                viewMax: $entity['viewMax'],
+                viewCurrent: $entity['viewCurrent'],
+                beginAt: $entity['beginAt'],
+                endAt: $entity['endAt'],
             )
             : null;
     }

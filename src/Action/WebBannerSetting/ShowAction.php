@@ -18,7 +18,7 @@ class ShowAction
     {
         $entity = $this->repo->find($id);
         $webBanners = array_map(function ($webBanner): WebBannerDto {
-            return WebBannerDto::fromEntity($webBanner);
+            return WebBannerDto::fromArray($webBanner);
         }, $this->webBannerRepository->findByOrder($entity->getWebBannerIds()));
 
         return IndexDto::fromEntity($entity, $webBanners);

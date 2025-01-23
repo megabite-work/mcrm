@@ -12,7 +12,7 @@ class UploadAction
 {
     public const UPLOAD_DIR = 'media';
     public const SIZE = 10485760; // 10 megabayt
-    public const EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp', 'pdf', 'xlsx', 'docx', 'doc', 'xls'];
+    public const EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'pdf', 'xlsx', 'docx', 'doc', 'xls'];
 
     public function __invoke(UploadedFile $file): IndexDto
     {
