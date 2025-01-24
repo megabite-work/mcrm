@@ -183,14 +183,14 @@ class WebBanner
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage(): array
     {
-        return $this->image;
+        return json_decode($this->image, true);
     }
 
-    public function setImage(string $image): static
+    public function setImage(array $image): static
     {
-        $this->image = $image;
+        $this->image = json_encode($image, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

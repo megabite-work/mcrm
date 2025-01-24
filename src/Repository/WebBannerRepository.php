@@ -21,18 +21,33 @@ class WebBannerRepository extends ServiceEntityRepository
 
     public function findAllWebBannersByMultiStore(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
-        $multiStore = $entityManager->getReference(MultiStore::class, $dto->multiStoreId);
-        
+        $em = $this->getEntityManager();
+        $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
+
         $dql = sprintf('SELECT wb
             FROM App\Entity\WebBanner wb
             WHERE wb.multiStore = :multiStore%s', is_bool($dto->isActive) ? ' AND wb.isActive = :isActive' : '');
-        $query = $entityManager->createQuery($dql)->setParameter('multiStore', $multiStore);
-        
+        $query = $em->createQuery($dql)->setParameter('multiStore', $multiStore);
+
         if (is_bool($dto->isActive)) {
             $query->setParameter('isActive', $dto->isActive);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage, false);
+    }
+
+    public function findByOrder(array $ids = []): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+        
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = sprintf('SELECT * 
+            FROM web_banner 
+            WHERE id IN (%s)
+            ORDER BY FIELD(id, %s)', implode(',', $ids), implode(',', $ids));
+
+        return $conn->fetchAllAssociative($sql);
     }
 }

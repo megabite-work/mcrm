@@ -87,16 +87,7 @@ class Paginator extends DoctrinePaginator
     {
         return new \ArrayIterator([
             'data' => $this->getData(),
-            'pagination' => [
-                'total' => $this->getTotal(),
-                'count' => $this->getCount(),
-                'offset' => $this->getOffset(),
-                'items_per_page' => $this->getItemsPerPage(),
-                'total_pages' => $this->getTotalPages(),
-                'current_page' => $this->getCurrentPage(),
-                'has_next_page' => $this->hasNextPage(),
-                'has_previous_page' => $this->hasPreviousPage(),
-            ],
+            'pagination' => $this->getPagination(),
         ]);
     }
 

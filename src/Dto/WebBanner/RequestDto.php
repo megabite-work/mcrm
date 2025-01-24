@@ -32,7 +32,15 @@ final class RequestDto
         public ?array $showTypeId = null,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        public string $image,
+        #[Assert\Collection(
+            fields: [
+                'url' => [new Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update']), new Assert\Regex('/^media\/[a-zA-Z0-9]+\.(jpg|jpeg|png|gif|webp|pdf|xlsx|xls|doc|docx)$/', groups: ['web_banner:create', 'web_banner:update'])],
+                'width' => [new Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update']), new Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])],
+                'height' => [new Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update']), new Assert\PositiveOrZero(groups: ['web_banner:create', 'web_banner:update'])],
+            ],
+            groups: ['web_banner:create', 'web_banner:update']
+        )]
+        public array $image,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         public string $title,
