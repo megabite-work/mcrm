@@ -20,12 +20,12 @@ final readonly class IndexDto
         public ?int $templateId = null,
     ) {}
 
-    public static function fromEntity(WebCredential $entity): static
+    public static function fromEntity(WebCredential $entity, ?array $catalogTypes = null): static
     {
         return new static(
             id: $entity->getId(),
             catalogType: $entity->getCatalogType(),
-            catalogTypeId: $entity->getCatalogTypeId(),
+            catalogTypeId: $catalogTypes ?? $entity->getCatalogTypeId(),
             buyType: $entity->getBuyType(),
             buyValue: $entity->getBuyValue(),
             article: $entity->getArticle(),

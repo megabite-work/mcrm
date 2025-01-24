@@ -2,19 +2,28 @@
 
 namespace App\Action\WebCredential;
 
+use App\Dto\Category\IndexDto as CategoryIndexDto;
 use App\Dto\WebCredential\IndexDto;
+use App\Repository\CategoryRepository;
 use App\Repository\MultiStoreRepository;
 
 class ShowAction
 {
     public function __construct(
-        private MultiStoreRepository $repo
+        private MultiStoreRepository $repo,
+        private CategoryRepository $categoryRepository
     ) {}
 
     public function __invoke(int $multiStoreId): IndexDto
     {
         $multiStore = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
-
-        return IndexDto::fromEntity($multiStore->getWebCredential());
+        $catalogTypes = array_map(
+            fn($categoryId)  => CategoryIndexDto::fromEntity(
+                $this->categoryRepository
+                    ->findCategoryByIdWithParentAndChildrens($categoryId)
+            ),
+            $multiStore->getWebCredential()->getCatalogTypeId()
+        );
+        return IndexDto::fromEntity($multiStore->getWebCredential(), $catalogTypes);
     }
 }
