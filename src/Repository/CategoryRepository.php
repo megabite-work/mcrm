@@ -105,4 +105,22 @@ class CategoryRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function findCategoryFromCredential(?array $ids = []): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT c, p, ch
+                FROM App\Entity\Category c
+                LEFT JOIN c.parent p
+                LEFT JOIN c.childrens ch
+                WHERE c.id IN (:ids)'
+            )
+            ->setParameter('ids', $ids)
+            ->getResult();
+    }
 }
