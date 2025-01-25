@@ -57,7 +57,7 @@ security:
         roles: PUBLIC_ACCESS,
         methods: [GET],
       }
-    - { path: ^/api/web-events$, roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/web-events($|/\d+$), roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/web-blocks$, roles: PUBLIC_ACCESS, methods: [GET] }
     - { path: ^/api/.+, roles: IS_AUTHENTICATED_FULLY }
 
