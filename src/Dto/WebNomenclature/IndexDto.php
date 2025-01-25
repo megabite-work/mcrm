@@ -13,7 +13,7 @@ final readonly class IndexDto
         public ?int $id = null,
         public ?NomenclatureDto $nomenclature = null,
         public ?string $article = null,
-        public ?string $title = null,
+        public string|array|null $title = null,
         public string|array|null $images = null,
         public ?string $description = null,
         public ?string $document = null,
