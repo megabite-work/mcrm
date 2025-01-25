@@ -13,7 +13,7 @@ final readonly class IndexDto
         public ?int $id = null,
         public ?NomenclatureDto $nomenclature = null,
         public ?string $article = null,
-        public string|array|null $title = null,
+        public ?string $title = null,
         public string|array|null $images = null,
         public ?string $description = null,
         public ?string $document = null,
@@ -42,14 +42,14 @@ final readonly class IndexDto
     {
         return $entity
             ? new static(
-                $entity->getId(),
-                $entity->getArticle(),
-                $entity->getTitle(),
-                $entity->getImages(),
-                $entity->getDescription(),
-                $entity->getDocument(),
-                $entity->getIsActive(),
-                $entity->getShowComment(),
+                id: $entity->getId(),
+                article: $entity->getArticle(),
+                title: $entity->getTitle(),
+                images: $entity->getImages(),
+                description: $entity->getDescription(),
+                document: $entity->getDocument(),
+                isActive: $entity->getIsActive(),
+                showComment: $entity->getShowComment(),
             )
             : null;
     }
