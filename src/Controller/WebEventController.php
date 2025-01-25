@@ -24,7 +24,7 @@ class WebEventController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
     #[Security(name: null)]
-    public function index(#[MapQueryString(serializationContext: ['groups' => ['web_event:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
+    public function index(#[MapQueryString(serializationContext: ['groups' => ['web_event:index']], validationGroups: ['web_event:index'])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
         return $this->indexResponse($action($dto));
     }
@@ -39,13 +39,13 @@ class WebEventController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_event:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['web_event:create']], validationGroups: ['web_event:create'])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_event:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['web_event:update']], validationGroups: ['web_event:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         $this->existsValidate($id, WebEvent::class);
 
