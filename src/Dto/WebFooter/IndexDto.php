@@ -27,6 +27,7 @@ final readonly class IndexDto
                 type: $entity->getType(),
                 isActive: $entity->getIsActive(),
                 order: $entity->getOrder(),
+                links: $entity->getLinks(),
             )
             : null;
     }

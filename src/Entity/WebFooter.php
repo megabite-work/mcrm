@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\WebFooterRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,6 +40,10 @@ class WebFooter
     #[Assert\Choice(choices: [WebFooter::TYPE_ABOUT, WebFooter::TYPE_LINK, WebFooter::TYPE_CONTACT, WebFooter::TYPE_SOCIAL])]
     #[Groups(['web_footer:index', 'web_footer:show', 'web_footer:create', 'web_footer:update'])]
     private ?string $type = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['web_footer:index', 'web_footer:show', 'web_footer:create', 'web_footer:update'])]
+    private ?string $links = null;
 
     #[ORM\Column(options: ['default' => true])]
     #[Groups(['web_footer:index', 'web_footer:show', 'web_footer:create', 'web_footer:update'])]
@@ -109,6 +114,18 @@ class WebFooter
     public function setIsActive(?bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getLinks(): ?array
+    {
+        return json_decode($this->links, true);
+    }
+
+    public function setLinks(?array $links): static
+    {
+        $this->links = json_encode($links, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }

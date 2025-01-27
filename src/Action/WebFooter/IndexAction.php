@@ -6,8 +6,6 @@ use App\Dto\Base\ListResponseDto;
 use App\Dto\Base\ListResponseDtoInterface;
 use App\Dto\WebFooter\IndexDto;
 use App\Dto\WebFooter\RequestQueryDto;
-use App\Entity\WebFooter;
-use App\Entity\WebFooterLink;
 use App\Repository\WebFooterRepository;
 
 class IndexAction
@@ -20,22 +18,11 @@ class IndexAction
     {
         $paginator = $this->repo->findAllWebFootersByMultiStore($dto);
         $data = $paginator->getData();
-        $footers = [];
-        $links = [];
-        foreach ($data as $item) {
-            if ($item instanceof WebFooter) {
-                $footers[$item->getId()] = $item;
-            } elseif ($item instanceof WebFooterLink) {
-                $links[$item->getWebFooterId()][] = $item;
-            }
-        }
 
-        $res = array_values(array_map(function ($footer) use ($links) {
-            return isset($links[$footer->getId()])
-                ? IndexDto::fromEntityWithRelation($footer, $links[$footer->getId()])
-                : IndexDto::fromEntityWithRelation($footer);
-        }, $footers));
-
-        return new ListResponseDto($res, $paginator->getPagination());
+        array_walk_recursive($data, function (&$entity) {
+            $entity = IndexDto::fromEntity($entity);
+        });
+        
+        return new ListResponseDto($data, $paginator->getPagination());
     }
 }

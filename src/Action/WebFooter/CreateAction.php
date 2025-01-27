@@ -20,6 +20,7 @@ class CreateAction
             ->setType($dto->type)
             ->setTitle($dto->title)
             ->setOrder($dto->order)
+            ->setLinks($dto->links)
             ->setIsActive($dto->isActive);
         $this->em->persist($entity);
         $this->em->flush();

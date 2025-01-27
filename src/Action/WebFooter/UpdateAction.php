@@ -19,6 +19,7 @@ class UpdateAction
         $entity->setType($dto->type)
             ->setTitle($dto->title)
             ->setOrder($dto->order)
+            ->setLinks($dto->links)
             ->setIsActive($dto->isActive);
         $this->em->flush();
 
