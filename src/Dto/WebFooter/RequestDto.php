@@ -29,7 +29,7 @@ final class RequestDto
                     fields: [
                         'title' => [new Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update']), new Assert\Type(type: 'string', groups: ['web_footer:create', 'web_footer:update'])],
                         'type' => [new Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update']), new Assert\Type(type: 'string', groups: ['web_footer:create', 'web_footer:update'])],
-                        'isActive' => [new Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update']), new Assert\Type(type: 'boolean', groups: ['web_footer:create', 'web_footer:update'])],
+                        'is_active' => [new Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update']), new Assert\Type(type: 'boolean', groups: ['web_footer:create', 'web_footer:update'])],
                         'url' => [new Assert\NotBlank(groups: ['web_footer:create', 'web_footer:update']), new Assert\Url(groups: ['web_footer:create', 'web_footer:update'])],
                     ],
                     groups: ['web_footer:create', 'web_footer:update']
