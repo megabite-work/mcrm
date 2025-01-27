@@ -80,6 +80,10 @@ class WebCredential
     #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
     private ?string $buyType = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
+    private ?string $buyTitle = null;
+
     #[ORM\Column(nullable: true)]
     #[Groups(['web_credential:index', 'web_credential:show', 'web_credential:create', 'web_credential:update', 'multi_store:show'])]
     private ?string $buyValue = null;
@@ -217,6 +221,18 @@ class WebCredential
     public function setBuyValue(?string $buyValue): static
     {
         $this->buyValue = $buyValue;
+
+        return $this;
+    }
+
+    public function getBuyTitle(): ?string
+    {
+        return $this->buyTitle;
+    }
+
+    public function setBuyTitle(?string $buyTitle): static
+    {
+        $this->buyTitle = $buyTitle;
 
         return $this;
     }

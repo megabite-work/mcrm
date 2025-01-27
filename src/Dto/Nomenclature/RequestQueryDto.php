@@ -20,8 +20,12 @@ final class RequestQueryDto
         #[Groups(['nomenclature:index'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:index'])]
         #[Assert\Type(type: ['integer', 'null'], groups: ['nomenclature:index'])]
-        #[Exists(Category::class)]
-        public ?int $categoryId = null,
+        #[Assert\All([
+            new Assert\NotBlank(groups: ['nomenclature:index']),
+            new Assert\Positive(groups: ['nomenclature:index']),
+            new Exists(Category::class, groups: ['nomenclature:index'])
+        ], groups: ['nomenclature:index'])]
+        public ?array $categoryIds = null,
         #[Groups(['nomenclature:index'])]
         #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:index'])]
         #[Assert\Type(type: ['string', 'null'], groups: ['nomenclature:index'])]

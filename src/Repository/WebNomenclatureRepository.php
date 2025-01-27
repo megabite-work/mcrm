@@ -70,6 +70,20 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function findWebNomenclatureByIdWithNomenclature(int $id): ?WebNomenclature
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT wn, n
+            FROM App\Entity\WebNomenclature wn
+            JOIN wn.nomenclature n
+            WHERE wn.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
+    }
+
     public function findWebNomenclatureWithWebAttributeValues(int $id): ?WebNomenclature
     {
         $em = $this->getEntityManager();

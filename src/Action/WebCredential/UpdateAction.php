@@ -28,6 +28,7 @@ class UpdateAction
             ->setCatalogTypeId($dto->catalogTypeId ?? $entity->getCatalogTypeId())
             ->setBuyType($dto->buyType ?? $entity->getBuyType())
             ->setBuyValue($dto->buyValue ?? $entity->getBuyValue())
+            ->setBuyTitle($dto->buyTitle ?? $entity->getBuyTitle())
             ->setSecrets($dto->secrets ?? $entity->getSecrets())
             ->setSocial($dto->social ?? $entity->getSocial())
             ->setLogo($dto->logo ?? $entity->getLogo())

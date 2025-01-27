@@ -24,7 +24,7 @@ class ShowAction
         
         if ($entity->getType() === 'product') {
             $typeIds = array_map(function ($id) {
-                return WebNomenclatureDto::fromEntityForNomenclature($this->em->getRepository(WebNomenclature::class)->find($id));
+                return WebNomenclatureDto::fromEntity($this->em->getRepository(WebNomenclature::class)->findWebNomenclatureByIdWithNomenclature($id));
             }, $entity->getTypeIds());
         } else if ($entity->getType() === 'category') {
             $typeIds = array_map(function ($id) {

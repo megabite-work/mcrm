@@ -26,18 +26,18 @@ class IndexAction
         $data = $paginator->getData();
 
         array_walk_recursive($data, function (&$entity) {
-            $typeIds = null;
-            if ($entity->getType() === 'product') {
-                $typeIds = array_map(function ($id) {
-                    return WebNomenclatureDto::fromEntityForNomenclature($this->em->getRepository(WebNomenclature::class)->find($id));
-                }, $entity->getTypeIds());
-            } else if ($entity->getType() === 'category') {
-                $typeIds = array_map(function ($id) {
-                    return CategoryDto::fromEntity($this->em->getRepository(Category::class)->findCategoryByIdWithParentAndChildrens($id));
-                }, $entity->getTypeIds());
-            }
+            // $typeIds = null;
+            // if ($entity->getType() === 'product') {
+            //     $typeIds = array_map(function ($id) {
+            //         return WebNomenclatureDto::fromEntityForNomenclature($this->em->getRepository(WebNomenclature::class)->find($id));
+            //     }, $entity->getTypeIds());
+            // } else if ($entity->getType() === 'category') {
+            //     $typeIds = array_map(function ($id) {
+            //         return CategoryDto::fromEntity($this->em->getRepository(Category::class)->findCategoryByIdWithParentAndChildrens($id));
+            //     }, $entity->getTypeIds());
+            // }
 
-            $entity = IndexDto::fromEntity($entity, $typeIds);
+            $entity = IndexDto::fromEntity($entity);
         });
 
         return new ListResponseDto($data, $paginator->getPagination());

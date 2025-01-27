@@ -58,6 +58,8 @@ final class RequestDto
         public ?string $buyType,
         #[Groups(['web_credential:update'])]
         public ?string $buyValue,
+        #[Groups(['web_credential:update'])]
+        public ?string $buyTitle,
         #[Groups(['web_credential:create', 'web_credential:update'])]
         public ?string $logo,
         #[Groups(['web_credential:create', 'web_credential:update'])]

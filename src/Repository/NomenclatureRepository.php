@@ -29,7 +29,7 @@ class NomenclatureRepository extends ServiceEntityRepository
 
         $params = new ArrayCollection([
             new Parameter('mid', $dto->multiStoreId, Types::INTEGER),
-            new Parameter('cid', $dto->categoryId, Types::INTEGER),
+            new Parameter('cid', $dto->categoryIds),
             new Parameter('name', '%'.$dto->name.'%', Types::STRING),
         ]);
 
@@ -42,7 +42,7 @@ class NomenclatureRepository extends ServiceEntityRepository
             ->join('n.multiStore', 'm')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('m.id', ':mid'),
-                $qb->expr()->eq('c.id', ':cid'),
+                $qb->expr()->in('c.id', ':cid'),
                 $qb->expr()->orX(
                     $qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'),
                     $qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'),

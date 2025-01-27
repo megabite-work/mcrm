@@ -16,7 +16,7 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        $paginator = $dto->categoryId
+        $paginator = $dto->categoryIds
             ? $this->repo->findAllNomenclaturesByCategory($dto)
             : $this->repo->findAllNomenclatures($dto);
         $data = $paginator->getData();
