@@ -75,9 +75,10 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
 
         $query = $em->createQuery(
-            'SELECT wn, n
+            'SELECT wn, n, c
             FROM App\Entity\WebNomenclature wn
             JOIN wn.nomenclature n
+            LEFT JOIN n.category c
             WHERE wn.id = :id'
         )->setParameter('id', $id);
 

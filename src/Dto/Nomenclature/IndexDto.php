@@ -72,6 +72,27 @@ final readonly class IndexDto
             : null;
     }
 
+    public static function fromEntityByWebEvent(?Nomenclature $entity): static
+    {
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName(),
+                mxik: $entity->getMxik(),
+                barcode: $entity->getBarcode(),
+                brand: $entity->getBrand(),
+                oldPrice: $entity->getOldPrice(),
+                price: $entity->getPrice(),
+                oldPriceCourse: $entity->getOldPriceCourse(),
+                priceCourse: $entity->getPriceCourse(),
+                nds: $entity->getNds(),
+                discount: $entity->getDiscount(),
+                qrCode: $entity->getQrCode(),
+                category: CategoryDto::fromEntity($entity->getCategory()),
+            )
+            : null;
+    }
+
     public static function fromShowAction(?Nomenclature $entity): static
     {
         return $entity

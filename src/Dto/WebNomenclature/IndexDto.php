@@ -26,7 +26,7 @@ final readonly class IndexDto
         return $entity
             ? new static(
                 $entity->getId(),
-                NomenclatureDto::fromEntity($entity->getNomenclature()),
+                NomenclatureDto::fromEntityByWebEvent($entity->getNomenclature()),
                 $entity->getArticle(),
                 $entity->getTitle(),
                 $entity->getImages(),
