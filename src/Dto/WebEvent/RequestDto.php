@@ -30,8 +30,7 @@ final class RequestDto
         public string $animation,
         #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
-        #[Assert\Choice(choices: ['up', 'right', 'left', 'down'])]
-        public string $move,
+        public int $move,
         #[Groups(['web_event:create', 'web_event:update'])]
         #[Assert\NotBlank(groups: ['web_event:create', 'web_event:update'])]
         #[Assert\PositiveOrZero]

@@ -15,7 +15,7 @@ final readonly class IndexDto
         public ?string $type = null,
         public string|array|null $typeIds = null,
         public ?string $animation = null,
-        public ?string $move = null,
+        public ?int $move = null,
         public ?int $delay = null,
     ) {}
 

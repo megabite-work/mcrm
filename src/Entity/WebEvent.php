@@ -40,9 +40,9 @@ class WebEvent
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
     private ?string $animation = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
-    private ?string $move = null;
+    private ?int $move = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['web_event:index', 'web_event:show', 'web_event:create', 'web_event:update'])]
@@ -113,12 +113,12 @@ class WebEvent
         return $this;
     }
 
-    public function getMove(): ?string
+    public function getMove(): ?int
     {
         return $this->move;
     }
 
-    public function setMove(?string $move): static
+    public function setMove(?int $move): static
     {
         $this->move = $move;
 
