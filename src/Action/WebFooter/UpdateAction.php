@@ -16,11 +16,11 @@ class UpdateAction
     public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->em->find(WebFooter::class, $id);
-        $entity->setType($dto->type)
-            ->setTitle($dto->title)
-            ->setOrder($dto->order)
-            ->setLinks($dto->links)
-            ->setIsActive($dto->isActive);
+        $entity->setType($dto->type ?? $entity->getType())
+            ->setTitle($dto->title ?? $entity->getTitle())
+            ->setOrder($dto->order ?? $entity->getOrder())
+            ->setIsActive($dto->isActive ?? $entity->getIsActive())
+            ->setLinks($dto->links);
         $this->em->flush();
 
         return IndexDto::fromEntity($entity);
