@@ -27,7 +27,7 @@ final class Version20250127113117 extends AbstractMigration
         $this->addSql('ALTER TABLE delivery_settings CHANGE min_sum min_sum NUMERIC(10, 2) DEFAULT \'0\' NOT NULL, CHANGE first_km first_km NUMERIC(10, 2) DEFAULT \'0\' NOT NULL, CHANGE delivery_sum delivery_sum NUMERIC(10, 2) DEFAULT \'0\' NOT NULL, CHANGE next_km_sum next_km_sum NUMERIC(10, 2) DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE nomenclature CHANGE oldprice oldprice NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, CHANGE price price NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, CHANGE oldprice_course oldprice_course NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, CHANGE price_course price_course NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, CHANGE nds nds NUMERIC(15, 3) DEFAULT \'0\' NOT NULL, CHANGE discount discount NUMERIC(15, 3) DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE store_nomenclature CHANGE qty qty NUMERIC(10, 2) DEFAULT \'0\' NOT NULL');
-        $this->addSql('ALTER TABLE web_event CHANGE move move INT NOT NULL');
+        $this->addSql('ALTER TABLE web_event CHANGE move move INT NULL');
     }
 
     public function down(Schema $schema): void
