@@ -22,7 +22,7 @@ class IndexAction
         $data = $paginator->getData();
 
         array_walk_recursive($data, function (&$entity) {
-            $entity = IndexDto::fromEntity($entity);
+            $entity = IndexDto::fromShowAction($entity);
         });
 
         return new ListResponseDto($data, $paginator->getPagination());
