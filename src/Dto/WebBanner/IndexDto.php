@@ -66,7 +66,7 @@ final readonly class IndexDto
                 showType: $entity['show_type'],
                 showTypeId: $entity['show_type_id'],
                 image: json_decode($entity['image'], true),
-                isActive: $entity['is_active'],
+                isActive: (bool)$entity['is_active'],
                 title: $entity['title'],
                 description: $entity['description'],
                 devices: json_decode($entity['devices'], true),
