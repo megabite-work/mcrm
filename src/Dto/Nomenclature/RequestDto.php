@@ -17,14 +17,14 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_barcode', 'nomenclature:is_unique_name'])]
         #[Exists(MultiStore::class, groups: ['nomenclature:create', 'nomenclature:is_unique_barcode', 'nomenclature:is_unique_name'])]
         public ?int $multiStoreId,
-        #[Groups(['nomenclature:create', 'nomenclature:update'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create'])]
-        #[Exists(Category::class, groups: ['nomenclature:create', 'nomenclature:update'])]
-        public ?int $categoryId,
         #[Groups(['nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:update'])]
         #[Exists(Nomenclature::class, groups: ['nomenclature:update'])]
         public ?int $id,
+        #[Groups(['nomenclature:create', 'nomenclature:update'])]
+        #[Assert\NotBlank(groups: ['nomenclature:create'])]
+        #[Exists(Category::class, groups: ['nomenclature:create', 'nomenclature:update'])]
+        public ?int $categoryId,
         #[Groups(['nomenclature:create', 'nomenclature:update', 'nomenclature:is_unique_barcode'])]
         #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_barcode'])]
         public ?int $barcode,
