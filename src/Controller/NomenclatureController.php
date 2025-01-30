@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class NomenclatureController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[MapQueryString(serializationContext: ['groups' => ['nomenclature:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
+    public function index(#[MapQueryString(serializationContext: ['groups' => ['nomenclature:index']], validationGroups: ['nomenclature:index'])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
         return $this->indexResponse($action($dto));
     }
@@ -37,29 +37,27 @@ class NomenclatureController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:create']], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:create']], type: RequestDto::class, validationGroups: ['nomenclature:create'])] array $dtos, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dtos));
     }
 
     #[Route(path: '/is-unique-barcode', methods: ['POST'])]
-    public function isUniqueBarcode(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:is_unique_barcode']])] RequestDto $dto, IsUniqueBarcodeByMultiStoreAction $action): JsonResponse
+    public function isUniqueBarcode(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:is_unique_barcode']], validationGroups: ['nomenclature:is_unique_barcode'])] RequestDto $dto, IsUniqueBarcodeByMultiStoreAction $action): JsonResponse
     {
         return $this->successResponse(['isUnique' => $action($dto)]);
     }
 
     #[Route(path: '/is-unique-name', methods: ['POST'])]
-    public function isUniqueName(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:is_unique_name']])] RequestDto $dto, IsUniqueNameByMultiStoreAction $action): JsonResponse
+    public function isUniqueName(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:is_unique_name']], validationGroups: ['nomenclature:is_unique_name'])] RequestDto $dto, IsUniqueNameByMultiStoreAction $action): JsonResponse
     {
         return $this->successResponse(['isUnique' => $action($dto)]);
     }
 
-    #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:update']])] RequestDto $dto, UpdateAction $action): JsonResponse
+    #[Route('', methods: ['PATCH'])]
+    public function update(#[MapRequestPayload(serializationContext: ['groups' => ['nomenclature:update']], type: RequestDto::class, validationGroups: ['nomenclature:update'])] array $dtos, UpdateAction $action): JsonResponse
     {
-        $this->existsValidate($id, Nomenclature::class);
-
-        return $this->successResponse($action($id, $dto));
+        return $this->successResponse($action($dtos));
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]

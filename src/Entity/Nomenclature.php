@@ -368,7 +368,7 @@ class Nomenclature
     }
 
     #[Groups(['nomenclature:index'])]
-    public function getHasWebNomenclature(): bool
+    public function hasWebNomenclature(): bool
     {
         return null !== $this->getWebNomenclature();
     }

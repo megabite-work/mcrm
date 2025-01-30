@@ -7,6 +7,7 @@ use App\Dto\Nomenclature\RequestDto;
 use App\Entity\Category;
 use App\Entity\Nomenclature;
 use App\Entity\Unit;
+use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
@@ -15,17 +16,24 @@ class UpdateAction
         private EntityManagerInterface $em
     ) {}
 
-    public function __invoke(int $id, RequestDto $dto): IndexDto
+    public function __invoke(array $dtos): array
     {
-        $entity = $this->em->find(Nomenclature::class, $id);
-        $entity = $this->update($dto, $entity);
-        $this->em->flush();
+        try {
+            $this->em->beginTransaction();
+            $entities = array_map(fn($dto): IndexDto => $this->update($dto), $dtos);
+            $this->em->flush();
+            $this->em->commit();
+        } catch (\Throwable $th) {
+            $this->em->rollback();
+            throw new ErrorException('Nomenclature', $th->getMessage(), $th->getCode());
+        }
 
-        return IndexDto::fromEntity($entity);
+        return $entities;
     }
 
-    private function update(RequestDto $dto, Nomenclature $entity): Nomenclature
+    private function update(RequestDto $dto): IndexDto
     {
+        $entity = $this->em->find(Nomenclature::class, $dto->id);
         $this->updateCategory($entity, $dto);
         $this->updateUnit($entity, $dto);
 
@@ -45,8 +53,7 @@ class UpdateAction
             ])
             ->setDiscount($dto->discount ?? $entity->getDiscount());
 
-
-        return $entity;
+        return IndexDto::fromEntity($entity);
     }
 
     private function updateCategory(Nomenclature $entity, RequestDto $dto): void

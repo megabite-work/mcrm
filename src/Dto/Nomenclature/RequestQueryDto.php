@@ -18,8 +18,6 @@ final class RequestQueryDto
         #[Exists(MultiStore::class)]
         public ?int $multiStoreId,
         #[Groups(['nomenclature:index'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:index'])]
-        #[Assert\Type(type: ['integer', 'null'], groups: ['nomenclature:index'])]
         #[Assert\All([
             new Assert\NotBlank(groups: ['nomenclature:index']),
             new Assert\Positive(groups: ['nomenclature:index']),

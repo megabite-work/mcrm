@@ -31,14 +31,15 @@ final readonly class IndexDto
         public ?float $priceCourse = 0,
         public ?float $nds = 0,
         public ?float $discount = 0,
-        public ?bool $qrCode = false,
+        public ?bool $qrCode = null,
         public ?int $totalQty = 0,
         public ?int $categoryId = null,
         public ?ProviderListDto $provider = null,
         public ?CategoryDto $category = null,
         public ?UnitDto $unit = null,
         public ?array $storeNomenclatures = null,
-        public ?bool $hasWebNomenclature = false,
+        public ?bool $hasWebNomenclature = null,
+        public mixed $webNomenclature = null,
     ) {}
 
     public static function fromCashboxGlobal(?Nomenclature $entity): static
@@ -113,7 +114,8 @@ final readonly class IndexDto
                 category: CategoryDto::fromEntity($entity->getCategory()),
                 unit: UnitDto::fromEntity($entity->getUnit()),
                 storeNomenclatures: StoreNomenclatureDto::fromNomenclatureArray($entity->getStoreNomenclatures()->toArray()),
-                // webNomenclature: WebNomenclatureDto::fromEntityForNomenclature($entity->getWebNomenclature()),
+                webNomenclature: WebNomenclatureDto::fromEntityForNomenclature($entity->getWebNomenclature()),
+                hasWebNomenclature: $entity->hasWebNomenclature(),
             )
             : null;
     }
