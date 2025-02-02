@@ -24,6 +24,10 @@ final readonly class RequestQueryDto
         #[Assert\Choice(choices: Category::GENERATIONS)]
         public ?string $generation = null,
         #[Groups(['category:index'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['category:index'])]
+        #[Assert\Type(type: ['string', 'null'], groups: ['category:index'])]
+        public ?string $name = null,
+        #[Groups(['category:index'])]
         #[Assert\Positive]
         public ?int $page = 1,
         #[Groups(['category:index'])]
