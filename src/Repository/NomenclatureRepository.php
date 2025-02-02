@@ -30,8 +30,9 @@ class NomenclatureRepository extends ServiceEntityRepository
         $params = new ArrayCollection([
             new Parameter('mid', $dto->multiStoreId, Types::INTEGER),
             new Parameter('cid', $dto->categoryIds),
-            new Parameter('name', '%'.$dto->name.'%', Types::STRING),
+            new Parameter('name', '%' . $dto->name . '%', Types::STRING),
         ]);
+
 
         $query = $qb
             ->select('n, sn, wn, u, c')
@@ -51,6 +52,12 @@ class NomenclatureRepository extends ServiceEntityRepository
             ))
             ->setParameters($params);
 
+        if ($dto->hasWebNomenclature === true) {
+            $query->andWhere('n.webNomenclature IS NOT NULL');
+        } else if ($dto->hasWebNomenclature === false) {
+            $query->andWhere('n.webNomenclature IS NULL');
+        }
+
         return new Paginator($query, $dto->page, $dto->perPage);
     }
 
@@ -60,7 +67,7 @@ class NomenclatureRepository extends ServiceEntityRepository
 
         $params = new ArrayCollection([
             new Parameter('mid', $dto->multiStoreId, Types::INTEGER),
-            new Parameter('name', '%'.$dto->name.'%', Types::STRING),
+            new Parameter('name', '%' . $dto->name . '%', Types::STRING),
         ]);
 
         $query = $qb
@@ -77,6 +84,12 @@ class NomenclatureRepository extends ServiceEntityRepository
                 )
             ))
             ->setParameters($params);
+
+        if ($dto->hasWebNomenclature === true) {
+            $query->andWhere('n.webNomenclature IS NOT NULL');
+        } else if ($dto->hasWebNomenclature === false) {
+            $query->andWhere('n.webNomenclature IS NULL');
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage);
     }
@@ -105,22 +118,45 @@ class NomenclatureRepository extends ServiceEntityRepository
         return null === $this->findOneBy(['multiStore' => $multiStore, 'barcode' => $dto->barcode]);
     }
 
-    public function IsUniqueNameByMultiStore(RequestDto $dto): bool
+    public function IsUniqueNameByMultiStore(RequestDto $dto, ?int $multiStoreId = null): bool
     {
         $qb = $this->createQueryBuilder('n');
         $params = new ArrayCollection([
-            new Parameter('mid', $dto->multiStoreId, Types::INTEGER),
-            new Parameter('name', $dto->nameRu, Types::STRING),
+            new Parameter('mid', $dto->multiStoreId ?? $multiStoreId, Types::INTEGER),
+            new Parameter('nameUz', $dto->nameUz, Types::STRING),
+            new Parameter('nameRu', $dto->nameRu, Types::STRING),
+            new Parameter('nameUzc', $dto->nameUzc, Types::STRING),
         ]);
         $query = $qb
             ->select('n.id')
             ->join('n.multiStore', 'm')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('m.id', ':mid'),
-                $qb->expr()->eq("JSON_EXTRACT(n.name, '$.ru')", ':name'),
+                $qb->expr()->orX(
+                    $qb->expr()->eq("JSON_EXTRACT(n.name, '$.ru')", ':nameRu'),
+                    $qb->expr()->eq("JSON_EXTRACT(n.name, '$.uz')", ':nameUz'),
+                    $qb->expr()->eq("JSON_EXTRACT(n.name, '$.uzc')", ':nameUzc')
+                ),
             ))
             ->setParameters($params)->getQuery();
 
+        if ($multiStoreId) {
+            return $query->getSingleScalarResult() === $dto->id;
+        }
+
         return count($query->getScalarResult()) ? false : true;
+    }
+
+    public function findNomenclatureByIdWithMultiStore(int $id): ?Nomenclature
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT n, m
+            FROM App\Entity\Nomenclature n
+            JOIN n.multiStore m
+            WHERE n.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
     }
 }

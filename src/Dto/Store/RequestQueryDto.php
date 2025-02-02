@@ -3,6 +3,7 @@
 namespace App\Dto\Store;
 
 use App\Component\Paginator;
+use App\Entity\MultiStore;
 use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;

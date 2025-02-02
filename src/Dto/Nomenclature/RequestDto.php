@@ -25,8 +25,8 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['nomenclature:create'])]
         #[Exists(Category::class, groups: ['nomenclature:create', 'nomenclature:update'])]
         public ?int $categoryId,
-        #[Groups(['nomenclature:create', 'nomenclature:update', 'nomenclature:is_unique_barcode'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:is_unique_barcode'])]
+        #[Groups(['nomenclature:update', 'nomenclature:is_unique_barcode'])]
+        #[Assert\NotBlank(groups: ['nomenclature:is_unique_barcode'])]
         public ?int $barcode,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:create'])]
@@ -45,7 +45,7 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:update'])]
         public ?string $mxik = null,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
-        #[Assert\NotBlank(groups: ['nomenclature:create'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:create'])]
         public ?string $brand = null,
         #[Groups(['nomenclature:create', 'nomenclature:update'])]
         #[Assert\NotBlank(groups: ['nomenclature:create', 'nomenclature:update'])]

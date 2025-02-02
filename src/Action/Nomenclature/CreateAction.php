@@ -9,12 +9,14 @@ use App\Entity\MultiStore;
 use App\Entity\Nomenclature;
 use App\Entity\Unit;
 use App\Exception\ErrorException;
+use App\Repository\NomenclatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private NomenclatureRepository $repo
     ) {}
 
     public function __invoke(array $dtos): array
@@ -39,7 +41,6 @@ class CreateAction
         $unit = $this->em->getRepository(Unit::class)->findOneBy(['code' => $dto->unitCode]);
 
         $entity = (new Nomenclature())
-            ->setName($dto->getName())
             ->setMxik($dto->mxik)
             ->setBrand($dto->brand)
             ->setOldPrice($dto->oldPrice ?? 0)
@@ -52,6 +53,7 @@ class CreateAction
             ->setUnit($unit)
             ->setCategory($category);
         $this->barcode($multiStore, $entity, $dto->barcode);
+        $this->name($entity, $dto);
         $this->em->persist($entity);
 
         return IndexDto::fromEntity($entity);
@@ -59,11 +61,20 @@ class CreateAction
 
     private function barcode(MultiStore $multiStore, Nomenclature $nomenclature, ?int $barcode): void
     {
-        if (null === $barcode) {
+        if (null === $barcode || $this->repo->findOneBy(['barcode' => $barcode, 'multiStore' => $multiStore])) {
             $barcode = $multiStore->getBarcodeTtn() + 1;
             $multiStore->setBarcodeTtn($barcode);
         }
 
         $nomenclature->setBarcode($barcode);
+    }
+
+    private function name(Nomenclature $nomenclature, RequestDto $dto): void
+    {
+        if (! $this->repo->IsUniqueNameByMultiStore($dto)) {
+            throw new ErrorException('Nomenclature', 'Name is not unique');
+        }
+
+        $nomenclature->setName($dto->getName());
     }
 }

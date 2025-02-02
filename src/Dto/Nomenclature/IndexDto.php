@@ -42,7 +42,7 @@ final readonly class IndexDto
         public mixed $webNomenclature = null,
     ) {}
 
-    public static function fromCashboxGlobal(?Nomenclature $entity): static
+    public static function fromCashboxGlobal(?Nomenclature $entity): ?static
     {
         return $entity
             ? new static(
@@ -53,7 +53,7 @@ final readonly class IndexDto
             : null;
     }
 
-    public static function fromEntity(?Nomenclature $entity): static
+    public static function fromEntity(?Nomenclature $entity): ?static
     {
         return $entity
             ? new static(
@@ -73,7 +73,7 @@ final readonly class IndexDto
             : null;
     }
 
-    public static function fromEntityByWebEvent(?Nomenclature $entity): static
+    public static function fromEntityByWebEvent(?Nomenclature $entity): ?static
     {
         return $entity
             ? new static(
@@ -94,7 +94,7 @@ final readonly class IndexDto
             : null;
     }
 
-    public static function fromShowAction(?Nomenclature $entity): static
+    public static function fromShowAction(?Nomenclature $entity): ?static
     {
         return $entity
             ? new static(

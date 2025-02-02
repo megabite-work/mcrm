@@ -21,7 +21,7 @@ final readonly class IndexDto
         public ?bool $showComment = true,
     ) {}
 
-    public static function fromEntity(?WebNomenclature $entity): static
+    public static function fromEntity(?WebNomenclature $entity): ?static
     {
         return $entity
             ? new static(
@@ -38,7 +38,7 @@ final readonly class IndexDto
             : null;
     }
 
-    public static function fromEntityForNomenclature(?WebNomenclature $entity): static
+    public static function fromEntityForNomenclature(?WebNomenclature $entity): ?static
     {
         return $entity
             ? new static(

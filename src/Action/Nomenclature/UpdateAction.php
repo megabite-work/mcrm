@@ -8,12 +8,14 @@ use App\Entity\Category;
 use App\Entity\Nomenclature;
 use App\Entity\Unit;
 use App\Exception\ErrorException;
+use App\Repository\NomenclatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
 {
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private NomenclatureRepository $repo
     ) {}
 
     public function __invoke(array $dtos): array
@@ -33,12 +35,11 @@ class UpdateAction
 
     private function update(RequestDto $dto): IndexDto
     {
-        $entity = $this->em->find(Nomenclature::class, $dto->id);
+        $entity = $this->repo->findNomenclatureByIdWithMultiStore($dto->id);
         $this->updateCategory($entity, $dto);
         $this->updateUnit($entity, $dto);
 
         $entity->setQrCode($dto->qrCode ?? $entity->getQrCode())
-            ->setBarcode($dto->barcode ?? $entity->getBarcode())
             ->setMxik($dto->mxik ?? $entity->getMxik())
             ->setBrand($dto->brand ?? $entity->getBrand())
             ->setOldPrice($dto->oldPrice ?? $entity->getOldPrice())
@@ -46,12 +47,9 @@ class UpdateAction
             ->setOldPriceCourse($dto->oldPriceCourse ?? $entity->getOldPriceCourse())
             ->setPriceCourse($dto->priceCourse ?? $entity->getPriceCourse())
             ->setNds($dto->nds  ?? $entity->getNds())
-            ->setName([
-                'ru' => $dto->nameRu ?? $entity->getName()['ru'],
-                'uz' => $dto->nameUz ?? $entity->getName()['uz'],
-                'uzc' => $dto->nameUzc ?? $entity->getName()['uzc'],
-            ])
             ->setDiscount($dto->discount ?? $entity->getDiscount());
+        $this->barcode($entity, $dto->barcode);
+        $this->name($entity, $dto);
 
         return IndexDto::fromEntity($entity);
     }
@@ -68,5 +66,30 @@ class UpdateAction
         if ($dto->unitCode) {
             $entity->setUnit($this->em->getRepository(Unit::class)->findOneBy(['code' => $dto->unitCode]));
         }
+    }
+
+    private function barcode(Nomenclature $nomenclature, ?int $barcode): void
+    {
+        $multiStore = $nomenclature->getMultiStore();
+        if (
+            null !== $barcode
+            && ! $this->repo->findOneBy(['barcode' => $barcode, 'multiStore' => $multiStore, 'id' => $nomenclature->getId()])
+        ) {
+            if ($this->repo->findOneBy(['barcode' => $barcode, 'multiStore' => $multiStore])) {
+                $barcode = $multiStore->getBarcodeTtn() + 1;
+                $multiStore->setBarcodeTtn($barcode);
+            }
+
+            $nomenclature->setBarcode($barcode);
+        }
+    }
+
+    private function name(Nomenclature $nomenclature, RequestDto $dto): void
+    {
+        if (! $this->repo->IsUniqueNameByMultiStore($dto, $nomenclature->getMultiStore()->getId())) {
+            throw new ErrorException('Nomenclature', 'Name is not unique');
+        }
+
+        $nomenclature->setName($dto->getName());
     }
 }
