@@ -43,7 +43,7 @@ final class RequestDto
                 new Assert\Collection(
                     fields: [
                         'type' => [new Assert\NotBlank(groups: ['web_credential:update']), new Assert\Choice(choices: WebCredential::SOCIAL_TYPES, groups: ['web_credential:update'])],
-                        'url' => [new Assert\NotBlank(groups: ['web_credential:update']), new Assert\Regex(pattern: '/^(\+?[1-9]\d{1,14}|https?:\/\/[^\s$.?#].[^\s]*)$/', groups: ['web_credential:update'])],
+                        'url' => [new Assert\NotBlank(groups: ['web_credential:update']), new Assert\Regex(pattern: '/^(\+?[1-9]\d{1,14}|https?:\/\/[^\s$.?#].[^\s]*|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/', groups: ['web_credential:update'])],
                         'header' => [new Assert\Type(type: 'bool', groups: ['web_credential:update'])],
                         'footer' => [new Assert\Type(type: 'bool', groups: ['web_credential:update'])],
                     ],
