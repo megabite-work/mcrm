@@ -22,6 +22,10 @@ final readonly class RequestQueryDto
         #[Exists(entity: AttributeGroup::class)]
         public ?int $groupId,
         #[Groups(['attribute:index'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['attribute:index'])]
+        #[Assert\Type(type: ['string', 'null'], groups: ['attribute:index'])]
+        public ?string $name = null,
+        #[Groups(['attribute:index'])]
         #[Assert\Positive]
         public ?int $page = 1,
         #[Groups(['attribute:index'])]

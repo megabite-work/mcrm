@@ -20,14 +20,19 @@ class AttributeEntityRepository extends ServiceEntityRepository
 
     public function findAllAttributesByCategory(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $qb = $this->createQueryBuilder('a');
+        $query = $qb->select('a', 'p', 'ch')
+            ->join('a.categories', 'c')
+            ->where('c.id = :cid')
+            ->setParameter('cid', $dto->categoryId);
 
-        $query = $entityManager->createQuery(
-            'SELECT a
-            FROM App\Entity\AttributeEntity a
-            JOIN a.categories c
-            WHERE c.id = :cid'
-        )->setParameter('cid', $dto->categoryId);
+        if ($dto->name) {
+            $query->andWhere($qb->expr()->orX(
+                $qb->expr()->like("JSON_EXTRACT(a.name, '$.ru')", ':name'),
+                $qb->expr()->like("JSON_EXTRACT(a.name, '$.uz')", ':name'),
+                $qb->expr()->like("JSON_EXTRACT(a.name, '$.uzc')", ':name')
+            ))->setParameter('name', '%' . $dto->name . '%');
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage, false);
     }
