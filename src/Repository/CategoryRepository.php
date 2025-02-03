@@ -50,9 +50,9 @@ class CategoryRepository extends ServiceEntityRepository
         
         if ($dto->name) {
             $query->andWhere($qb->expr()->orX(
-                $qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'),
-                $qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'),
-                $qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name')
+                $qb->expr()->like("JSON_EXTRACT(с.name, '$.ru')", ':name'),
+                $qb->expr()->like("JSON_EXTRACT(с.name, '$.uz')", ':name'),
+                $qb->expr()->like("JSON_EXTRACT(с.name, '$.uzc')", ':name')
             ))->setParameter('name', $dto->name);
         }
 
@@ -82,9 +82,9 @@ class CategoryRepository extends ServiceEntityRepository
         
         if ($dto->name) {
             $query->andWhere($qb->expr()->orX(
-                $qb->expr()->like("JSON_EXTRACT(n.name, '$.ru')", ':name'),
-                $qb->expr()->like("JSON_EXTRACT(n.name, '$.uz')", ':name'),
-                $qb->expr()->like("JSON_EXTRACT(n.name, '$.uzc')", ':name')
+                $qb->expr()->like("JSON_EXTRACT(с.name, '$.ru')", ':name'),
+                $qb->expr()->like("JSON_EXTRACT(с.name, '$.uz')", ':name'),
+                $qb->expr()->like("JSON_EXTRACT(с.name, '$.uzc')", ':name')
             ))->setParameter('name', $dto->name);
         }
 
