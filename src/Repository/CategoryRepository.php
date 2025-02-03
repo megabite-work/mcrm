@@ -9,6 +9,7 @@ use App\Entity\MultiStore;
 use App\Entity\WebCredential;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -53,7 +54,7 @@ class CategoryRepository extends ServiceEntityRepository
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.ru')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uz')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uzc')", ':name')
-            ))->setParameter('name', $dto->name);
+            ))->setParameter('name', '%'.$dto->name.'%', Types::STRING);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage);
@@ -85,7 +86,7 @@ class CategoryRepository extends ServiceEntityRepository
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.ru')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uz')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uzc')", ':name')
-            ))->setParameter('name', $dto->name);
+            ))->setParameter('name', '%'.$dto->name.'%', Types::STRING);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage);
