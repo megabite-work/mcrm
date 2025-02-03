@@ -139,7 +139,7 @@ class CategoryRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    private function getCategoryIds(array $categoryIds): array
+    private function findCategoryIds(array $categoryIds): array
     {
         $categories = $this->findCategoryWithParentAndChildrens($categoryIds);
         $ids = [];
