@@ -146,7 +146,7 @@ class CategoryRepository extends ServiceEntityRepository
 
         foreach ($categories as $category) {
             if ($category->getGeneration() === Category::GENERATIONS[0]) {
-                $ids = array_merge($ids, $this->getCategoryIds(
+                $ids = array_merge($ids, $this->findCategoryIds(
                     $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray()
                 ));
             } else if ($category->getGeneration() === Category::GENERATIONS[1]) {
