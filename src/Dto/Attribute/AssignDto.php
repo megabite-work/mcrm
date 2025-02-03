@@ -22,6 +22,6 @@ final readonly class AssignDto
             new Assert\Positive(groups: ['attribute:assign']),
             new Exists(AttributeEntity::class, groups: ['attribute:assign'])
         ], groups: ['attribute:assign'])]
-        public ?array $attributeIds = null,
+        public ?array $attributeIds = [],
     ) {}
 }
