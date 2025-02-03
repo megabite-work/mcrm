@@ -26,7 +26,6 @@ class CategoryRepository extends ServiceEntityRepository
     public function findAllCategories(RequestQueryDto $dto): Paginator
     {
         $em = $this->getEntityManager();
-        $parent = $em->getReference(Category::class, $dto->parentId);
         $ids = null;
 
         $qb = $this->createQueryBuilder('c');
