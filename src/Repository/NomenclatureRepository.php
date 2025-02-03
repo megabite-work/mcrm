@@ -26,7 +26,7 @@ class NomenclatureRepository extends ServiceEntityRepository
 
     private function getCategoryIds(array $categoryIds): array
     {
-        $categories = $this->$this->getEntityManager()->getRepository(Category::class)->findCategoryWithParentAndChildrens($categoryIds);
+        $categories = $this->getEntityManager()->getRepository(Category::class)->findCategoryWithParentAndChildrens($categoryIds);
         $ids = [];
 
         foreach ($categories as $category) {
