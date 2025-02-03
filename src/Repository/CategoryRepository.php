@@ -139,14 +139,14 @@ class CategoryRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    private function findCategoryIds(array $categoryIds): array
+    public function getCategoryIds(array $categoryIds): array
     {
         $categories = $this->findCategoryWithParentAndChildrens($categoryIds);
         $ids = [];
 
         foreach ($categories as $category) {
             if ($category->getGeneration() === Category::GENERATIONS[0]) {
-                $ids = array_merge($ids, $this->findCategoryIds(
+                $ids = array_merge($ids, $this->getCategoryIds(
                     $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray()
                 ));
             } else if ($category->getGeneration() === Category::GENERATIONS[1]) {
