@@ -23,7 +23,7 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function findAllCategoriesByParent(RequestQueryDto $dto): Paginator
+    public function findAllCategories(RequestQueryDto $dto): Paginator
     {
         $em = $this->getEntityManager();
         $parent = $em->getReference(Category::class, $dto->parentId);
@@ -32,46 +32,12 @@ class CategoryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c');
         $query = $qb->select('c, p, ch')
             ->leftJoin('c.parent', 'p')
-            ->leftJoin('c.childrens', 'ch')
-            ->where('c.parent = :parent')
-            ->setParameter('parent', $parent);
-
-        if ($dto->multiStoreId) {
-            $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
-            $ids = $em->getRepository(WebCredential::class)->findOneBy(['multiStore' => $multiStore])?->getCatalogTypeId();
-
-            if ($ids) {
-                $query->andWhere('c.id IN (:ids)')->setParameter('ids', $ids);
-            }
-        }
-
-        if ($dto->generation) {
-            $query->andWhere('c.generation = :generation')->setParameter('generation', $dto->generation);
-        }
-
-        if ($dto->name) {
-            $query->andWhere($qb->expr()->orX(
-                $qb->expr()->like("JSON_EXTRACT(c.name, '$.ru')", ':name'),
-                $qb->expr()->like("JSON_EXTRACT(c.name, '$.uz')", ':name'),
-                $qb->expr()->like("JSON_EXTRACT(c.name, '$.uzc')", ':name')
-            ))->setParameter('name', '%' . $dto->name . '%', Types::STRING);
-        }
-
-        return new Paginator($query, $dto->page, $dto->perPage);
-    }
-
-    public function findAllCategoriesParentIsNull(RequestQueryDto $dto): Paginator
-    {
-        $ids = null;
-        $qb = $this->createQueryBuilder('c');
-        $query = $qb->select('c, p, ch')
-            ->leftJoin('c.parent', 'p')
             ->leftJoin('c.childrens', 'ch');
 
         if ($dto->multiStoreId) {
-            $em = $this->getEntityManager();
             $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
             $ids = $em->getRepository(WebCredential::class)->findOneBy(['multiStore' => $multiStore])?->getCatalogTypeId();
+
             if ($ids) {
                 $query->andWhere('c.id IN (:ids)')->setParameter('ids', $ids);
             }
@@ -79,6 +45,11 @@ class CategoryRepository extends ServiceEntityRepository
 
         if ($dto->generation) {
             $query->andWhere('c.generation = :generation')->setParameter('generation', $dto->generation);
+        }
+
+        if ($dto->parentId) {
+            $parent = $em->getReference(Category::class, $dto->parentId);
+            $query->andWhere('c.parent = :parent')->setParameter('parent', $parent);
         }
 
         if ($dto->name) {

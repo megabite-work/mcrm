@@ -50,9 +50,9 @@ class NomenclatureRepository extends ServiceEntityRepository
             ->setParameters($params);
 
         if ($dto->hasWebNomenclature === true) {
-            $query->andWhere('n.webNomenclature IS NOT NULL');
+            $query->andWhere('wn.id IS NOT NULL');
         } else if ($dto->hasWebNomenclature === false) {
-            $query->andWhere('n.webNomenclature IS NULL');
+            $query->andWhere('wn.id IS NULL');
         } 
         if ($dto->categoryIds) {
             $categoryIds = $this->getEntityManager()->getRepository(Category::class)->getCategoryIds($dto->categoryIds);

@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use App\Action\Attribute\AssignAction;
-use App\Action\Attribute\CreateAction;
-use App\Action\Attribute\DeleteAction;
-use App\Action\Attribute\DetachAction;
-use App\Action\Attribute\IndexAction;
-use App\Action\Attribute\ShowAction;
-use App\Action\Attribute\UpdateAction;
-use App\Dto\Attribute\RequestDto;
-use App\Dto\Attribute\RequestQueryDto;
-use App\Entity\AttributeEntity;
-use App\Entity\Category;
+use App\Action\AttributeGroup\AssignAction;
+use App\Action\AttributeGroup\CreateAction;
+use App\Action\AttributeGroup\DeleteAction;
+use App\Action\AttributeGroup\DetachAction;
+use App\Action\AttributeGroup\IndexAction;
+use App\Action\AttributeGroup\ShowAction;
+use App\Action\AttributeGroup\UpdateAction;
+use App\Dto\AttributeGroup\RequestDto;
+use App\Dto\AttributeGroup\RequestQueryDto;
+use App\Entity\AttributeGroup;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +19,9 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/api/attributes', format: 'json')]
-#[OA\Tag(name: 'Attribute Entity')]
-class AttributeController extends AbstractController
+#[Route(path: '/api/attribute-groups', format: 'json')]
+#[OA\Tag(name: 'Attribute Group')]
+class AttributeGroupController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['attribute:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
@@ -33,6 +32,8 @@ class AttributeController extends AbstractController
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
+        $this->existsValidate($id, AttributeGroup::class);
+        
         return $this->successResponse($action($id));
     }
 
@@ -45,33 +46,15 @@ class AttributeController extends AbstractController
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
     public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['attribute:update']], validationGroups: ['attribute:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
-        $this->existsValidate($id, AttributeEntity::class);
+        $this->existsValidate($id, AttributeGroup::class);
 
         return $this->successResponse($action($id, $dto));
-    }
-
-    #[Route('/{id<\d+>}/assign/{category_id<\d+>}', methods: ['POST'])]
-    public function assign(int $id, int $categoryId, AssignAction $action): JsonResponse
-    {
-        $this->existsValidate([$id, $categoryId], [AttributeEntity::class, Category::class]);
-        $action($id, $categoryId);
-        
-        return $this->emptyResponse();
-    }
-
-    #[Route('/{id<\d+>}/detach/{category_id<\d+>}', methods: ['POST'])]
-    public function detach(int $id, int $categoryId, DetachAction $action): JsonResponse
-    {
-        $this->existsValidate([$id, $categoryId], [AttributeEntity::class, Category::class]);
-        $action($id, $categoryId);
-        
-        return $this->emptyResponse();
     }
 
     #[Route('/{id<\d+>}', methods: ['DELETE'])]
     public function delete(int $id, DeleteAction $action): JsonResponse
     {
-        $this->existsValidate($id, AttributeEntity::class);
+        $this->existsValidate($id, AttributeGroup::class);
         $action($id);
         
         return $this->emptyResponse();

@@ -20,6 +20,8 @@ class CreateAction
         $category = $this->em->getReference(Category::class, $dto->categoryId);
         $entity = (new AttributeEntity())
             ->setName($dto->getName())
+            ->setGroupId($dto->groupId)
+            ->setUnit($dto->getUnit())
             ->addCategory($category);
         $this->em->persist($entity);
         $this->em->flush();
