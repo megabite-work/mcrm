@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class AttributeGroupController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
-    public function index(#[MapQueryString(serializationContext: ['groups' => ['attribute:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
+    public function index(#[MapQueryString(serializationContext: ['groups' => ['attribute_group:index']], validationGroups: ['attribute_group:index'])] RequestQueryDto $dto, IndexAction $action): JsonResponse
     {
         return $this->indexResponse($action($dto));
     }
@@ -38,13 +38,13 @@ class AttributeGroupController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:create']], validationGroups: ['attribute:create'])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute_group:create']], validationGroups: ['attribute_group:create'])] RequestDto $dto, CreateAction $action): JsonResponse
     {
         return $this->successResponse($action($dto), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
-    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['attribute:update']], validationGroups: ['attribute:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
+    public function update(int $id, #[MapRequestPayload(serializationContext: ['groups' => ['attribute_group:update']], validationGroups: ['attribute_group:update'])] RequestDto $dto, UpdateAction $action): JsonResponse
     {
         $this->existsValidate($id, AttributeGroup::class);
 
