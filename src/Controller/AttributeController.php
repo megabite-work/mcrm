@@ -9,6 +9,7 @@ use App\Action\Attribute\DetachAction;
 use App\Action\Attribute\IndexAction;
 use App\Action\Attribute\ShowAction;
 use App\Action\Attribute\UpdateAction;
+use App\Dto\Attribute\AssignDto;
 use App\Dto\Attribute\RequestDto;
 use App\Dto\Attribute\RequestQueryDto;
 use App\Entity\AttributeEntity;
@@ -50,21 +51,19 @@ class AttributeController extends AbstractController
         return $this->successResponse($action($id, $dto));
     }
 
-    #[Route('/{id<\d+>}/assign/{category_id<\d+>}', methods: ['POST'])]
-    public function assign(int $id, int $categoryId, AssignAction $action): JsonResponse
+    #[Route('/assign', methods: ['POST'])]
+    public function assign(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:assign']], validationGroups: ['attribute:assign'])] AssignDto $dto, AssignAction $action): JsonResponse
     {
-        $this->existsValidate([$id, $categoryId], [AttributeEntity::class, Category::class]);
-        $action($id, $categoryId);
-        
+        $action($dto);
+
         return $this->emptyResponse();
     }
 
-    #[Route('/{id<\d+>}/detach/{category_id<\d+>}', methods: ['POST'])]
-    public function detach(int $id, int $categoryId, DetachAction $action): JsonResponse
+    #[Route('/detach', methods: ['POST'])]
+    public function detach(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:assign']], validationGroups: ['attribute:assign'])] AssignDto $dto, DetachAction $action): JsonResponse
     {
-        $this->existsValidate([$id, $categoryId], [AttributeEntity::class, Category::class]);
-        $action($id, $categoryId);
-        
+        $action($dto);
+
         return $this->emptyResponse();
     }
 
@@ -73,7 +72,7 @@ class AttributeController extends AbstractController
     {
         $this->existsValidate($id, AttributeEntity::class);
         $action($id);
-        
+
         return $this->emptyResponse();
     }
 }
