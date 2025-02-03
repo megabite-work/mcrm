@@ -38,9 +38,9 @@ class AttributeGroupController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute_group:create']], validationGroups: ['attribute_group:create'])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute_group:create']], validationGroups: ['attribute_group:create'], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
-        return $this->successResponse($action($dto), Response::HTTP_CREATED);
+        return $this->successResponse($action($dtos), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
