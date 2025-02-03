@@ -39,7 +39,7 @@ class CategoryRepository extends ServiceEntityRepository
         if ($dto->multiStoreId) {
             $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
             $ids = $em->getRepository(WebCredential::class)->findOneBy(['multiStore' => $multiStore])?->getCatalogTypeId();
-            
+
             if ($ids) {
                 $query->andWhere('c.id IN (:ids)')->setParameter('ids', $ids);
             }
@@ -48,13 +48,13 @@ class CategoryRepository extends ServiceEntityRepository
         if ($dto->generation) {
             $query->andWhere('c.generation = :generation')->setParameter('generation', $dto->generation);
         }
-        
+
         if ($dto->name) {
             $query->andWhere($qb->expr()->orX(
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.ru')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uz')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uzc')", ':name')
-            ))->setParameter('name', '%'.$dto->name.'%', Types::STRING);
+            ))->setParameter('name', '%' . $dto->name . '%', Types::STRING);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage);
@@ -80,13 +80,13 @@ class CategoryRepository extends ServiceEntityRepository
         if ($dto->generation) {
             $query->andWhere('c.generation = :generation')->setParameter('generation', $dto->generation);
         }
-        
+
         if ($dto->name) {
             $query->andWhere($qb->expr()->orX(
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.ru')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uz')", ':name'),
                 $qb->expr()->like("JSON_EXTRACT(c.name, '$.uzc')", ':name')
-            ))->setParameter('name', '%'.$dto->name.'%', Types::STRING);
+            ))->setParameter('name', '%' . $dto->name . '%', Types::STRING);
         }
 
         return new Paginator($query, $dto->page, $dto->perPage);
@@ -123,5 +123,39 @@ class CategoryRepository extends ServiceEntityRepository
             )
             ->setParameter('ids', $ids)
             ->getResult();
+    }
+
+    public function findCategoryWithParentAndChildrens(array $ids): array
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT c, p, ch
+            FROM App\Entity\Category c
+            LEFT JOIN c.parent p
+            LEFT JOIN c.childrens ch
+            WHERE c.id IN (:ids)'
+        )->setParameter('ids', $ids);
+
+        return $query->getResult();
+    }
+
+    private function getCategoryIds(array $categoryIds): array
+    {
+        $categories = $this->findCategoryWithParentAndChildrens($categoryIds);
+        $ids = [];
+
+        foreach ($categories as $category) {
+            if ($category->getGeneration() === Category::GENERATIONS[0]) {
+                $ids = array_merge($ids, $this->getCategoryIds(
+                    $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray()
+                ));
+            } else if ($category->getGeneration() === Category::GENERATIONS[1]) {
+                $ids = array_merge($ids, $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray());
+            } else if ($category->getGeneration() === Category::GENERATIONS[2]) {
+                $ids[] = $category->getId();
+            }
+        }
+
+        return array_unique($ids);
     }
 }
