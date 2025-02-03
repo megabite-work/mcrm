@@ -24,6 +24,26 @@ class NomenclatureRepository extends ServiceEntityRepository
         parent::__construct($registry, Nomenclature::class);
     }
 
+    private function getCategoryIds(array $categoryIds): array
+    {
+        $categories = $this->$this->getEntityManager()->getRepository(Category::class)->findCategoryWithParentAndChildrens($categoryIds);
+        $ids = [];
+
+        foreach ($categories as $category) {
+            if ($category->getGeneration() === Category::GENERATIONS[0]) {
+                $ids = array_merge($ids, $this->getCategoryIds(
+                    $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray()
+                ));
+            } else if ($category->getGeneration() === Category::GENERATIONS[1]) {
+                $ids = array_merge($ids, $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray());
+            } else if ($category->getGeneration() === Category::GENERATIONS[2]) {
+                $ids[] = $category->getId();
+            }
+        }
+
+        return array_unique($ids);
+    }
+
     public function findAllNomenclatures(RequestQueryDto $dto): Paginator
     {
         $qb = $this->createQueryBuilder('n');
@@ -55,7 +75,7 @@ class NomenclatureRepository extends ServiceEntityRepository
             $query->andWhere('n.webNomenclature IS NULL');
         } 
         if ($dto->categoryIds) {
-            $categoryIds = $this->getEntityManager()->getRepository(Category::class)->getCategoryIds($dto->categoryIds);
+            $categoryIds = $this->getCategoryIds($dto->categoryIds);
             $query->andWhere('c.id IN (:cid)')->setParameter('cid', $categoryIds);
         }
 
