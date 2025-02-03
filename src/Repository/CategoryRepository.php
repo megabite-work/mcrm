@@ -30,7 +30,7 @@ class CategoryRepository extends ServiceEntityRepository
         $ids = null;
 
         $qb = $this->createQueryBuilder('c');
-        $query = $qb->select('c, p, ch')
+        $query = $qb->select('c', 'p', 'ch')
             ->leftJoin('c.parent', 'p')
             ->leftJoin('c.childrens', 'ch');
 
