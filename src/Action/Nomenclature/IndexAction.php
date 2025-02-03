@@ -19,7 +19,6 @@ class IndexAction
 
     public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        dd($this->getCategoryIds($dto->categoryIds));
         $paginator = $this->repo->findAllNomenclatures($dto);
         $data = $paginator->getData();
 
@@ -28,25 +27,5 @@ class IndexAction
         });
 
         return new ListResponseDto($data, $paginator->getPagination());
-    }
-
-    private function getCategoryIds(array $categoryIds): array
-    {
-        $categories = $this->em->getRepository(Category::class)->findCategoryWithParentAndChildrens($categoryIds);
-        $ids = [];
-
-        foreach ($categories as $category) {
-            if ($category->getGeneration() === Category::GENERATIONS[0]) {
-                $ids = array_merge($ids, $this->getCategoryIds(
-                    $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray()
-                ));
-            } else if ($category->getGeneration() === Category::GENERATIONS[1]) {
-                $ids = array_merge($ids, $category->getChildrens()->map(fn(Category $category) => $category->getId())->toArray());
-            } else if ($category->getGeneration() === Category::GENERATIONS[2]) {
-                $ids[] = $category->getId();
-            }
-        }
-
-        return array_unique($ids);
     }
 }
