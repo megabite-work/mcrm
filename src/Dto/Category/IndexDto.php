@@ -28,7 +28,7 @@ final readonly class IndexDto
                 isActive: $entity->getIsActive(),
                 hasChild: $entity->getHasChild(),
                 generation: $entity->getGeneration(),
-                countChild: $entity->getChildrens()->count(),
+                // countChild: $entity->getChildrens()->count(),
             )
             : null;
     }
