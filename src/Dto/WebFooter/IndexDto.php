@@ -31,34 +31,4 @@ final readonly class IndexDto
             )
             : null;
     }
-
-    public static function fromEntityWithRelation(?WebFooter $entity, ?array $links = []): ?static
-    {
-        return $entity
-            ? new static(
-                id: $entity->getId(),
-                title: $entity->getTitle(),
-                type: $entity->getType(),
-                isActive: $entity->getIsActive(),
-                order: $entity->getOrder(),
-                links: static::prepareLinks($entity->getType(), $links),
-            )
-            : null;
-    }
-
-    private static function prepareLinks(string $type, ?array $links = []): array
-    {
-        return array_map(function ($link) use ($type) {
-            if (in_array($type, [WebFooter::TYPE_CONTACT, WebFooter::TYPE_SOCIAL])) {
-                return new WebFooterLinkIndexDto(
-                    id: $link->getId(),
-                    webFooterId: $link->getWebFooterId(),
-                    type: $link->getType(),
-                    isActive: $link->getIsActive(),
-                );
-            }
-
-            return WebFooterLinkIndexDto::fromEntity($link);
-        }, $links);
-    }
 }

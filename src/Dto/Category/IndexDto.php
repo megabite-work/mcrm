@@ -14,6 +14,7 @@ final readonly class IndexDto
         public ?bool $isActive = null,
         public ?bool $hasChild = false,
         public ?string $generation = null,
+        public ?int $countChild = null,
     ) {}
 
     public static function fromEntity(?Category $entity): ?static
@@ -27,6 +28,7 @@ final readonly class IndexDto
                 isActive: $entity->getIsActive(),
                 hasChild: $entity->getHasChild(),
                 generation: $entity->getGeneration(),
+                countChild: $entity->getChildrens()->count(),
             )
             : null;
     }

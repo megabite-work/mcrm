@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Action\Attribute;
+namespace App\Action\AttributeGroup;
 
-use App\Dto\Attribute\IndexDto;
-use App\Dto\Attribute\RequestDto;
-use App\Entity\AttributeEntity;
+use App\Dto\AttributeGroup\IndexDto;
+use App\Dto\AttributeGroup\RequestDto;
+use App\Entity\AttributeGroup;
 use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -23,7 +23,7 @@ class CreateAction
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new ErrorException('Nomenclature', $th->getMessage(), $th->getCode());
+            throw new ErrorException('Attribute Group', $th->getMessage(), $th->getCode());
         }
 
         return $entities;
@@ -31,10 +31,8 @@ class CreateAction
 
     private function create(RequestDto $dto): IndexDto
     {
-        $entity = (new AttributeEntity())
-            ->setName($dto->getName())
-            ->setGroupId($dto->groupId)
-            ->setUnit($dto->getUnit());
+        $entity = (new AttributeGroup())
+            ->setName($dto->getName());
         $this->em->persist($entity);
 
         return IndexDto::fromEntity($entity);

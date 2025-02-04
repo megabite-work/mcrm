@@ -28,6 +28,14 @@ class AttributeEntity
     #[Groups(['attribute:index', 'attribute:show', 'attribute:create', 'attribute:update'])]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['attribute:index', 'attribute:show', 'attribute:create', 'attribute:update'])]
+    private ?string $unit = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['attribute:index', 'attribute:show', 'attribute:create', 'attribute:update'])]
+    private ?int $groupId = null;
+
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'attributes')]
     private Collection $categories;
 
@@ -53,6 +61,18 @@ class AttributeEntity
     public function setName(array $name): static
     {
         $this->name = json_encode($name, JSON_UNESCAPED_UNICODE);
+
+        return $this;
+    }
+
+    public function getUnit(): ?array
+    {
+        return json_decode($this->unit, true);
+    }
+
+    public function setUnit(array $unit): static
+    {
+        $this->unit = json_encode($unit, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
@@ -100,6 +120,18 @@ class AttributeEntity
                 $attributeValue->setAttribute(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGroupId(): ?int
+    {
+        return $this->groupId;
+    }
+
+    public function setGroupId(?int $groupId): static
+    {
+        $this->groupId = $groupId;
 
         return $this;
     }

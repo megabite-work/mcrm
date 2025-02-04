@@ -9,6 +9,7 @@ use App\Action\Attribute\DetachAction;
 use App\Action\Attribute\IndexAction;
 use App\Action\Attribute\ShowAction;
 use App\Action\Attribute\UpdateAction;
+use App\Dto\Attribute\AssignDto;
 use App\Dto\Attribute\RequestDto;
 use App\Dto\Attribute\RequestQueryDto;
 use App\Entity\AttributeEntity;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/attributes', format: 'json')]
-#[OA\Tag(name: 'Attribute')]
+#[OA\Tag(name: 'Attribute Entity')]
 class AttributeController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
@@ -37,9 +38,9 @@ class AttributeController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:create']], validationGroups: ['attribute:create'])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:create']], validationGroups: ['attribute:create'], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
-        return $this->successResponse($action($dto), Response::HTTP_CREATED);
+        return $this->successResponse($action($dtos), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]
@@ -50,21 +51,19 @@ class AttributeController extends AbstractController
         return $this->successResponse($action($id, $dto));
     }
 
-    #[Route('/{id<\d+>}/assign/{category_id<\d+>}', methods: ['POST'])]
-    public function assign(int $id, int $categoryId, AssignAction $action): JsonResponse
+    #[Route('/assign', methods: ['POST'])]
+    public function assign(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:assign']], validationGroups: ['attribute:assign'])] AssignDto $dto, AssignAction $action): JsonResponse
     {
-        $this->existsValidate([$id, $categoryId], [AttributeEntity::class, Category::class]);
-        $action($id, $categoryId);
-        
+        $action($dto);
+
         return $this->emptyResponse();
     }
 
-    #[Route('/{id<\d+>}/detach/{category_id<\d+>}', methods: ['POST'])]
-    public function detach(int $id, int $categoryId, DetachAction $action): JsonResponse
+    #[Route('/detach', methods: ['POST'])]
+    public function detach(#[MapRequestPayload(serializationContext: ['groups' => ['attribute:assign']], validationGroups: ['attribute:assign'])] AssignDto $dto, DetachAction $action): JsonResponse
     {
-        $this->existsValidate([$id, $categoryId], [AttributeEntity::class, Category::class]);
-        $action($id, $categoryId);
-        
+        $action($dto);
+
         return $this->emptyResponse();
     }
 
@@ -73,7 +72,7 @@ class AttributeController extends AbstractController
     {
         $this->existsValidate($id, AttributeEntity::class);
         $action($id);
-        
+
         return $this->emptyResponse();
     }
 }

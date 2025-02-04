@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/values', format: 'json')]
-#[OA\Tag(name: 'Value')]
+#[OA\Tag(name: 'Attribute Value Entity')]
 class ValueController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]

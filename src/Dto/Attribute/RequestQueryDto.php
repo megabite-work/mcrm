@@ -3,6 +3,7 @@
 namespace App\Dto\Attribute;
 
 use App\Component\Paginator;
+use App\Entity\AttributeGroup;
 use App\Entity\Category;
 use App\Validator\Exists;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -16,6 +17,14 @@ final readonly class RequestQueryDto
         #[Assert\Positive]
         #[Exists(entity: Category::class)]
         public int $categoryId,
+        #[Groups(['attribute:index'])]
+        #[Assert\NotBlank(allowNull: true)]
+        #[Exists(entity: AttributeGroup::class)]
+        public ?int $groupId,
+        #[Groups(['attribute:index'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['attribute:index'])]
+        #[Assert\Type(type: ['string', 'null'], groups: ['attribute:index'])]
+        public ?string $name = null,
         #[Groups(['attribute:index'])]
         #[Assert\Positive]
         public ?int $page = 1,
