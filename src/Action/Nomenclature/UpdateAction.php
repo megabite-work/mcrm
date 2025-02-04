@@ -27,7 +27,7 @@ class UpdateAction
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new ErrorException('Nomenclature', $th->getMessage());
+            return throw new ErrorException('Nomenclature', $th->getMessage());
         }
 
         return $entities;
