@@ -33,7 +33,7 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['web_nomenclature:create'])]
         public ?string $title,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update', 'web_nomenclature:article_attributes'])]
-        #[Assert\NotBlank(groups: ['web_nomenclature:article_attributes'])]
+        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create', 'web_nomenclature:article_attributes'])]
         public ?string $article,
         #[Groups(['web_nomenclature:create', 'web_nomenclature:update'])]
         #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:create', 'web_nomenclature:update'])]
