@@ -109,7 +109,7 @@ class NomenclatureRepository extends ServiceEntityRepository
             ->setParameters($params)->getQuery();
 
         if ($multiStoreId) {
-            return $query->getSingleScalarResult() === $dto->id;
+            return count($query->getScalarResult()) > 1 ? false : true;
         }
 
         return count($query->getScalarResult()) ? false : true;
