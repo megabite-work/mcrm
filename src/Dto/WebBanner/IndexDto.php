@@ -76,7 +76,7 @@ final readonly class IndexDto
                 viewType: $entity['view_type'],
                 viewMax: $entity['view_max'],
                 viewCurrent: $entity['view_current'],
-                beginAt: $entity['beginA_at'],
+                beginAt: $entity['begin_at'],
                 endAt: $entity['end_at'],
             )
             : null;
