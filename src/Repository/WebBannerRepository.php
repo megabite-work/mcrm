@@ -54,4 +54,16 @@ class WebBannerRepository extends ServiceEntityRepository
 
         return $conn->fetchAllAssociative($sql);
     }
+
+    public function findWebBannerWithMultiStore(int $id): ?WebBanner
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT wb, m
+            FROM App\Entity\WebBanner wb
+            JOIN wb.multiStore m
+            WHERE wb.id = :id'
+        )
+            ->setParameter('id', $id)
+            ->getOneOrNullResult();
+    }
 }
