@@ -20,6 +20,9 @@ final class RequestQueryDto
         #[Assert\Type(type: ['bool', 'null'])]
         public ?bool $isActive = null,
         #[Groups(['web_banner:index'])]
+        #[Assert\Type(type: ['string', 'null'])]
+        public ?string $title = null,
+        #[Groups(['web_banner:index'])]
         #[Assert\Positive]
         public int $page = 1,
         #[Groups(['web_banner:index'])]
