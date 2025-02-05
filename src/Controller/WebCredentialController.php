@@ -77,6 +77,7 @@ class WebCredentialController extends AbstractController
                     ),
                 ),
                 new OA\Property(property: 'buy_type', type: 'string', example: 'phone'),
+                new OA\Property(property: 'buy_title', type: 'string', example: 'title'),
                 new OA\Property(property: 'buy_value', type: 'string', example: 'example'),
                 new OA\Property(property: 'logo', type: 'string', example: 'https://example.com/logo.jpg'),
                 new OA\Property(property: 'about', type: 'string', example: 'about'),
