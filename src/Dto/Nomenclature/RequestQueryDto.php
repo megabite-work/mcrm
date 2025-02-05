@@ -29,7 +29,6 @@ final class RequestQueryDto
         #[Assert\Type(type: ['string', 'null'], groups: ['nomenclature:index'])]
         public ?string $name = null,
         #[Groups(['nomenclature:index'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['nomenclature:index'])]
         #[Assert\Type(type: ['bool', 'null'], groups: ['nomenclature:index'])]
         public ?bool $hasWebNomenclature = null,
         #[Groups(['nomenclature:index'])]
