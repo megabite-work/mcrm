@@ -29,8 +29,8 @@ class DeleteAction
             ->findBy(['multiStoreId' => $multiStoreId]);
 
         foreach ($webBannerSettings as $webBannerSetting) {
-            if (in_array($id, $webBannerSetting->getWebBannerIds(), true)) {
-                $webBannerSetting->images = array_values(array_filter($webBannerSetting->getWebBannerIds(), fn($id) => $id !== $id));
+            if (in_array($id, $webBannerSetting->getWebBannerIds())) {
+                $webBannerSetting->images = array_values(array_filter($webBannerSetting->getWebBannerIds(), fn($id) => $id != $id));
                 $this->em->persist($webBannerSetting);
             }
         }
