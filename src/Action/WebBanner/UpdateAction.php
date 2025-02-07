@@ -35,7 +35,7 @@ class UpdateAction
             ->setViewCurrent($dto->viewCurrent ?? $entity->getViewCurrent())
             ->setBeginAt($dto->beginAt ?? $entity->getBeginAt())
             ->setIsActive($dto->isActive ?? $entity->getIsActive())
-            ->setEndAt($dto->endAt ?? $entity->getEndAt());
+            ->setEndAt($dto->endAt);
         $this->em->flush();
 
         return IndexDto::fromEntity($entity);
