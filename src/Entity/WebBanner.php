@@ -46,7 +46,7 @@ class WebBanner
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $type = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups(['web_banner:index', 'web_banner:show', 'web_banner:create', 'web_banner:update'])]
     private ?string $typeId = null;
 
