@@ -30,7 +30,7 @@ class DeleteAction
 
         foreach ($webBannerSettings as $webBannerSetting) {
             if (in_array($id, $webBannerSetting->getWebBannerIds())) {
-                $webBannerSetting->images = array_values(array_filter($webBannerSetting->getWebBannerIds(), fn($id) => $id != $id));
+                $webBannerSetting->setWebBannerIds(array_values(array_filter($webBannerSetting->getWebBannerIds(), fn($webBannerId) => $webBannerId != $id)));
                 $this->em->persist($webBannerSetting);
             }
         }
