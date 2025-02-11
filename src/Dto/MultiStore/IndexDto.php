@@ -22,6 +22,7 @@ final readonly class IndexDto
         public string|array|null $profit = null,
         public ?int $barcodeTtn = null,
         public ?int $nds = null,
+        public ?bool $isActive = null,
         public ?int $storesCount = null,
         public ?int $workersCount = null,
         public ?WebCredentialDto $webCredential = null,
@@ -30,42 +31,51 @@ final readonly class IndexDto
         public ?array $phones = null,
     ) {}
 
-    public static function fromEntity(?MultiStore $entity): static
+    public static function fromEntity(?MultiStore $entity): ?static
     {
-        return new static(
-            id: $entity?->getId(),
-            name: $entity?->getName(),
-            profit: $entity?->getProfit(),
-            barcodeTtn: $entity?->getBarcodeTtn(),
-            nds: $entity?->getNds(),
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName(),
+                profit: $entity->getProfit(),
+                barcodeTtn: $entity->getBarcodeTtn(),
+                nds: $entity->getNds(),
+                isActive: $entity->getIsActive(),
+            )
+            : null;
     }
 
-    public static function fromIndexAction(?MultiStore $entity): static
+    public static function fromIndexAction(?MultiStore $entity): ?static
     {
-        return new static(
-            id: $entity->getId(),
-            name: $entity->getName(),
-            profit: $entity->getProfit(),
-            barcodeTtn: $entity->getBarcodeTtn(),
-            nds: $entity->getNds(),
-            storesCount: $entity->getStoresCount(),
-            workersCount: $entity->getWorkersCount(),
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName(),
+                profit: $entity->getProfit(),
+                barcodeTtn: $entity->getBarcodeTtn(),
+                nds: $entity->getNds(),
+                isActive: $entity->getIsActive(),
+                storesCount: $entity->getStoresCount(),
+                workersCount: $entity->getWorkersCount(),
+            )
+            : null;
     }
 
-    public static function fromShowAction(?MultiStore $entity): static
+    public static function fromShowAction(?MultiStore $entity): ?static
     {
-        return new static(
-            id: $entity->getId(),
-            name: $entity->getName(),
-            profit: $entity->getProfit(),
-            barcodeTtn: $entity->getBarcodeTtn(),
-            nds: $entity->getNds(),
-            stores: StoreDto::fromEntityArray($entity->getStores()->toArray()),
-            webCredential: WebCredentialDto::fromEntity($entity->getWebCredential()),
-            address: AddressDto::fromEntity($entity->getAddress()),
-            phones: PhoneDto::fromEntityArray($entity->getPhones()->toArray()),
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName(),
+                profit: $entity->getProfit(),
+                barcodeTtn: $entity->getBarcodeTtn(),
+                nds: $entity->getNds(),
+                isActive: $entity->getIsActive(),
+                stores: StoreDto::fromEntityArray($entity->getStores()->toArray()),
+                webCredential: WebCredentialDto::fromEntity($entity->getWebCredential()),
+                address: AddressDto::fromEntity($entity->getAddress()),
+                phones: PhoneDto::fromEntityArray($entity->getPhones()->toArray()),
+            )
+            : null;
     }
 }

@@ -28,6 +28,9 @@ final class RequestDto
         #[Groups(['multi_store:update'])]
         public ?string $longitude,
         #[Groups(['multi_store:update'])]
-        public ?array $phones
+        public ?array $phones,
+        #[Groups(['multi_store:update'])]
+        #[Assert\Type(type: ['bool', 'null'], groups: ['multi_store:update'])]
+        public ?bool $isActive
     ) {}
 }

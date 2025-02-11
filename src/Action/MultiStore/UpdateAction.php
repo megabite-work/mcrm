@@ -23,6 +23,7 @@ class UpdateAction
         $entity = $this->multiStoreRepository->findMultiStoreByIdWithAddressAndPhones($id);
         $entity->setName($dto->name ?? $entity->getName())
             ->setProfit($dto->profit ?? $entity->getProfit())
+            ->setIsActive($dto->isActive ?? $entity->getIsActive())
             ->setNds($dto->nds ?? $entity->getNds());
         $this->phoneRepository->checkPhoneExistsAndCreate($entity, $dto->phones);
         $this->addressRepository->checkAddressExistsAndUpdateOrCreate($entity, $dto);

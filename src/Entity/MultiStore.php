@@ -42,6 +42,10 @@ class MultiStore
     #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
     private ?int $nds = null;
 
+    #[ORM\Column(options: ['default' => 0])]
+    #[Groups(['multi_store:index', 'multi_store:show', 'multi_store:create', 'multi_store:update', 'user:me'])]
+    private bool $isActive = false;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[Groups(['multi_store:show', 'multi_store:update'])]
     private ?Address $address = null;
@@ -133,6 +137,18 @@ class MultiStore
     public function setNds(?int $nds): static
     {
         $this->nds = $nds;
+
+        return $this;
+    }
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
