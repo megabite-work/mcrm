@@ -27,7 +27,7 @@ class PhoneRepository extends ServiceEntityRepository
 
     public function checkPhoneExistsAndCreate($entity, $phones): void
     {
-        if (count($phones)) {
+        if (count($phones ?? [])) {
             $entityPhones = $entity->getPhones();
 
             foreach ($phones as $item) {
