@@ -11,12 +11,12 @@ use App\Repository\StoreRepository;
 class IndexAction
 {
     public function __construct(
-        private StoreRepository $storeRepo,
+        private StoreRepository $repo,
     ) {}
 
     public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {
-        $paginator = $this->storeRepo->findAllStoresByMultiStore($dto);
+        $paginator = $this->repo->findAllStoresByMultiStore($dto);
         $data = $paginator->getData();
 
         array_walk_recursive($data, function (&$entity) {

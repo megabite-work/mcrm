@@ -22,7 +22,7 @@ class StoreRepository extends ServiceEntityRepository
     public function findAllStoresByMultiStore(RequestQueryDto $dto): Paginator
     {
         $em = $this->getEntityManager();
-        $multiStore = $this->em->getReference(MultiStore::class, $dto->multiStoreId);
+        $multiStore = $em->getReference(MultiStore::class, $dto->multiStoreId);
 
         $query = $em->createQuery(
             'SELECT s
