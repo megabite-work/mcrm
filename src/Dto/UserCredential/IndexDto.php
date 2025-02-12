@@ -24,4 +24,9 @@ final readonly class IndexDto
             )
             : null;
     }
+
+    public static function fromEntityArray(array $entities): array
+    {
+        return array_map(fn(UserCredential $entity) => self::fromEntity($entity), $entities);
+    }
 }

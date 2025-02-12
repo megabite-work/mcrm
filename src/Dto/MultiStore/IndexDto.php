@@ -78,4 +78,9 @@ final readonly class IndexDto
             )
             : null;
     }
+
+    public static function fromEntityArray(?array $entities = []): array
+    {
+        return array_map(fn(MultiStore $entity) => static::fromEntity($entity), $entities);
+    }
 }

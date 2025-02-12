@@ -2,7 +2,7 @@
 
 namespace App\Action\User;
 
-use App\Entity\User;
+use App\Dto\User\IndexDto;
 use App\Repository\UserRepository;
 
 class ShowMeAction
@@ -11,10 +11,8 @@ class ShowMeAction
         private UserRepository $repo,
     ) {}
 
-    public function __invoke(int $id): User
+    public function __invoke(int $id): IndexDto
     {
-        $user = $this->repo->getUserByIdWithAllJoinedEntities($id);
-
-        return $user;
+        return IndexDto::fromMeAction($this->repo->getUserByIdWithAllJoinedEntities($id));
     }
 }
