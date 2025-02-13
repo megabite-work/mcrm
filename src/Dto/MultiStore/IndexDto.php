@@ -89,7 +89,6 @@ final readonly class IndexDto
                 barcodeTtn: $entity->getBarcodeTtn(),
                 nds: $entity->getNds(),
                 isActive: $entity->getIsActive(),
-                stores: StoreDto::fromEntityArray($entity->getStores()->toArray()),
                 webCredential: WebCredentialDto::fromEntity($entity->getWebCredential()),
             )
             : null;
