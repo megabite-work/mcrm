@@ -79,8 +79,24 @@ final readonly class IndexDto
             : null;
     }
 
+    public static function fromMeAction(?MultiStore $entity): ?static
+    {
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                name: $entity->getName(),
+                profit: $entity->getProfit(),
+                barcodeTtn: $entity->getBarcodeTtn(),
+                nds: $entity->getNds(),
+                isActive: $entity->getIsActive(),
+                stores: StoreDto::fromEntityArray($entity->getStores()->toArray()),
+                webCredential: WebCredentialDto::fromEntity($entity->getWebCredential()),
+            )
+            : null;
+    }
+
     public static function fromEntityArray(?array $entities = []): array
     {
-        return array_map(fn(MultiStore $entity) => static::fromEntity($entity), $entities);
+        return array_map(fn(MultiStore $entity) => static::fromMeAction($entity), $entities);
     }
 }
