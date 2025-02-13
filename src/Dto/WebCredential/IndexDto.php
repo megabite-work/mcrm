@@ -22,20 +22,22 @@ final readonly class IndexDto
         public ?int $templateId = null,
     ) {}
 
-    public static function fromEntity(WebCredential $entity, ?array $catalogTypes = null): static
+    public static function fromEntity(?WebCredential $entity, ?array $catalogTypes = null): ?static
     {
-        return new static(
-            id: $entity->getId(),
-            catalogType: $entity->getCatalogType(),
-            catalogTypeId: $catalogTypes ?? $entity->getCatalogTypeId(),
-            buyTitle: $entity->getBuyTitle(),
-            buyType: $entity->getBuyType(),
-            buyValue: $entity->getBuyValue(),
-            article: $entity->getArticle(),
-            logo: $entity->getLogo(),
-            secrets: $entity->getSecrets(),
-            social: $entity->getSocial(),
-            templateId: $entity->getTemplateId(),
-        );
+        return $entity
+            ? new static(
+                id: $entity->getId(),
+                catalogType: $entity->getCatalogType(),
+                catalogTypeId: $catalogTypes ?? $entity->getCatalogTypeId(),
+                buyTitle: $entity->getBuyTitle(),
+                buyType: $entity->getBuyType(),
+                buyValue: $entity->getBuyValue(),
+                article: $entity->getArticle(),
+                logo: $entity->getLogo(),
+                secrets: $entity->getSecrets(),
+                social: $entity->getSocial(),
+                templateId: $entity->getTemplateId(),
+            )
+            : null;
     }
 }
