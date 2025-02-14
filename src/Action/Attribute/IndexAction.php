@@ -12,8 +12,7 @@ class IndexAction
 {
     public function __construct(
         private AttributeEntityRepository $repo
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestQueryDto $dto): ListResponseDtoInterface
     {

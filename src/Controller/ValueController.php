@@ -39,9 +39,9 @@ class ValueController extends AbstractController
     }
 
     #[Route(path: '', methods: ['POST'])]
-    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['value:create']])] RequestDto $dto, CreateAction $action): JsonResponse
+    public function create(#[MapRequestPayload(serializationContext: ['groups' => ['value:create']], validationGroups: ['value:create'], type: RequestDto::class)] array $dtos, CreateAction $action): JsonResponse
     {
-        return $this->successResponse($action($dto), Response::HTTP_CREATED);
+        return $this->successResponse($action($dtos), Response::HTTP_CREATED);
     }
 
     #[Route('/{id<\d+>}', methods: ['PATCH'])]

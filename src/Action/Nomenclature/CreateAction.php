@@ -28,7 +28,7 @@ class CreateAction
             $this->em->commit();
         } catch (\Throwable $th) {
             $this->em->rollback();
-            throw new ErrorException('Nomenclature', $th->getMessage(), $th->getCode());
+            throw new ErrorException('Nomenclature', $th->getMessage());
         }
 
         return $entities;

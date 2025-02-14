@@ -13,10 +13,9 @@ final readonly class RequestQueryDto
 {
     public function __construct(
         #[Groups(['attribute:index'])]
-        #[Assert\NotBlank]
-        #[Assert\Positive]
+        #[Assert\Type(type: ['integer', 'null'])]
         #[Exists(entity: Category::class)]
-        public int $categoryId,
+        public ?int $categoryId,
         #[Groups(['attribute:index'])]
         #[Assert\NotBlank(allowNull: true)]
         #[Exists(entity: AttributeGroup::class)]
