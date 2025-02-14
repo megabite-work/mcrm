@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/api/values', format: 'json')]
 #[OA\Tag(name: 'Attribute Value Entity')]
-class ValueController extends AbstractController
+class AttributeValueController extends AbstractController
 {
     #[Route(path: '', methods: ['GET'])]
     public function index(#[MapQueryString(serializationContext: ['groups' => ['value:index']])] RequestQueryDto $dto, IndexAction $action): JsonResponse
