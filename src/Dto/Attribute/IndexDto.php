@@ -32,7 +32,6 @@ final readonly class IndexDto
         return $entity
             ? new static(
                 id: $entity->getId(),
-                groupId: $entity->getGroup()->getId(),
                 name: $entity->getName(),
                 unit: $entity->getUnit(),
                 values: ValueIndexDto::fromArray($entity->getAttributeValues()->toArray()),
