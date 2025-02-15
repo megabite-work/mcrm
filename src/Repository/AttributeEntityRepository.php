@@ -21,7 +21,8 @@ class AttributeEntityRepository extends ServiceEntityRepository
     public function findAllAttributesByCategory(RequestQueryDto $dto): Paginator
     {
         $qb = $this->createQueryBuilder('a');
-        $query = $qb->select('a');
+        $query = $qb->select('a', 'g')
+            ->join('a.group', 'g');
 
         if ($dto->name) {
             $query->andWhere($qb->expr()->orX(
@@ -36,7 +37,23 @@ class AttributeEntityRepository extends ServiceEntityRepository
                 ->andWhere('c.id = :cid')
                 ->setParameter('cid', $dto->categoryId);
         }
+        if ($dto->groupId) {
+            $query->andWhere('g.id = :gid')
+                ->setParameter('gid', $dto->groupId);
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage, false);
+    }
+
+    public function findWithAttributeGroup(int $id): ?AttributeEntity
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT ae, ag
+            FROM App\Entity\AttributeEntity ae
+            LEFT JOIN ae.group ag
+            WHERE ae.id = :id'
+        )->setParameter('id', $id);
+
+        return $query->getOneOrNullResult();
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\AttributeEntity;
 use App\Repository\AttributeGroupRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttributeGroupRepository::class)]
@@ -16,6 +19,14 @@ class AttributeGroup
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\OneToMany(targetEntity: AttributeEntity::class, mappedBy: 'group')]
+    private Collection $attributeEntities;
+
+    public function __construct()
+    {
+        $this->attributeEntities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -32,5 +43,10 @@ class AttributeGroup
         $this->name = json_encode($name, JSON_UNESCAPED_UNICODE);
 
         return $this;
+    }
+
+    public function getAttributeEntities(): Collection
+    {
+        return $this->attributeEntities;
     }
 }

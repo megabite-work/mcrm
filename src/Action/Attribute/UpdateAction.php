@@ -5,6 +5,7 @@ namespace App\Action\Attribute;
 use App\Dto\Attribute\IndexDto;
 use App\Dto\Attribute\RequestDto;
 use App\Entity\AttributeEntity;
+use App\Entity\AttributeGroup;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateAction
@@ -28,7 +29,12 @@ class UpdateAction
                 'uz' => $dto->unitUz ?? $entity->getUnit()['uz'],
                 'uzc' => $dto->unitUzc ?? $entity->getUnit()['uzc'],
             ]
-        )->setGroupId($dto->groupId ?? $entity->getGroupId());
+        );
+
+        if ($dto->groupId) {
+            $entity->setGroup($this->em->getReference(AttributeGroup::class, $dto->groupId));
+        }
+
         $this->em->flush();
 
         return IndexDto::fromEntity($entity);

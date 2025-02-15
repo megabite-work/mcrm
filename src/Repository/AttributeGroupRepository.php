@@ -20,16 +20,15 @@ class AttributeGroupRepository extends ServiceEntityRepository
 
     public function findAllAttributeGroups(RequestQueryDto $dto): Paginator
     {
-        $entityManager = $this->getEntityManager();
+        $dql = 'SELECT ag FROM App\Entity\AttributeGroup ag';
 
-        $query = $entityManager->createQuery(
-            'SELECT ag, ae, av
-            FROM App\Entity\AttributeGroup ag
-            LEFT JOIN App\Entity\AttributeEntity ae WITH ae.groupId = ag.id
-            LEFT JOIN ae.attributeValues av
-            JOIN av.value v'
-        );
+        if ($dto->isFull) {
+            $dql .= ' JOIN ag.attributeEntities ae LEFT JOIN ae.attributeValues av JOIN av.value v';
+        }
+        
+        $query = $this->getEntityManager()->createQuery($dql);
 
         return new Paginator($query, $dto->page, $dto->perPage);
     }
+    
 }

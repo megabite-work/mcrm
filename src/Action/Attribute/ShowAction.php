@@ -13,6 +13,6 @@ class ShowAction
 
     public function __invoke(int $id): IndexDto
     {
-        return IndexDto::fromEntity($this->repo->find($id));
+        return IndexDto::fromEntity($this->repo->findWithAttributeGroup($id));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Action\Attribute;
 use App\Dto\Attribute\IndexDto;
 use App\Dto\Attribute\RequestDto;
 use App\Entity\AttributeEntity;
+use App\Entity\AttributeGroup;
 use App\Exception\ErrorException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -31,9 +32,10 @@ class CreateAction
 
     private function create(RequestDto $dto): IndexDto
     {
+        $group = $this->em->getReference(AttributeGroup::class, $dto->groupId);
         $entity = (new AttributeEntity())
             ->setName($dto->getName())
-            ->setGroupId($dto->groupId)
+            ->setGroup($group)
             ->setUnit($dto->getUnit());
         $this->em->persist($entity);
 

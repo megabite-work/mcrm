@@ -13,7 +13,6 @@ use App\Dto\Attribute\AssignDto;
 use App\Dto\Attribute\RequestDto;
 use App\Dto\Attribute\RequestQueryDto;
 use App\Entity\AttributeEntity;
-use App\Entity\Category;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +33,8 @@ class AttributeController extends AbstractController
     #[Route(path: '/{id<\d+>}', methods: ['GET'])]
     public function show(int $id, ShowAction $action): JsonResponse
     {
+        $this->existsValidate($id, AttributeEntity::class);
+
         return $this->successResponse($action($id));
     }
 

@@ -19,4 +19,9 @@ final readonly class IndexDto
             ? new static(id: $entity->getId(), name: $entity->getName())
             : null;
     }
+
+    public static function fromArray(array $entities = []): array
+    {
+        return array_map(fn(ValueEntity $entity) => static::fromEntity($entity), $entities);
+    }
 }

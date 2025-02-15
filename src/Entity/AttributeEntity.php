@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\AttributeGroup;
 use App\Repository\AttributeEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,9 +33,10 @@ class AttributeEntity
     #[Groups(['attribute:index', 'attribute:show', 'attribute:create', 'attribute:update'])]
     private ?string $unit = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\ManyToOne(inversedBy: 'attributeEntities')]
+    #[ORM\JoinColumn]
     #[Groups(['attribute:index', 'attribute:show', 'attribute:create', 'attribute:update'])]
-    private ?int $groupId = null;
+    private ?AttributeGroup $group = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'attributes')]
     private Collection $categories;
@@ -124,14 +126,14 @@ class AttributeEntity
         return $this;
     }
 
-    public function getGroupId(): ?int
+    public function getGroup(): ?AttributeGroup
     {
-        return $this->groupId;
+        return $this->group;
     }
 
-    public function setGroupId(?int $groupId): static
+    public function setGroup(?AttributeGroup $group): static
     {
-        $this->groupId = $groupId;
+        $this->group = $group;
 
         return $this;
     }
