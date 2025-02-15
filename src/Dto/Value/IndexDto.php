@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dto\Value;
 
+use App\Entity\AttributeValue;
 use App\Entity\ValueEntity;
 
 final readonly class IndexDto
@@ -22,6 +23,6 @@ final readonly class IndexDto
 
     public static function fromArray(array $entities = []): array
     {
-        return array_map(fn(ValueEntity $entity) => static::fromEntity($entity), $entities);
+        return array_map(fn(AttributeValue $entity) => static::fromEntity($entity->getValue()), $entities);
     }
 }
