@@ -23,7 +23,7 @@ class AttributeGroupRepository extends ServiceEntityRepository
         $dql = 'SELECT ag FROM App\Entity\AttributeGroup ag';
 
         if ($dto->isFull) {
-            $dql .= ' JOIN ag.attributeEntities ae LEFT JOIN ae.attributeValues av JOIN av.value v';
+            $dql .= 'LEFT JOIN ag.attributeEntities ae LEFT JOIN ae.attributeValues av LEFT JOIN av.value v';
         }
         
         $query = $this->getEntityManager()->createQuery($dql);
