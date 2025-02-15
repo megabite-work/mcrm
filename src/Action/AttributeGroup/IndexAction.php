@@ -19,6 +19,7 @@ class IndexAction
     {
         $paginator = $this->repo->findAllAttributeGroups($dto);
         $data = $paginator->getData();
+        dd($data);
 
         array_walk_recursive($data, function (&$entity) {
             $entity = IndexDto::fromEntity($entity);

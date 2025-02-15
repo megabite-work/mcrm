@@ -23,8 +23,11 @@ class AttributeGroupRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT a
-            FROM App\Entity\AttributeGroup a'
+            'SELECT ag, ae, av
+            FROM App\Entity\AttributeGroup ag
+            LEFT JOIN App\Entity\AttributeEntity ae WITH ae.groupId = ag.id
+            LEFT JOIN ae.attributeValues av
+            JOIN av.value v'
         );
 
         return new Paginator($query, $dto->page, $dto->perPage, false);

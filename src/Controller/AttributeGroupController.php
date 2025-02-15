@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Action\AttributeGroup\AssignAction;
 use App\Action\AttributeGroup\CreateAction;
 use App\Action\AttributeGroup\DeleteAction;
-use App\Action\AttributeGroup\DetachAction;
 use App\Action\AttributeGroup\IndexAction;
 use App\Action\AttributeGroup\ShowAction;
 use App\Action\AttributeGroup\UpdateAction;
