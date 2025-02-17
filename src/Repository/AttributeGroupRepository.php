@@ -45,6 +45,6 @@ class AttributeGroupRepository extends ServiceEntityRepository
             }
         }
 
-        return new Paginator($query, $dto->page, $dto->perPage, false);
+        return new Paginator($query, $dto->page, $dto->perPage);
     }
 }
