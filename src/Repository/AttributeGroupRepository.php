@@ -20,19 +20,31 @@ class AttributeGroupRepository extends ServiceEntityRepository
 
     public function findAllAttributeGroups(RequestQueryDto $dto): Paginator
     {
-        $dql = 'SELECT ag 
-            FROM App\Entity\AttributeGroup ag';
+        $qb = $this->createQueryBuilder('ag');
+        $query = $qb->select('ag');
 
         if ($dto->isFull) {
-            $dql = 'SELECT ag, ae, av, v 
-                FROM App\Entity\AttributeGroup ag 
-                LEFT JOIN ag.attributeEntities ae 
-                LEFT JOIN ae.attributeValues av 
-                LEFT JOIN av.value v';
+            $query->addSelect('ae', 'av', 'v')->leftJoin('ag.attributeEntities', 'ae')
+                ->leftJoin('ae.attributeValues', 'av')
+                ->leftJoin('av.value', 'v');
+
+            if ($dto->name) {
+                $query->andWhere($qb->expr()->orX(
+                    $qb->expr()->like("JSON_EXTRACT(ae.name, '$.ru')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(ae.name, '$.uz')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(ae.name, '$.uzc')", ':name')
+                ))->setParameter('name', '%' . $dto->name . '%');
+            }
+        } else {
+            if ($dto->name) {
+                $query->andWhere($qb->expr()->orX(
+                    $qb->expr()->like("JSON_EXTRACT(ag.name, '$.ru')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(ag.name, '$.uz')", ':name'),
+                    $qb->expr()->like("JSON_EXTRACT(ag.name, '$.uzc')", ':name')
+                ))->setParameter('name', '%' . $dto->name . '%');
+            }
         }
 
-        $query = $this->getEntityManager()->createQuery($dql);
-
-        return new Paginator($query, $dto->page, $dto->perPage);
+        return new Paginator($query, $dto->page, $dto->perPage, false);
     }
 }
