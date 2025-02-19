@@ -38,7 +38,7 @@ class Nomenclature
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create'])]
     private ?string $brand = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['nomenclature:index', 'nomenclature:show', 'nomenclature:create', 'nomenclature:update', 'store_nomenclature:index', 'store_nomenclature:show', 'web_nomenclature:index', 'web_nomenclature:show', 'web_nomenclature:create', 'web_nomenclature:update', 'nomenclature_history:index', 'nomenclature_history:show', 'nomenclature_history:create', 'cashbox_global:index', 'cashbox_global:show', 'cashbox_global:create', 'cashbox_global:update'])]
     private ?string $name = null;
 
