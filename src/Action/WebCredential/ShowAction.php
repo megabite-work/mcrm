@@ -5,6 +5,7 @@ namespace App\Action\WebCredential;
 use App\Dto\Category\IndexDto as CategoryIndexDto;
 use App\Dto\WebCredential\IndexDto;
 use App\Entity\Category;
+use App\Exception\ErrorException;
 use App\Repository\CategoryRepository;
 use App\Repository\MultiStoreRepository;
 
@@ -18,6 +19,11 @@ class ShowAction
     public function __invoke(int $multiStoreId): IndexDto
     {
         $multiStore = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
+
+        if (! $multiStore->getWebCredential()) {
+            throw new ErrorException('WebCredential', 'not found');
+        }
+
         $catalogTypes = array_map(
             fn(Category $category)  => CategoryIndexDto::fromEntity($category),
             $this->categoryRepository->findCategoryFromCredential($multiStore->getWebCredential()?->getCatalogTypeId() ?? [])
