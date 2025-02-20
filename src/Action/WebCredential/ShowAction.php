@@ -20,7 +20,7 @@ class ShowAction
         $multiStore = $this->repo->findMultiStoreByIdWithWebCredential($multiStoreId);
         $catalogTypes = array_map(
             fn(Category $category)  => CategoryIndexDto::fromEntity($category),
-            $this->categoryRepository->findCategoryFromCredential($multiStore->getWebCredential()->getCatalogTypeId())
+            $this->categoryRepository->findCategoryFromCredential($multiStore->getWebCredential()?->getCatalogTypeId() ?? [])
         );
         
         return IndexDto::fromEntity($multiStore->getWebCredential(), $catalogTypes);
