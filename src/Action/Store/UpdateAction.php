@@ -21,7 +21,7 @@ class UpdateAction
     public function __invoke(int $id, RequestDto $dto): IndexDto
     {
         $entity = $this->storeRepository->findStoreByIdWithAddressAndPhones($id);
-        $entity->setName($dto->name)
+        $entity->setName($dto->name ?? $entity->getName())
             ->setIsActive($dto->isActive);
 
         $this->phoneRepository->checkPhoneExistsAndCreate($entity, $dto->phones);
