@@ -29,7 +29,7 @@ final class RequestDto
         public ?array $showType,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
-        public ?array $showTypeId = null,
+        public ?array $showTypeId,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\Collection(
