@@ -45,7 +45,7 @@ final class RequestDto
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         public string $title,
         #[Groups(['web_banner:create', 'web_banner:update'])]
-        public ?string $description = null,
+        public ?string $description,
         #[Groups(['web_banner:create', 'web_banner:update'])]
         #[Assert\NotBlank(groups: ['web_banner:create', 'web_banner:update'])]
         #[Assert\Choice(choices: [WebBanner::OFF, WebBanner::UNIQUE, WebBanner::ALL], groups: ['web_banner:create', 'web_banner:update'])]
