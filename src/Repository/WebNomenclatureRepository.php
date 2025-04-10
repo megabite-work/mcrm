@@ -46,6 +46,9 @@ class WebNomenclatureRepository extends ServiceEntityRepository
         if (null !== $dto->isActive) {
             $query->andWhere('wn.isActive = :isActive')->setParameter('isActive', $dto->isActive);
         }
+        if ($dto->groupByArticle) {
+            $query->groupBy('n.article');
+        }
 
         return new Paginator($query, $dto->page, $dto->perPage);
     }

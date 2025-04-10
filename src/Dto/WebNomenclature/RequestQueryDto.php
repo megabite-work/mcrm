@@ -15,24 +15,20 @@ final class RequestQueryDto
     public function __construct(
         #[Groups(['web_nomenclature:index'])]
         #[Assert\NotBlank(groups: ['web_nomenclature:index'])]
-        #[Assert\Positive]
         #[Exists(MultiStore::class)]
         public int $multiStoreId,
         #[Groups(['web_nomenclature:index'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
         #[Exists(Nomenclature::class)]
         public ?int $nomenclatureId,
         #[Groups(['web_nomenclature:index'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
         #[Exists(Category::class)]
         public ?int $categoryId,
         #[Groups(['web_nomenclature:index'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
         public ?string $title,
         #[Groups(['web_nomenclature:index'])]
-        #[Assert\NotBlank(allowNull: true, groups: ['web_nomenclature:index'])]
-        #[Assert\Type(['bool', 'null'], groups: ['web_nomenclature:index'])]
         public ?bool $isActive = null,
+        #[Groups(['web_nomenclature:index'])]
+        public ?bool $groupByArticle = null,
         #[Groups(['web_nomenclature:index'])]
         #[Assert\Positive]
         public int $page = 1,
